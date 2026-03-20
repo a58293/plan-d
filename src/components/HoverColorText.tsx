@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 // Softer Traditional Chinese Colors (Morandi-esque / Muted)
 const traditionalColors = [
@@ -13,10 +13,24 @@ const traditionalColors = [
   "#E8B3B3", // 桃夭 (Soft Peach)
 ];
 
+let activeTouchMoveComponents = 0;
+
+const globalTouchMoveHandler = (e: TouchEvent) => {
+  const touch = e.touches[0];
+  // Find the element currently under the finger
+  const element = document.elementFromPoint(touch.clientX, touch.clientY);
+  if (element && element.classList.contains('hover-color-char')) {
+    // Dispatch a custom event to trigger the hover effect
+    const event = new CustomEvent('trigger-hover');
+    element.dispatchEvent(event);
+  }
+};
+
 const HoverColorText: React.FC<{ children: React.ReactNode, className?: string, defaultColor?: string }> = ({ children, className = "", defaultColor = "currentColor" }) => {
   const [color, setColor] = useState(defaultColor);
   const [duration, setDuration] = useState(0.6);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const spanRef = useRef<HTMLSpanElement>(null);
 
   const handleHoverStart = () => {
     // Clear any pending revert to ensure the new hover takes precedence
@@ -43,13 +57,43 @@ const HoverColorText: React.FC<{ children: React.ReactNode, className?: string, 
     }, delay);
   };
 
+  useEffect(() => {
+    // Manage global touchmove listener
+    if (activeTouchMoveComponents === 0) {
+      document.addEventListener('touchmove', globalTouchMoveHandler, { passive: true });
+    }
+    activeTouchMoveComponents++;
+
+    const el = spanRef.current;
+    const handleCustomHover = () => {
+      handleHoverStart();
+      handleHoverEnd();
+    };
+
+    if (el) {
+      el.addEventListener('trigger-hover', handleCustomHover as EventListener);
+    }
+
+    return () => {
+      activeTouchMoveComponents--;
+      if (activeTouchMoveComponents === 0) {
+        document.removeEventListener('touchmove', globalTouchMoveHandler);
+      }
+      if (el) {
+        el.removeEventListener('trigger-hover', handleCustomHover as EventListener);
+      }
+    };
+  }, [defaultColor]);
+
   return (
     <motion.span
+      ref={spanRef}
       onHoverStart={handleHoverStart}
       onHoverEnd={handleHoverEnd}
+      onTouchStart={() => { handleHoverStart(); handleHoverEnd(); }}
       animate={{ color }}
       transition={{ duration: duration, ease: "easeInOut" }}
-      className={`cursor-pointer inline ${className}`}
+      className={`cursor-pointer inline hover-color-char ${className}`}
     >
       {children}
     </motion.span>
