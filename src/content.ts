@@ -6,7 +6,7 @@
 // 1. 本网站的所有排版（网格、跑马灯、瀑布流）都已经是【完全动态】的！
 // 2. 无论你在下面的数组中添加 3 张、5 张还是 100 张图片，页面都会自动计算并完美排版。
 // 3. 如何添加图片：
-//    - 将你的图片上传到 `public/images/...` 对应的文件夹中。
+//    - 将你的图片上传到 `images/...` 对应的文件夹中。
 //    - 在下方的对应数组中，复制一行代码，修改 `id` 和 `src`（图片路径）即可。
 //    - 想要几张就写几行，不需要修改任何组件代码！
 // 
@@ -34,7 +34,7 @@ export interface ProjectItem {
 
 // ==========================================
 // 1. 首页分类与封面 (Covers & Logo)
-// 请将图片上传到: public/images/covers/
+// 请将图片上传到: images/covers/
 // ==========================================
 export const homeCategories = [
   { id: "logo", label: "LOGO", labelCn: "品牌标识", src: "/images/covers/logo.jpg", className: "col-span-2 row-span-2", objectFit: "contain" as const },
@@ -48,7 +48,7 @@ export const homeCategories = [
 
 // ==========================================
 // 2. 平面设计 (Graphic Design)
-// 请将图片上传到: public/images/graphic/
+// 请将图片上传到: images/graphic/
 // 💡 动态排版：直接在数组中添加或删除对象，网格会自动适应数量。
 // ==========================================
 export const graphicImages: ImageItem[] = [
@@ -86,7 +86,7 @@ export const graphicImages: ImageItem[] = [
 
 // ==========================================
 // 3. 插画艺术 (Illustration) - 跑马灯展示
-// 请将图片上传到: public/images/illustration/
+// 请将图片上传到: images/illustration/
 // 💡 动态排版：直接在数组中添加或删除字符串，跑马灯会自动计算循环次数。
 // ==========================================
 export const illustrationImages = [
@@ -133,7 +133,7 @@ export const illustrationImages = [
 
 // ==========================================
 // 4. 空间设计 (Spatial Design)
-// 请将图片上传到: public/images/spatial/
+// 请将图片上传到: images/spatial/
 // 💡 动态排版：添加更多项目对象，列表会自动往下延伸。
 // ==========================================
 export const spatialProjects: ProjectItem[] = [
@@ -155,7 +155,7 @@ export const spatialProjects: ProjectItem[] = [
 
 // ==========================================
 // 5. 产品设计 (Product Design)
-// 请将图片上传到: public/images/installation/
+// 请将图片上传到: images/installation/
 // 💡 动态排版：
 // - 添加更多项目对象，列表会自动往下延伸。
 // - 在 `galleryImages` 数组中添加任意数量的图片路径，详情页的右侧图片流会自动排版。
@@ -190,7 +190,7 @@ export const installationProjects: ProjectItem[] = [
 
 // ==========================================
 // 6. 模特经纪 (MCN) - 上下双排跑马灯
-// 请将图片上传到: public/images/mcn/
+// 请将图片上传到: images/mcn/
 // 💡 动态排版：在 modelA 或 modelB 数组中添加任意数量的图片，跑马灯会自动适应。
 // ==========================================
 export const mcnModelAImages = [
