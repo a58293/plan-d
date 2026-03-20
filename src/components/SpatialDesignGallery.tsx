@@ -34,14 +34,6 @@ const ProjectCard: React.FC<{ project: ProjectItem; index: number }> = ({ projec
             transition={{ duration: 0.3 }}
             className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center p-8 text-center text-white"
           >
-            <motion.h3 
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.1 }}
-              className="font-mincho text-3xl md:text-4xl font-bold mb-6 tracking-widest uppercase text-balance"
-            >
-              {project.title}
-            </motion.h3>
             <motion.div 
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
