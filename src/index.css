@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Courier+Prime:wght@400;700&family=Zen+Old+Mincho:wght@400;700;900&display=swap');
+@import "@fontsource/zcool-qingke-huangyou";
+@import "@fontsource/michroma";
+@import "@fontsource/orbitron";
+@import "@fontsource/special-elite";
+@import "@fontsource/shippori-mincho-b1";
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+  --font-typewriter: "Courier Prime", "Courier New", Courier, monospace;
+  --font-wild: "ZCOOL QingKe HuangYou", cursive;
+  --font-tech: "Orbitron", sans-serif;
+  --font-mincho: "Zen Old Mincho", serif;
+  --font-grunge: "Special Elite", cursive;
+  --font-ink: "Shippori Mincho B1", serif;
+}
+
+body {
+  background-color: #f9f9f9;
+  color: #1a1a1a;
+  font-family: var(--font-sans);
+}
