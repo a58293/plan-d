@@ -93,6 +93,8 @@ export default function ProductDesignDetail() {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="w-full h-full object-contain p-4 md:p-12"
             referrerPolicy="no-referrer"
+            loading="eager"
+            fetchPriority="high"
           />
         </AnimatePresence>
 

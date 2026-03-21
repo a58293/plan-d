@@ -17,8 +17,8 @@ export default function HomeGallery() {
               className="relative w-full h-full overflow-hidden group cursor-pointer rounded-2xl"
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.1 }}
+              viewport={{ once: true, margin: "100px" }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.05 }}
               whileHover={{ scale: 1.02, zIndex: 10 }}
             >
               <img
@@ -26,7 +26,8 @@ export default function HomeGallery() {
                 alt={item.label}
                 className={`w-full h-full transition-transform duration-700 group-hover:scale-110 ${item.objectFit === 'contain' ? 'object-contain p-4' : 'object-cover'}`}
                 referrerPolicy="no-referrer"
-                loading="lazy"
+                loading={i < 4 ? "eager" : "lazy"}
+                fetchPriority={i < 2 ? "high" : "auto"}
               />
               {item.id !== "logo" && (
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex flex-col items-center justify-center gap-2">

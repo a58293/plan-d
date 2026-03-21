@@ -83,7 +83,7 @@ const ImageMarquee: React.FC<ImageMarqueeProps> = ({ images, baseVelocity = 1, o
                 className="flex-shrink-0 w-[260px] md:w-[360px] aspect-[3/4] overflow-hidden rounded-sm cursor-pointer group relative hover:opacity-90 transition-opacity shadow-2xl"
                 onClick={() => onImageClick(i)}
               >
-                <img src={src} alt="Model" className="w-full h-full object-cover" referrerPolicy="no-referrer" loading="lazy" />
+                <img src={src} alt="Model" className="w-full h-full object-cover" referrerPolicy="no-referrer" loading={setIdx === 0 && i < 4 ? "eager" : "lazy"} fetchPriority={setIdx === 0 && i < 2 ? "high" : "auto"} />
               </div>
             ))}
           </div>

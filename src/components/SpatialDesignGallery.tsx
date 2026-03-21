@@ -15,6 +15,8 @@ const ProjectCard: React.FC<{ project: ProjectItem; index: number }> = ({ projec
       <img
         src={project.src}
         alt={project.title}
+        loading={index < 4 ? "eager" : "lazy"}
+        fetchPriority={index < 2 ? "high" : "auto"}
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         referrerPolicy="no-referrer"
       />

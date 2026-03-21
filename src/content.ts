@@ -31,13 +31,8 @@ export interface ProjectItem {
 }
 
 // 🌟 这里是您的 GitHub 图床基础链接！
-// 使用了全球 CDN 和图片压缩代理 (wsrv.nl)，自动将图片转换为 WebP 格式并压缩，极大提升手机端加载速度
-const GITHUB_RAW_URL = "raw.githubusercontent.com/a58293/panl-d/main/images";
-const BASE_URL = `https://wsrv.nl/?url=${GITHUB_RAW_URL}`;
-
-// 为了进一步提升加载速度，我们可以在需要的地方加上宽度限制，比如 &w=1080
-// 但为了代码简单，这里我们在 BASE_URL 加上默认的压缩参数
-const OPTIMIZED_BASE_URL = `${BASE_URL}&output=webp&q=80&we`;
+// 使用 jsDelivr 全球加速 CDN，在中国大陆访问速度极快，是最稳定的 GitHub 图床方案
+const BASE_URL = "https://cdn.jsdelivr.net/gh/a58293/panl-d@main/images";
 
 // ==========================================
 // 1. 首页分类与封面 (Covers & Logo)
@@ -52,7 +47,7 @@ const _homeCategories = [
   { id: "illustration", label: "ILLUSTRATION", labelCn: "插画艺术", src: `${BASE_URL}/covers/illustration.jpg`, className: "col-span-2 row-span-1", link: "/illustration", objectFit: "cover" as const },
 ];
 
-export const homeCategories = _homeCategories.map(item => ({ ...item, src: `${item.src}&w=1080&output=webp&q=80&we` }));
+export const homeCategories = _homeCategories;
 
 // ==========================================
 // 2. 平面设计 (Graphic Design)
@@ -90,7 +85,7 @@ const _graphicImages: ImageItem[] = [
   { id: 30, src: `${BASE_URL}/graphic/30.png`, alt: "平面设计 30" },
 ];
 
-export const graphicImages = _graphicImages.map(item => ({ ...item, src: `${item.src}&w=1080&output=webp&q=80&we` }));
+export const graphicImages = _graphicImages;
 
 // ==========================================
 // 3. 插画艺术 (Illustration)
@@ -137,7 +132,7 @@ const _illustrationImages = [
   `${BASE_URL}/illustration/39.jpg`,
 ];
 
-export const illustrationImages = _illustrationImages.map(src => `${src}&w=1080&output=webp&q=80&we`);
+export const illustrationImages = _illustrationImages;
 
 // ==========================================
 // 4. 空间设计 (Spatial Design)
@@ -159,11 +154,7 @@ const _spatialProjects: ProjectItem[] = [
   { id: 14, title: "项目名称 14", description: "这里是空间设计项目 14 的详细描述文案，介绍设计理念等。", src: `${BASE_URL}/spatial/14.jpg`, location: "Shanghai, CN", year: "2024" },
 ];
 
-export const spatialProjects = _spatialProjects.map(item => ({
-  ...item,
-  src: `${item.src}&w=1080&output=webp&q=80&we`,
-  galleryImages: item.galleryImages?.map(src => `${src}&w=1080&output=webp&q=80&we`)
-}));
+export const spatialProjects = _spatialProjects;
 
 // ==========================================
 // 5. 产品设计 (Product Design)
@@ -196,11 +187,7 @@ const _installationProjects: ProjectItem[] = [
   { id: 25, title: "RUNNING HAM", src: `${BASE_URL}/installation/25.jpg`, location: "丽江", year: "2017", galleryImages: Array.from({ length: 8 }, (_, i) => `${BASE_URL}/installation/25-${i + 1}.jpg`) },
 ];
 
-export const installationProjects = _installationProjects.map(item => ({
-  ...item,
-  src: `${item.src}&w=1080&output=webp&q=80&we`,
-  galleryImages: item.galleryImages?.map(src => `${src}&w=1080&output=webp&q=80&we`)
-}));
+export const installationProjects = _installationProjects;
 
 // ==========================================
 // 6. 模特经纪 (MCN)
@@ -222,7 +209,7 @@ const _mcnModelAImages = [
   `${BASE_URL}/mcn/model-a-14.jpg`,
 ];
 
-export const mcnModelAImages = _mcnModelAImages.map(src => `${src}&w=1080&output=webp&q=80&we`);
+export const mcnModelAImages = _mcnModelAImages;
 
 const _mcnModelBImages = [
   `${BASE_URL}/mcn/model-b-01.jpg`,
@@ -249,4 +236,4 @@ const _mcnModelBImages = [
   `${BASE_URL}/mcn/model-b-22.jpg`,
 ];
 
-export const mcnModelBImages = _mcnModelBImages.map(src => `${src}&w=1080&output=webp&q=80&we`);
+export const mcnModelBImages = _mcnModelBImages;
