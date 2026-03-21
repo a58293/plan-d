@@ -31,13 +31,18 @@ export interface ProjectItem {
 }
 
 // 🌟 这里是您的 GitHub 图床基础链接！
-// 如果您的默认分支叫 master 而不是 main，请把下面的 main 改成 master
-const BASE_URL = "https://raw.githubusercontent.com/a58293/panl-d/main/images";
+// 使用了全球 CDN 和图片压缩代理 (wsrv.nl)，自动将图片转换为 WebP 格式并压缩，极大提升手机端加载速度
+const GITHUB_RAW_URL = "raw.githubusercontent.com/a58293/panl-d/main/images";
+const BASE_URL = `https://wsrv.nl/?url=${GITHUB_RAW_URL}`;
+
+// 为了进一步提升加载速度，我们可以在需要的地方加上宽度限制，比如 &w=1080
+// 但为了代码简单，这里我们在 BASE_URL 加上默认的压缩参数
+const OPTIMIZED_BASE_URL = `${BASE_URL}&output=webp&q=80&we`;
 
 // ==========================================
 // 1. 首页分类与封面 (Covers & Logo)
 // ==========================================
-export const homeCategories = [
+const _homeCategories = [
   { id: "logo", label: "LOGO", labelCn: "品牌标识", src: `${BASE_URL}/covers/logo.jpg`, className: "col-span-2 row-span-2", objectFit: "contain" as const },
   { id: "bjd", label: "BJD", labelCn: "球关节人偶", src: `${BASE_URL}/covers/bjd.jpg`, className: "col-span-1 row-span-1", href: "https://planabcf.netlify.app/", objectFit: "cover" as const },
   { id: "spatial", label: "SPATIAL", labelCn: "空间设计", src: `${BASE_URL}/covers/spatial.jpg`, className: "col-span-1 row-span-1", link: "/spatial", objectFit: "cover" as const },
@@ -47,10 +52,12 @@ export const homeCategories = [
   { id: "illustration", label: "ILLUSTRATION", labelCn: "插画艺术", src: `${BASE_URL}/covers/illustration.jpg`, className: "col-span-2 row-span-1", link: "/illustration", objectFit: "cover" as const },
 ];
 
+export const homeCategories = _homeCategories.map(item => ({ ...item, src: `${item.src}&w=1080&output=webp&q=80&we` }));
+
 // ==========================================
 // 2. 平面设计 (Graphic Design)
 // ==========================================
-export const graphicImages: ImageItem[] = [
+const _graphicImages: ImageItem[] = [
   { id: 1, src: `${BASE_URL}/graphic/01.png`, alt: "平面设计 01" },
   { id: 2, src: `${BASE_URL}/graphic/02.png`, alt: "平面设计 02" },
   { id: 3, src: `${BASE_URL}/graphic/03.png`, alt: "平面设计 03" },
@@ -83,10 +90,12 @@ export const graphicImages: ImageItem[] = [
   { id: 30, src: `${BASE_URL}/graphic/30.png`, alt: "平面设计 30" },
 ];
 
+export const graphicImages = _graphicImages.map(item => ({ ...item, src: `${item.src}&w=1080&output=webp&q=80&we` }));
+
 // ==========================================
 // 3. 插画艺术 (Illustration)
 // ==========================================
-export const illustrationImages = [
+const _illustrationImages = [
   `${BASE_URL}/illustration/01.jpg`,
   `${BASE_URL}/illustration/02.jpg`,
   `${BASE_URL}/illustration/03.jpg`,
@@ -128,10 +137,12 @@ export const illustrationImages = [
   `${BASE_URL}/illustration/39.jpg`,
 ];
 
+export const illustrationImages = _illustrationImages.map(src => `${src}&w=1080&output=webp&q=80&we`);
+
 // ==========================================
 // 4. 空间设计 (Spatial Design)
 // ==========================================
-export const spatialProjects: ProjectItem[] = [
+const _spatialProjects: ProjectItem[] = [
   { id: 1, title: "项目名称 01", description: "这里是空间设计项目 01 的详细描述文案，介绍设计理念等。", src: `${BASE_URL}/spatial/01.jpg`, location: "Shanghai, CN", year: "2024" },
   { id: 2, title: "项目名称 02", description: "这里是空间设计项目 02 的详细描述文案，介绍设计理念等。", src: `${BASE_URL}/spatial/02.jpg`, location: "Shanghai, CN", year: "2024" },
   { id: 3, title: "项目名称 03", description: "这里是空间设计项目 03 的详细描述文案，介绍设计理念等。", src: `${BASE_URL}/spatial/03.jpg`, location: "Shanghai, CN", year: "2024" },
@@ -148,10 +159,16 @@ export const spatialProjects: ProjectItem[] = [
   { id: 14, title: "项目名称 14", description: "这里是空间设计项目 14 的详细描述文案，介绍设计理念等。", src: `${BASE_URL}/spatial/14.jpg`, location: "Shanghai, CN", year: "2024" },
 ];
 
+export const spatialProjects = _spatialProjects.map(item => ({
+  ...item,
+  src: `${item.src}&w=1080&output=webp&q=80&we`,
+  galleryImages: item.galleryImages?.map(src => `${src}&w=1080&output=webp&q=80&we`)
+}));
+
 // ==========================================
 // 5. 产品设计 (Product Design)
 // ==========================================
-export const installationProjects: ProjectItem[] = [
+const _installationProjects: ProjectItem[] = [
   { id: 1, title: "阿祖的小院", src: `${BASE_URL}/installation/01.jpg`, location: "丽江", year: "2026", galleryImages: Array.from({ length: 10 }, (_, i) => `${BASE_URL}/installation/01-${i + 1}.jpg`) },
   { id: 2, title: "昆明国际咖啡展", src: `${BASE_URL}/installation/02.jpg`, location: "昆明", year: "2025", galleryImages: Array.from({ length: 4 }, (_, i) => `${BASE_URL}/installation/02-${i + 1}.jpg`) },
   { id: 3, title: "普洱茶", src: `${BASE_URL}/installation/03.jpg`, location: "昆明", year: "2025", galleryImages: Array.from({ length: 4 }, (_, i) => `${BASE_URL}/installation/03-${i + 1}.jpg`) },
@@ -179,10 +196,16 @@ export const installationProjects: ProjectItem[] = [
   { id: 25, title: "RUNNING HAM", src: `${BASE_URL}/installation/25.jpg`, location: "丽江", year: "2017", galleryImages: Array.from({ length: 8 }, (_, i) => `${BASE_URL}/installation/25-${i + 1}.jpg`) },
 ];
 
+export const installationProjects = _installationProjects.map(item => ({
+  ...item,
+  src: `${item.src}&w=1080&output=webp&q=80&we`,
+  galleryImages: item.galleryImages?.map(src => `${src}&w=1080&output=webp&q=80&we`)
+}));
+
 // ==========================================
 // 6. 模特经纪 (MCN)
 // ==========================================
-export const mcnModelAImages = [
+const _mcnModelAImages = [
   `${BASE_URL}/mcn/model-a-01.jpg`,
   `${BASE_URL}/mcn/model-a-02.jpg`,
   `${BASE_URL}/mcn/model-a-03.jpg`,
@@ -199,7 +222,9 @@ export const mcnModelAImages = [
   `${BASE_URL}/mcn/model-a-14.jpg`,
 ];
 
-export const mcnModelBImages = [
+export const mcnModelAImages = _mcnModelAImages.map(src => `${src}&w=1080&output=webp&q=80&we`);
+
+const _mcnModelBImages = [
   `${BASE_URL}/mcn/model-b-01.jpg`,
   `${BASE_URL}/mcn/model-b-02.jpg`,
   `${BASE_URL}/mcn/model-b-03.jpg`,
@@ -223,3 +248,5 @@ export const mcnModelBImages = [
   `${BASE_URL}/mcn/model-b-21.jpg`,
   `${BASE_URL}/mcn/model-b-22.jpg`,
 ];
+
+export const mcnModelBImages = _mcnModelBImages.map(src => `${src}&w=1080&output=webp&q=80&we`);

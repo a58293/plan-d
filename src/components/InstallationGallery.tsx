@@ -9,18 +9,18 @@ const ProjectCard: React.FC<{ project: ProjectItem; index: number }> = ({ projec
 
   return (
     <motion.div
-      className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl shadow-sm cursor-pointer group"
+      className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl shadow-sm cursor-pointer group bg-[#f5f5f5] flex items-center justify-center"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
       onMouseEnter={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
     >
-      <Link to={`/installation/${project.id}`} className="block w-full h-full">
+      <Link to={`/installation/${project.id}`} className="block w-full h-full p-4 md:p-8">
         <img
           src={project.src}
           alt={project.title}
-          className={`w-full h-full object-cover transition-transform duration-700 ${
+          className={`w-full h-full object-contain transition-transform duration-700 ${
             isActive ? "scale-105" : "group-hover:scale-102"
           }`}
           referrerPolicy="no-referrer"
