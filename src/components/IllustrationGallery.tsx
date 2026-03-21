@@ -133,7 +133,11 @@ const ImageMarquee: React.FC<{ images: string[] }> = ({ images }) => {
     isDragging.current = true;
     startX.current = e.clientX;
     startBaseX.current = baseX.get();
-    e.currentTarget.setPointerCapture(e.pointerId);
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch (err) {
+      // Ignore capture errors
+    }
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
@@ -150,17 +154,23 @@ const ImageMarquee: React.FC<{ images: string[] }> = ({ images }) => {
 
   const handlePointerUp = (e: React.PointerEvent) => {
     isDragging.current = false;
-    e.currentTarget.releasePointerCapture(e.pointerId);
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch (err) {
+      // Ignore release errors
+    }
   };
 
   return (
     <>
       <div 
-        className="overflow-hidden py-8 flex flex-nowrap w-full h-screen items-center cursor-grab active:cursor-grabbing"
+        className="overflow-hidden py-8 flex flex-nowrap w-full h-screen items-center cursor-grab active:cursor-grabbing touch-none select-none"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
+        onPointerLeave={handlePointerUp}
+        onDragStart={(e) => e.preventDefault()}
       >
         <motion.div className="flex flex-nowrap w-max flex-shrink-0" style={{ x }}>
           {Array.from({ length: numSets }).map((_, setIdx) => (
@@ -172,8 +182,9 @@ const ImageMarquee: React.FC<{ images: string[] }> = ({ images }) => {
                     alt="Illustration" 
                     loading={setIdx === 0 && i < 5 ? "eager" : "lazy"}
                     fetchPriority={setIdx === 0 && i < 3 ? "high" : "auto"}
-                    className="w-auto h-full object-cover" 
-                    referrerPolicy="no-referrer" 
+                    className="w-auto h-full object-cover pointer-events-none" 
+                    referrerPolicy="no-referrer"
+                    draggable={false}
                   />
                 </div>
               ))}
