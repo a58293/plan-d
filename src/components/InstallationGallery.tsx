@@ -16,13 +16,13 @@ const ProjectCard: React.FC<{ project: ProjectItem; index: number }> = ({ projec
       onMouseEnter={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
     >
-      <Link to={`/installation/${project.id}`} className="block w-full h-full p-4 md:p-8">
+      <Link to={`/installation/${project.id}`} className="block w-full h-full">
         <img
           src={project.src}
           alt={project.title}
           loading={index < 4 ? "eager" : "lazy"}
           fetchPriority={index < 2 ? "high" : "auto"}
-          className={`w-full h-full object-contain transition-transform duration-700 ${
+          className={`w-full h-full object-cover transition-transform duration-700 ${
             isActive ? "scale-105" : "group-hover:scale-102"
           }`}
           referrerPolicy="no-referrer"

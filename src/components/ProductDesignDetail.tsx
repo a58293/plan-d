@@ -91,7 +91,7 @@ export default function ProductDesignDetail() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="w-full h-full object-contain p-4 md:p-12"
+            className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
             loading="eager"
             fetchPriority="high"
