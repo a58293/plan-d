@@ -1,52 +1,23 @@
-import React, { useState, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import React from "react";
+import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Plus } from "lucide-react";
 import { spatialProjects, ProjectItem } from "../content";
 
 const ProjectCard: React.FC<{ project: ProjectItem; index: number }> = ({ project, index }) => {
-  const [isActive, setIsActive] = useState(false);
-
   return (
     <motion.div
       className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl shadow-sm cursor-pointer group"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      onMouseEnter={() => setIsActive(true)}
-      onMouseLeave={() => setIsActive(false)}
     >
       <img
         src={project.src}
         alt={project.title}
-        className={`w-full h-full object-cover transition-transform duration-700 ${
-          isActive ? "scale-105" : "group-hover:scale-102"
-        }`}
+        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         referrerPolicy="no-referrer"
       />
-      
-      <AnimatePresence>
-        {isActive && (
-          <motion.div
-            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            animate={{ opacity: 1, backdropFilter: "blur(8px)" }}
-            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            transition={{ duration: 0.3 }}
-            className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center p-8 text-center text-white"
-          >
-            <motion.div 
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="flex gap-4 text-xs font-mono tracking-wider text-gray-400 uppercase"
-            >
-              <span>{project.location}</span>
-              <span>•</span>
-              <span>{project.year}</span>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </motion.div>
   );
 }

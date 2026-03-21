@@ -39,7 +39,7 @@ const ProjectCard: React.FC<{ project: ProjectItem; index: number }> = ({ projec
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
-                className="font-mincho text-3xl md:text-4xl font-bold mb-6 tracking-widest uppercase text-balance"
+                className="font-mincho text-3xl md:text-4xl font-bold mb-6 tracking-widest uppercase text-balance drop-shadow-md"
               >
                 {project.title}
               </motion.h3>
@@ -47,7 +47,7 @@ const ProjectCard: React.FC<{ project: ProjectItem; index: number }> = ({ projec
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="flex gap-4 text-xs font-mono tracking-wider text-gray-400 uppercase"
+                className="flex gap-4 text-sm font-mono tracking-wider text-white font-medium uppercase drop-shadow-md"
               >
                 <span>{project.location}</span>
                 <span>•</span>

@@ -1,12 +1,14 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { motion } from "motion/react";
-import { ArrowLeft } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { installationProjects } from "../content";
 import { SplitColorText } from "./HoverColorText";
 
 export default function ProductDesignDetail() {
   const { id } = useParams();
   const project = installationProjects.find((p) => String(p.id) === id);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!project) {
     return (
@@ -21,16 +23,14 @@ export default function ProductDesignDetail() {
     );
   }
 
-  // Generate dynamic widths and alignments for the right-side image stream
-  const getImageStyle = (idx: number) => {
-    const pattern = idx % 4;
-    switch (pattern) {
-      case 0: return "w-full aspect-[4/3]"; // Full width
-      case 1: return "w-[85%] ml-auto aspect-[3/4]"; // Indented left, tall
-      case 2: return "w-[90%] aspect-square"; // Indented right, square
-      case 3: return "w-[75%] mx-auto aspect-[16/9]"; // Centered, wide
-      default: return "w-full aspect-[4/3]";
-    }
+  const allImages = [project.src, ...(project.galleryImages || [])];
+
+  const nextImage = () => {
+    setCurrentIndex((prev) => (prev + 1) % allImages.length);
+  };
+
+  const prevImage = () => {
+    setCurrentIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
   };
 
   return (
@@ -72,54 +72,62 @@ export default function ProductDesignDetail() {
               <span>Year</span>
               <span className="text-gray-900">{project.year || new Date().getFullYear()}</span>
             </div>
+            <div className="flex justify-between border-b border-gray-100 pb-3">
+              <span>Images</span>
+              <span className="text-gray-900">{currentIndex + 1} / {allImages.length}</span>
+            </div>
           </motion.div>
         </div>
       </div>
 
-      {/* Right: Scrollable Image Stream */}
-      <div className="w-full lg:w-[65%] xl:w-[70%] p-4 md:p-8 lg:p-12 flex flex-col gap-8 md:gap-16 lg:gap-24">
-        
-        {/* Main Hero Image */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.98 }} 
-          animate={{ opacity: 1, scale: 1 }} 
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="w-full aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-sm shadow-sm"
-        >
-          <img 
-            src={project.src} 
-            alt={project.title} 
-            className="w-full h-full object-cover" 
+      {/* Right: Single Image Carousel */}
+      <div className="w-full lg:w-[65%] xl:w-[70%] h-[60vh] lg:h-screen relative bg-[#f5f5f5] flex items-center justify-center overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={currentIndex}
+            src={allImages[currentIndex]}
+            alt={`${project.title} - Image ${currentIndex + 1}`}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="w-full h-full object-contain p-4 md:p-12"
             referrerPolicy="no-referrer"
           />
-        </motion.div>
-        
-        {/* Gallery Images with Rhythm */}
-        {project.galleryImages?.map((imgSrc, idx) => (
-          <motion.div 
-            key={idx}
-            initial={{ opacity: 0, y: 50 }} 
-            whileInView={{ opacity: 1, y: 0 }} 
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className={`overflow-hidden rounded-sm shadow-sm ${getImageStyle(idx)}`}
-          >
-            <img 
-              src={imgSrc} 
-              alt={`${project.title} detail ${idx + 1}`} 
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-[2s] ease-out" 
-              referrerPolicy="no-referrer"
-            />
-          </motion.div>
-        ))}
-        
-        {/* End of Stream Indicator */}
-        <div className="py-24 flex flex-col items-center justify-center gap-6 opacity-40">
-           <div className="w-px h-16 bg-gray-400" />
-           <span className="font-tech text-[10px] tracking-[0.4em] uppercase text-gray-500">End of Project</span>
-        </div>
-      </div>
+        </AnimatePresence>
 
+        {/* Navigation Buttons */}
+        {allImages.length > 1 && (
+          <>
+            <button
+              onClick={prevImage}
+              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/80 hover:bg-white text-black shadow-sm backdrop-blur-sm transition-all z-10"
+            >
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/80 hover:bg-white text-black shadow-sm backdrop-blur-sm transition-all z-10"
+            >
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+
+            {/* Pagination Indicators */}
+            <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-4 py-2 rounded-full">
+              {allImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentIndex(idx)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    idx === currentIndex ? "bg-black w-6" : "bg-black/30 hover:bg-black/50"
+                  }`}
+                  aria-label={`Go to image ${idx + 1}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     </main>
   );
 }
