@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, PanInfo } from "motion/react";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { installationProjects } from "../content";
 import { SplitColorText } from "./HoverColorText";
@@ -31,6 +31,15 @@ export default function ProductDesignDetail() {
 
   const prevImage = () => {
     setCurrentIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+  };
+
+  const handleDragEnd = (e: any, { offset }: PanInfo) => {
+    const swipeThreshold = 50;
+    if (offset.x < -swipeThreshold) {
+      nextImage();
+    } else if (offset.x > swipeThreshold) {
+      prevImage();
+    }
   };
 
   return (
@@ -91,10 +100,14 @@ export default function ProductDesignDetail() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover ${allImages.length > 1 ? 'cursor-grab active:cursor-grabbing' : ''}`}
             referrerPolicy="no-referrer"
             loading="eager"
             fetchPriority="high"
+            drag={allImages.length > 1 ? "x" : false}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={handleDragEnd}
           />
         </AnimatePresence>
 

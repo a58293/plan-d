@@ -24,6 +24,9 @@ export default function HomeGallery() {
               <img
                 src={item.src}
                 alt={item.label}
+                loading={i < 6 ? "eager" : "lazy"}
+                fetchPriority={i < 4 ? "high" : "auto"}
+                decoding="async"
                 className={`w-full h-full transition-transform duration-700 group-hover:scale-110 ${item.objectFit === 'contain' ? 'object-contain p-4' : 'object-cover'}`}
                 referrerPolicy="no-referrer"
               />

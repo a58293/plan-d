@@ -12,13 +12,17 @@ const ParallaxCard: React.FC<{ image: ImageItem, index: number }> = ({ image, in
       ref={ref}
       className="relative w-full aspect-square flex items-center justify-center group cursor-pointer"
       initial={{ opacity: 0, scale: 0.9, y: 20 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: (index % 10) * 0.05, ease: "easeOut" }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      viewport={{ once: true, margin: "200px" }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       whileHover={{ scale: 1.05, zIndex: 20 }}
     >
       <img
         src={image.src}
         alt={image.alt}
+        loading={index < 8 ? "eager" : "lazy"}
+        fetchPriority={index < 4 ? "high" : "auto"}
+        decoding="async"
         className="max-w-[75%] max-h-[75%] object-contain mix-blend-multiply drop-shadow-md group-hover:drop-shadow-2xl transition-all duration-500"
         referrerPolicy="no-referrer"
       />

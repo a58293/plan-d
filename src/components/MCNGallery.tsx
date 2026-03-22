@@ -7,7 +7,8 @@ import {
   useMotionValue,
   useVelocity,
   useAnimationFrame,
-  AnimatePresence
+  AnimatePresence,
+  PanInfo
 } from "motion/react";
 import { wrap } from "motion/react";
 import { ArrowLeft, X, ChevronLeft, ChevronRight, Plus } from "lucide-react";
@@ -86,6 +87,9 @@ const ImageMarquee: React.FC<ImageMarqueeProps> = ({ images, baseVelocity = 1, o
                 <img 
                   src={src} 
                   alt="Model" 
+                  loading={setIdx === 0 && i < 6 ? "eager" : "lazy"} 
+                  fetchPriority={setIdx === 0 && i < 4 ? "high" : "auto"} 
+                  decoding="async"
                   className="w-full h-full object-cover" 
                   referrerPolicy="no-referrer" 
                 />
@@ -132,6 +136,15 @@ export default function MCNGallery() {
       ...lightboxState,
       currentIndex: (lightboxState.currentIndex - 1 + lightboxState.images.length) % lightboxState.images.length
     });
+  };
+
+  const handleDragEnd = (e: any, { offset }: PanInfo) => {
+    const swipeThreshold = 50;
+    if (offset.x < -swipeThreshold) {
+      nextImage();
+    } else if (offset.x > swipeThreshold) {
+      prevImage();
+    }
   };
 
   // Keyboard navigation
@@ -249,8 +262,12 @@ export default function MCNGallery() {
                     transition={{ duration: 0.2 }}
                     src={lightboxState.images[lightboxState.currentIndex]}
                     alt="Enlarged view"
-                    className="max-w-full max-h-[50vh] md:max-h-[85vh] object-contain shadow-2xl"
+                    className={`max-w-full max-h-[50vh] md:max-h-[85vh] object-contain shadow-2xl ${lightboxState.images.length > 1 ? 'cursor-grab active:cursor-grabbing' : ''}`}
                     referrerPolicy="no-referrer"
+                    drag={lightboxState.images.length > 1 ? "x" : false}
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={0.2}
+                    onDragEnd={handleDragEnd}
                   />
                 </AnimatePresence>
                 <div className="absolute -bottom-8 left-0 w-full text-center font-mono text-xs text-gray-500 tracking-widest">
