@@ -180,8 +180,6 @@ const ImageMarquee: React.FC<{ images: string[] }> = ({ images }) => {
                   <img 
                     src={src} 
                     alt="Illustration" 
-                    loading={setIdx === 0 && i < 5 ? "eager" : "lazy"}
-                    fetchPriority={setIdx === 0 && i < 3 ? "high" : "auto"}
                     className="w-auto h-full object-cover pointer-events-none" 
                     referrerPolicy="no-referrer"
                     draggable={false}

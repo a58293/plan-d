@@ -19,8 +19,6 @@ const ParallaxCard: React.FC<{ image: ImageItem, index: number }> = ({ image, in
       <img
         src={image.src}
         alt={image.alt}
-        loading={index < 8 ? "eager" : "lazy"}
-        fetchPriority={index < 4 ? "high" : "auto"}
         className="max-w-[75%] max-h-[75%] object-contain mix-blend-multiply drop-shadow-md group-hover:drop-shadow-2xl transition-all duration-500"
         referrerPolicy="no-referrer"
       />

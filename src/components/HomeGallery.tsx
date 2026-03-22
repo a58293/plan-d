@@ -26,8 +26,6 @@ export default function HomeGallery() {
                 alt={item.label}
                 className={`w-full h-full transition-transform duration-700 group-hover:scale-110 ${item.objectFit === 'contain' ? 'object-contain p-4' : 'object-cover'}`}
                 referrerPolicy="no-referrer"
-                loading={i < 4 ? "eager" : "lazy"}
-                fetchPriority={i < 2 ? "high" : "auto"}
               />
               {item.id !== "logo" && (
                 <>
