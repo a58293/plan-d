@@ -10,6 +10,32 @@ export default function ProductDesignDetail() {
   const project = installationProjects.find((p) => String(p.id) === id);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+
+  // Reset loading state when image changes
+  useEffect(() => {
+    setIsImageLoading(true);
+    setProgress(0);
+  }, [currentIndex]);
+
+  // Simulated progress bar logic
+  useEffect(() => {
+    if (!isImageLoading) {
+      setProgress(100);
+      return;
+    }
+    
+    setProgress(15); // Initial jump
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 90) return prev; // Cap at 90% until actually loaded
+        return prev + (90 - prev) * 0.1; // Ease out curve
+      });
+    }, 200);
+    
+    return () => clearInterval(timer);
+  }, [isImageLoading]);
 
   useEffect(() => {
     if (!project) return;
@@ -109,6 +135,32 @@ export default function ProductDesignDetail() {
 
       {/* Right: Single Image Carousel */}
       <div className="w-full lg:w-[65%] xl:w-[70%] h-[60vh] lg:h-screen relative bg-[#f5f5f5] flex items-center justify-center overflow-hidden">
+        {/* Progress Bar */}
+        <div className="absolute top-0 left-0 w-full h-[3px] z-20 bg-gray-200/50">
+          <div
+            className="h-full bg-black transition-all duration-300 ease-out"
+            style={{
+              width: `${progress}%`,
+              opacity: progress === 100 ? 0 : 1,
+              transitionDelay: progress === 100 ? '400ms' : '0ms'
+            }}
+          />
+        </div>
+
+        {/* Loading Spinner */}
+        <AnimatePresence>
+          {isImageLoading && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none"
+            >
+              <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <AnimatePresence mode="wait">
           <motion.img
             key={currentIndex}
@@ -127,6 +179,7 @@ export default function ProductDesignDetail() {
             dragElastic={0.2}
             onDragEnd={handleDragEnd}
             onClick={() => setIsFullscreen(true)}
+            onLoad={() => setIsImageLoading(false)}
           />
         </AnimatePresence>
 
@@ -197,6 +250,32 @@ export default function ProductDesignDetail() {
               </>
             )}
 
+            {/* Lightbox Progress Bar */}
+            <div className="absolute top-0 left-0 w-full h-[3px] z-[60] bg-white/10">
+              <div
+                className="h-full bg-white transition-all duration-300 ease-out"
+                style={{
+                  width: `${progress}%`,
+                  opacity: progress === 100 ? 0 : 1,
+                  transitionDelay: progress === 100 ? '400ms' : '0ms'
+                }}
+              />
+            </div>
+
+            {/* Lightbox Loading Spinner */}
+            <AnimatePresence>
+              {isImageLoading && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none"
+                >
+                  <div className="w-10 h-10 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <AnimatePresence mode="wait">
               <motion.img
                 key={currentIndex}
@@ -212,6 +291,7 @@ export default function ProductDesignDetail() {
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={0.2}
                 onDragEnd={handleDragEnd}
+                onLoad={() => setIsImageLoading(false)}
               />
             </AnimatePresence>
             
