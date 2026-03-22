@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence, PanInfo } from "motion/react";
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { installationProjects } from "../content";
 import { SplitColorText } from "./HoverColorText";
 
@@ -9,6 +9,24 @@ export default function ProductDesignDetail() {
   const { id } = useParams();
   const project = installationProjects.find((p) => String(p.id) === id);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    if (!project) return;
+    const allImages = [project.src, ...(project.galleryImages || [])];
+    
+    // 预加载当前图片的前一张和后两张，极大提升切换速度
+    const preloadIndices = [
+      (currentIndex + 1) % allImages.length,
+      (currentIndex + 2) % allImages.length,
+      (currentIndex - 1 + allImages.length) % allImages.length
+    ];
+
+    preloadIndices.forEach(idx => {
+      const img = new Image();
+      img.src = allImages[idx];
+    });
+  }, [currentIndex, project]);
 
   if (!project) {
     return (
@@ -100,7 +118,7 @@ export default function ProductDesignDetail() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className={`w-full h-full object-cover ${allImages.length > 1 ? 'cursor-grab active:cursor-grabbing' : ''}`}
+            className={`w-full h-full object-cover ${allImages.length > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-zoom-in'}`}
             referrerPolicy="no-referrer"
             loading="eager"
             fetchPriority="high"
@@ -108,6 +126,7 @@ export default function ProductDesignDetail() {
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.2}
             onDragEnd={handleDragEnd}
+            onClick={() => setIsFullscreen(true)}
           />
         </AnimatePresence>
 
@@ -143,6 +162,65 @@ export default function ProductDesignDetail() {
           </>
         )}
       </div>
+
+      {/* Fullscreen Lightbox */}
+      <AnimatePresence>
+        {isFullscreen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center backdrop-blur-sm"
+            onClick={() => setIsFullscreen(false)}
+          >
+            <button
+              className="absolute top-6 right-6 text-white/70 hover:text-white z-50 p-2 transition-colors"
+              onClick={() => setIsFullscreen(false)}
+            >
+              <X size={32} />
+            </button>
+
+            {allImages.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                  className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/50 hover:text-white z-50 p-4 transition-colors"
+                >
+                  <ChevronLeft size={48} />
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                  className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/50 hover:text-white z-50 p-4 transition-colors"
+                >
+                  <ChevronRight size={48} />
+                </button>
+              </>
+            )}
+
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentIndex}
+                src={allImages[currentIndex]}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.2 }}
+                className={`max-w-full max-h-[90vh] object-contain shadow-2xl ${allImages.length > 1 ? 'cursor-grab active:cursor-grabbing' : ''}`}
+                referrerPolicy="no-referrer"
+                onClick={(e) => e.stopPropagation()}
+                drag={allImages.length > 1 ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={handleDragEnd}
+              />
+            </AnimatePresence>
+            
+            <div className="absolute bottom-8 left-0 w-full text-center font-mono text-xs text-white/50 tracking-widest">
+              {currentIndex + 1} / {allImages.length}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
