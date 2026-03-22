@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useState, useRef } from "react";
 import { Plus } from "lucide-react";
-import HoverColorText from "./HoverColorText";
+import HoverColorText, { SplitColorText } from "./HoverColorText";
 import { homeCategories } from "../content";
 
 export default function HomeGallery() {
@@ -30,14 +30,27 @@ export default function HomeGallery() {
                 fetchPriority={i < 2 ? "high" : "auto"}
               />
               {item.id !== "logo" && (
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex flex-col items-center justify-center gap-2">
-                  <h3 className="text-white text-xl md:text-2xl font-mono font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 tracking-widest">
-                    {item.label}
-                  </h3>
-                  <p className="text-white/90 text-sm md:text-base font-sans font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75 tracking-wide">
-                    {item.labelCn}
-                  </p>
-                </div>
+                <>
+                  {/* Desktop Hover Overlay */}
+                  <div className="hidden lg:flex absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex-col items-center justify-center gap-2">
+                    <h3 className="text-white text-xl md:text-2xl font-mono font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 tracking-widest">
+                      <SplitColorText text={item.label} defaultColor="#ffffff" />
+                    </h3>
+                    <p className="text-white/90 text-sm md:text-base font-sans font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75 tracking-wide">
+                      <SplitColorText text={item.labelCn} defaultColor="rgba(255, 255, 255, 0.9)" />
+                    </p>
+                  </div>
+                  
+                  {/* Mobile & Tablet Always-Visible Label */}
+                  <div className="lg:hidden absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 pt-8 flex flex-col items-start justify-end">
+                    <h3 className="text-white text-sm font-mono font-bold tracking-widest drop-shadow-md">
+                      <SplitColorText text={item.label} defaultColor="#ffffff" />
+                    </h3>
+                    <p className="text-white/90 text-xs font-sans font-medium tracking-wide drop-shadow-md">
+                      <SplitColorText text={item.labelCn} defaultColor="rgba(255, 255, 255, 0.9)" />
+                    </p>
+                  </div>
+                </>
               )}
             </motion.div>
           );

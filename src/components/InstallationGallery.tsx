@@ -35,7 +35,7 @@ const ProjectCard: React.FC<{ project: ProjectItem; index: number }> = ({ projec
               animate={{ opacity: 1, backdropFilter: "blur(8px)" }}
               exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
               transition={{ duration: 0.3 }}
-              className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center p-8 text-center text-white"
+              className="hidden lg:flex absolute inset-0 bg-black/40 flex-col items-center justify-center p-8 text-center text-white"
             >
               <motion.h3 
                 initial={{ y: 10, opacity: 0 }}
@@ -58,6 +58,18 @@ const ProjectCard: React.FC<{ project: ProjectItem; index: number }> = ({ projec
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Mobile & Tablet Always-Visible Label */}
+        <div className="lg:hidden absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 pt-12 flex flex-col items-start justify-end pointer-events-none">
+          <h3 className="text-white text-lg font-mincho font-bold tracking-widest uppercase drop-shadow-md mb-1">
+            {project.title}
+          </h3>
+          <div className="flex gap-2 text-xs font-mono tracking-wider text-white/90 font-medium uppercase drop-shadow-md">
+            <span>{project.location}</span>
+            <span>•</span>
+            <span>{project.year}</span>
+          </div>
+        </div>
       </Link>
     </motion.div>
   );
