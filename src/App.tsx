@@ -3,15 +3,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomeGallery from "./components/HomeGallery";
-import GraphicDesignGallery from "./components/GraphicDesignGallery";
-import IllustrationGallery from "./components/IllustrationGallery";
-import SpatialDesignGallery from "./components/SpatialDesignGallery";
 import StudioIntro from "./components/StudioIntro";
-import MCNGallery from "./components/MCNGallery";
-import InstallationGallery from "./components/InstallationGallery";
-import ProductDesignDetail from "./components/ProductDesignDetail";
+
+// 路由组件懒加载 (Lazy Loading)
+const GraphicDesignGallery = lazy(() => import("./components/GraphicDesignGallery"));
+const IllustrationGallery = lazy(() => import("./components/IllustrationGallery"));
+const SpatialDesignGallery = lazy(() => import("./components/SpatialDesignGallery"));
+const MCNGallery = lazy(() => import("./components/MCNGallery"));
+const InstallationGallery = lazy(() => import("./components/InstallationGallery"));
+const ProductDesignDetail = lazy(() => import("./components/ProductDesignDetail"));
 
 function Home() {
   return (
@@ -30,18 +33,27 @@ function GraphicDesign() {
   );
 }
 
+// 页面切换时的加载占位符
+const PageLoader = () => (
+  <div className="min-h-screen w-full bg-white flex items-center justify-center">
+    <div className="w-8 h-8 border-2 border-gray-200 border-t-black rounded-full animate-spin"></div>
+  </div>
+);
+
 export default function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/graphic" element={<GraphicDesign />} />
-        <Route path="/illustration" element={<IllustrationGallery />} />
-        <Route path="/spatial" element={<SpatialDesignGallery />} />
-        <Route path="/mcn" element={<MCNGallery />} />
-        <Route path="/installation" element={<InstallationGallery />} />
-        <Route path="/installation/:id" element={<ProductDesignDetail />} />
-      </Routes>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/graphic" element={<GraphicDesign />} />
+          <Route path="/illustration" element={<IllustrationGallery />} />
+          <Route path="/spatial" element={<SpatialDesignGallery />} />
+          <Route path="/mcn" element={<MCNGallery />} />
+          <Route path="/installation" element={<InstallationGallery />} />
+          <Route path="/installation/:id" element={<ProductDesignDetail />} />
+        </Routes>
+      </Suspense>
     </Router>
   );
 }

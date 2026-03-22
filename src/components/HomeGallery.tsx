@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState, useRef } from "react";
 import { Plus } from "lucide-react";
 import HoverColorText, { SplitColorText } from "./HoverColorText";
-import { homeCategories } from "../content";
+import { homeCategories, prefetchSectionImages } from "../content";
 
 export default function HomeGallery() {
   const categories = homeCategories;
@@ -12,6 +12,12 @@ export default function HomeGallery() {
     <section className="w-full min-h-[80vh] bg-white flex items-center justify-center p-4 md:p-12 relative">
       <div className="w-full max-w-6xl grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[150px] md:auto-rows-[200px]">
         {categories.map((item, i) => {
+          const handlePrefetch = () => {
+            if (item.link) {
+              prefetchSectionImages(item.link);
+            }
+          };
+
           const Content = (
             <motion.div
               className="relative w-full h-full overflow-hidden group cursor-pointer rounded-2xl"
@@ -20,6 +26,8 @@ export default function HomeGallery() {
               viewport={{ once: true, margin: "100px" }}
               transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.05 }}
               whileHover={{ scale: 1.02, zIndex: 10 }}
+              onMouseEnter={handlePrefetch}
+              onTouchStart={handlePrefetch}
             >
               <img
                 src={item.src}

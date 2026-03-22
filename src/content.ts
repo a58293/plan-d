@@ -237,3 +237,43 @@ const _mcnModelBImages = [
 ];
 
 export const mcnModelBImages = _mcnModelBImages;
+
+// ==========================================
+// 7. 预加载优化 (Preload Optimization)
+// ==========================================
+const prefetchedPaths = new Set<string>();
+
+export const prefetchSectionImages = (path: string) => {
+  // 防止在非浏览器环境下执行或重复预加载
+  if (typeof window === 'undefined' || prefetchedPaths.has(path)) return;
+  
+  prefetchedPaths.add(path);
+
+  let imagesToPreload: string[] = [];
+  switch (path) {
+    case "/graphic":
+      imagesToPreload = _graphicImages.slice(0, 6).map(img => img.src);
+      break;
+    case "/illustration":
+      imagesToPreload = _illustrationImages.slice(0, 6);
+      break;
+    case "/spatial":
+      imagesToPreload = _spatialProjects.slice(0, 4).map(p => p.src);
+      break;
+    case "/installation":
+      imagesToPreload = _installationProjects.slice(0, 4).map(p => p.src);
+      break;
+    case "/mcn":
+      imagesToPreload = [
+        ..._mcnModelAImages.slice(0, 3),
+        ..._mcnModelBImages.slice(0, 3)
+      ];
+      break;
+  }
+
+  // 利用浏览器的 Image 对象在后台静默下载图片并存入缓存
+  imagesToPreload.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+};
