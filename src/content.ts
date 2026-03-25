@@ -65,7 +65,7 @@ const _graphicProjects: ProjectItem[] = [
     id: 1, 
     title: "Project 01", 
     src: `${BASE_URL}/graphic/01.webp`,
-    galleryImages: Array.from({ length: 7 }, (_, i) => `${BASE_URL}/graphic/01-${i + 1}.webp`)
+    galleryImages: Array.from({ length: 3 }, (_, i) => `${BASE_URL}/graphic/01-${i + 1}.webp`)
   },
   { 
     id: 2, 
@@ -77,67 +77,67 @@ const _graphicProjects: ProjectItem[] = [
     id: 3, 
     title: "Project 03", 
     src: `${BASE_URL}/graphic/03.webp`,
-    galleryImages: Array.from({ length: 11 }, (_, i) => `${BASE_URL}/graphic/03-${i + 1}.webp`)
+    galleryImages: []
   },
   { 
     id: 4, 
     title: "Project 04", 
     src: `${BASE_URL}/graphic/04.webp`,
-    galleryImages: Array.from({ length: 3 }, (_, i) => `${BASE_URL}/graphic/04-${i + 1}.webp`)
+    galleryImages: Array.from({ length: 4 }, (_, i) => `${BASE_URL}/graphic/04-${i + 1}.webp`)
   },
   { 
     id: 5, 
     title: "Project 05", 
     src: `${BASE_URL}/graphic/05.webp`,
-    galleryImages: Array.from({ length: 4 }, (_, i) => `${BASE_URL}/graphic/05-${i + 1}.webp`)
+    galleryImages: Array.from({ length: 5 }, (_, i) => `${BASE_URL}/graphic/05-${i + 1}.webp`)
   },
   { 
     id: 6, 
     title: "Project 06", 
     src: `${BASE_URL}/graphic/06.webp`,
-    galleryImages: Array.from({ length: 10 }, (_, i) => `${BASE_URL}/graphic/06-${i + 1}.webp`)
+    galleryImages: Array.from({ length: 5 }, (_, i) => `${BASE_URL}/graphic/06-${i + 1}.webp`)
   },
   { 
     id: 7, 
     title: "Project 07", 
     src: `${BASE_URL}/graphic/07.webp`,
-    galleryImages: Array.from({ length: 20 }, (_, i) => `${BASE_URL}/graphic/07-${i + 1}.webp`)
+    galleryImages: Array.from({ length: 3 }, (_, i) => `${BASE_URL}/graphic/07-${i + 1}.webp`)
   },
   { 
     id: 8, 
     title: "Project 08", 
     src: `${BASE_URL}/graphic/08.webp`,
-    galleryImages: Array.from({ length: 12 }, (_, i) => `${BASE_URL}/graphic/08-${i + 1}.webp`)
+    galleryImages: []
   },
   { 
     id: 9, 
     title: "Project 09", 
     src: `${BASE_URL}/graphic/09.webp`,
-    galleryImages: Array.from({ length: 12 }, (_, i) => `${BASE_URL}/graphic/09-${i + 1}.webp`)
+    galleryImages: Array.from({ length: 5 }, (_, i) => `${BASE_URL}/graphic/09-${i + 1}.webp`)
   },
   { 
     id: 10, 
     title: "Project 10", 
     src: `${BASE_URL}/graphic/10.webp`,
-    galleryImages: Array.from({ length: 4 }, (_, i) => `${BASE_URL}/graphic/10-${i + 1}.webp`)
+    galleryImages: []
   },
   { 
     id: 11, 
     title: "Project 11", 
     src: `${BASE_URL}/graphic/11.webp`,
-    galleryImages: Array.from({ length: 9 }, (_, i) => `${BASE_URL}/graphic/11-${i + 1}.webp`)
+    galleryImages: []
   },
   { 
     id: 12, 
     title: "Project 12", 
     src: `${BASE_URL}/graphic/12.webp`,
-    galleryImages: Array.from({ length: 5 }, (_, i) => `${BASE_URL}/graphic/12-${i + 1}.webp`)
+    galleryImages: []
   },
   { 
     id: 13, 
     title: "Project 13", 
     src: `${BASE_URL}/graphic/13.webp`,
-    galleryImages: Array.from({ length: 4 }, (_, i) => `${BASE_URL}/graphic/13-${i + 1}.webp`)
+    galleryImages: Array.from({ length: 6 }, (_, i) => `${BASE_URL}/graphic/13-${i + 1}.webp`)
   }
 ];
 
@@ -209,17 +209,17 @@ const _installationProjects: ProjectItem[] = [
     ...Array.from({ length: 4 }, (_, i) => `${BASE_URL}/installation/12-${i + 2}.webp`),
   ] },
   { id: 13, title: "云南省阜外心血管病医院", src: `${BASE_URL}/installation/13.webp`, location: "昆明", year: "2022", galleryImages: Array.from({ length: 4 }, (_, i) => `${BASE_URL}/installation/13-${i + 1}.webp`) },
-  { id: 14, title: "项目 14", src: `${BASE_URL}/installation/14.webp`, location: "Canada", year: "2024", galleryImages: Array.from({ length: 11 }, (_, i) => `${BASE_URL}/installation/14-${i + 1}.webp`) },
+  { id: 14, title: "孔子学院", src: `${BASE_URL}/installation/14.webp`, location: "曲阜", year: "2021", galleryImages: Array.from({ length: 11 }, (_, i) => `${BASE_URL}/installation/14-${i + 1}.webp`) },
   { id: 15, title: "naravan", src: `${BASE_URL}/installation/15.webp`, location: "Canada", year: "2024", galleryImages: Array.from({ length: 12 }, (_, i) => `${BASE_URL}/installation/15-${i + 1}.webp`) },
-  { id: 16, title: "项目 16", src: `${BASE_URL}/installation/16.webp`, location: "Canada", year: "2024", galleryImages: Array.from({ length: 5 }, (_, i) => `${BASE_URL}/installation/16-${i + 1}.webp`) },
-  { id: 17, title: "项目 17", src: `${BASE_URL}/installation/17.webp`, location: "Canada", year: "2024", galleryImages: Array.from({ length: 3 }, (_, i) => `${BASE_URL}/installation/17-${i + 1}.webp`) },
-  { id: 18, title: "项目 18", src: `${BASE_URL}/installation/18.webp`, location: "Canada", year: "2024", galleryImages: Array.from({ length: 6 }, (_, i) => `${BASE_URL}/installation/18-${i + 1}.webp`) },
-  { id: 19, title: "项目 19", src: `${BASE_URL}/installation/19.webp`, location: "待定", year: "2024", galleryImages: Array.from({ length: 8 }, (_, i) => `${BASE_URL}/installation/19-${i + 1}.webp`) },
-  { id: 20, title: "项目 20", src: `${BASE_URL}/installation/20.webp`, location: "待定", year: "2024", galleryImages: Array.from({ length: 3 }, (_, i) => `${BASE_URL}/installation/20-${i + 1}.webp`) },
-  { id: 22, title: "项目 22", src: `${BASE_URL}/installation/22.webp`, location: "待定", year: "2024", galleryImages: Array.from({ length: 5 }, (_, i) => `${BASE_URL}/installation/22-${i + 1}.webp`) },
-  { id: 23, title: "项目 23", src: `${BASE_URL}/installation/23.webp`, location: "待定", year: "2024", galleryImages: Array.from({ length: 3 }, (_, i) => `${BASE_URL}/installation/23-${i + 1}.webp`) },
-  { id: 24, title: "项目 24", src: `${BASE_URL}/installation/24.webp`, location: "待定", year: "2024", galleryImages: Array.from({ length: 8 }, (_, i) => `${BASE_URL}/installation/24-${i + 1}.webp`) },
-  { id: 25, title: "项目 25", src: `${BASE_URL}/installation/25.webp`, location: "待定", year: "2024", galleryImages: Array.from({ length: 8 }, (_, i) => `${BASE_URL}/installation/25-${i + 1}.webp`) },
+  { id: 16, title: "中环·卡地亚", src: `${BASE_URL}/installation/16.webp`, location: "香港", year: "2020", galleryImages: Array.from({ length: 5 }, (_, i) => `${BASE_URL}/installation/16-${i + 1}.webp`) },
+  { id: 17, title: "十木草", src: `${BASE_URL}/installation/17.webp`, location: "昆明", year: "2019", galleryImages: Array.from({ length: 3 }, (_, i) => `${BASE_URL}/installation/17-${i + 1}.webp`) },
+  { id: 18, title: "话说大理", src: `${BASE_URL}/installation/18.webp`, location: "大理", year: "2019", galleryImages: Array.from({ length: 6 }, (_, i) => `${BASE_URL}/installation/18-${i + 1}.webp`) },
+  { id: 19, title: "CORAL CLUB", src: `${BASE_URL}/installation/19.webp`, location: "加拿大", year: "2019", galleryImages: Array.from({ length: 8 }, (_, i) => `${BASE_URL}/installation/19-${i + 1}.webp`) },
+  { id: 20, title: "丹寨万达小镇", src: `${BASE_URL}/installation/20.webp`, location: "贵州", year: "2019", galleryImages: Array.from({ length: 3 }, (_, i) => `${BASE_URL}/installation/20-${i + 1}.webp`) },
+  { id: 22, title: "槐山脚下", src: `${BASE_URL}/installation/22.webp`, location: "西安", year: "2018", galleryImages: Array.from({ length: 5 }, (_, i) => `${BASE_URL}/installation/22-${i + 1}.webp`) },
+  { id: 23, title: "月咏堂", src: `${BASE_URL}/installation/23.webp`, location: "丽江", year: "2017", galleryImages: Array.from({ length: 3 }, (_, i) => `${BASE_URL}/installation/23-${i + 1}.webp`) },
+  { id: 24, title: "应时发生", src: `${BASE_URL}/installation/24.webp`, location: "昆明", year: "2017", galleryImages: Array.from({ length: 8 }, (_, i) => `${BASE_URL}/installation/24-${i + 1}.webp`) },
+  { id: 25, title: "RUNNING HAM", src: `${BASE_URL}/installation/25.webp`, location: "丽江", year: "2017", galleryImages: Array.from({ length: 8 }, (_, i) => `${BASE_URL}/installation/25-${i + 1}.webp`) },
 ];
 
 export const installationProjects = _installationProjects;
