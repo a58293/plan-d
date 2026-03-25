@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { logoImages, ImageItem } from "../content";
@@ -37,6 +37,22 @@ const LogoCard: React.FC<{ image: ImageItem, index: number }> = ({ image, index 
 
 export default function LogoGallery() {
   const images = logoImages;
+  const [visibleCount, setVisibleCount] = useState(12);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024 && visibleCount === 12) {
+        setVisibleCount(20);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [visibleCount]);
+
+  const handleLoadMore = () => {
+    setVisibleCount(prev => Math.min(prev + 12, images.length));
+  };
 
   return (
     <section className="relative w-full min-h-screen bg-white overflow-hidden flex flex-col">
@@ -51,10 +67,22 @@ export default function LogoGallery() {
       {/* Grid Layout */}
       <div className="flex-1 w-full px-4 py-8 md:px-12 md:py-16">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8">
-          {images.map((image, i) => (
+          {images.slice(0, visibleCount).map((image, i) => (
             <LogoCard key={image.id} image={image} index={i} />
           ))}
         </div>
+        
+        {/* Load More Button */}
+        {visibleCount < images.length && (
+          <div className="w-full flex justify-center mt-16">
+            <button 
+              onClick={handleLoadMore}
+              className="px-8 py-3 border border-black text-xs font-mono uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all duration-300"
+            >
+              LOAD MORE
+            </button>
+          </div>
+        )}
       </div>
       
       {/* Footer info */}

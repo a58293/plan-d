@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { installationProjects, ProjectItem } from "../content";
@@ -48,6 +48,24 @@ const ParallaxCard: React.FC<{ project: ProjectItem, index: number }> = ({ proje
 
 export default function InstallationGallery() {
   const projects = installationProjects;
+  const [visibleCount, setVisibleCount] = useState(9);
+
+  // 响应式初始加载数量：移动端9个，桌面端可以多一些，但为了统一体验，默认都从9个开始
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024 && visibleCount === 9) {
+        // 大屏幕如果还没点击过加载更多，可以初始显示12个
+        setVisibleCount(12);
+      }
+    };
+    handleResize(); // 初始化检查
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [visibleCount]);
+
+  const handleLoadMore = () => {
+    setVisibleCount(prev => Math.min(prev + 9, projects.length));
+  };
 
   return (
     <section className="relative w-full min-h-screen bg-white flex flex-col">
@@ -63,10 +81,22 @@ export default function InstallationGallery() {
       {/* Uniform Grid Layout with Stack Effect */}
       <div className="w-full px-4 py-8 md:px-12 md:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-          {projects.map((project, i) => (
+          {projects.slice(0, visibleCount).map((project, i) => (
             <ParallaxCard key={project.id} project={project} index={i} />
           ))}
         </div>
+        
+        {/* Load More Button */}
+        {visibleCount < projects.length && (
+          <div className="w-full flex justify-center mt-16">
+            <button 
+              onClick={handleLoadMore}
+              className="px-8 py-3 border border-black text-xs font-mono uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all duration-300"
+            >
+              LOAD MORE
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Minimal Footer */}
