@@ -9,7 +9,7 @@ const ParallaxCard: React.FC<{ project: ProjectItem, index: number }> = ({ proje
   const hasGallery = project.galleryImages && project.galleryImages.length > 0;
 
   return (
-    <Link to={`/graphic/${project.id}`} className="col-span-1 aspect-[3/4] relative group">
+    <Link to={`/graphic/${project.id}`} className="col-span-1 aspect-[3/2] relative group">
       {/* Stack Effect Layers (Only if has gallery) */}
       {hasGallery && (
         <>
@@ -20,14 +20,14 @@ const ParallaxCard: React.FC<{ project: ProjectItem, index: number }> = ({ proje
       
       <motion.div
         ref={ref}
-        className="relative h-full flex items-center justify-center cursor-pointer overflow-hidden bg-white border border-gray-100 shadow-sm transition-all duration-500 group-hover:shadow-xl"
+        className="relative h-full flex items-center justify-center cursor-pointer overflow-hidden bg-white transition-all duration-500"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <motion.div 
-          className="w-full h-full flex items-center justify-center p-4 md:p-10"
+          className="w-full h-full flex items-center justify-center"
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.4 }}
         >
@@ -37,7 +37,7 @@ const ParallaxCard: React.FC<{ project: ProjectItem, index: number }> = ({ proje
             loading={index < 8 ? "eager" : "lazy"}
             fetchPriority={index < 4 ? "high" : "auto"}
             decoding="async"
-            className="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-sm group-hover:drop-shadow-lg transition-all duration-500"
+            className="w-full h-full object-contain mix-blend-multiply transition-all duration-500"
             referrerPolicy="no-referrer"
           />
         </motion.div>
@@ -60,8 +60,8 @@ export default function GraphicDesignGallery() {
       </header>
 
       {/* Uniform Grid Layout with Stack Effect */}
-      <div className="w-full px-4 py-12 md:px-12 md:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-20">
+      <div className="w-full px-4 py-8 md:px-12 md:py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
           {projects.map((project, i) => (
             <ParallaxCard key={project.id} project={project} index={i} />
           ))}

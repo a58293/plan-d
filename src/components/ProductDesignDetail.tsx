@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence, PanInfo } from "motion/react";
 import { ArrowLeft, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { installationProjects } from "../content";
 import { SplitColorText } from "./HoverColorText";
+import { getHarmoniousColor } from "../lib/colorUtils";
 
 export default function ProductDesignDetail() {
   const { id } = useParams();
@@ -12,6 +13,20 @@ export default function ProductDesignDetail() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [bgColor, setBgColor] = useState("#f5f5f5");
+  const [direction, setDirection] = useState(0);
+
+  const allImages = useMemo(() => {
+    if (!project) return [];
+    return [project.src, ...(project.galleryImages || [])];
+  }, [project]);
+
+  // Update background color based on current image
+  useEffect(() => {
+    if (allImages.length > 0) {
+      getHarmoniousColor(allImages[currentIndex]).then(setBgColor);
+    }
+  }, [currentIndex, allImages]);
 
   // Reset loading state when image changes
   useEffect(() => {
@@ -26,11 +41,11 @@ export default function ProductDesignDetail() {
       return;
     }
     
-    setProgress(15); // Initial jump
+    setProgress(15);
     const timer = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 90) return prev; // Cap at 90% until actually loaded
-        return prev + (90 - prev) * 0.1; // Ease out curve
+        if (prev >= 90) return prev;
+        return prev + (90 - prev) * 0.1;
       });
     }, 200);
     
@@ -39,9 +54,7 @@ export default function ProductDesignDetail() {
 
   useEffect(() => {
     if (!project) return;
-    const allImages = [project.src, ...(project.galleryImages || [])];
     
-    // 预加载当前图片的前一张和后两张，极大提升切换速度
     const preloadIndices = [
       (currentIndex + 1) % allImages.length,
       (currentIndex + 2) % allImages.length,
@@ -52,7 +65,7 @@ export default function ProductDesignDetail() {
       const img = new Image();
       img.src = allImages[idx];
     });
-  }, [currentIndex, project]);
+  }, [currentIndex, project, allImages]);
 
   if (!project) {
     return (
@@ -67,17 +80,17 @@ export default function ProductDesignDetail() {
     );
   }
 
-  const allImages = [project.src, ...(project.galleryImages || [])];
-
   const nextImage = () => {
+    setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % allImages.length);
   };
 
   const prevImage = () => {
+    setDirection(-1);
     setCurrentIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
   };
 
-  const handleDragEnd = (e: any, { offset }: PanInfo) => {
+  const handleDragEnd = (_: any, { offset }: PanInfo) => {
     const swipeThreshold = 50;
     if (offset.x < -swipeThreshold) {
       nextImage();
@@ -86,11 +99,35 @@ export default function ProductDesignDetail() {
     }
   };
 
+  // Fade variants
+  const variants = {
+    enter: (direction: number) => ({
+      opacity: 0,
+      x: direction > 0 ? 20 : -20,
+    }),
+    center: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    },
+    exit: (direction: number) => ({
+      opacity: 0,
+      x: direction > 0 ? -20 : 20,
+      transition: {
+        duration: 0.5,
+        ease: "easeIn"
+      }
+    })
+  };
+
   return (
-    <main className="min-h-screen bg-[#FAFAFA] text-gray-900 flex flex-col lg:flex-row selection:bg-black selection:text-white">
+    <main className="min-h-screen text-gray-900 flex flex-col lg:flex-row selection:bg-black selection:text-white transition-colors duration-1000" style={{ backgroundColor: bgColor }}>
       
       {/* Left: Sticky Info Panel */}
-      <div className="w-full lg:w-[35%] xl:w-[30%] lg:h-screen lg:sticky lg:top-0 flex flex-col p-8 md:p-12 bg-white border-r border-gray-200/60 z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+      <div className="w-full lg:w-[35%] xl:w-[30%] lg:h-screen lg:sticky lg:top-0 flex flex-col p-8 md:p-12 bg-white/80 backdrop-blur-md border-r border-gray-200/60 z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
         <Link 
           to="/installation" 
           className="inline-flex items-center gap-3 font-tech text-xs tracking-[0.2em] uppercase text-gray-400 hover:text-black transition-colors mb-12 lg:mb-0 group shrink-0"
@@ -134,11 +171,11 @@ export default function ProductDesignDetail() {
       </div>
 
       {/* Right: Single Image Carousel */}
-      <div className="w-full lg:w-[65%] xl:w-[70%] h-[60vh] lg:h-screen relative bg-[#f5f5f5] flex items-center justify-center overflow-hidden">
+      <div className="w-full lg:w-[65%] xl:w-[70%] h-[60vh] lg:h-screen relative flex items-center justify-center overflow-hidden">
         {/* Progress Bar */}
-        <div className="absolute top-0 left-0 w-full h-[3px] z-20 bg-gray-200/50">
+        <div className="absolute top-0 left-0 w-full h-[3px] z-20 bg-black/5">
           <div
-            className="h-full bg-black transition-all duration-300 ease-out"
+            className="h-full bg-black/20 transition-all duration-300 ease-out"
             style={{
               width: `${progress}%`,
               opacity: progress === 100 ? 0 : 1,
@@ -161,27 +198,34 @@ export default function ProductDesignDetail() {
           )}
         </AnimatePresence>
 
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={currentIndex}
-            src={allImages[currentIndex]}
-            alt={`${project.title} - Image ${currentIndex + 1}`}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className={`w-full h-full object-cover ${allImages.length > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-zoom-in'}`}
-            referrerPolicy="no-referrer"
-            loading="eager"
-            fetchPriority="high"
-            drag={allImages.length > 1 ? "x" : false}
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.2}
-            onDragEnd={handleDragEnd}
-            onClick={() => setIsFullscreen(true)}
-            onLoad={() => setIsImageLoading(false)}
-          />
-        </AnimatePresence>
+        <div className="relative w-full h-full flex items-center justify-center p-4 md:p-12">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={currentIndex}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing"
+              drag={allImages.length > 1 ? "x" : false}
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={handleDragEnd}
+            >
+              <motion.img
+                src={allImages[currentIndex]}
+                alt={`${project.title} - Image ${currentIndex + 1}`}
+                className={`max-w-full max-h-full object-contain shadow-2xl bg-white ${allImages.length > 1 ? '' : 'cursor-zoom-in'}`}
+                referrerPolicy="no-referrer"
+                loading="eager"
+                fetchPriority="high"
+                onClick={() => setIsFullscreen(true)}
+                onLoad={() => setIsImageLoading(false)}
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         {/* Navigation Buttons */}
         {allImages.length > 1 && (
@@ -200,21 +244,27 @@ export default function ProductDesignDetail() {
             </button>
 
             {/* Pagination Indicators */}
-            <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-4 py-2 rounded-full">
-              {allImages.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentIndex(idx)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    idx === currentIndex ? "bg-black w-6" : "bg-black/30 hover:bg-black/50"
-                  }`}
-                  aria-label={`Go to image ${idx + 1}`}
-                />
-              ))}
+            <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10 bg-white/40 backdrop-blur-md px-6 py-3 rounded-full">
+              <div className="flex gap-2.5">
+                {allImages.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => {
+                      setDirection(idx > currentIndex ? 1 : -1);
+                      setCurrentIndex(idx);
+                    }}
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                      idx === currentIndex ? "bg-black w-5" : "bg-black/20 hover:bg-black/40"
+                    }`}
+                    aria-label={`Go to image ${idx + 1}`}
+                  />
+                ))}
+              </div>
             </div>
           </>
         )}
       </div>
+
 
       {/* Fullscreen Lightbox */}
       <AnimatePresence>

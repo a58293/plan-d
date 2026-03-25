@@ -10,12 +10,12 @@ const LogoCard: React.FC<{ image: ImageItem, index: number }> = ({ image, index 
   return (
     <motion.div
       ref={ref}
-      className="relative w-full aspect-square flex items-center justify-center group cursor-pointer bg-gray-50/50 rounded-2xl overflow-hidden border border-gray-100/50"
+      className="relative w-full aspect-square flex items-center justify-center group cursor-pointer overflow-hidden"
       initial={{ opacity: 0, scale: 0.9, y: 20 }}
       whileInView={{ opacity: 1, scale: 1, y: 0 }}
       viewport={{ once: true, margin: "200px" }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      whileHover={{ scale: 1.02, backgroundColor: "#ffffff", borderColor: "#00000010", zIndex: 20 }}
+      whileHover={{ scale: 1.05, zIndex: 20 }}
     >
       <img
         src={image.src}
@@ -23,7 +23,7 @@ const LogoCard: React.FC<{ image: ImageItem, index: number }> = ({ image, index 
         loading={index < 8 ? "eager" : "lazy"}
         fetchPriority={index < 4 ? "high" : "auto"}
         decoding="async"
-        className="max-w-[65%] max-h-[65%] object-contain mix-blend-multiply drop-shadow-sm group-hover:drop-shadow-xl transition-all duration-500"
+        className="w-full h-full object-contain mix-blend-multiply transition-all duration-500"
         referrerPolicy="no-referrer"
       />
       

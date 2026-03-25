@@ -31,8 +31,8 @@ export interface ProjectItem {
 }
 
 // 🌟 这里是您的 GitHub 图床基础链接！
-// 使用 jsDelivr 全球加速 CDN，在中国大陆访问速度极快，是最稳定的 GitHub 图床方案
-const BASE_URL = "https://cdn.jsdelivr.net/gh/a58293/panl-d@main/images";
+// 使用 raw.githubusercontent.com 以确保图片更新能立即生效
+const BASE_URL = "https://raw.githubusercontent.com/a58293/panl-d/main/images";
 
 // ==========================================
 // 1. 首页分类与封面 (Covers & Logo)
@@ -220,36 +220,7 @@ export const logoImages = _logoImages;
 // ==========================================
 // 3. 插画艺术 (Illustration)
 // ==========================================
-const _illustrationImages = [
-  `${BASE_URL}/illustration/01.webp`,
-  `${BASE_URL}/illustration/02.webp`,
-  `${BASE_URL}/illustration/03.webp`,
-  `${BASE_URL}/illustration/04.webp`,
-  `${BASE_URL}/illustration/05.webp`,
-  `${BASE_URL}/illustration/06.webp`,
-  `${BASE_URL}/illustration/07.webp`,
-  `${BASE_URL}/illustration/08.webp`,
-  `${BASE_URL}/illustration/09.webp`,
-  `${BASE_URL}/illustration/10.webp`,
-  `${BASE_URL}/illustration/11.webp`,
-  `${BASE_URL}/illustration/12.webp`,
-  `${BASE_URL}/illustration/13.webp`,
-  `${BASE_URL}/illustration/14.webp`,
-  `${BASE_URL}/illustration/15.webp`,
-  `${BASE_URL}/illustration/16.webp`,
-  `${BASE_URL}/illustration/17.webp`,
-  `${BASE_URL}/illustration/18.webp`,
-  `${BASE_URL}/illustration/19.webp`,
-  `${BASE_URL}/illustration/20.webp`,
-  `${BASE_URL}/illustration/21.webp`,
-  `${BASE_URL}/illustration/22.webp`,
-  `${BASE_URL}/illustration/23.webp`,
-  `${BASE_URL}/illustration/24.webp`,
-  `${BASE_URL}/illustration/25.webp`,
-  `${BASE_URL}/illustration/26.webp`,
-  `${BASE_URL}/illustration/27.webp`,
-  `${BASE_URL}/illustration/28.webp`,
-];
+const _illustrationImages = Array.from({ length: 39 }, (_, i) => `${BASE_URL}/illustration/${String(i + 1).padStart(2, '0')}.webp`);
 
 export const illustrationImages = _illustrationImages;
 

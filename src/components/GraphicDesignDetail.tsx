@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence, PanInfo } from "motion/react";
 import { ArrowLeft, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { graphicProjects } from "../content";
+import { getHarmoniousColor } from "../lib/colorUtils";
 
 export default function GraphicDesignDetail() {
   const { id } = useParams();
@@ -11,6 +12,20 @@ export default function GraphicDesignDetail() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [bgColor, setBgColor] = useState("#f9f9f9");
+  const [direction, setDirection] = useState(0); // 1 for next, -1 for prev
+
+  const allImages = useMemo(() => {
+    if (!project) return [];
+    return [project.src, ...(project.galleryImages || [])];
+  }, [project]);
+
+  // Update background color based on current image
+  useEffect(() => {
+    if (allImages.length > 0) {
+      getHarmoniousColor(allImages[currentIndex]).then(setBgColor);
+    }
+  }, [currentIndex, allImages]);
 
   // Reset loading state when image changes
   useEffect(() => {
@@ -38,7 +53,6 @@ export default function GraphicDesignDetail() {
 
   useEffect(() => {
     if (!project) return;
-    const allImages = [project.src, ...(project.galleryImages || [])];
     
     const preloadIndices = [
       (currentIndex + 1) % allImages.length,
@@ -50,7 +64,7 @@ export default function GraphicDesignDetail() {
       const img = new Image();
       img.src = allImages[idx];
     });
-  }, [currentIndex, project]);
+  }, [currentIndex, project, allImages]);
 
   if (!project) {
     return (
@@ -60,13 +74,13 @@ export default function GraphicDesignDetail() {
     );
   }
 
-  const allImages = [project.src, ...(project.galleryImages || [])];
-
   const nextImage = () => {
+    setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % allImages.length);
   };
 
   const prevImage = () => {
+    setDirection(-1);
     setCurrentIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
   };
 
@@ -75,8 +89,35 @@ export default function GraphicDesignDetail() {
     else if (info.offset.x > 50) prevImage();
   };
 
+  // Fade variants
+  const variants = {
+    enter: (direction: number) => ({
+      opacity: 0,
+      x: direction > 0 ? 20 : -20,
+    }),
+    center: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    },
+    exit: (direction: number) => ({
+      opacity: 0,
+      x: direction > 0 ? -20 : 20,
+      transition: {
+        duration: 0.5,
+        ease: "easeIn"
+      }
+    })
+  };
+
   return (
-    <main className="w-full min-h-screen bg-white flex flex-col lg:flex-row overflow-hidden">
+    <motion.main 
+      className="w-full min-h-screen flex flex-col lg:flex-row overflow-hidden transition-colors duration-1000"
+      style={{ backgroundColor: bgColor }}
+    >
       {/* Back Button - Fixed position */}
       <Link 
         to="/graphic" 
@@ -86,12 +127,12 @@ export default function GraphicDesignDetail() {
         <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Back</span>
       </Link>
 
-      {/* Full Screen Image Viewer */}
-      <div className="w-full h-screen relative bg-white flex items-center justify-center overflow-hidden">
+      {/* Main Image Viewer */}
+      <div className="w-full h-screen relative flex items-center justify-center overflow-hidden">
         {/* Progress Bar */}
-        <div className="absolute top-0 left-0 w-full h-[2px] z-20 bg-gray-100">
+        <div className="absolute top-0 left-0 w-full h-[2px] z-20 bg-black/5">
           <div
-            className="h-full bg-black transition-all duration-300 ease-out"
+            className="h-full bg-black/20 transition-all duration-300 ease-out"
             style={{
               width: `${progress}%`,
               opacity: progress === 100 ? 0 : 1,
@@ -114,27 +155,34 @@ export default function GraphicDesignDetail() {
           )}
         </AnimatePresence>
 
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={currentIndex}
-            src={allImages[currentIndex]}
-            alt={`${project.title} - Image ${currentIndex + 1}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className={`max-w-full max-h-full object-contain p-4 md:p-12 ${allImages.length > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-zoom-in'}`}
-            referrerPolicy="no-referrer"
-            loading="eager"
-            fetchPriority="high"
-            drag={allImages.length > 1 ? "x" : false}
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.2}
-            onDragEnd={handleDragEnd}
-            onClick={() => setIsFullscreen(true)}
-            onLoad={() => setIsImageLoading(false)}
-          />
-        </AnimatePresence>
+        <div className="relative w-full h-full flex items-center justify-center p-4 md:p-12">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={currentIndex}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing"
+              drag={allImages.length > 1 ? "x" : false}
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={handleDragEnd}
+            >
+              <motion.img
+                src={allImages[currentIndex]}
+                alt={`${project.title} - Image ${currentIndex + 1}`}
+                className={`max-w-full max-h-full object-contain shadow-2xl bg-white ${allImages.length > 1 ? '' : 'cursor-zoom-in'}`}
+                referrerPolicy="no-referrer"
+                loading="eager"
+                fetchPriority="high"
+                onClick={() => setIsFullscreen(true)}
+                onLoad={() => setIsImageLoading(false)}
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         {/* Navigation Controls */}
         {allImages.length > 1 && (
@@ -152,9 +200,26 @@ export default function GraphicDesignDetail() {
               <ChevronRight size={32} strokeWidth={1} />
             </button>
             
-            {/* Mobile Indicator */}
-            <div className="absolute bottom-8 left-0 w-full text-center font-mono text-[9px] text-gray-300 tracking-[0.5em] uppercase">
-              {currentIndex + 1} / {allImages.length}
+            {/* Pagination Indicator */}
+            <div className="absolute bottom-8 left-0 w-full flex flex-col items-center gap-4">
+              <div className="flex gap-2 bg-black/5 backdrop-blur-sm px-3 py-1.5 rounded-full">
+                {allImages.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => {
+                      setDirection(idx > currentIndex ? 1 : -1);
+                      setCurrentIndex(idx);
+                    }}
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                      idx === currentIndex ? "bg-black w-4" : "bg-black/20 hover:bg-black/40"
+                    }`}
+                    aria-label={`Go to image ${idx + 1}`}
+                  />
+                ))}
+              </div>
+              <div className="font-mono text-[9px] text-gray-400 tracking-[0.5em] uppercase">
+                {currentIndex + 1} / {allImages.length}
+              </div>
             </div>
           </>
         )}
@@ -167,11 +232,11 @@ export default function GraphicDesignDetail() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-white flex items-center justify-center"
+            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center backdrop-blur-sm"
             onClick={() => setIsFullscreen(false)}
           >
             <button
-              className="absolute top-8 right-8 text-gray-400 hover:text-black z-50 p-2 transition-colors"
+              className="absolute top-8 right-8 text-white/50 hover:text-white z-50 p-2 transition-colors"
               onClick={() => setIsFullscreen(false)}
             >
               <X size={24} strokeWidth={1} />
@@ -193,6 +258,6 @@ export default function GraphicDesignDetail() {
           </motion.div>
         )}
       </AnimatePresence>
-    </main>
+    </motion.main>
   );
 }
