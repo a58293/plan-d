@@ -1,28 +1,39 @@
-import React from "react";
 import { motion } from "motion/react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Plus } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { spatialProjects, ProjectItem } from "../content";
 
-const ProjectCard: React.FC<{ project: ProjectItem; index: number }> = ({ project, index }) => {
+const ParallaxCard: React.FC<{ project: ProjectItem, index: number }> = ({ project, index }) => {
+  const ref = useRef<HTMLDivElement>(null);
+
   return (
-    <motion.div
-      className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl shadow-sm cursor-pointer group bg-[#f5f5f5] flex items-center justify-center"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "200px" }}
-      transition={{ duration: 0.5 }}
-    >
-      <img
-        src={project.src}
-        alt={project.title}
-        loading={index < 6 ? "eager" : "lazy"}
-        fetchPriority={index < 4 ? "high" : "auto"}
-        decoding="async"
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        referrerPolicy="no-referrer"
-      />
-    </motion.div>
+    <div className="col-span-1 aspect-[3/4] relative group">
+      <motion.div
+        ref={ref}
+        className="relative h-full flex items-center justify-center cursor-pointer overflow-hidden bg-white border border-gray-100 shadow-sm transition-all duration-500 group-hover:shadow-xl"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <motion.div 
+          className="w-full h-full flex items-center justify-center p-4 md:p-10"
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.4 }}
+        >
+          <img
+            src={project.src}
+            alt={project.title}
+            loading={index < 8 ? "eager" : "lazy"}
+            fetchPriority={index < 4 ? "high" : "auto"}
+            decoding="async"
+            className="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-sm group-hover:drop-shadow-lg transition-all duration-500"
+            referrerPolicy="no-referrer"
+          />
+        </motion.div>
+      </motion.div>
+    </div>
   );
 }
 
@@ -30,29 +41,35 @@ export default function SpatialDesignGallery() {
   const projects = spatialProjects;
 
   return (
-    <motion.main 
-      className="min-h-screen bg-white text-gray-900 overflow-x-hidden"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-    >
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 w-full p-6 md:p-12 z-50 mix-blend-difference text-white flex justify-between items-center">
-        <Link to="/" className="group flex items-center gap-2 font-tech uppercase tracking-widest text-sm hover:text-gray-300 transition-colors">
+    <section className="relative w-full min-h-screen bg-white flex flex-col">
+      {/* Minimal Header */}
+      <header className="w-full px-6 py-8 md:px-16 flex justify-between items-center border-b border-gray-50">
+        <Link to="/" className="inline-flex items-center gap-2 text-gray-400 hover:text-black transition-colors group">
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-          Back
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Back</span>
         </Link>
         <div className="font-tech font-black text-xl tracking-widest">PLAN D</div>
-      </nav>
+      </header>
 
-      {/* Gallery Grid */}
-      <section className="px-6 md:px-12 pt-32 pb-24 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+      {/* Uniform Grid Layout */}
+      <div className="w-full px-4 py-12 md:px-12 md:py-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-20">
+          {projects.map((project, i) => (
+            <ParallaxCard key={project.id} project={project} index={i} />
           ))}
         </div>
-      </section>
-    </motion.main>
+      </div>
+
+      {/* Minimal Footer */}
+      <footer className="w-full px-6 py-24 md:px-16 flex flex-col items-center justify-center gap-10">
+        <div className="w-px h-16 bg-gray-100" />
+        <Link 
+          to="/" 
+          className="px-10 py-4 border border-black text-[10px] font-mono uppercase tracking-[0.4em] hover:bg-black hover:text-white transition-all duration-500"
+        >
+          Home
+        </Link>
+      </footer>
+    </section>
   );
 }

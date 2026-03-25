@@ -38,7 +38,7 @@ const BASE_URL = "https://cdn.jsdelivr.net/gh/a58293/panl-d@main/images";
 // 1. 首页分类与封面 (Covers & Logo)
 // ==========================================
 const _homeCategories = [
-  { id: "logo", label: "LOGO", labelCn: "品牌标识", src: `${BASE_URL}/covers/logo.webp`, className: "col-span-2 row-span-2", objectFit: "contain" as const },
+  { id: "logo", label: "LOGO", labelCn: "客户集", src: `${BASE_URL}/covers/logo.webp`, className: "col-span-2 row-span-2", link: "/logos", objectFit: "contain" as const },
   { id: "bjd", label: "BJD", labelCn: "球关节人偶", src: `${BASE_URL}/covers/bjd.webp`, className: "col-span-1 row-span-1", href: "https://planabcf.netlify.app/", objectFit: "cover" as const },
   { id: "spatial", label: "SPATIAL", labelCn: "空间设计", src: `${BASE_URL}/covers/spatial.webp`, className: "col-span-1 row-span-1", link: "/spatial", objectFit: "cover" as const },
   { id: "installation", label: "PRODUCT DESIGN", labelCn: "产品设计", src: `${BASE_URL}/covers/installation.webp`, className: "col-span-1 row-span-1", link: "/installation", objectFit: "cover" as const },
@@ -52,40 +52,170 @@ export const homeCategories = _homeCategories;
 // ==========================================
 // 2. 平面设计 (Graphic Design)
 // ==========================================
-const _graphicImages: ImageItem[] = [
-  { id: 1, src: `${BASE_URL}/graphic/01.webp`, alt: "平面设计 01" },
-  { id: 2, src: `${BASE_URL}/graphic/02.webp`, alt: "平面设计 02" },
-  { id: 3, src: `${BASE_URL}/graphic/03.webp`, alt: "平面设计 03" },
-  { id: 4, src: `${BASE_URL}/graphic/04.webp`, alt: "平面设计 04" },
-  { id: 5, src: `${BASE_URL}/graphic/05.webp`, alt: "平面设计 05" },
-  { id: 6, src: `${BASE_URL}/graphic/06.webp`, alt: "平面设计 06" },
-  { id: 7, src: `${BASE_URL}/graphic/07.webp`, alt: "平面设计 07" },
-  { id: 8, src: `${BASE_URL}/graphic/08.webp`, alt: "平面设计 08" },
-  { id: 9, src: `${BASE_URL}/graphic/09.webp`, alt: "平面设计 09" },
-  { id: 10, src: `${BASE_URL}/graphic/10.webp`, alt: "平面设计 10" },
-  { id: 11, src: `${BASE_URL}/graphic/11.webp`, alt: "平面设计 11" },
-  { id: 12, src: `${BASE_URL}/graphic/12.webp`, alt: "平面设计 12" },
-  { id: 13, src: `${BASE_URL}/graphic/13.webp`, alt: "平面设计 13" },
-  { id: 14, src: `${BASE_URL}/graphic/14.webp`, alt: "平面设计 14" },
-  { id: 15, src: `${BASE_URL}/graphic/15.webp`, alt: "平面设计 15" },
-  { id: 16, src: `${BASE_URL}/graphic/16.webp`, alt: "平面设计 16" },
-  { id: 17, src: `${BASE_URL}/graphic/17.webp`, alt: "平面设计 17" },
-  { id: 18, src: `${BASE_URL}/graphic/18.webp`, alt: "平面设计 18" },
-  { id: 19, src: `${BASE_URL}/graphic/19.webp`, alt: "平面设计 19" },
-  { id: 20, src: `${BASE_URL}/graphic/20.webp`, alt: "平面设计 20" },
-  { id: 21, src: `${BASE_URL}/graphic/21.webp`, alt: "平面设计 21" },
-  { id: 22, src: `${BASE_URL}/graphic/22.webp`, alt: "平面设计 22" },
-  { id: 23, src: `${BASE_URL}/graphic/23.webp`, alt: "平面设计 23" },
-  { id: 24, src: `${BASE_URL}/graphic/24.webp`, alt: "平面设计 24" },
-  { id: 25, src: `${BASE_URL}/graphic/25.webp`, alt: "平面设计 25" },
-  { id: 26, src: `${BASE_URL}/graphic/26.webp`, alt: "平面设计 26" },
-  { id: 27, src: `${BASE_URL}/graphic/27.webp`, alt: "平面设计 27" },
-  { id: 28, src: `${BASE_URL}/graphic/28.webp`, alt: "平面设计 28" },
-  { id: 29, src: `${BASE_URL}/graphic/29.webp`, alt: "平面设计 29" },
-  { id: 30, src: `${BASE_URL}/graphic/30.webp`, alt: "平面设计 30" },
+export interface ProjectItem {
+  id: number | string;
+  title: string;
+  src: string;
+  galleryImages?: string[];
+  description?: string;
+}
+
+const _graphicProjects: ProjectItem[] = [
+  { 
+    id: 1, 
+    title: "Project 01", 
+    src: `${BASE_URL}/graphic/01.webp`,
+    galleryImages: [
+      `${BASE_URL}/graphic/01-1.webp`,
+      `${BASE_URL}/graphic/01-2.webp`,
+      `${BASE_URL}/graphic/01-3.webp`,
+    ]
+  },
+  { 
+    id: 2, 
+    title: "Project 02", 
+    src: `${BASE_URL}/graphic/02.webp`,
+    galleryImages: [
+      `${BASE_URL}/graphic/02-1.webp`,
+    ]
+  },
+  { 
+    id: 3, 
+    title: "Project 03", 
+    src: `${BASE_URL}/graphic/03.webp` 
+  },
+  { 
+    id: 4, 
+    title: "Project 04", 
+    src: `${BASE_URL}/graphic/04.webp`,
+    galleryImages: [
+      `${BASE_URL}/graphic/04-1.webp`,
+      `${BASE_URL}/graphic/04-2.webp`,
+      `${BASE_URL}/graphic/04-3.webp`,
+      `${BASE_URL}/graphic/04-4.webp`,
+    ]
+  },
+  { 
+    id: 5, 
+    title: "Project 05", 
+    src: `${BASE_URL}/graphic/05.webp`,
+    galleryImages: [
+      `${BASE_URL}/graphic/05-1.webp`,
+      `${BASE_URL}/graphic/05-2.webp`,
+      `${BASE_URL}/graphic/05-3.webp`,
+      `${BASE_URL}/graphic/05-4.webp`,
+      `${BASE_URL}/graphic/05-5.webp`,
+    ]
+  },
+  { 
+    id: 6, 
+    title: "Project 06", 
+    src: `${BASE_URL}/graphic/06.webp`,
+    galleryImages: [
+      `${BASE_URL}/graphic/06-1.webp`,
+      `${BASE_URL}/graphic/06-2.webp`,
+      `${BASE_URL}/graphic/06-3.webp`,
+      `${BASE_URL}/graphic/06-4.webp`,
+      `${BASE_URL}/graphic/06-5.webp`,
+    ]
+  },
+  { 
+    id: 7, 
+    title: "Project 07", 
+    src: `${BASE_URL}/graphic/07.webp`,
+    galleryImages: [
+      `${BASE_URL}/graphic/07-1.webp`,
+      `${BASE_URL}/graphic/07-2.webp`,
+      `${BASE_URL}/graphic/07-3.webp`,
+    ]
+  },
+  { 
+    id: 8, 
+    title: "Project 08", 
+    src: `${BASE_URL}/graphic/08.webp` 
+  },
+  { 
+    id: 9, 
+    title: "Project 09", 
+    src: `${BASE_URL}/graphic/09.webp`,
+    galleryImages: [
+      `${BASE_URL}/graphic/09-1.webp`,
+      `${BASE_URL}/graphic/09-2.webp`,
+      `${BASE_URL}/graphic/09-3.webp`,
+      `${BASE_URL}/graphic/09-4.webp`,
+      `${BASE_URL}/graphic/09-5.webp`,
+    ]
+  },
+  { 
+    id: 10, 
+    title: "Project 10", 
+    src: `${BASE_URL}/graphic/10.webp` 
+  },
+  { 
+    id: 11, 
+    title: "Project 11", 
+    src: `${BASE_URL}/graphic/11.webp` 
+  },
+  { 
+    id: 12, 
+    title: "Project 12", 
+    src: `${BASE_URL}/graphic/12.webp` 
+  },
+  { 
+    id: 13, 
+    title: "Project 13", 
+    src: `${BASE_URL}/graphic/13.webp`,
+    galleryImages: [
+      `${BASE_URL}/graphic/13-1.webp`,
+      `${BASE_URL}/graphic/13-2.webp`,
+      `${BASE_URL}/graphic/13-3.webp`,
+      `${BASE_URL}/graphic/13-4.webp`,
+      `${BASE_URL}/graphic/13-5.webp`,
+      `${BASE_URL}/graphic/13-6.webp`,
+    ]
+  },
 ];
 
-export const graphicImages = _graphicImages;
+export const graphicProjects = _graphicProjects;
+export const graphicImages = _graphicProjects; // Keep for compatibility if needed elsewhere temporarily
+
+// ==========================================
+// 2.5 品牌标识 (Logo Design)
+// ==========================================
+const _logoImages: ImageItem[] = [
+  { id: 1, src: `${BASE_URL}/logo/01.webp`, alt: "Logo 设计 01" },
+  { id: 2, src: `${BASE_URL}/logo/02.webp`, alt: "Logo 设计 02" },
+  { id: 3, src: `${BASE_URL}/logo/03.webp`, alt: "Logo 设计 03" },
+  { id: 4, src: `${BASE_URL}/logo/04.webp`, alt: "Logo 设计 04" },
+  { id: 5, src: `${BASE_URL}/logo/05.webp`, alt: "Logo 设计 05" },
+  { id: 6, src: `${BASE_URL}/logo/06.webp`, alt: "Logo 设计 06" },
+  { id: 7, src: `${BASE_URL}/logo/07.webp`, alt: "Logo 设计 07" },
+  { id: 8, src: `${BASE_URL}/logo/08.webp`, alt: "Logo 设计 08" },
+  { id: 9, src: `${BASE_URL}/logo/09.webp`, alt: "Logo 设计 09" },
+  { id: 10, src: `${BASE_URL}/logo/10.webp`, alt: "Logo 设计 10" },
+  { id: 11, src: `${BASE_URL}/logo/11.webp`, alt: "Logo 设计 11" },
+  { id: 12, src: `${BASE_URL}/logo/12.webp`, alt: "Logo 设计 12" },
+  { id: 13, src: `${BASE_URL}/logo/13.webp`, alt: "Logo 设计 13" },
+  { id: 14, src: `${BASE_URL}/logo/14.webp`, alt: "Logo 设计 14" },
+  { id: 15, src: `${BASE_URL}/logo/15.webp`, alt: "Logo 设计 15" },
+  { id: 16, src: `${BASE_URL}/logo/16.webp`, alt: "Logo 设计 16" },
+  { id: 17, src: `${BASE_URL}/logo/17.webp`, alt: "Logo 设计 17" },
+  { id: 18, src: `${BASE_URL}/logo/18.webp`, alt: "Logo 设计 18" },
+  { id: 19, src: `${BASE_URL}/logo/19.webp`, alt: "Logo 设计 19" },
+  { id: 20, src: `${BASE_URL}/logo/20.webp`, alt: "Logo 设计 20" },
+  { id: 21, src: `${BASE_URL}/logo/21.webp`, alt: "Logo 设计 21" },
+  { id: 22, src: `${BASE_URL}/logo/22.webp`, alt: "Logo 设计 22" },
+  { id: 23, src: `${BASE_URL}/logo/23.webp`, alt: "Logo 设计 23" },
+  { id: 24, src: `${BASE_URL}/logo/24.webp`, alt: "Logo 设计 24" },
+  { id: 25, src: `${BASE_URL}/logo/25.webp`, alt: "Logo 设计 25" },
+  { id: 26, src: `${BASE_URL}/logo/26.webp`, alt: "Logo 设计 26" },
+  { id: 27, src: `${BASE_URL}/logo/27.webp`, alt: "Logo 设计 27" },
+  { id: 28, src: `${BASE_URL}/logo/28.webp`, alt: "Logo 设计 28" },
+  { id: 29, src: `${BASE_URL}/logo/29.webp`, alt: "Logo 设计 29" },
+  { id: 30, src: `${BASE_URL}/logo/30.webp`, alt: "Logo 设计 30" },
+];
+
+export const logoImages = _logoImages;
 
 // ==========================================
 // 3. 插画艺术 (Illustration)
@@ -119,17 +249,6 @@ const _illustrationImages = [
   `${BASE_URL}/illustration/26.webp`,
   `${BASE_URL}/illustration/27.webp`,
   `${BASE_URL}/illustration/28.webp`,
-  `${BASE_URL}/illustration/29.webp`,
-  `${BASE_URL}/illustration/30.webp`,
-  `${BASE_URL}/illustration/31.webp`,
-  `${BASE_URL}/illustration/32.webp`,
-  `${BASE_URL}/illustration/33.webp`,
-  `${BASE_URL}/illustration/34.webp`,
-  `${BASE_URL}/illustration/35.webp`,
-  `${BASE_URL}/illustration/36.webp`,
-  `${BASE_URL}/illustration/37.webp`,
-  `${BASE_URL}/illustration/38.webp`,
-  `${BASE_URL}/illustration/39.webp`,
 ];
 
 export const illustrationImages = _illustrationImages;
@@ -173,18 +292,6 @@ const _installationProjects: ProjectItem[] = [
   { id: 11, title: "鸢尾", src: `${BASE_URL}/installation/11.webp`, location: "丽江", year: "2023", galleryImages: Array.from({ length: 9 }, (_, i) => `${BASE_URL}/installation/11-${i + 1}.webp`) },
   { id: 12, title: "蓬松生活", src: `${BASE_URL}/installation/12.webp`, location: "武汉", year: "2022", galleryImages: Array.from({ length: 5 }, (_, i) => `${BASE_URL}/installation/12-${i + 1}.webp`) },
   { id: 13, title: "云南省阜外心血管病医院", src: `${BASE_URL}/installation/13.webp`, location: "昆明", year: "2022", galleryImages: Array.from({ length: 4 }, (_, i) => `${BASE_URL}/installation/13-${i + 1}.webp`) },
-  { id: 14, title: "孔子学院", src: `${BASE_URL}/installation/14.webp`, location: "曲阜", year: "2021", galleryImages: Array.from({ length: 11 }, (_, i) => `${BASE_URL}/installation/14-${i + 1}.webp`) },
-  { id: 15, title: "naravan", src: `${BASE_URL}/installation/15.webp`, location: "墨西哥", year: "2020", galleryImages: Array.from({ length: 12 }, (_, i) => `${BASE_URL}/installation/15-${i + 1}.webp`) },
-  { id: 16, title: "中环·卡地亚", src: `${BASE_URL}/installation/16.webp`, location: "香港", year: "2020", galleryImages: Array.from({ length: 5 }, (_, i) => `${BASE_URL}/installation/16-${i + 1}.webp`) },
-  { id: 17, title: "十木草", src: `${BASE_URL}/installation/17.webp`, location: "大理", year: "2019", galleryImages: Array.from({ length: 8 }, (_, i) => `${BASE_URL}/installation/17-${i + 1}.webp`) },
-  { id: 18, title: "话说大理", src: `${BASE_URL}/installation/18.webp`, location: "大理", year: "2019", galleryImages: Array.from({ length: 8 }, (_, i) => `${BASE_URL}/installation/18-${i + 1}.webp`) },
-  { id: 19, title: "CORAL CLUB", src: `${BASE_URL}/installation/19.webp`, location: "加拿大", year: "2019", galleryImages: Array.from({ length: 8 }, (_, i) => `${BASE_URL}/installation/19-${i + 1}.webp`) },
-  { id: 20, title: "丹寨万达小镇", src: `${BASE_URL}/installation/20.webp`, location: "西安", year: "2019", galleryImages: Array.from({ length: 3 }, (_, i) => `${BASE_URL}/installation/20-${i + 1}.webp`) },
-  { id: 21, title: "竹屿青山", src: `${BASE_URL}/installation/21.webp`, location: "丽江", year: "2018", galleryImages: Array.from({ length: 1 }, (_, i) => `${BASE_URL}/installation/21-${i + 1}.webp`) },
-  { id: 22, title: "槐山脚下", src: `${BASE_URL}/installation/22.webp`, location: "西安", year: "2018", galleryImages: Array.from({ length: 5 }, (_, i) => `${BASE_URL}/installation/22-${i + 1}.webp`) },
-  { id: 23, title: "月咏堂", src: `${BASE_URL}/installation/23.webp`, location: "丽江", year: "2017", galleryImages: Array.from({ length: 5 }, (_, i) => `${BASE_URL}/installation/23-${i + 1}.webp`) },
-  { id: 24, title: "应時發生", src: `${BASE_URL}/installation/24.webp`, location: "昆明", year: "2017", galleryImages: Array.from({ length: 8 }, (_, i) => `${BASE_URL}/installation/24-${i + 1}.webp`) },
-  { id: 25, title: "RUNNING HAM", src: `${BASE_URL}/installation/25.webp`, location: "丽江", year: "2017", galleryImages: Array.from({ length: 8 }, (_, i) => `${BASE_URL}/installation/25-${i + 1}.webp`) },
 ];
 
 export const installationProjects = _installationProjects;
@@ -252,7 +359,10 @@ export const prefetchSectionImages = (path: string) => {
   let imagesToPreload: string[] = [];
   switch (path) {
     case "/graphic":
-      imagesToPreload = _graphicImages.slice(0, 6).map(img => img.src);
+      imagesToPreload = _graphicProjects.slice(0, 6).map(p => p.src);
+      break;
+    case "/logos":
+      imagesToPreload = _logoImages.slice(0, 6).map(img => img.src);
       break;
     case "/illustration":
       imagesToPreload = _illustrationImages.slice(0, 6);
