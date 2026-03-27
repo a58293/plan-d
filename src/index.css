@@ -1,44 +1,45 @@
-@import "@fontsource/inter";
-@import "@fontsource/playfair-display";
-@import "@fontsource/courier-prime";
-@import "@fontsource/zen-old-mincho";
-@import "@fontsource/zcool-qingke-huangyou";
-@import "@fontsource/michroma";
-@import "@fontsource/orbitron";
-@import "@fontsource/special-elite";
-@import "@fontsource/shippori-mincho-b1";
 @import "tailwindcss";
 
-/* 1. 声明英文自定义字体 */
-@font-face { font-family: 'CustomFontEN'; src: url('./assets/fonts/Genkaimincho.woff2') format('woff2'), url('./assets/fonts/Genkaimincho.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: 'CustomFontEN'; src: url('./assets/fonts/Genkaimincho.woff2') format('woff2'), url('./assets/fonts/Genkaimincho.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: 'CustomFontEN'; src: url('./assets/fonts/Genkaimincho.woff2') format('woff2'), url('./assets/fonts/Genkaimincho.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: 'CustomFontEN'; src: url('./assets/fonts/Genkaimincho.woff2') format('woff2'), url('./assets/fonts/Genkaimincho.ttf') format('truetype'); font-weight: 900; font-style: normal; font-display: swap; }
+/* 1. 限界明朝 (Genkaimincho) - 字母与数字专用 */
+@font-face {
+  font-family: 'Genkai';
+  src: url('https://cdn.jsdelivr.net/gh/a58293/panl-d@main/fonts/Genkaimincho.ttf') format('truetype');
+  /* 严格限制在基本拉丁字符范围内 (字母、数字、常用符号) */
+  unicode-range: U+0000-00FF;
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
-/* 2. 声明中文自定义字体 */
-@font-face { font-family: 'CustomFontCN'; src: url('./assets/fonts/NamiLaoSong-A.woff2') format('woff2'), url('./assets/fonts/NamiLaoSong-A-subset.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: 'CustomFontCN'; src: url('./assets/fonts/NamiLaoSong-A.woff2') format('woff2'), url('./assets/fonts/NamiLaoSong-A-subset.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: 'CustomFontCN'; src: url('./assets/fonts/NamiLaoSong-A.woff2') format('woff2'), url('./assets/fonts/NamiLaoSong-A-subset.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: 'CustomFontCN'; src: url('./assets/fonts/NamiLaoSong-A.woff2') format('woff2'), url('./assets/fonts/NamiLaoSong-A-subset.ttf') format('truetype'); font-weight: 900; font-style: normal; font-display: swap; }
+/* 2. 纳米老宋 (NamiLaoSong) - 汉字专用 */
+@font-face {
+  font-family: 'NamiSong';
+  src: url('https://cdn.jsdelivr.net/gh/a58293/panl-d@main/fonts/NamiLaoSong-A.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 @theme {
-  /* 将所有默认字体都替换为您的自定义组合字体 */
-  --font-sans: 'CustomFontEN', 'CustomFontCN', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'CustomFontEN', 'CustomFontCN', ui-serif, Georgia, serif;
-  --font-mono: 'CustomFontEN', 'CustomFontCN', ui-monospace, SFMono-Regular, monospace;
-  --font-typewriter: 'CustomFontEN', 'CustomFontCN', "Courier New", Courier, monospace;
-  --font-wild: 'CustomFontEN', 'CustomFontCN', cursive;
-  --font-tech: 'CustomFontEN', 'CustomFontCN', sans-serif;
-  --font-mincho: 'CustomFontEN', 'CustomFontCN', serif;
-  --font-grunge: 'CustomFontEN', 'CustomFontCN', cursive;
-  --font-ink: 'CustomFontEN', 'CustomFontCN', serif;
-  
-  /* 3. 注册您的自定义字体类名 */
-  --font-genkai: 'CustomFontEN', serif;
-  --font-namisong: 'CustomFontCN', serif;
-  
-  /* 4. 组合字体：英文优先使用 Genkaimincho，中文自动回退使用 纳米老宋-A */
-  --font-custom: 'CustomFontEN', 'CustomFontCN', serif;
+  /* 组合字体：Genkai 在前负责字母，NamiSong 在后负责汉字 */
+  --font-mincho: "Genkai", "NamiSong", serif;
+  --font-custom: "Genkai", "NamiSong", serif;
+}
+
+body {
+  background-color: #f9f9f9;
+  color: #1a1a1a;
+  font-family: "Genkai", "NamiSong", serif;
+}
+
+/* 确保特定类名强制生效 */
+.font-mincho {
+  font-family: "Genkai", "NamiSong", serif !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Genkai", "NamiSong", serif;
+  font-weight: normal;
 }
 
 @utility perspective-1000 {
@@ -47,15 +48,4 @@
 
 @utility perspective-1500 {
   perspective: 1500px;
-}
-
-body {
-  background-color: #f9f9f9;
-  color: #1a1a1a;
-  font-family: var(--font-custom);
-}
-
-/* 终极强制覆盖：确保所有元素都使用自定义字体 */
-* {
-  font-family: 'CustomFontEN', 'CustomFontCN', sans-serif !important;
 }

@@ -17,9 +17,9 @@ export default function StudioIntro() {
           {/* English Section */}
           <div className="space-y-16">
             <h2 
-              className="font-mincho font-black uppercase text-4xl md:text-6xl tracking-[0.15em] text-gray-900 leading-tight"
+              className="font-mincho uppercase text-[clamp(10px,4.5vw,24px)] sm:text-2xl md:text-6xl tracking-tighter sm:tracking-[0.15em] text-gray-900 leading-tight whitespace-nowrap"
             >
-              <SplitColorText text="ART · CRAFT · CULTURE" defaultColor="#111827" />
+              <SplitColorText text="ART · CRAFT · CULTURE" defaultColor="#111827" fontClass="font-mincho" />
             </h2>
             <div 
               className="font-mincho font-black text-2xl md:text-4xl leading-[1.5] md:leading-[1.2] text-gray-800 space-y-12 tracking-widest max-w-6xl"
@@ -29,12 +29,14 @@ export default function StudioIntro() {
                   <SplitColorText 
                     text="In a world growing fast and complex," 
                     defaultColor="#1f2937" 
+                    fontClass="font-mincho"
                   />
                 </p>
                 <p className="block">
                   <SplitColorText 
                     text="Plan D seeks to be a quiet, luminous presence." 
                     defaultColor="#1f2937" 
+                    fontClass="font-mincho"
                   />
                 </p>
               </div>
@@ -44,12 +46,14 @@ export default function StudioIntro() {
                   <SplitColorText 
                     text="A space where stories are shared," 
                     defaultColor="#1f2937" 
+                    fontClass="font-mincho"
                   />
                 </p>
                 <p className="block">
                   <SplitColorText 
                     text="to inspire and empower." 
                     defaultColor="#1f2937" 
+                    fontClass="font-mincho"
                   />
                 </p>
               </div>
@@ -59,12 +63,14 @@ export default function StudioIntro() {
                   <SplitColorText 
                     text="Through Art, Craft, and Culture," 
                     defaultColor="#1f2937" 
+                    fontClass="font-mincho"
                   />
                 </p>
                 <p className="block">
                   <SplitColorText 
                     text="we carry forward Love, Beauty, and Imagination." 
                     defaultColor="#1f2937" 
+                    fontClass="font-mincho"
                   />
                 </p>
               </div>
@@ -74,9 +80,9 @@ export default function StudioIntro() {
           {/* Chinese Section */}
           <div className="space-y-16 pt-32 border-t-2 border-gray-900">
             <h2 
-              className="font-mincho font-black uppercase text-4xl md:text-6xl tracking-[0.15em] text-gray-900 leading-tight"
+              className="font-mincho uppercase text-4xl md:text-6xl tracking-[0.15em] text-gray-900 leading-tight"
             >
-              <SplitColorText text="PLAN D" defaultColor="#111827" />
+              <SplitColorText text="PLAN D" defaultColor="#111827" fontClass="font-mincho" />
             </h2>
             <div 
               className="font-mincho font-black text-2xl md:text-4xl leading-[1.5] md:leading-[1.2] text-gray-800 space-y-12 tracking-widest max-w-6xl"
@@ -86,6 +92,7 @@ export default function StudioIntro() {
                   <SplitColorText 
                     text="Plan D 是一处持续实验的创作空间。" 
                     defaultColor="#1f2937" 
+                    fontClass="font-mincho"
                   />
                 </p>
               </div>
@@ -95,12 +102,14 @@ export default function StudioIntro() {
                   <SplitColorText 
                     text="关注艺术、工艺与文化的连接，" 
                     defaultColor="#1f2937" 
+                    fontClass="font-mincho"
                   />
                 </p>
                 <p className="block">
                   <SplitColorText 
                     text="探寻创作者在当下的表达。" 
                     defaultColor="#1f2937" 
+                    fontClass="font-mincho"
                   />
                 </p>
               </div>
@@ -110,12 +119,14 @@ export default function StudioIntro() {
                   <SplitColorText 
                     text="在喧嚣的世界里，" 
                     defaultColor="#1f2937" 
+                    fontClass="font-mincho"
                   />
                 </p>
                 <p className="block">
                   <SplitColorText 
                     text="我们选择缓慢、专注与长期。" 
                     defaultColor="#1f2937" 
+                    fontClass="font-mincho"
                   />
                 </p>
               </div>

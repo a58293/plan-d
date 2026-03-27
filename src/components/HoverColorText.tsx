@@ -102,11 +102,16 @@ const HoverColorText: React.FC<{ children: React.ReactNode, className?: string, 
 
 export default HoverColorText;
 
-export const SplitColorText: React.FC<{ text: string, className?: string, defaultColor?: string }> = ({ text, className = "", defaultColor = "currentColor" }) => {
+export const SplitColorText: React.FC<{ text: string, className?: string, defaultColor?: string, fontClass?: string }> = ({ 
+  text, 
+  className = "", 
+  defaultColor = "currentColor",
+  fontClass = "" 
+}) => {
   return (
-    <span className={className}>
+    <span className={`${className} ${fontClass}`}>
       {text.split("").map((char, i) => (
-        <HoverColorText key={i} defaultColor={defaultColor}>{char}</HoverColorText>
+        <HoverColorText key={i} defaultColor={defaultColor} className={fontClass}>{char}</HoverColorText>
       ))}
     </span>
   );
