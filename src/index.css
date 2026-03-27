@@ -3,25 +3,24 @@
 /* 1. 限界明朝 (Genkaimincho) - 字母与数字专用 */
 @font-face {
   font-family: 'Genkai';
-  src: url('https://raw.githubusercontent.com/a58293/panl-d/main/fonts/Genkaimincho.ttf') format('truetype'),
-       url('https://cdn.jsdelivr.net/gh/a58293/panl-d@main/fonts/Genkaimincho.ttf') format('truetype');
+  src: url('https://cdn.jsdelivr.net/gh/a58293/panl-d@main/fonts/Genkaimincho.ttf') format('truetype'),
+       url('https://raw.githubusercontent.com/a58293/panl-d/main/fonts/Genkaimincho.ttf') format('truetype');
   /* 严格限制在基本拉丁字符范围内 (字母、数字、常用符号) */
   unicode-range: U+0000-00FF;
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: block; /* 强制等待，确保英文字体一致性 */
 }
 
 /* 2. 纳米老宋 (NamiLaoSong) - 汉字专用 */
 @font-face {
   font-family: 'NamiSong';
-  src: url('https://raw.githubusercontent.com/a58293/panl-d/main/fonts/NamiLaoSong-A.ttf') format('truetype'),
-       url('https://cdn.jsdelivr.net/gh/a58293/panl-d@main/fonts/NamiLaoSong-A.ttf') format('truetype');
-  /* 涵盖绝大多数中文字符、标点符号、特殊符号 */
-  unicode-range: U+2E80-2EFF, U+2F00-2FDF, U+3000-303F, U+31C0-31EF, U+3200-32FF, U+3300-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
+  src: url('https://cdn.jsdelivr.net/gh/a58293/panl-d@main/fonts/NamiLaoSong-A.ttf') format('truetype'),
+       url('https://raw.githubusercontent.com/a58293/panl-d/main/fonts/NamiLaoSong-A.ttf') format('truetype');
+  /* 移除 unicode-range 以确保所有中文字符都能正确加载 */
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: block; /* 强制等待字体加载，避免在移动端显示系统宋体 */
 }
 
 @theme {

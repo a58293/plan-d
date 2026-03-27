@@ -56,6 +56,25 @@ export default function SpatialDesignGallery() {
     setVisibleCount(prev => Math.min(prev + 9, projects.length));
   };
 
+  const loaderRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && visibleCount < projects.length) {
+          handleLoadMore();
+        }
+      },
+      { threshold: 0.1, rootMargin: "300px" }
+    );
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [visibleCount, projects.length]);
+
   return (
     <section className="relative w-full min-h-screen bg-white flex flex-col">
       {/* Minimal Header */}
@@ -75,17 +94,12 @@ export default function SpatialDesignGallery() {
           ))}
         </div>
         
-        {/* Load More Button */}
-        {visibleCount < projects.length && (
-          <div className="w-full flex justify-center mt-16">
-            <button 
-              onClick={handleLoadMore}
-              className="px-8 py-3 border border-black text-xs font-mono uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all duration-300"
-            >
-              LOAD MORE
-            </button>
-          </div>
-        )}
+        {/* Infinite Scroll Sentinel */}
+        <div ref={loaderRef} className="w-full h-24 flex justify-center items-center mt-12">
+          {visibleCount < projects.length && (
+            <div className="w-6 h-6 border-2 border-gray-100 border-t-gray-400 rounded-full animate-spin" />
+          )}
+        </div>
       </div>
 
       {/* Minimal Footer */}

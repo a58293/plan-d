@@ -1,12 +1,21 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Plus } from "lucide-react";
 import HoverColorText, { SplitColorText } from "./HoverColorText";
 import { homeCategories, prefetchSectionImages } from "../content";
 
 export default function HomeGallery() {
   const categories = homeCategories;
+
+  // Preload all section images on mount for smoother navigation
+  useEffect(() => {
+    const sections = ["/graphic", "/logos", "/illustration", "/spatial", "/installation", "/mcn"];
+    sections.forEach(path => {
+      // Small delay between preloads to avoid blocking the main thread
+      setTimeout(() => prefetchSectionImages(path), 500);
+    });
+  }, []);
 
   return (
     <section className="w-full min-h-[80vh] bg-white flex items-center justify-center p-4 md:p-12 relative">
@@ -24,8 +33,8 @@ export default function HomeGallery() {
               <img
                 src={item.src}
                 alt={item.label}
-                loading={i < 3 ? "eager" : "lazy"}
-                fetchPriority={i < 3 ? "high" : "auto"}
+                loading={i < 6 ? "eager" : "lazy"}
+                fetchPriority={i < 6 ? "high" : "auto"}
                 decoding="async"
                 className={`w-full h-full transition-transform duration-700 group-hover:scale-110 ${item.objectFit === 'contain' ? 'object-contain p-4' : 'object-cover'}`}
                 referrerPolicy="no-referrer"

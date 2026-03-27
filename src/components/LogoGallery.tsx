@@ -54,6 +54,25 @@ export default function LogoGallery() {
     setVisibleCount(prev => Math.min(prev + 12, images.length));
   };
 
+  const loaderRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && visibleCount < images.length) {
+          handleLoadMore();
+        }
+      },
+      { threshold: 0.1, rootMargin: "200px" }
+    );
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [visibleCount, images.length]);
+
   return (
     <section className="relative w-full min-h-screen bg-white overflow-hidden flex flex-col">
       {/* Header with Back Button */}
@@ -72,17 +91,12 @@ export default function LogoGallery() {
           ))}
         </div>
         
-        {/* Load More Button */}
-        {visibleCount < images.length && (
-          <div className="w-full flex justify-center mt-16">
-            <button 
-              onClick={handleLoadMore}
-              className="px-8 py-3 border border-black text-xs font-mono uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all duration-300"
-            >
-              LOAD MORE
-            </button>
-          </div>
-        )}
+        {/* Infinite Scroll Sentinel */}
+        <div ref={loaderRef} className="w-full h-20 flex justify-center items-center mt-8">
+          {visibleCount < images.length && (
+            <div className="w-6 h-6 border-2 border-gray-100 border-t-gray-400 rounded-full animate-spin" />
+          )}
+        </div>
       </div>
       
       {/* Footer info */}
