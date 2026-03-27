@@ -12,8 +12,15 @@
 /* 1. 声明英文自定义字体：Genkaimincho */
 @font-face {
   font-family: 'Genkaimincho';
-  src: url('/fonts/Genkaimincho.woff2') format('woff2');
+  src: url('/fonts/Genkaimincho.woff2?v=2') format('woff2');
   font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Genkaimincho';
+  src: url('/fonts/Genkaimincho.woff2?v=2') format('woff2');
+  font-weight: bold;
   font-style: normal;
   font-display: swap;
 }
@@ -21,8 +28,15 @@
 /* 2. 声明中文自定义字体：纳米老宋-A */
 @font-face {
   font-family: 'NamiLaoSong-A';
-  src: url('/fonts/NamiLaoSong-A.woff2') format('woff2');
+  src: url('/fonts/NamiLaoSong-A.woff2?v=2') format('woff2');
   font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'NamiLaoSong-A';
+  src: url('/fonts/NamiLaoSong-A.woff2?v=2') format('woff2');
+  font-weight: bold;
   font-style: normal;
   font-display: swap;
 }
