@@ -16,7 +16,7 @@ export default function StudioIntro() {
         >
           <div className="space-y-16">
             <h2 
-              className="font-mincho uppercase text-gray-900 leading-none"
+              className="font-mincho font-normal uppercase text-gray-900 leading-none"
             >
               {/* Desktop: Single Line */}
               <div className="hidden sm:block text-[clamp(10px,4.5vw,24px)] md:text-6xl tracking-[0.15em] whitespace-nowrap">
@@ -36,7 +36,7 @@ export default function StudioIntro() {
               </div>
             </h2>
             <div 
-              className="font-mincho text-2xl md:text-4xl leading-[1.5] md:leading-[1.2] text-gray-800 space-y-12 tracking-widest max-w-6xl"
+              className="font-mincho font-normal text-2xl md:text-4xl leading-[1.5] md:leading-[1.2] text-gray-800 space-y-12 tracking-widest max-w-6xl"
             >
               <div className="space-y-2">
                 <p className="block">
@@ -94,12 +94,12 @@ export default function StudioIntro() {
           {/* Chinese Section */}
           <div className="space-y-16 pt-32 border-t-2 border-gray-900">
             <h2 
-              className="font-mincho uppercase text-4xl md:text-6xl tracking-[0.15em] text-gray-900 leading-tight"
+              className="font-mincho font-normal uppercase text-4xl md:text-6xl tracking-[0.15em] text-gray-900 leading-tight"
             >
               <SplitColorText text="PLAN D" defaultColor="#111827" fontClass="font-mincho" />
             </h2>
             <div 
-              className="font-mincho text-2xl md:text-4xl leading-[1.5] md:leading-[1.2] text-gray-800 space-y-12 tracking-widest max-w-6xl"
+              className="font-mincho font-normal text-2xl md:text-4xl leading-[1.5] md:leading-[1.2] text-gray-800 space-y-12 tracking-widest max-w-6xl"
             >
               <div className="space-y-2">
                 <p className="block">

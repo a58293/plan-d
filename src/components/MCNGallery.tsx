@@ -112,29 +112,59 @@ export default function MCNGallery() {
     profile: ModelProfile;
   } | null>(null);
 
+  const [isImageLoading, setIsImageLoading] = useState(false);
+
   const openLightbox = (images: string[], index: number, profile: ModelProfile) => {
+    const img = new Image();
+    img.src = images[index];
+    if (img.complete) {
+      setIsImageLoading(false);
+    } else {
+      setIsImageLoading(true);
+    }
     setLightboxState({ images, currentIndex: index, profile });
   };
 
   const closeLightbox = () => {
     setLightboxState(null);
+    setIsImageLoading(false);
   };
 
   const nextImage = (e?: React.MouseEvent) => {
     e?.stopPropagation();
     if (!lightboxState) return;
+    const nextIdx = (lightboxState.currentIndex + 1) % lightboxState.images.length;
+    
+    const img = new Image();
+    img.src = lightboxState.images[nextIdx];
+    if (img.complete) {
+      setIsImageLoading(false);
+    } else {
+      setIsImageLoading(true);
+    }
+
     setLightboxState({
       ...lightboxState,
-      currentIndex: (lightboxState.currentIndex + 1) % lightboxState.images.length
+      currentIndex: nextIdx
     });
   };
 
   const prevImage = (e?: React.MouseEvent) => {
     e?.stopPropagation();
     if (!lightboxState) return;
+    const prevIdx = (lightboxState.currentIndex - 1 + lightboxState.images.length) % lightboxState.images.length;
+    
+    const img = new Image();
+    img.src = lightboxState.images[prevIdx];
+    if (img.complete) {
+      setIsImageLoading(false);
+    } else {
+      setIsImageLoading(true);
+    }
+
     setLightboxState({
       ...lightboxState,
-      currentIndex: (lightboxState.currentIndex - 1 + lightboxState.images.length) % lightboxState.images.length
+      currentIndex: prevIdx
     });
   };
 
@@ -158,6 +188,25 @@ export default function MCNGallery() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [lightboxState]);
+
+  // Preload next and previous images for smoother transitions
+  useEffect(() => {
+    if (!lightboxState || lightboxState.images.length <= 1) return;
+    
+    const { images, currentIndex } = lightboxState;
+    const indicesToPreload = [
+      (currentIndex + 1) % images.length,
+      (currentIndex - 1 + images.length) % images.length,
+      (currentIndex + 2) % images.length
+    ];
+
+    const uniqueIndices = Array.from(new Set(indicesToPreload)).filter(idx => idx !== currentIndex);
+
+    uniqueIndices.forEach(idx => {
+      const img = new Image();
+      img.src = images[idx];
+    });
   }, [lightboxState]);
 
   return (
@@ -242,6 +291,20 @@ export default function MCNGallery() {
               <ChevronRight className="w-8 h-8 md:w-12 md:h-12" />
             </button>
 
+            {/* Loading Spinner */}
+            <AnimatePresence>
+              {isImageLoading && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none"
+                >
+                  <div className="w-8 h-8 border border-white/20 border-t-white rounded-full animate-spin" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <motion.div
               key="lightbox-container"
               initial={{ scale: 0.95, opacity: 0 }}
@@ -268,6 +331,8 @@ export default function MCNGallery() {
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={0.2}
                     onDragEnd={handleDragEnd}
+                    onLoad={() => setIsImageLoading(false)}
+                    onError={() => setIsImageLoading(false)}
                   />
                 </AnimatePresence>
                 <div className="absolute -bottom-8 left-0 w-full text-center font-mono text-xs text-gray-500 tracking-widest">
@@ -311,6 +376,16 @@ export default function MCNGallery() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Hidden preloading area for browser caching */}
+      <div className="hidden" aria-hidden="true">
+        {lightboxState && lightboxState.images.length > 1 && (
+          <>
+            <img src={lightboxState.images[(lightboxState.currentIndex + 1) % lightboxState.images.length]} referrerPolicy="no-referrer" />
+            <img src={lightboxState.images[(lightboxState.currentIndex - 1 + lightboxState.images.length) % lightboxState.images.length]} referrerPolicy="no-referrer" />
+          </>
+        )}
+      </div>
     </motion.main>
   );
 }

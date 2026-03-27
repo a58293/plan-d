@@ -3,10 +3,11 @@
 /* 1. 限界明朝 (Genkaimincho) - 字母与数字专用 */
 @font-face {
   font-family: 'Genkai';
-  src: url('https://raw.githubusercontent.com/a58293/panl-d/main/fonts/Genkaimincho.ttf') format('truetype');
+  src: url('https://raw.githubusercontent.com/a58293/panl-d/main/fonts/Genkaimincho.ttf') format('truetype'),
+       url('https://cdn.jsdelivr.net/gh/a58293/panl-d@main/fonts/Genkaimincho.ttf') format('truetype');
   /* 严格限制在基本拉丁字符范围内 (字母、数字、常用符号) */
   unicode-range: U+0000-00FF;
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
@@ -14,10 +15,11 @@
 /* 2. 纳米老宋 (NamiLaoSong) - 汉字专用 */
 @font-face {
   font-family: 'NamiSong';
-  src: url('https://raw.githubusercontent.com/a58293/panl-d/main/fonts/NamiLaoSong-A.ttf') format('truetype');
+  src: url('https://raw.githubusercontent.com/a58293/panl-d/main/fonts/NamiLaoSong-A.ttf') format('truetype'),
+       url('https://cdn.jsdelivr.net/gh/a58293/panl-d@main/fonts/NamiLaoSong-A.ttf') format('truetype');
   /* 涵盖绝大多数中文字符、标点符号、特殊符号 */
   unicode-range: U+2E80-2EFF, U+2F00-2FDF, U+3000-303F, U+31C0-31EF, U+3200-32FF, U+3300-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
@@ -36,6 +38,8 @@ body {
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "palt";
 }
 
 /* 确保特定类名强制生效 */
@@ -43,11 +47,19 @@ body {
   font-family: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif !important;
   font-weight: 400 !important;
   font-synthesis: none !important;
+  font-style: normal !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, span, div, a {
+  font-synthesis: none !important;
+  -webkit-font-smoothing: antialiased !important;
+  font-weight: 400;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Genkai", "NamiSong", serif;
-  font-weight: normal;
+  font-family: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
+  font-weight: 400;
 }
 
 @utility perspective-1000 {

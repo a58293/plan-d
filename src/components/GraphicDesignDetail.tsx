@@ -29,9 +29,16 @@ export default function GraphicDesignDetail() {
 
   // Reset loading state when image changes
   useEffect(() => {
-    setIsImageLoading(true);
-    setProgress(0);
-  }, [currentIndex]);
+    const img = new Image();
+    img.src = allImages[currentIndex];
+    if (img.complete) {
+      setIsImageLoading(false);
+      setProgress(100);
+    } else {
+      setIsImageLoading(true);
+      setProgress(0);
+    }
+  }, [currentIndex, allImages]);
 
   // Simulated progress bar logic
   useEffect(() => {
@@ -51,16 +58,21 @@ export default function GraphicDesignDetail() {
     return () => clearInterval(timer);
   }, [isImageLoading]);
 
+  // Preload next and previous images for smoother transitions
   useEffect(() => {
-    if (!project) return;
+    if (!project || allImages.length <= 1) return;
     
-    const preloadIndices = [
+    // We preload next, previous, and two-ahead to ensure smooth navigation
+    const indicesToPreload = [
       (currentIndex + 1) % allImages.length,
-      (currentIndex + 2) % allImages.length,
-      (currentIndex - 1 + allImages.length) % allImages.length
+      (currentIndex - 1 + allImages.length) % allImages.length,
+      (currentIndex + 2) % allImages.length
     ];
 
-    preloadIndices.forEach(idx => {
+    // Filter out current index and duplicates
+    const uniqueIndices = Array.from(new Set(indicesToPreload)).filter(idx => idx !== currentIndex);
+
+    uniqueIndices.forEach(idx => {
       const img = new Image();
       img.src = allImages[idx];
     });
@@ -259,6 +271,16 @@ export default function GraphicDesignDetail() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Hidden preloading area for browser caching */}
+      <div className="hidden" aria-hidden="true">
+        {allImages.length > 1 && (
+          <>
+            <img src={allImages[(currentIndex + 1) % allImages.length]} referrerPolicy="no-referrer" />
+            <img src={allImages[(currentIndex - 1 + allImages.length) % allImages.length]} referrerPolicy="no-referrer" />
+          </>
+        )}
+      </div>
     </motion.main>
   );
 }
