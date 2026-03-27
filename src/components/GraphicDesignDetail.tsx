@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence, PanInfo } from "motion/react";
 import { ArrowLeft, ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -13,40 +13,47 @@ export default function GraphicDesignDetail() {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [bgColor, setBgColor] = useState("#f9f9f9");
-  const [direction, setDirection] = useState(0); // 1 for next, -1 for prev
+  const [direction, setDirection] = useState(0);
+  const colorCache = useRef<Map<string, string>>(new Map());
 
   const allImages = useMemo(() => {
     if (!project) return [];
     return [project.src, ...(project.galleryImages || [])];
   }, [project]);
 
-  // Update background color based on current image
   useEffect(() => {
-    if (allImages.length > 0) {
-      getHarmoniousColor(allImages[currentIndex]).then(setBgColor);
+    const currentSrc = allImages[currentIndex];
+    if (!currentSrc) return;
+
+    if (window.innerWidth < 768) {
+      setBgColor("#f9f9f9");
+      return;
     }
+
+    const cached = colorCache.current.get(currentSrc);
+    if (cached) {
+      setBgColor(cached);
+      return;
+    }
+
+    getHarmoniousColor(currentSrc).then((color) => {
+      colorCache.current.set(currentSrc, color);
+      setBgColor(color);
+    });
   }, [currentIndex, allImages]);
 
-  // Reset loading state when image changes
   useEffect(() => {
-    const img = new Image();
-    img.src = allImages[currentIndex];
-    if (img.complete) {
-      setIsImageLoading(false);
-      setProgress(100);
-    } else {
-      setIsImageLoading(true);
-      setProgress(0);
-    }
-  }, [currentIndex, allImages]);
+    if (!allImages.length) return;
+    setIsImageLoading(true);
+    setProgress(15);
+  }, [currentIndex, allImages.length]);
 
-  // Simulated progress bar logic
   useEffect(() => {
     if (!isImageLoading) {
       setProgress(100);
       return;
     }
-    
+
     setProgress(15);
     const timer = setInterval(() => {
       setProgress((prev) => {
@@ -54,29 +61,9 @@ export default function GraphicDesignDetail() {
         return prev + (90 - prev) * 0.1;
       });
     }, 200);
-    
+
     return () => clearInterval(timer);
   }, [isImageLoading]);
-
-  // Preload next and previous images for smoother transitions
-  useEffect(() => {
-    if (!project || allImages.length <= 1) return;
-    
-    // We preload next, previous, and two-ahead to ensure smooth navigation
-    const indicesToPreload = [
-      (currentIndex + 1) % allImages.length,
-      (currentIndex - 1 + allImages.length) % allImages.length,
-      (currentIndex + 2) % allImages.length
-    ];
-
-    // Filter out current index and duplicates
-    const uniqueIndices = Array.from(new Set(indicesToPreload)).filter(idx => idx !== currentIndex);
-
-    uniqueIndices.forEach(idx => {
-      const img = new Image();
-      img.src = allImages[idx];
-    });
-  }, [currentIndex, project, allImages]);
 
   if (!project) {
     return (
@@ -101,7 +88,6 @@ export default function GraphicDesignDetail() {
     else if (info.offset.x > 50) prevImage();
   };
 
-  // Fade variants
   const variants = {
     enter: (direction: number) => ({
       opacity: 0,
@@ -112,48 +98,44 @@ export default function GraphicDesignDetail() {
       x: 0,
       transition: {
         duration: 0.5,
-        ease: "easeOut"
-      }
+        ease: "easeOut",
+      },
     },
     exit: (direction: number) => ({
       opacity: 0,
       x: direction > 0 ? -20 : 20,
       transition: {
         duration: 0.5,
-        ease: "easeIn"
-      }
-    })
+        ease: "easeIn",
+      },
+    }),
   };
 
   return (
-    <motion.main 
+    <motion.main
       className="w-full min-h-screen flex flex-col lg:flex-row overflow-hidden transition-colors duration-1000"
       style={{ backgroundColor: bgColor }}
     >
-      {/* Back Button - Fixed position */}
-      <Link 
-        to="/graphic" 
+      <Link
+        to="/graphic"
         className="fixed top-8 left-8 z-40 flex items-center gap-2 text-gray-400 hover:text-black transition-colors group"
       >
         <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
         <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Back</span>
       </Link>
 
-      {/* Main Image Viewer */}
       <div className="w-full h-screen relative flex items-center justify-center overflow-hidden">
-        {/* Progress Bar */}
         <div className="absolute top-0 left-0 w-full h-[2px] z-20 bg-black/5">
           <div
             className="h-full bg-black/20 transition-all duration-300 ease-out"
             style={{
               width: `${progress}%`,
               opacity: progress === 100 ? 0 : 1,
-              transitionDelay: progress === 100 ? '400ms' : '0ms'
+              transitionDelay: progress === 100 ? "400ms" : "0ms",
             }}
           />
         </div>
 
-        {/* Loading Spinner */}
         <AnimatePresence>
           {isImageLoading && (
             <motion.div
@@ -185,10 +167,11 @@ export default function GraphicDesignDetail() {
               <motion.img
                 src={allImages[currentIndex]}
                 alt={`${project.title} - Image ${currentIndex + 1}`}
-                className={`max-w-full max-h-full object-contain shadow-2xl bg-white ${allImages.length > 1 ? '' : 'cursor-zoom-in'}`}
+                className={`max-w-full max-h-full object-contain shadow-2xl bg-white ${allImages.length > 1 ? "" : "cursor-zoom-in"}`}
                 referrerPolicy="no-referrer"
                 loading="eager"
                 fetchPriority="high"
+                decoding="async"
                 onClick={() => setIsFullscreen(true)}
                 onLoad={() => setIsImageLoading(false)}
                 onError={() => setIsImageLoading(false)}
@@ -197,7 +180,6 @@ export default function GraphicDesignDetail() {
           </AnimatePresence>
         </div>
 
-        {/* Navigation Controls */}
         {allImages.length > 1 && (
           <>
             <button
@@ -212,8 +194,7 @@ export default function GraphicDesignDetail() {
             >
               <ChevronRight size={32} strokeWidth={1} />
             </button>
-            
-            {/* Pagination Indicator */}
+
             <div className="absolute bottom-8 left-0 w-full flex flex-col items-center gap-4">
               <div className="flex gap-2 bg-black/5 backdrop-blur-sm px-3 py-1.5 rounded-full">
                 {allImages.map((_, idx) => (
@@ -238,7 +219,6 @@ export default function GraphicDesignDetail() {
         )}
       </div>
 
-      {/* Fullscreen Lightbox */}
       <AnimatePresence>
         {isFullscreen && (
           <motion.div
@@ -265,22 +245,13 @@ export default function GraphicDesignDetail() {
                 transition={{ duration: 0.3 }}
                 className="max-w-full max-h-full object-contain p-4"
                 referrerPolicy="no-referrer"
+                decoding="async"
                 onClick={(e) => e.stopPropagation()}
               />
             </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Hidden preloading area for browser caching */}
-      <div className="hidden" aria-hidden="true">
-        {allImages.length > 1 && (
-          <>
-            <img src={allImages[(currentIndex + 1) % allImages.length]} referrerPolicy="no-referrer" />
-            <img src={allImages[(currentIndex - 1 + allImages.length) % allImages.length]} referrerPolicy="no-referrer" />
-          </>
-        )}
-      </div>
     </motion.main>
   );
 }

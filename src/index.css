@@ -1,30 +1,23 @@
 @import "tailwindcss";
 
-/* 1. 限界明朝 (Genkaimincho) - 字母与数字专用 */
 @font-face {
-  font-family: 'Genkai';
-  src: url('https://cdn.jsdelivr.net/gh/a58293/panl-d@main/fonts/Genkaimincho.ttf') format('truetype'),
-       url('https://raw.githubusercontent.com/a58293/panl-d/main/fonts/Genkaimincho.ttf') format('truetype');
-  /* 严格限制在基本拉丁字符范围内 (字母、数字、常用符号) */
+  font-family: "Genkai";
+  src: url("/fonts/Genkaimincho.ttf") format("truetype");
   unicode-range: U+0000-00FF;
   font-weight: 400;
   font-style: normal;
-  font-display: block; /* 强制等待，确保英文字体一致性 */
+  font-display: swap;
 }
 
-/* 2. 纳米老宋 (NamiLaoSong) - 汉字专用 */
 @font-face {
-  font-family: 'NamiSong';
-  src: url('https://cdn.jsdelivr.net/gh/a58293/panl-d@main/fonts/NamiLaoSong-A.ttf') format('truetype'),
-       url('https://raw.githubusercontent.com/a58293/panl-d/main/fonts/NamiLaoSong-A.ttf') format('truetype');
-  /* 移除 unicode-range 以确保所有中文字符都能正确加载 */
+  font-family: "NamiSong";
+  src: url("/fonts/NamiLaoSong-A-subset.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
-  font-display: block; /* 强制等待字体加载，避免在移动端显示系统宋体 */
+  font-display: swap;
 }
 
 @theme {
-  /* 组合字体：Genkai 在前负责字母，NamiSong 在后负责汉字 */
   --font-mincho: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
   --font-custom: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
 }
@@ -32,7 +25,7 @@
 body {
   background-color: #f9f9f9;
   color: #1a1a1a;
-  font-family: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
+  font-family: var(--font-custom);
   font-weight: 400;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
@@ -41,9 +34,8 @@ body {
   font-feature-settings: "palt";
 }
 
-/* 确保特定类名强制生效 */
 .font-mincho {
-  font-family: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif !important;
+  font-family: var(--font-custom) !important;
   font-weight: 400 !important;
   font-synthesis: none !important;
   font-style: normal !important;
@@ -57,7 +49,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, a {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
+  font-family: var(--font-custom);
   font-weight: 400;
 }
 

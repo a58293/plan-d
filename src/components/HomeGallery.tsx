@@ -1,21 +1,11 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
 import { Plus } from "lucide-react";
 import HoverColorText, { SplitColorText } from "./HoverColorText";
-import { homeCategories, prefetchSectionImages } from "../content";
+import { homeCategories } from "../content";
 
 export default function HomeGallery() {
   const categories = homeCategories;
-
-  // Preload all section images on mount for smoother navigation
-  useEffect(() => {
-    const sections = ["/graphic", "/logos", "/illustration", "/spatial", "/installation", "/mcn"];
-    sections.forEach(path => {
-      // Small delay between preloads to avoid blocking the main thread
-      setTimeout(() => prefetchSectionImages(path), 500);
-    });
-  }, []);
 
   return (
     <section className="w-full min-h-[80vh] bg-white flex items-center justify-center p-4 md:p-12 relative">
@@ -33,25 +23,23 @@ export default function HomeGallery() {
               <img
                 src={item.src}
                 alt={item.label}
-                loading={i < 6 ? "eager" : "lazy"}
-                fetchPriority={i < 6 ? "high" : "auto"}
+                loading={i === 0 ? "eager" : "lazy"}
+                fetchPriority={i === 0 ? "high" : "auto"}
                 decoding="async"
-                className={`w-full h-full transition-transform duration-700 group-hover:scale-110 ${item.objectFit === 'contain' ? 'object-contain p-4' : 'object-cover'}`}
+                className={`w-full h-full transition-transform duration-700 group-hover:scale-110 ${item.objectFit === "contain" ? "object-contain p-4" : "object-cover"}`}
                 referrerPolicy="no-referrer"
               />
               <>
-                {/* Desktop Hover Overlay */}
                 <div className="hidden lg:flex absolute inset-0 bg-transparent transition-colors duration-300 flex-col items-center justify-center gap-2">
-                  {item.id !== 'logo' && (
+                  {item.id !== "logo" && (
                     <h3 className="text-white text-xl md:text-2xl font-mono font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                       <SplitColorText text={item.label} defaultColor="#ffffff" />
                     </h3>
                   )}
                 </div>
-                
-                {/* Mobile & Tablet Always-Visible Label */}
+
                 <div className="lg:hidden absolute inset-x-0 bottom-0 p-3 pt-8 flex flex-col items-start justify-end">
-                  {item.id !== 'logo' && (
+                  {item.id !== "logo" && (
                     <h3 className="text-white text-sm font-mono font-bold tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                       <SplitColorText text={item.label} defaultColor="#ffffff" />
                     </h3>
@@ -63,11 +51,11 @@ export default function HomeGallery() {
 
           if (item.href) {
             return (
-              <a 
-                key={item.id} 
-                href={item.href} 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                key={item.id}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className={item.className}
               >
                 {Content}
