@@ -22,19 +22,25 @@
 
 @theme {
   /* 组合字体：Genkai 在前负责字母，NamiSong 在后负责汉字 */
-  --font-mincho: "Genkai", "NamiSong", serif;
-  --font-custom: "Genkai", "NamiSong", serif;
+  --font-mincho: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
+  --font-custom: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
 }
 
 body {
   background-color: #f9f9f9;
   color: #1a1a1a;
-  font-family: "Genkai", "NamiSong", serif;
+  font-family: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
+  font-weight: 400;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* 确保特定类名强制生效 */
 .font-mincho {
-  font-family: "Genkai", "NamiSong", serif !important;
+  font-family: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif !important;
+  font-weight: 400 !important;
+  font-synthesis: none !important;
 }
 
 h1, h2, h3, h4, h5, h6 {

@@ -14,7 +14,6 @@ export default function StudioIntro() {
           transition={{ duration: 0.8 }}
           className="space-y-16"
         >
-          {/* English Section */}
           <div className="space-y-16">
             <h2 
               className="font-mincho uppercase text-gray-900 leading-none"
@@ -37,7 +36,7 @@ export default function StudioIntro() {
               </div>
             </h2>
             <div 
-              className="font-mincho font-black text-2xl md:text-4xl leading-[1.5] md:leading-[1.2] text-gray-800 space-y-12 tracking-widest max-w-6xl"
+              className="font-mincho text-2xl md:text-4xl leading-[1.5] md:leading-[1.2] text-gray-800 space-y-12 tracking-widest max-w-6xl"
             >
               <div className="space-y-2">
                 <p className="block">
@@ -100,7 +99,7 @@ export default function StudioIntro() {
               <SplitColorText text="PLAN D" defaultColor="#111827" fontClass="font-mincho" />
             </h2>
             <div 
-              className="font-mincho font-black text-2xl md:text-4xl leading-[1.5] md:leading-[1.2] text-gray-800 space-y-12 tracking-widest max-w-6xl"
+              className="font-mincho text-2xl md:text-4xl leading-[1.5] md:leading-[1.2] text-gray-800 space-y-12 tracking-widest max-w-6xl"
             >
               <div className="space-y-2">
                 <p className="block">
