@@ -38,29 +38,27 @@ export default function HomeGallery() {
                 className={`w-full h-full transition-transform duration-700 group-hover:scale-110 ${item.objectFit === 'contain' ? 'object-contain p-4' : 'object-cover'}`}
                 referrerPolicy="no-referrer"
               />
-              {item.id !== "logo" && (
-                <>
-                  {/* Desktop Hover Overlay */}
-                  <div className="hidden lg:flex absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex-col items-center justify-center gap-2">
-                    <h3 className="text-white text-xl md:text-2xl font-mono font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 tracking-widest">
-                      <SplitColorText text={item.label} defaultColor="#ffffff" />
-                    </h3>
-                    <p className="text-white/90 text-sm md:text-base font-sans font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75 tracking-wide">
-                      <SplitColorText text={item.labelCn} defaultColor="rgba(255, 255, 255, 0.9)" />
-                    </p>
-                  </div>
-                  
-                  {/* Mobile & Tablet Always-Visible Label */}
-                  <div className="lg:hidden absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 pt-8 flex flex-col items-start justify-end">
-                    <h3 className="text-white text-sm font-mono font-bold tracking-widest drop-shadow-md">
-                      <SplitColorText text={item.label} defaultColor="#ffffff" />
-                    </h3>
-                    <p className="text-white/90 text-xs font-sans font-medium tracking-wide drop-shadow-md">
-                      <SplitColorText text={item.labelCn} defaultColor="rgba(255, 255, 255, 0.9)" />
-                    </p>
-                  </div>
-                </>
-              )}
+              <>
+                {/* Desktop Hover Overlay */}
+                <div className="hidden lg:flex absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex-col items-center justify-center gap-2">
+                  <h3 className="text-white text-xl md:text-2xl font-mono font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 tracking-widest">
+                    <SplitColorText text={item.label} defaultColor="#ffffff" />
+                  </h3>
+                  <p className="text-white/90 text-sm md:text-base font-sans font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75 tracking-wide">
+                    <SplitColorText text={item.labelCn} defaultColor="rgba(255, 255, 255, 0.9)" />
+                  </p>
+                </div>
+                
+                {/* Mobile & Tablet Always-Visible Label */}
+                <div className="lg:hidden absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 pt-8 flex flex-col items-start justify-end">
+                  <h3 className="text-white text-sm font-mono font-bold tracking-widest drop-shadow-md">
+                    <SplitColorText text={item.label} defaultColor="#ffffff" />
+                  </h3>
+                  <p className="text-white/90 text-xs font-sans font-medium tracking-wide drop-shadow-md">
+                    <SplitColorText text={item.labelCn} defaultColor="rgba(255, 255, 255, 0.9)" />
+                  </p>
+                </div>
+              </>
             </motion.div>
           );
 
