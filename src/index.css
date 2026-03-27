@@ -9,36 +9,36 @@
 @import "@fontsource/shippori-mincho-b1";
 @import "tailwindcss";
 
-/* 1. 声明英文自定义字体：Genkaimincho */
-@font-face { font-family: 'Genkaimincho'; src: url('/fonts/Genkaimincho.woff2?v=3') format('woff2'), url('/fonts/Genkaimincho.ttf?v=3') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Genkaimincho'; src: url('/fonts/Genkaimincho.woff2?v=3') format('woff2'), url('/fonts/Genkaimincho.ttf?v=3') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Genkaimincho'; src: url('/fonts/Genkaimincho.woff2?v=3') format('woff2'), url('/fonts/Genkaimincho.ttf?v=3') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Genkaimincho'; src: url('/fonts/Genkaimincho.woff2?v=3') format('woff2'), url('/fonts/Genkaimincho.ttf?v=3') format('truetype'); font-weight: 900; font-style: normal; font-display: swap; }
+/* 1. 声明英文自定义字体 */
+@font-face { font-family: 'CustomFontEN'; src: url('/fonts/Genkaimincho.woff2') format('woff2'), url('/fonts/Genkaimincho.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'CustomFontEN'; src: url('/fonts/Genkaimincho.woff2') format('woff2'), url('/fonts/Genkaimincho.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'CustomFontEN'; src: url('/fonts/Genkaimincho.woff2') format('woff2'), url('/fonts/Genkaimincho.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'CustomFontEN'; src: url('/fonts/Genkaimincho.woff2') format('woff2'), url('/fonts/Genkaimincho.ttf') format('truetype'); font-weight: 900; font-style: normal; font-display: swap; }
 
-/* 2. 声明中文自定义字体：纳米老宋-A */
-@font-face { font-family: 'NamiLaoSong-A'; src: url('/fonts/NamiLaoSong-A.woff2?v=3') format('woff2'), url('/fonts/NamiLaoSong-A-subset.ttf?v=3') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: 'NamiLaoSong-A'; src: url('/fonts/NamiLaoSong-A.woff2?v=3') format('woff2'), url('/fonts/NamiLaoSong-A-subset.ttf?v=3') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: 'NamiLaoSong-A'; src: url('/fonts/NamiLaoSong-A.woff2?v=3') format('woff2'), url('/fonts/NamiLaoSong-A-subset.ttf?v=3') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: 'NamiLaoSong-A'; src: url('/fonts/NamiLaoSong-A.woff2?v=3') format('woff2'), url('/fonts/NamiLaoSong-A-subset.ttf?v=3') format('truetype'); font-weight: 900; font-style: normal; font-display: swap; }
+/* 2. 声明中文自定义字体 */
+@font-face { font-family: 'CustomFontCN'; src: url('/fonts/NamiLaoSong-A.woff2') format('woff2'), url('/fonts/NamiLaoSong-A-subset.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'CustomFontCN'; src: url('/fonts/NamiLaoSong-A.woff2') format('woff2'), url('/fonts/NamiLaoSong-A-subset.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'CustomFontCN'; src: url('/fonts/NamiLaoSong-A.woff2') format('woff2'), url('/fonts/NamiLaoSong-A-subset.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'CustomFontCN'; src: url('/fonts/NamiLaoSong-A.woff2') format('woff2'), url('/fonts/NamiLaoSong-A-subset.ttf') format('truetype'); font-weight: 900; font-style: normal; font-display: swap; }
 
 @theme {
   /* 将所有默认字体都替换为您的自定义组合字体 */
-  --font-sans: "Genkaimincho", "NamiLaoSong-A", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Genkaimincho", "NamiLaoSong-A", ui-serif, Georgia, serif;
-  --font-mono: "Genkaimincho", "NamiLaoSong-A", ui-monospace, SFMono-Regular, monospace;
-  --font-typewriter: "Genkaimincho", "NamiLaoSong-A", "Courier New", Courier, monospace;
-  --font-wild: "Genkaimincho", "NamiLaoSong-A", cursive;
-  --font-tech: "Genkaimincho", "NamiLaoSong-A", sans-serif;
-  --font-mincho: "Genkaimincho", "NamiLaoSong-A", serif;
-  --font-grunge: "Genkaimincho", "NamiLaoSong-A", cursive;
-  --font-ink: "Genkaimincho", "NamiLaoSong-A", serif;
+  --font-sans: 'CustomFontEN', 'CustomFontCN', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'CustomFontEN', 'CustomFontCN', ui-serif, Georgia, serif;
+  --font-mono: 'CustomFontEN', 'CustomFontCN', ui-monospace, SFMono-Regular, monospace;
+  --font-typewriter: 'CustomFontEN', 'CustomFontCN', "Courier New", Courier, monospace;
+  --font-wild: 'CustomFontEN', 'CustomFontCN', cursive;
+  --font-tech: 'CustomFontEN', 'CustomFontCN', sans-serif;
+  --font-mincho: 'CustomFontEN', 'CustomFontCN', serif;
+  --font-grunge: 'CustomFontEN', 'CustomFontCN', cursive;
+  --font-ink: 'CustomFontEN', 'CustomFontCN', serif;
   
   /* 3. 注册您的自定义字体类名 */
-  --font-genkai: "Genkaimincho", serif;
-  --font-namisong: "NamiLaoSong-A", serif;
+  --font-genkai: 'CustomFontEN', serif;
+  --font-namisong: 'CustomFontCN', serif;
   
   /* 4. 组合字体：英文优先使用 Genkaimincho，中文自动回退使用 纳米老宋-A */
-  --font-custom: "Genkaimincho", "NamiLaoSong-A", serif;
+  --font-custom: 'CustomFontEN', 'CustomFontCN', serif;
 }
 
 @utility perspective-1000 {
@@ -53,4 +53,9 @@ body {
   background-color: #f9f9f9;
   color: #1a1a1a;
   font-family: var(--font-custom);
+}
+
+/* 终极强制覆盖：确保所有元素都使用自定义字体 */
+* {
+  font-family: 'CustomFontEN', 'CustomFontCN', sans-serif !important;
 }
