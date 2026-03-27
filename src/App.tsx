@@ -5,6 +5,7 @@
 
 import { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import HomeGallery from "./components/HomeGallery";
 import StudioIntro from "./components/StudioIntro";
 
@@ -66,6 +67,7 @@ export default function App() {
           <Route path="/installation/:id" element={<ProductDesignDetail />} />
         </Routes>
       </Suspense>
+      <SpeedInsights />
     </Router>
   );
 }
