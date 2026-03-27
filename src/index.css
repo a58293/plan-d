@@ -10,36 +10,16 @@
 @import "tailwindcss";
 
 /* 1. 声明英文自定义字体：Genkaimincho */
-@font-face {
-  font-family: 'Genkaimincho';
-  src: url('/fonts/Genkaimincho.woff2?v=2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Genkaimincho';
-  src: url('/fonts/Genkaimincho.woff2?v=2') format('woff2');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
+@font-face { font-family: 'Genkaimincho'; src: url('/fonts/Genkaimincho.woff2?v=3') format('woff2'), url('/fonts/Genkaimincho.ttf?v=3') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Genkaimincho'; src: url('/fonts/Genkaimincho.woff2?v=3') format('woff2'), url('/fonts/Genkaimincho.ttf?v=3') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Genkaimincho'; src: url('/fonts/Genkaimincho.woff2?v=3') format('woff2'), url('/fonts/Genkaimincho.ttf?v=3') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Genkaimincho'; src: url('/fonts/Genkaimincho.woff2?v=3') format('woff2'), url('/fonts/Genkaimincho.ttf?v=3') format('truetype'); font-weight: 900; font-style: normal; font-display: swap; }
 
 /* 2. 声明中文自定义字体：纳米老宋-A */
-@font-face {
-  font-family: 'NamiLaoSong-A';
-  src: url('/fonts/NamiLaoSong-A.woff2?v=2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'NamiLaoSong-A';
-  src: url('/fonts/NamiLaoSong-A.woff2?v=2') format('woff2');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
+@font-face { font-family: 'NamiLaoSong-A'; src: url('/fonts/NamiLaoSong-A.woff2?v=3') format('woff2'), url('/fonts/NamiLaoSong-A-subset.ttf?v=3') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'NamiLaoSong-A'; src: url('/fonts/NamiLaoSong-A.woff2?v=3') format('woff2'), url('/fonts/NamiLaoSong-A-subset.ttf?v=3') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'NamiLaoSong-A'; src: url('/fonts/NamiLaoSong-A.woff2?v=3') format('woff2'), url('/fonts/NamiLaoSong-A-subset.ttf?v=3') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'NamiLaoSong-A'; src: url('/fonts/NamiLaoSong-A.woff2?v=3') format('woff2'), url('/fonts/NamiLaoSong-A-subset.ttf?v=3') format('truetype'); font-weight: 900; font-style: normal; font-display: swap; }
 
 @theme {
   /* 将所有默认字体都替换为您的自定义组合字体 */
