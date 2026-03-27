@@ -222,6 +222,7 @@ export default function ProductDesignDetail() {
                 fetchPriority="high"
                 onClick={() => setIsFullscreen(true)}
                 onLoad={() => setIsImageLoading(false)}
+                onError={() => setIsImageLoading(false)}
               />
             </motion.div>
           </AnimatePresence>
@@ -342,6 +343,7 @@ export default function ProductDesignDetail() {
                 dragElastic={0.2}
                 onDragEnd={handleDragEnd}
                 onLoad={() => setIsImageLoading(false)}
+                onError={() => setIsImageLoading(false)}
               />
             </AnimatePresence>
             

@@ -179,6 +179,7 @@ export default function GraphicDesignDetail() {
                 fetchPriority="high"
                 onClick={() => setIsFullscreen(true)}
                 onLoad={() => setIsImageLoading(false)}
+                onError={() => setIsImageLoading(false)}
               />
             </motion.div>
           </AnimatePresence>

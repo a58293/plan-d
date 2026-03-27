@@ -37,7 +37,7 @@ const ParallaxCard: React.FC<{ project: ProjectItem, index: number }> = ({ proje
             loading={index < 8 ? "eager" : "lazy"}
             fetchPriority={index < 4 ? "high" : "auto"}
             decoding="async"
-            className="w-full h-full object-contain mix-blend-multiply transition-all duration-500"
+            className="w-full h-full object-contain transition-all duration-500"
             referrerPolicy="no-referrer"
           />
         </motion.div>

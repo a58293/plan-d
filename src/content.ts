@@ -32,7 +32,7 @@ export interface ProjectItem {
 
 // 🌟 这里是您的 GitHub 图床基础链接！
 // 使用 raw.githubusercontent.com 以确保图片更新能立即生效
-const BASE_URL = "https://raw.githubusercontent.com/a58293/panl-d/main/images";
+const BASE_URL = "https://cdn.jsdelivr.net/gh/a58293/panl-d@main/images";
 
 // ==========================================
 // 1. 首页分类与封面 (Covers & Logo)

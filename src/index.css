@@ -1,4 +1,7 @@
-@import url('https://fonts.loli.net/css2?family=Inter:wght@300;400;500;600;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Courier+Prime:wght@400;700&family=Zen+Old+Mincho:wght@400;700;900&display=swap');
+@import "@fontsource/inter";
+@import "@fontsource/playfair-display";
+@import "@fontsource/courier-prime";
+@import "@fontsource/zen-old-mincho";
 @import "@fontsource/zcool-qingke-huangyou";
 @import "@fontsource/michroma";
 @import "@fontsource/orbitron";
@@ -6,15 +9,42 @@
 @import "@fontsource/shippori-mincho-b1";
 @import "tailwindcss";
 
+/* 1. 声明英文自定义字体：Genkaimincho */
+@font-face {
+  font-family: 'Genkaimincho';
+  src: url('/fonts/Genkaimincho.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 2. 声明中文自定义字体：纳米老宋-A */
+@font-face {
+  font-family: 'NamiLaoSong-A';
+  src: url('/fonts/NamiLaoSong-A.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
-  --font-typewriter: "Courier Prime", "Courier New", Courier, monospace;
-  --font-wild: "ZCOOL QingKe HuangYou", cursive;
-  --font-tech: "Orbitron", sans-serif;
-  --font-mincho: "Zen Old Mincho", serif;
-  --font-grunge: "Special Elite", cursive;
-  --font-ink: "Shippori Mincho B1", serif;
+  /* 将所有默认字体都替换为您的自定义组合字体 */
+  --font-sans: "Genkaimincho", "NamiLaoSong-A", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Genkaimincho", "NamiLaoSong-A", ui-serif, Georgia, serif;
+  --font-mono: "Genkaimincho", "NamiLaoSong-A", ui-monospace, SFMono-Regular, monospace;
+  --font-typewriter: "Genkaimincho", "NamiLaoSong-A", "Courier New", Courier, monospace;
+  --font-wild: "Genkaimincho", "NamiLaoSong-A", cursive;
+  --font-tech: "Genkaimincho", "NamiLaoSong-A", sans-serif;
+  --font-mincho: "Genkaimincho", "NamiLaoSong-A", serif;
+  --font-grunge: "Genkaimincho", "NamiLaoSong-A", cursive;
+  --font-ink: "Genkaimincho", "NamiLaoSong-A", serif;
+  
+  /* 3. 注册您的自定义字体类名 */
+  --font-genkai: "Genkaimincho", serif;
+  --font-namisong: "NamiLaoSong-A", serif;
+  
+  /* 4. 组合字体：英文优先使用 Genkaimincho，中文自动回退使用 纳米老宋-A */
+  --font-custom: "Genkaimincho", "NamiLaoSong-A", serif;
 }
 
 @utility perspective-1000 {
@@ -28,5 +58,5 @@
 body {
   background-color: #f9f9f9;
   color: #1a1a1a;
-  font-family: var(--font-sans);
+  font-family: var(--font-custom);
 }
