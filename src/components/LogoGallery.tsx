@@ -20,8 +20,8 @@ const LogoCard: React.FC<{ image: ImageItem, index: number }> = ({ image, index 
       <img
         src={image.src}
         alt={image.alt}
-        loading={index < 8 ? "eager" : "lazy"}
-        fetchPriority={index < 4 ? "high" : "auto"}
+        loading={index < 10 ? "eager" : "lazy"}
+        fetchPriority={index < 10 ? "high" : "auto"}
         decoding="async"
         className="w-full h-full object-contain transition-all duration-500"
         referrerPolicy="no-referrer"

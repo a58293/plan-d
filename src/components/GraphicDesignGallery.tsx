@@ -34,8 +34,8 @@ const ParallaxCard: React.FC<{ project: ProjectItem, index: number }> = ({ proje
           <img
             src={project.src}
             alt={project.title}
-            loading={index < 8 ? "eager" : "lazy"}
-            fetchPriority={index < 4 ? "high" : "auto"}
+            loading={index < 6 ? "eager" : "lazy"}
+            fetchPriority={index < 6 ? "high" : "auto"}
             decoding="async"
             className="w-full h-full object-contain transition-all duration-500"
             referrerPolicy="no-referrer"

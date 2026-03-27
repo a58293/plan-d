@@ -17,9 +17,24 @@ export default function StudioIntro() {
           {/* English Section */}
           <div className="space-y-16">
             <h2 
-              className="font-mincho uppercase text-[clamp(10px,4.5vw,24px)] sm:text-2xl md:text-6xl tracking-tighter sm:tracking-[0.15em] text-gray-900 leading-tight whitespace-nowrap"
+              className="font-mincho uppercase text-gray-900 leading-none"
             >
-              <SplitColorText text="ART · CRAFT · CULTURE" defaultColor="#111827" fontClass="font-mincho" />
+              {/* Desktop: Single Line */}
+              <div className="hidden sm:block text-[clamp(10px,4.5vw,24px)] md:text-6xl tracking-[0.15em] whitespace-nowrap">
+                <SplitColorText text="ART · CRAFT · CULTURE" defaultColor="#111827" fontClass="font-mincho" />
+              </div>
+              {/* Mobile: Three Lines, Larger */}
+              <div className="sm:hidden flex flex-col gap-4 text-5xl tracking-tighter">
+                <div className="flex justify-start">
+                  <SplitColorText text="ART" defaultColor="#111827" fontClass="font-mincho" />
+                </div>
+                <div className="flex justify-start">
+                  <SplitColorText text="CRAFT" defaultColor="#111827" fontClass="font-mincho" />
+                </div>
+                <div className="flex justify-start">
+                  <SplitColorText text="CULTURE" defaultColor="#111827" fontClass="font-mincho" />
+                </div>
+              </div>
             </h2>
             <div 
               className="font-mincho font-black text-2xl md:text-4xl leading-[1.5] md:leading-[1.2] text-gray-800 space-y-12 tracking-widest max-w-6xl"
