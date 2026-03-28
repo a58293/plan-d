@@ -18,6 +18,8 @@
 }
 
 @theme {
+  --font-en: "Genkai", "Times New Roman", Georgia, serif;
+  --font-zh: "NamiSong", "Songti SC", "STSong", "SimSun", serif;
   --font-mincho: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
   --font-custom: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
 }
@@ -40,6 +42,22 @@ body {
   font-feature-settings: "palt";
 }
 
+.font-en {
+  font-family: "Genkai", "Times New Roman", Georgia, serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  font-synthesis: none !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+.font-zh {
+  font-family: "NamiSong", "Songti SC", "STSong", "SimSun", serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  font-synthesis: none !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
 .font-mincho {
   font-family: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif !important;
   font-weight: 400 !important;
@@ -51,11 +69,6 @@ body {
 h1, h2, h3, h4, h5, h6, p, span, div, a {
   font-synthesis: none !important;
   -webkit-font-smoothing: antialiased !important;
-  font-weight: 400;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
   font-weight: 400;
 }
 

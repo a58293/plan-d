@@ -1,146 +1,85 @@
-import { Link } from "react-router-dom";
 import { motion } from "motion/react";
-import { ArrowRight } from "lucide-react";
 import { SplitColorText } from "./HoverColorText";
 
 export default function StudioIntro() {
   return (
-    <section className="w-full bg-white py-24 px-6 md:px-12 lg:px-24 relative">
-      <div className="max-w-5xl mx-auto">
+    <section className="w-full bg-white px-4 sm:px-6 md:px-10 lg:px-16 py-4 md:py-6">
+      <div className="mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="space-y-16"
+          className="min-h-[100svh] md:h-[100svh] overflow-hidden flex flex-col"
         >
-          <div className="space-y-16">
-            <h2 
-              className="font-mincho font-normal uppercase text-gray-900 leading-none"
-            >
-              {/* Desktop: Single Line */}
-              <div className="hidden sm:block text-[clamp(10px,4.5vw,24px)] md:text-6xl tracking-[0.15em] whitespace-nowrap">
-                <SplitColorText text="ART · CRAFT · CULTURE" defaultColor="#111827" fontClass="font-mincho" />
-              </div>
-              {/* Mobile: Three Lines, Larger */}
-              <div className="sm:hidden flex flex-col gap-4 text-5xl tracking-tighter">
-                <div className="flex justify-start">
-                  <SplitColorText text="ART" defaultColor="#111827" fontClass="font-mincho" />
-                </div>
-                <div className="flex justify-start">
-                  <SplitColorText text="CRAFT" defaultColor="#111827" fontClass="font-mincho" />
-                </div>
-                <div className="flex justify-start">
-                  <SplitColorText text="CULTURE" defaultColor="#111827" fontClass="font-mincho" />
-                </div>
-              </div>
+          <div className="shrink-0 border-b border-gray-900/40 pb-3 md:pb-4">
+            <h2 className="font-en uppercase text-gray-900 leading-none tracking-[0.14em] text-[clamp(26px,5vw,72px)] whitespace-nowrap">
+              <SplitColorText text="ART · CRAFT · CULTURE" defaultColor="#111827" fontClass="font-en" />
             </h2>
-            <div 
-              className="font-mincho font-normal text-2xl md:text-4xl leading-[1.5] md:leading-[1.2] text-gray-800 space-y-12 tracking-widest max-w-6xl"
-            >
-              <div className="space-y-2">
-                <p className="block">
-                  <SplitColorText 
-                    text="In a world growing fast and complex," 
-                    defaultColor="#1f2937" 
-                    fontClass="font-mincho"
-                  />
-                </p>
-                <p className="block">
-                  <SplitColorText 
-                    text="Plan D seeks to be a quiet, luminous presence." 
-                    defaultColor="#1f2937" 
-                    fontClass="font-mincho"
-                  />
-                </p>
-              </div>
+          </div>
 
-              <div className="space-y-2">
-                <p className="block">
-                  <SplitColorText 
-                    text="A space where stories are shared," 
-                    defaultColor="#1f2937" 
-                    fontClass="font-mincho"
-                  />
-                </p>
-                <p className="block">
-                  <SplitColorText 
-                    text="to inspire and empower." 
-                    defaultColor="#1f2937" 
-                    fontClass="font-mincho"
-                  />
-                </p>
-              </div>
+          <div className="grid flex-1 min-h-0 grid-cols-1 md:grid-cols-2 gap-5 md:gap-10 pt-4 md:pt-6">
+            <div className="min-h-0 flex flex-col justify-center">
+              <h3 className="font-en uppercase text-gray-900 leading-none tracking-[0.12em] text-[clamp(24px,3.2vw,56px)] mb-4 md:mb-5">
+                <SplitColorText text="PLAN D" defaultColor="#111827" fontClass="font-en" />
+              </h3>
 
-              <div className="space-y-2">
-                <p className="block">
-                  <SplitColorText 
-                    text="Through Art, Craft, and Culture," 
-                    defaultColor="#1f2937" 
-                    fontClass="font-mincho"
+              <div
+                lang="en"
+                className="font-en text-gray-800 text-[clamp(14px,1.4vw,26px)] leading-[1.35] tracking-[0.06em] space-y-3 md:space-y-4"
+              >
+                <p>
+                  <SplitColorText
+                    text="In a world growing fast and complex, Plan D seeks to be a quiet, luminous presence."
+                    defaultColor="#1f2937"
+                    fontClass="font-en"
                   />
                 </p>
-                <p className="block">
-                  <SplitColorText 
-                    text="we carry forward Love, Beauty, and Imagination." 
-                    defaultColor="#1f2937" 
-                    fontClass="font-mincho"
+                <p>
+                  <SplitColorText
+                    text="A space where stories are shared, to inspire and empower."
+                    defaultColor="#1f2937"
+                    fontClass="font-en"
+                  />
+                </p>
+                <p>
+                  <SplitColorText
+                    text="Through Art, Craft, and Culture, we carry forward Love, Beauty, and Imagination."
+                    defaultColor="#1f2937"
+                    fontClass="font-en"
                   />
                 </p>
               </div>
             </div>
-          </div>
 
-          {/* Chinese Section */}
-          <div className="space-y-16 pt-32 border-t-2 border-gray-900">
-            <h2 
-              className="font-mincho font-normal uppercase text-4xl md:text-6xl tracking-[0.15em] text-gray-900 leading-tight"
-            >
-              <SplitColorText text="PLAN D" defaultColor="#111827" fontClass="font-mincho" />
-            </h2>
-            <div 
-              className="font-mincho font-normal text-2xl md:text-4xl leading-[1.5] md:leading-[1.2] text-gray-800 space-y-12 tracking-widest max-w-6xl"
-            >
-              <div className="space-y-2">
-                <p className="block">
-                  <SplitColorText 
-                    text="Plan D 是一处持续实验的创作空间。" 
-                    defaultColor="#1f2937" 
-                    fontClass="font-mincho"
-                  />
-                </p>
-              </div>
+            <div className="min-h-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-gray-900/20 pt-5 md:pt-0 md:pl-10">
+              <h3 className="font-en uppercase text-gray-900 leading-none tracking-[0.12em] text-[clamp(24px,3.2vw,56px)] mb-4 md:mb-5">
+                <SplitColorText text="PLAN D" defaultColor="#111827" fontClass="font-en" />
+              </h3>
 
-              <div className="space-y-2">
-                <p className="block">
-                  <SplitColorText 
-                    text="关注艺术、工艺与文化的连接，" 
-                    defaultColor="#1f2937" 
-                    fontClass="font-mincho"
+              <div
+                lang="zh-CN"
+                className="font-zh text-gray-800 text-[clamp(16px,1.55vw,30px)] leading-[1.5] tracking-[0.04em] space-y-3 md:space-y-4"
+              >
+                <p>
+                  <SplitColorText
+                    text="Plan D 是一处持续实验的创作空间。"
+                    defaultColor="#1f2937"
+                    fontClass="font-zh"
                   />
                 </p>
-                <p className="block">
-                  <SplitColorText 
-                    text="探寻创作者在当下的表达。" 
-                    defaultColor="#1f2937" 
-                    fontClass="font-mincho"
+                <p>
+                  <SplitColorText
+                    text="关注艺术、工艺与文化的连接，探寻创作者在当下的表达。"
+                    defaultColor="#1f2937"
+                    fontClass="font-zh"
                   />
                 </p>
-              </div>
-
-              <div className="space-y-2">
-                <p className="block">
-                  <SplitColorText 
-                    text="在喧嚣的世界里，" 
-                    defaultColor="#1f2937" 
-                    fontClass="font-mincho"
-                  />
-                </p>
-                <p className="block">
-                  <SplitColorText 
-                    text="我们选择缓慢、专注与长期。" 
-                    defaultColor="#1f2937" 
-                    fontClass="font-mincho"
+                <p>
+                  <SplitColorText
+                    text="在喧嚣的世界里，我们选择缓慢、专注与长期。"
+                    defaultColor="#1f2937"
+                    fontClass="font-zh"
                   />
                 </p>
               </div>
