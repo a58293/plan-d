@@ -1,7 +1,6 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
-import { Plus } from "lucide-react";
-import HoverColorText, { SplitColorText } from "./HoverColorText";
+import { SplitColorText } from "./HoverColorText";
 import { homeCategories } from "../content";
 
 export default function HomeGallery() {
@@ -26,22 +25,33 @@ export default function HomeGallery() {
                 loading={i === 0 ? "eager" : "lazy"}
                 fetchPriority={i === 0 ? "high" : "auto"}
                 decoding="async"
-                className={`w-full h-full transition-transform duration-700 group-hover:scale-110 ${item.objectFit === "contain" ? "object-contain p-4" : "object-cover"}`}
+                className={`w-full h-full transition-transform duration-700 group-hover:scale-110 ${
+                  item.objectFit === "contain" ? "object-contain p-4" : "object-cover"
+                }`}
                 referrerPolicy="no-referrer"
               />
+
               <>
                 <div className="hidden lg:flex absolute inset-0 bg-transparent transition-colors duration-300 flex-col items-center justify-center gap-2">
                   {item.id !== "logo" && (
-                    <h3 className="text-white text-xl md:text-2xl font-mono font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                      <SplitColorText text={item.label} defaultColor="#ffffff" />
+                    <h3 className="font-en text-white text-xl md:text-2xl font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 tracking-[0.18em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                      <SplitColorText
+                        text={item.label}
+                        defaultColor="#ffffff"
+                        fontClass="font-en"
+                      />
                     </h3>
                   )}
                 </div>
 
                 <div className="lg:hidden absolute inset-x-0 bottom-0 p-3 pt-8 flex flex-col items-start justify-end">
                   {item.id !== "logo" && (
-                    <h3 className="text-white text-sm font-mono font-bold tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                      <SplitColorText text={item.label} defaultColor="#ffffff" />
+                    <h3 className="font-en text-white text-sm font-bold tracking-[0.16em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                      <SplitColorText
+                        text={item.label}
+                        defaultColor="#ffffff"
+                        fontClass="font-en"
+                      />
                     </h3>
                   )}
                 </div>
