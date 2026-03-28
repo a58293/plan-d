@@ -1,87 +1,99 @@
 import { motion } from "motion/react";
 import { SplitColorText } from "./HoverColorText";
 
+const blocks = [
+  {
+    en: "In a world growing fast and complex, Plan D seeks to be a quiet, luminous presence.",
+    zh: "Plan D 是一处持续实验的创作空间。"
+  },
+  {
+    en: "A space where stories are shared, to inspire and empower.",
+    zh: "关注艺术、工艺与文化的连接，探寻创作者在当下的表达。"
+  },
+  {
+    en: "Through Art, Craft, and Culture, we carry forward Love, Beauty, and Imagination.",
+    zh: "在喧嚣的世界里，我们选择缓慢、专注与长期。"
+  }
+];
+
 export default function StudioIntro() {
   return (
-    <section className="w-full bg-white px-4 sm:px-6 md:px-10 lg:px-16 py-4 md:py-6">
+    <section className="w-full bg-[#f5f4f0] px-5 sm:px-6 md:px-10 lg:px-16 py-10 md:py-12">
       <div className="mx-auto max-w-7xl">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="min-h-[100svh] md:h-[100svh] overflow-hidden flex flex-col"
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.7 }}
+          className="rounded-[28px] border border-black/10 bg-white/45 backdrop-blur-[2px] shadow-[0_8px_30px_rgba(0,0,0,0.04)]"
         >
-          <div className="shrink-0 border-b border-gray-900/40 pb-3 md:pb-4">
-            <h2 className="font-en uppercase text-gray-900 leading-none tracking-[0.14em] text-[clamp(26px,5vw,72px)] whitespace-nowrap">
-              <SplitColorText text="ART · CRAFT · CULTURE" defaultColor="#111827" fontClass="font-en" />
-            </h2>
-          </div>
+          <div className="px-5 sm:px-7 md:px-10 lg:px-14 py-6 md:py-8 lg:py-10">
+            <div className="flex flex-col gap-4 md:gap-5 border-b border-black/10 pb-5 md:pb-6">
+              <div className="hidden md:block">
+                <h2 className="font-en uppercase text-[#111827] leading-none tracking-[0.12em] text-[clamp(34px,5vw,86px)]">
+                  <SplitColorText text="ART · CRAFT · CULTURE" defaultColor="#111827" fontClass="font-en" />
+                </h2>
+              </div>
 
-          <div className="grid flex-1 min-h-0 grid-cols-1 md:grid-cols-2 gap-5 md:gap-10 pt-4 md:pt-6">
-            <div className="min-h-0 flex flex-col justify-center">
-              <h3 className="font-en uppercase text-gray-900 leading-none tracking-[0.12em] text-[clamp(24px,3.2vw,56px)] mb-4 md:mb-5">
-                <SplitColorText text="PLAN D" defaultColor="#111827" fontClass="font-en" />
-              </h3>
+              <div className="md:hidden">
+                <div className="flex flex-col gap-2 text-[#111827]">
+                  <h2 className="font-en uppercase leading-none tracking-[0.08em] text-[clamp(30px,11vw,48px)]">
+                    <SplitColorText text="ART · CRAFT" defaultColor="#111827" fontClass="font-en" />
+                  </h2>
+                  <h2 className="font-en uppercase leading-none tracking-[0.08em] text-[clamp(30px,11vw,48px)]">
+                    <SplitColorText text="CULTURE" defaultColor="#111827" fontClass="font-en" />
+                  </h2>
+                </div>
+              </div>
 
-              <div
-                lang="en"
-                className="font-en text-gray-800 text-[clamp(14px,1.4vw,26px)] leading-[1.35] tracking-[0.06em] space-y-3 md:space-y-4"
-              >
-                <p>
-                  <SplitColorText
-                    text="In a world growing fast and complex, Plan D seeks to be a quiet, luminous presence."
-                    defaultColor="#1f2937"
-                    fontClass="font-en"
-                  />
+              <div className="flex items-center justify-between gap-4">
+                <p className="font-en uppercase text-[11px] md:text-xs tracking-[0.28em] text-black/55">
+                  Studio Introduction
                 </p>
-                <p>
-                  <SplitColorText
-                    text="A space where stories are shared, to inspire and empower."
-                    defaultColor="#1f2937"
-                    fontClass="font-en"
-                  />
-                </p>
-                <p>
-                  <SplitColorText
-                    text="Through Art, Craft, and Culture, we carry forward Love, Beauty, and Imagination."
-                    defaultColor="#1f2937"
-                    fontClass="font-en"
-                  />
-                </p>
+                <div className="h-px flex-1 bg-black/10" />
               </div>
             </div>
 
-            <div className="min-h-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-gray-900/20 pt-5 md:pt-0 md:pl-10">
-              <h3 className="font-en uppercase text-gray-900 leading-none tracking-[0.12em] text-[clamp(24px,3.2vw,56px)] mb-4 md:mb-5">
-                <SplitColorText text="PLAN D" defaultColor="#111827" fontClass="font-en" />
-              </h3>
+            <div className="grid grid-cols-1 lg:grid-cols-[220px_minmax(0,1fr)] gap-7 md:gap-8 lg:gap-12 pt-7 md:pt-8">
+              <div className="lg:pt-1">
+                <div className="sticky top-8">
+                  <h3 className="font-en uppercase text-[#111827] leading-none tracking-[0.1em] text-[clamp(30px,3.2vw,58px)]">
+                    <SplitColorText text="PLAN D" defaultColor="#111827" fontClass="font-en" />
+                  </h3>
+                  <p className="font-zh mt-4 text-[14px] md:text-[15px] leading-[1.8] tracking-[0.03em] text-black/55 max-w-[18rem]">
+                    一个关注艺术、工艺与文化连接的创作现场。
+                  </p>
+                </div>
+              </div>
 
-              <div
-                lang="zh-CN"
-                className="font-zh text-gray-800 text-[clamp(16px,1.55vw,30px)] leading-[1.5] tracking-[0.04em] space-y-3 md:space-y-4"
-              >
-                <p>
-                  <SplitColorText
-                    text="Plan D 是一处持续实验的创作空间。"
-                    defaultColor="#1f2937"
-                    fontClass="font-zh"
-                  />
-                </p>
-                <p>
-                  <SplitColorText
-                    text="关注艺术、工艺与文化的连接，探寻创作者在当下的表达。"
-                    defaultColor="#1f2937"
-                    fontClass="font-zh"
-                  />
-                </p>
-                <p>
-                  <SplitColorText
-                    text="在喧嚣的世界里，我们选择缓慢、专注与长期。"
-                    defaultColor="#1f2937"
-                    fontClass="font-zh"
-                  />
-                </p>
+              <div className="grid grid-cols-1 gap-4 md:gap-5">
+                {blocks.map((item, index) => (
+                  <div
+                    key={index}
+                    className="rounded-[22px] border border-black/8 bg-white/70 px-4 sm:px-5 md:px-6 py-4 md:py-5"
+                  >
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 md:items-start">
+                      <div>
+                        <p className="font-en text-[#1f2937] text-[clamp(16px,1.45vw,27px)] leading-[1.35] tracking-[0.03em]">
+                          <SplitColorText
+                            text={item.en}
+                            defaultColor="#1f2937"
+                            fontClass="font-en"
+                          />
+                        </p>
+                      </div>
+                      <div>
+                        <p className="font-zh text-[#1f2937] text-[clamp(18px,1.5vw,29px)] leading-[1.58] tracking-[0.02em]">
+                          <SplitColorText
+                            text={item.zh}
+                            defaultColor="#1f2937"
+                            fontClass="font-zh"
+                          />
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
