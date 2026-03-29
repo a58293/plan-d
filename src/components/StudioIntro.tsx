@@ -14,8 +14,8 @@ export default function StudioIntro() {
         >
           <div className="space-y-8 md:space-y-10">
             <div className="space-y-8 md:space-y-10">
-              <h2 className="font-mincho font-normal uppercase text-gray-900 leading-none">
-                <div className="hidden sm:block text-[clamp(24px,4vw,64px)] tracking-[0.12em] whitespace-nowrap">
+              <h2 className="font-mincho font-normal uppercase text-gray-900 leading-none text-[clamp(24px,4vw,64px)] tracking-[0.12em]">
+                <div className="hidden sm:block whitespace-nowrap">
                   <SplitColorText
                     text="ART · CRAFT · CULTURE"
                     defaultColor="#111827"
@@ -23,7 +23,7 @@ export default function StudioIntro() {
                   />
                 </div>
 
-                <div className="sm:hidden flex flex-col gap-2 text-[clamp(26px,9vw,42px)] tracking-[0.08em]">
+                <div className="sm:hidden flex flex-col gap-2">
                   <div className="flex justify-start">
                     <SplitColorText
                       text="ART · CRAFT"
