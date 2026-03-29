@@ -3,7 +3,7 @@ import { SplitColorText } from "./HoverColorText";
 
 export default function StudioIntro() {
   return (
-    <section className="w-full bg-white px-5 md:px-10 lg:px-16 py-8 md:py-10">
+    <section className="w-full bg-white px-5 md:px-10 lg:px-16 py-8 md:py-10 overflow-x-hidden">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -14,31 +14,12 @@ export default function StudioIntro() {
         >
           <div className="space-y-8 md:space-y-10">
             <div className="space-y-8 md:space-y-10">
-              <h2 className="font-mincho font-normal uppercase text-gray-900 leading-none text-[clamp(24px,4vw,64px)] tracking-[0.12em]">
-                <div className="hidden sm:block whitespace-nowrap">
-                  <SplitColorText
-                    text="ART · CRAFT · CULTURE"
-                    defaultColor="#111827"
-                    fontClass="font-mincho"
-                  />
-                </div>
-
-                <div className="sm:hidden flex flex-col gap-2">
-                  <div className="flex justify-start">
-                    <SplitColorText
-                      text="ART · CRAFT"
-                      defaultColor="#111827"
-                      fontClass="font-mincho"
-                    />
-                  </div>
-                  <div className="flex justify-start">
-                    <SplitColorText
-                      text="CULTURE"
-                      defaultColor="#111827"
-                      fontClass="font-mincho"
-                    />
-                  </div>
-                </div>
+              <h2 className="font-mincho font-normal uppercase text-gray-900 leading-none text-[clamp(18px,5.6vw,64px)] tracking-[0.08em] whitespace-nowrap">
+                <SplitColorText
+                  text="ART · CRAFT · CULTURE"
+                  defaultColor="#111827"
+                  fontClass="font-mincho"
+                />
               </h2>
 
               <div className="font-mincho font-normal text-[clamp(16px,2vw,30px)] leading-[1.3] text-gray-800 space-y-6 md:space-y-7 tracking-[0.04em] max-w-5xl">
