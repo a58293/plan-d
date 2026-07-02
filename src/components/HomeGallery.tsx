@@ -11,6 +11,7 @@ type WorkTile = {
   label: string;
   subtitle?: string;
   className: string;
+  mobileClassName?: string;
   imageClassName?: string;
   category: HomeCategory;
 };
@@ -89,7 +90,7 @@ function WorkTileCard({ tile, index }: { tile: WorkTile; index: number }) {
   return (
     <SmartLink
       category={tile.category}
-      className={`group relative block overflow-hidden rounded-[2px] bg-[#ECE8E0] ${tile.className}`}
+      className={`group relative block overflow-hidden rounded-[2px] border border-white/70 bg-[#ECE8E0] shadow-[0_20px_50px_rgba(15,23,42,0.08)] ${tile.mobileClassName ?? "aspect-[4/3]"} lg:absolute ${tile.className}`}
     >
       <motion.div
         className="relative h-full w-full"
@@ -108,13 +109,13 @@ function WorkTileCard({ tile, index }: { tile: WorkTile; index: number }) {
           className={`h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.035] ${tile.imageClassName ?? ""}`}
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/48 via-black/10 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-92" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/48 via-black/8 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-92" />
 
-        <div className="absolute inset-x-0 bottom-0 p-5 md:p-6 text-[#F7F2EA]">
+        <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 text-[#F7F2EA] lg:p-6">
           <p className="font-en text-[10px] md:text-[11px] tracking-[0.22em] uppercase opacity-80">
             {tile.subtitle || tile.label}
           </p>
-          <h3 className="mt-2 font-site text-[clamp(18px,1.9vw,32px)] leading-[1.08] tracking-[0.08em] [text-shadow:0_2px_10px_rgba(0,0,0,0.35)]">
+          <h3 className="mt-2 font-site text-[clamp(18px,1.8vw,32px)] leading-[1.08] tracking-[0.08em] [text-shadow:0_2px_10px_rgba(0,0,0,0.35)]">
             <SplitColorText text={tile.label} defaultColor="#F7F2EA" fontClass="font-site" />
           </h3>
         </div>
@@ -133,7 +134,7 @@ export default function HomeGallery() {
       label: "品牌设计",
       subtitle: "Brand Design",
       category: getCategory("installation"),
-      className: "col-start-1 col-end-8 row-start-1 row-end-5",
+      className: "left-[10%] top-[4%] h-[24%] w-[46%]",
     },
     {
       id: "bjd",
@@ -141,7 +142,8 @@ export default function HomeGallery() {
       label: "球形关节人偶",
       subtitle: "BJD Project",
       category: getCategory("bjd"),
-      className: "col-start-8 col-end-13 row-start-1 row-end-8",
+      className: "right-[0%] top-[0%] h-[42%] w-[38%]",
+      mobileClassName: "aspect-[3/4]",
     },
     {
       id: "graphic",
@@ -149,7 +151,7 @@ export default function HomeGallery() {
       label: "VI设计",
       subtitle: "Visual Identity",
       category: getCategory("graphic"),
-      className: "col-start-1 col-end-4 row-start-5 row-end-9",
+      className: "left-[0%] top-[33%] h-[24%] w-[24%]",
     },
     {
       id: "illustration",
@@ -157,7 +159,8 @@ export default function HomeGallery() {
       label: "商业插画",
       subtitle: "Illustration",
       category: getCategory("illustration"),
-      className: "col-start-4 col-end-8 row-start-5 row-end-9",
+      className: "left-[20%] top-[31%] h-[30%] w-[36%]",
+      imageClassName: "object-center",
     },
     {
       id: "spatial",
@@ -165,15 +168,8 @@ export default function HomeGallery() {
       label: "装置艺术",
       subtitle: "Spatial Installation",
       category: getCategory("spatial"),
-      className: "col-start-1 col-end-8 row-start-9 row-end-13",
-    },
-    {
-      id: "mcn",
-      title: "模特经纪",
-      label: "模特经纪",
-      subtitle: "Model Agency",
-      category: getCategory("mcn"),
-      className: "col-start-8 col-end-13 row-start-8 row-end-13",
+      className: "left-[7%] top-[64%] h-[28%] w-[48%]",
+      mobileClassName: "aspect-[16/9]",
     },
   ];
 
@@ -188,9 +184,9 @@ export default function HomeGallery() {
           </div>
         </header>
 
-        <div className="grid flex-1 grid-cols-1 gap-10 pt-14 lg:grid-cols-[41%_59%] lg:gap-12 lg:pt-12 xl:gap-16">
+        <div className="grid flex-1 grid-cols-1 gap-10 pt-12 lg:grid-cols-[41%_59%] lg:gap-12 lg:pt-10 xl:gap-16">
           <motion.div
-            className="flex flex-col justify-center lg:pb-8"
+            className="flex flex-col justify-center lg:pb-10"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.72, ease: "easeOut" }}
@@ -238,33 +234,14 @@ export default function HomeGallery() {
             </Link>
           </motion.div>
 
-          <div className="flex items-center lg:justify-end lg:pt-4">
-            <div className="grid h-[640px] w-full grid-cols-12 grid-rows-[repeat(12,minmax(0,1fr))] gap-1.5 border border-[#ECE7DE] bg-[#FCFBF8] p-1.5 shadow-[0_20px_70px_rgba(18,24,35,0.06)] md:h-[720px] lg:h-[79vh] lg:min-h-[650px]">
+          <div className="flex items-center lg:justify-end lg:pt-3">
+            <div className="relative flex w-full flex-col gap-4 md:gap-5 lg:h-[78vh] lg:min-h-[640px] lg:gap-0">
               {tiles.map((tile, index) => (
                 <WorkTileCard key={tile.id} tile={tile} index={index} />
               ))}
-
-              <Link
-                to="/graphic"
-                className="group col-span-12 row-span-1 flex items-center justify-between bg-[#132238] px-7 md:px-10 text-[#F4F0EA]"
-              >
-                <span className="font-en text-[14px] tracking-[0.04em] md:text-[16px]">Selected Works</span>
-                <span className="inline-flex items-center gap-8 font-site text-[14px] tracking-[0.14em] md:text-[16px]">
-                  <SplitColorText text="查看精选作品" defaultColor="#F4F0EA" fontClass="font-site" />
-                  <span className="relative inline-flex h-px w-14 bg-[#F4F0EA] transition-all duration-300 group-hover:w-20">
-                    <span className="absolute right-0 top-1/2 h-2 w-2 -translate-y-1/2 rotate-45 border-r border-t border-[#F4F0EA]" />
-                  </span>
-                </span>
-              </Link>
             </div>
           </div>
         </div>
-
-        <footer className="mt-8 hidden border-t border-[#D8D3CA] pt-6 text-[12px] tracking-[0.18em] text-[#8B8E94] md:grid md:grid-cols-3">
-          <div className="font-en uppercase">Commercial Aesthetics</div>
-          <div className="text-center font-en uppercase">Strategy × Design × Impact</div>
-          <div className="text-right font-en uppercase">© Lumen Auralis Studio</div>
-        </footer>
       </div>
     </section>
   );
