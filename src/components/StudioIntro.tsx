@@ -20,14 +20,14 @@ export default function StudioIntro() {
                 以造物之心，重塑商业美学。
               </h2>
 
-              <div className="max-w-[70rem] text-[#3B4352] space-y-2 md:space-y-3">
-                <p className="font-site text-[clamp(17px,1.7vw,28px)] leading-[1.82] tracking-[0.01em] m-0">
+              <div className="max-w-[72rem] space-y-3 md:space-y-4 text-[#3B4352]">
+                <p className="font-site text-[clamp(17px,1.7vw,28px)] leading-[1.82] tracking-[0.01em]">
                   绘屿造物（Lumen Auralis）是一家专注品牌构建与视觉传达的先锋设计机构。
                 </p>
-                <p className="font-site text-[clamp(17px,1.7vw,28px)] leading-[1.82] tracking-[0.01em] m-0">
+                <p className="font-site text-[clamp(17px,1.7vw,28px)] leading-[1.82] tracking-[0.01em]">
                   我们将顶尖艺术造诣注入商业逻辑，通过品牌全案、平面VI与商业海报的精准输出。
                 </p>
-                <p className="font-site text-[clamp(17px,1.7vw,28px)] leading-[1.82] tracking-[0.01em] m-0">
+                <p className="font-site text-[clamp(17px,1.7vw,28px)] leading-[1.82] tracking-[0.01em]">
                   打破平庸，为您的品牌建立不可替代的视觉壁垒与商业溢价。
                 </p>
               </div>
@@ -42,18 +42,18 @@ export default function StudioIntro() {
               <div className="h-px flex-1 bg-gray-200" />
             </div>
 
-            <div className="grid grid-cols-3 gap-x-3 gap-y-6 md:gap-x-5 md:gap-y-8 pt-1">
+            <div className="grid grid-cols-3 gap-x-2 gap-y-5 md:gap-x-4 md:gap-y-7 pt-1">
               {homepageLogos.map((item) => (
                 <div
                   key={item.id}
-                  className="min-h-[74px] md:min-h-[88px] lg:min-h-[96px] flex items-center justify-center px-1"
+                  className="min-h-[86px] md:min-h-[102px] lg:min-h-[116px] flex items-center justify-center px-0"
                 >
                   <img
                     src={item.src}
                     alt={item.alt || `合作品牌 ${item.id}`}
                     loading="lazy"
                     decoding="async"
-                    className="max-w-full max-h-[62px] md:max-h-[76px] lg:max-h-[84px] object-contain opacity-95"
+                    className="w-full max-h-[74px] md:max-h-[90px] lg:max-h-[98px] object-contain opacity-95"
                     referrerPolicy="no-referrer"
                   />
                 </div>

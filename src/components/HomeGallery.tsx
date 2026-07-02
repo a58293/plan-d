@@ -29,9 +29,9 @@ const categoryOverrides = {
     cardLabel: "VI设计",
   },
   illustration: {
-    label: "商业插画海报",
+    label: "商业海报",
     className: "col-span-2 row-span-1 md:col-span-2 md:row-span-1 md:col-start-3 md:row-start-3",
-    cardLabel: "商业插画海报",
+    cardLabel: "商业海报",
   },
   mcn: {
     hidden: true,
@@ -52,8 +52,9 @@ export default function HomeGallery() {
         {categories.map((item, i) => {
           const isBjd = item.id === "bjd";
           const centerLabel = (item as { cardLabel?: string }).cardLabel || item.labelCn || item.label;
-          const showCenterLabel = centerLabel.trim().length > 0;
-          const labelSizeClass = centerLabel.length >= 7 ? "text-[14px] md:text-[18px]" : "text-[16px] md:text-[20px]";
+          const showCenterLabel = item.id !== "logo" && centerLabel.trim().length > 0;
+          const labelSizeClass =
+            centerLabel.length >= 7 ? "text-[14px] md:text-[18px]" : "text-[16px] md:text-[20px]";
 
           const content = (
             <motion.div
@@ -70,14 +71,18 @@ export default function HomeGallery() {
                 loading={i === 0 ? "eager" : "lazy"}
                 fetchPriority={i === 0 ? "high" : "auto"}
                 decoding="async"
-                className={`w-full h-full transition-transform duration-700 ${!isBjd ? "group-hover:scale-105" : ""} ${item.objectFit === "contain" ? "object-contain p-4 md:p-5" : "object-cover"}`}
+                className={`w-full h-full transition-transform duration-700 ${
+                  !isBjd ? "group-hover:scale-105" : ""
+                } ${item.objectFit === "contain" ? "object-contain p-4 md:p-5" : "object-cover"}`}
                 referrerPolicy="no-referrer"
               />
 
               {showCenterLabel && (
-                <div className="absolute inset-0 flex items-center justify-center px-4 pointer-events-none">
-                  <div className="absolute w-[62%] h-[34%] rounded-full bg-black/16 blur-3xl opacity-80" />
-                  <span className={`relative font-site ${labelSizeClass} leading-none tracking-[0.06em] text-[#F6F1E8] text-center [text-shadow:0_2px_10px_rgba(0,0,0,0.35),0_1px_3px_rgba(0,0,0,0.62)]`}>
+                <div className="absolute inset-0 flex items-center justify-center px-4">
+                  <div className="absolute w-[60%] h-[32%] rounded-full bg-black/14 blur-3xl opacity-70 pointer-events-none" />
+                  <span
+                    className={`relative font-site ${labelSizeClass} leading-none tracking-[0.06em] text-[#F6F1E8] text-center [text-shadow:0_2px_10px_rgba(0,0,0,0.35),0_1px_3px_rgba(0,0,0,0.62)]`}
+                  >
                     <SplitColorText
                       text={centerLabel}
                       defaultColor="#F6F1E8"
@@ -90,7 +95,7 @@ export default function HomeGallery() {
               {isBjd && (
                 <>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/24 via-transparent to-transparent" />
-                  <span className="absolute right-3 bottom-3 font-site text-[12px] md:text-sm tracking-[0.08em] text-white/95 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)] pointer-events-none">
+                  <span className="absolute right-3 bottom-3 font-site text-[12px] md:text-sm tracking-[0.08em] text-white/95 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]">
                     <SplitColorText text="敬请等待" defaultColor="#ffffff" fontClass="font-site" />
                   </span>
                 </>
@@ -99,7 +104,11 @@ export default function HomeGallery() {
           );
 
           if (isBjd) {
-            return <div key={item.id} className={item.className} aria-disabled="true">{content}</div>;
+            return (
+              <div key={item.id} className={item.className} aria-disabled="true">
+                {content}
+              </div>
+            );
           }
 
           if (item.href) {
@@ -115,7 +124,9 @@ export default function HomeGallery() {
               {content}
             </Link>
           ) : (
-            <div key={item.id} className={item.className}>{content}</div>
+            <div key={item.id} className={item.className}>
+              {content}
+            </div>
           );
         })}
       </div>
