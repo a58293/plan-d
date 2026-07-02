@@ -163,38 +163,38 @@ export const logoImages = _logoImages;
 // ==========================================
 // 3. 商业海报 (Illustration / Posters)
 // 目录规则：
-// public/images/illustration/anime/01.jpg(.webp)
-// public/images/illustration/film/01.jpg(.webp)
-// public/images/illustration/game/01.jpg(.webp)
-// 修改下方 count 即可控制每个文件夹的图片数量
+// public/images/illustration/anime/001.jpg(.webp)
+// public/images/illustration/film/001.jpg(.webp)
+// public/images/illustration/game/001.jpg(.webp)
+// 同时兼容 01 / 001 两种编号写法，并自动过滤不存在的图片。
 // ==========================================
-const illustrationCategoryCounts = {
-  anime: 13,
-  film: 13,
-  game: 13,
-} as const;
+const illustrationCategoryMax = 120;
 
-const buildIllustrationImages = (folder: keyof typeof illustrationCategoryCounts) =>
-  Array.from(
-    { length: illustrationCategoryCounts[folder] },
-    (_, i) => photo(`illustration/${folder}/${String(i + 1).padStart(2, "0")}`)
-  );
+const buildIllustrationCandidates = (folder: "anime" | "film" | "game") =>
+  Array.from({ length: illustrationCategoryMax }, (_, i) => {
+    const num3 = String(i + 1).padStart(3, "0");
+    const num2 = String(i + 1).padStart(2, "0");
+    return [
+      photo(`illustration/${folder}/${num3}`),
+      photo(`illustration/${folder}/${num2}`),
+    ];
+  }).flat();
 
 export const illustrationCategories = [
   {
     key: "anime" as const,
     title: "动漫",
-    images: buildIllustrationImages("anime"),
+    images: buildIllustrationCandidates("anime"),
   },
   {
     key: "film" as const,
     title: "影视",
-    images: buildIllustrationImages("film"),
+    images: buildIllustrationCandidates("film"),
   },
   {
     key: "game" as const,
     title: "游戏",
-    images: buildIllustrationImages("game"),
+    images: buildIllustrationCandidates("game"),
   },
 ];
 
