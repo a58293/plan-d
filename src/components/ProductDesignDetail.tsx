@@ -21,7 +21,7 @@ export default function ProductDesignDetail() {
     return [project.src, ...(project.galleryImages || [])];
   }, [project]);
 
-  const isFullDisplayProject = project?.id === 9;
+  const isFullDisplayProject = project?.id === 10;
 
   useEffect(() => {
     if (allImages.length > 0) {

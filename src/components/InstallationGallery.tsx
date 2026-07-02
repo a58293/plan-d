@@ -9,7 +9,7 @@ import SectionPageIntro from "./SectionPageIntro";
 const ParallaxCard: React.FC<{ project: ProjectItem; index: number }> = ({ project, index }) => {
   const ref = useRef<HTMLDivElement>(null);
   const hasGallery = project.galleryImages && project.galleryImages.length > 0;
-  const isWideProject = project.id === 9;
+  const isWideProject = project.id === 10;
 
   return (
     <Link

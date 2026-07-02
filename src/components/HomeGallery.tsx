@@ -38,49 +38,6 @@ const categoryOverrides = {
   },
 } as const;
 
-const serviceBlocks = [
-  {
-    title: "品牌设计",
-    lines: [
-      "全维构建，定义品牌灵魂。",
-      "从顶层策略、核心基因到市场洞察，提供全方位的品牌全案服务。以全局视角与高级美学，构筑完整的品牌情感生态与长远商业价值。",
-    ],
-  },
-  {
-    title: "VI",
-    lines: [
-      "精准落地，统一视觉符号。",
-      "专注高品质的平面VI设计，将品牌理念提炼为兼具格调与严谨规范的平面视觉符号。确保品牌在所有媒介的触点上，都具备极致的辨识度与统一感。",
-    ],
-  },
-  {
-    title: "商业插画与海报",
-    lines: [
-      "高精度视觉呈现，赋能品牌表达。",
-      "将扎实的美学功底与商业诉求深度融合。为产品发布、活动宣发提供定制级的商业插画与海报设计。",
-    ],
-  },
-  {
-    title: "艺术装置与三维空间",
-    lines: [
-      "延展维度，探索实体交互。",
-      "将平面的设计理念自然延展至物理空间。通过艺术装置的设计与探索，为商业场景提供更具层次感的线下呈现，让品牌主张变得可触碰、可感知。",
-    ],
-  },
-];
-
-function ServiceText({
-  text,
-  className = "",
-  defaultColor = "#111827",
-}: {
-  text: string;
-  className?: string;
-  defaultColor?: string;
-}) {
-  return <SplitColorText text={text} defaultColor={defaultColor} fontClass={className} />;
-}
-
 export default function HomeGallery() {
   const categories = homeCategories
     .map((item) => ({
@@ -91,36 +48,7 @@ export default function HomeGallery() {
 
   return (
     <section className="w-full bg-white px-5 py-8 md:px-10 md:py-10 lg:px-16">
-      <div className="mx-auto w-full max-w-6xl space-y-8 md:space-y-10">
-        <div className="space-y-6 md:space-y-7 border-b border-gray-200 pb-8 md:pb-9">
-          <div className="flex items-center gap-4">
-            <span className="font-site text-[13px] md:text-[14px] tracking-[0.18em] text-[#8A8F98] whitespace-nowrap">
-              <ServiceText text="核心服务" className="font-site" defaultColor="#8A8F98" />
-            </span>
-            <div className="h-px flex-1 bg-gray-200" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 md:gap-y-7">
-            {serviceBlocks.map((block) => (
-              <div key={block.title} className="space-y-3 md:space-y-4">
-                <h2 className="font-site text-[clamp(23px,2.25vw,34px)] leading-none tracking-[0.06em] text-[#111827]">
-                  <ServiceText text={block.title} className="font-site" />
-                </h2>
-                <div className="space-y-2 md:space-y-2.5">
-                  {block.lines.map((line) => (
-                    <p
-                      key={line}
-                      className="font-site text-[16px] md:text-[18px] lg:text-[19px] leading-[1.78] tracking-[0.012em] text-[#4B5563]"
-                    >
-                      <ServiceText text={line} className="font-site" defaultColor="#4B5563" />
-                    </p>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
+      <div className="mx-auto w-full max-w-6xl">
         <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[150px] md:auto-rows-[210px]">
           {categories.map((item, i) => {
             const isBjd = item.id === "bjd";
