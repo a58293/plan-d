@@ -90,14 +90,14 @@ function WorkTileCard({ tile, index }: { tile: WorkTile; index: number }) {
   return (
     <SmartLink
       category={tile.category}
-      className={`group relative block overflow-hidden rounded-[2px] border border-white/70 bg-[#ECE8E0] shadow-[0_20px_50px_rgba(15,23,42,0.08)] ${tile.mobileClassName ?? "aspect-[4/3]"} lg:absolute ${tile.className}`}
+      className={`group relative block overflow-hidden bg-[#E9E5DD] ${tile.mobileClassName ?? "aspect-[4/3]"} lg:absolute ${tile.className}`}
     >
       <motion.div
         className="relative h-full w-full"
-        initial={{ opacity: 0, y: 18 }}
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "180px" }}
-        transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.05 }}
+        viewport={{ once: true, margin: "160px" }}
+        transition={{ duration: 0.68, ease: "easeOut", delay: index * 0.045 }}
       >
         <img
           src={tile.category.src}
@@ -106,17 +106,18 @@ function WorkTileCard({ tile, index }: { tile: WorkTile; index: number }) {
           fetchPriority={index < 2 ? "high" : "auto"}
           decoding="async"
           referrerPolicy="no-referrer"
-          className={`h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.035] ${tile.imageClassName ?? ""}`}
+          className={`h-full w-full object-cover saturate-[0.82] contrast-[0.96] brightness-[0.96] transition-transform duration-700 group-hover:scale-[1.025] ${tile.imageClassName ?? ""}`}
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/48 via-black/8 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-92" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0D1320]/52 via-[#0D1320]/8 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-88" />
+        <div className="absolute inset-0 ring-1 ring-inset ring-white/60" />
 
-        <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 text-[#F7F2EA] lg:p-6">
-          <p className="font-en text-[10px] md:text-[11px] tracking-[0.22em] uppercase opacity-80">
+        <div className="absolute inset-x-0 bottom-0 p-4 text-[#F6F1E8] md:p-5 lg:p-6">
+          <p className="font-en text-[9px] md:text-[10px] tracking-[0.24em] uppercase opacity-70">
             {tile.subtitle || tile.label}
           </p>
-          <h3 className="mt-2 font-site text-[clamp(18px,1.8vw,32px)] leading-[1.08] tracking-[0.08em] [text-shadow:0_2px_10px_rgba(0,0,0,0.35)]">
-            <SplitColorText text={tile.label} defaultColor="#F7F2EA" fontClass="font-site" />
+          <h3 className="mt-2 font-site text-[clamp(17px,1.6vw,28px)] leading-[1.1] tracking-[0.1em] [text-shadow:0_2px_12px_rgba(0,0,0,0.28)]">
+            <SplitColorText text={tile.label} defaultColor="#F6F1E8" fontClass="font-site" />
           </h3>
         </div>
       </motion.div>
@@ -134,7 +135,8 @@ export default function HomeGallery() {
       label: "品牌设计",
       subtitle: "Brand Design",
       category: getCategory("installation"),
-      className: "left-[10%] top-[4%] h-[24%] w-[46%]",
+      className: "left-[7%] top-[4%] h-[24%] w-[48%]",
+      mobileClassName: "aspect-[16/9]",
     },
     {
       id: "bjd",
@@ -142,8 +144,9 @@ export default function HomeGallery() {
       label: "球形关节人偶",
       subtitle: "BJD Project",
       category: getCategory("bjd"),
-      className: "right-[0%] top-[0%] h-[42%] w-[38%]",
+      className: "right-[3%] top-[0%] h-[42%] w-[35%]",
       mobileClassName: "aspect-[3/4]",
+      imageClassName: "object-[50%_42%]",
     },
     {
       id: "graphic",
@@ -151,7 +154,8 @@ export default function HomeGallery() {
       label: "VI设计",
       subtitle: "Visual Identity",
       category: getCategory("graphic"),
-      className: "left-[0%] top-[33%] h-[24%] w-[24%]",
+      className: "left-[0%] top-[36%] h-[24%] w-[28%]",
+      mobileClassName: "aspect-[4/3]",
     },
     {
       id: "illustration",
@@ -159,7 +163,8 @@ export default function HomeGallery() {
       label: "商业插画",
       subtitle: "Illustration",
       category: getCategory("illustration"),
-      className: "left-[20%] top-[31%] h-[30%] w-[36%]",
+      className: "left-[29%] top-[31%] h-[31%] w-[35%]",
+      mobileClassName: "aspect-[4/3]",
       imageClassName: "object-center",
     },
     {
@@ -168,8 +173,9 @@ export default function HomeGallery() {
       label: "装置艺术",
       subtitle: "Spatial Installation",
       category: getCategory("spatial"),
-      className: "left-[7%] top-[64%] h-[28%] w-[48%]",
+      className: "left-[9%] top-[70%] h-[22%] w-[53%]",
       mobileClassName: "aspect-[16/9]",
+      imageClassName: "object-[50%_44%]",
     },
   ];
 
@@ -184,7 +190,7 @@ export default function HomeGallery() {
           </div>
         </header>
 
-        <div className="grid flex-1 grid-cols-1 gap-10 pt-12 lg:grid-cols-[41%_59%] lg:gap-12 lg:pt-10 xl:gap-16">
+        <div className="grid flex-1 grid-cols-1 gap-12 pt-12 lg:grid-cols-[41%_59%] lg:gap-12 lg:pt-10 xl:gap-16">
           <motion.div
             className="flex flex-col justify-center lg:pb-10"
             initial={{ opacity: 0, y: 24 }}
@@ -235,7 +241,7 @@ export default function HomeGallery() {
           </motion.div>
 
           <div className="flex items-center lg:justify-end lg:pt-3">
-            <div className="relative flex w-full flex-col gap-4 md:gap-5 lg:h-[78vh] lg:min-h-[640px] lg:gap-0">
+            <div className="relative flex w-full flex-col gap-5 md:gap-6 lg:h-[78vh] lg:min-h-[640px] lg:gap-0 lg:before:absolute lg:before:left-[2%] lg:before:top-[14%] lg:before:h-[70%] lg:before:w-px lg:before:bg-[#DDD8CE] lg:after:absolute lg:after:left-[16%] lg:after:top-[94%] lg:after:h-px lg:after:w-[54%] lg:after:bg-[#DDD8CE]">
               {tiles.map((tile, index) => (
                 <WorkTileCard key={tile.id} tile={tile} index={index} />
               ))}
