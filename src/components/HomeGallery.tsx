@@ -154,7 +154,7 @@ export default function HomeGallery() {
       label: "装置艺术",
       subtitle: "Spatial Installation",
       category: getCategory("spatial"),
-      className: "md:col-span-1 lg:col-start-2 lg:col-end-6 lg:row-start-4 lg:row-end-6",
+      className: "md:col-span-1 lg:col-start-1 lg:col-end-5 lg:row-start-4 lg:row-end-8",
       imageClassName: "object-[50%_46%]",
     },
     {
@@ -163,7 +163,7 @@ export default function HomeGallery() {
       label: "VI设计",
       subtitle: "Visual Identity",
       category: getCategory("graphic"),
-      className: "md:col-span-1 lg:col-start-2 lg:col-end-6 lg:row-start-6 lg:row-end-8",
+      className: "md:col-span-1 lg:col-start-5 lg:col-end-9 lg:row-start-4 lg:row-end-8",
       imageClassName: "object-[50%_48%]",
     },
     {
@@ -208,7 +208,7 @@ export default function HomeGallery() {
 
             <h1 className="mt-10 max-w-[860px] font-site text-[clamp(48px,6.1vw,104px)] leading-[0.98] tracking-[0.028em] text-[#0F172A]">
               <span className="block whitespace-nowrap">
-                <SplitColorText text="以造物之心，" defaultColor="#0F172A" fontClass="font-site" />
+                <SplitColorText text="以造物之心" defaultColor="#0F172A" fontClass="font-site" />
               </span>
               <span className="mt-2 block whitespace-nowrap lg:mt-4">
                 <SplitColorText text="重塑商业美学" defaultColor="#0F172A" fontClass="font-site" />
