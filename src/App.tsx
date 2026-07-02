@@ -18,10 +18,10 @@ const InstallationGallery = lazy(() => import("./components/InstallationGallery"
 const ProductDesignDetail = lazy(() => import("./components/ProductDesignDetail"));
 const LogoGallery = lazy(() => import("./components/LogoGallery"));
 
-function ScrollToTopOnRouteChange() {
+function ScrollManager() {
   const location = useLocation();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (location.pathname !== "/") {
       window.scrollTo({ top: 0, behavior: "auto" });
     }
@@ -40,8 +40,8 @@ function HomeContent() {
 }
 
 function Home() {
-  const segmentRef = useRef(null);
-  const rafRef = useRef(null);
+  const segmentRef = useRef<HTMLDivElement | null>(null);
+  const rafRef = useRef<number | null>(null);
   const initializedRef = useRef(false);
 
   useLayoutEffect(() => {
@@ -146,6 +146,7 @@ function LogoCollection() {
   );
 }
 
+// 页面切换时的加载占位符
 const PageLoader = () => (
   <div className="min-h-screen w-full bg-white flex items-center justify-center">
     <div className="w-8 h-8 border-2 border-gray-200 border-t-black rounded-full animate-spin"></div>
@@ -155,7 +156,7 @@ const PageLoader = () => (
 export default function App() {
   return (
     <Router>
-      <ScrollToTopOnRouteChange />
+      <ScrollManager />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<Home />} />
