@@ -36,7 +36,7 @@ export default function StudioIntro() {
                   alt={item.alt || `合作品牌 ${item.id}`}
                   loading="lazy"
                   decoding="async"
-                  className="max-h-[52px] max-w-full object-contain opacity-80 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0 md:max-h-[64px]"
+                  className="max-h-[52px] max-w-full object-contain opacity-100 saturate-100 transition duration-300 hover:scale-[1.03] md:max-h-[64px]"
                   referrerPolicy="no-referrer"
                 />
               </div>

@@ -14,14 +14,6 @@ type WorkTile = {
   category: HomeCategory;
 };
 
-const services = [
-  { no: "01", title: "品牌构建", en: "Brand Strategy" },
-  { no: "02", title: "视觉传达", en: "Visual Identity" },
-  { no: "03", title: "VI设计", en: "Visual Identity" },
-  { no: "04", title: "商业插画", en: "Illustration" },
-  { no: "05", title: "海报设计", en: "Poster Design" },
-  { no: "06", title: "品牌设计", en: "Brand Design" },
-];
 
 function getCategory(id: string) {
   const matched = homeCategories.find((item) => item.id === id);
@@ -136,7 +128,7 @@ export default function HomeGallery() {
       label: "品牌设计",
       subtitle: "Brand Design",
       category: getCategory("installation"),
-      className: "md:col-span-2 lg:col-start-2 lg:col-end-8 lg:row-start-1 lg:row-end-4",
+      className: "md:col-span-2 lg:col-start-1 lg:col-end-8 lg:row-start-1 lg:row-end-4",
     },
     {
       id: "bjd",
@@ -161,7 +153,7 @@ export default function HomeGallery() {
       label: "商业插画",
       subtitle: "Illustration",
       category: getCategory("illustration"),
-      className: "md:col-span-1 lg:col-start-5 lg:col-end-10 lg:row-start-4 lg:row-end-8",
+      className: "md:col-span-1 lg:col-start-5 lg:col-end-8 lg:row-start-4 lg:row-end-7",
       imageClassName: "object-center",
     },
     {
@@ -170,7 +162,7 @@ export default function HomeGallery() {
       label: "装置艺术",
       subtitle: "Spatial Installation",
       category: getCategory("spatial"),
-      className: "md:col-span-2 lg:col-start-3 lg:col-end-12 lg:row-start-8 lg:row-end-11",
+      className: "md:col-span-2 lg:col-start-3 lg:col-end-12 lg:row-start-7 lg:row-end-11",
       imageClassName: "object-[50%_44%]",
     },
   ];
@@ -180,10 +172,6 @@ export default function HomeGallery() {
       <div className="mx-auto flex min-h-screen w-full max-w-[1760px] flex-col px-5 py-7 md:px-10 lg:px-16 xl:px-20">
         <header className="flex items-center justify-between gap-6">
           <BrandMark logo={logo} />
-
-          <div className="font-en text-[12px] md:text-[13px] tracking-[0.12em] text-[#111827] whitespace-nowrap">
-            CN <span className="text-[#9A968F]">/ EN</span>
-          </div>
         </header>
 
         <div className="grid flex-1 grid-cols-1 gap-12 pt-12 lg:grid-cols-[41%_59%] lg:gap-14 lg:pt-10 xl:gap-16">
@@ -202,38 +190,11 @@ export default function HomeGallery() {
               <span className="block">重塑商业美学</span>
             </h1>
 
-            <div className="mt-16 max-w-[860px] border-t border-[#DDD8CE] pt-8">
-              <div className="grid grid-cols-2 gap-y-7 sm:grid-cols-3 lg:grid-cols-6 lg:gap-y-0">
-                {services.map((service, index) => (
-                  <div
-                    key={service.no}
-                    className={`pr-4 ${index > 0 ? "lg:border-l lg:border-[#DDD8CE] lg:pl-6" : ""}`}
-                  >
-                    <div className="font-en text-[11px] tracking-[0.08em] text-[#64707D]">{service.no}</div>
-                    <div className="mt-3 font-site text-[15px] tracking-[0.06em] text-[#111827]">
-                      {service.title}
-                    </div>
-                    <div className="mt-1 font-en text-[11px] leading-snug tracking-[0.02em] text-[#7A838D]">
-                      {service.en}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <Link
-              to="/graphic"
-              className="group mt-12 inline-flex w-fit items-center gap-8 font-site text-[17px] tracking-[0.12em] text-[#111827]"
-            >
-              <span>探索更多服务</span>
-              <span className="relative inline-flex h-px w-16 bg-[#111827] transition-all duration-300 group-hover:w-24">
-                <span className="absolute right-0 top-1/2 h-2 w-2 -translate-y-1/2 rotate-45 border-r border-t border-[#111827]" />
-              </span>
-            </Link>
+            <div className="mt-16 h-px w-[72%] bg-[#DDD8CE]" />
           </motion.div>
 
           <div className="flex items-center lg:justify-end lg:pt-3">
-            <div className="relative grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:h-[76vh] lg:min-h-[640px] lg:grid-cols-12 lg:grid-rows-10 lg:gap-3 lg:before:absolute lg:before:left-[0.5%] lg:before:top-[12%] lg:before:h-[72%] lg:before:w-px lg:before:bg-[#DDD8CE] lg:after:absolute lg:after:left-[18%] lg:after:bottom-[0] lg:after:h-px lg:after:w-[64%] lg:after:bg-[#DDD8CE]">
+            <div className="relative grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:h-[76vh] lg:min-h-[640px] lg:grid-cols-12 lg:grid-rows-10 lg:gap-3">
               {tiles.map((tile, index) => (
                 <WorkTileCard key={tile.id} tile={tile} index={index} />
               ))}
