@@ -3,6 +3,8 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { graphicProjects, ProjectItem } from "../content";
+import { SplitColorText } from "./HoverColorText";
+import SectionPageIntro from "./SectionPageIntro";
 
 const ParallaxCard: React.FC<{ project: ProjectItem; index: number }> = ({ project, index }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -60,26 +62,19 @@ export default function GraphicDesignGallery() {
     return () => window.removeEventListener("resize", handleResize);
   }, [visibleCount]);
 
-  const handleLoadMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 9, projects.length));
-  };
-
   const loaderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && visibleCount < projects.length) {
-          handleLoadMore();
+          setVisibleCount((prev) => Math.min(prev + 9, projects.length));
         }
       },
       { threshold: 0.1, rootMargin: "300px" }
     );
 
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
-    }
-
+    if (loaderRef.current) observer.observe(loaderRef.current);
     return () => observer.disconnect();
   }, [visibleCount, projects.length]);
 
@@ -88,12 +83,26 @@ export default function GraphicDesignGallery() {
       <header className="w-full px-6 py-8 md:px-16 flex justify-between items-center border-b border-gray-50">
         <Link to="/" className="inline-flex items-center gap-2 text-gray-400 hover:text-black transition-colors group">
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Back</span>
+          <span className="font-en text-[10px] uppercase tracking-[0.3em]">
+            <SplitColorText text="Back" defaultColor="#9CA3AF" fontClass="font-en" />
+          </span>
         </Link>
+        <div className="font-site text-lg tracking-[0.12em] text-[#111827]">
+          <SplitColorText text="绘屿造物" defaultColor="#111827" fontClass="font-site" />
+        </div>
       </header>
 
-      <div className="w-full px-4 py-8 md:px-12 md:py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+      <div className="w-full px-4 py-8 md:px-12 md:py-12 space-y-8 md:space-y-10">
+        <SectionPageIntro
+          title="VI设计"
+          lines={[
+            "精准落地，统一视觉符号。",
+            "专注高品质的平面VI设计，将品牌理念提炼为兼具格调与严谨规范的平面视觉符号。",
+            "确保品牌在所有媒介的触点上，都具备极致的辨识度与统一感。",
+          ]}
+        />
+
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {projects.slice(0, visibleCount).map((project, i) => (
             <ParallaxCard key={project.id} project={project} index={i} />
           ))}
@@ -105,16 +114,6 @@ export default function GraphicDesignGallery() {
           )}
         </div>
       </div>
-
-      <footer className="w-full px-6 py-24 md:px-16 flex flex-col items-center justify-center gap-10">
-        <div className="w-px h-16 bg-gray-100" />
-        <Link
-          to="/"
-          className="px-10 py-4 border border-black text-[10px] font-mono uppercase tracking-[0.4em] hover:bg-black hover:text-white transition-all duration-500"
-        >
-          Home
-        </Link>
-      </footer>
     </section>
   );
 }

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { installationProjects, ProjectItem } from "../content";
 import { SplitColorText } from "./HoverColorText";
+import SectionPageIntro from "./SectionPageIntro";
 
 const ParallaxCard: React.FC<{ project: ProjectItem; index: number }> = ({ project, index }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -87,26 +88,19 @@ export default function InstallationGallery() {
     return () => window.removeEventListener("resize", handleResize);
   }, [visibleCount]);
 
-  const handleLoadMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 9, projects.length));
-  };
-
   const loaderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && visibleCount < projects.length) {
-          handleLoadMore();
+          setVisibleCount((prev) => Math.min(prev + 9, projects.length));
         }
       },
       { threshold: 0.1, rootMargin: "300px" }
     );
 
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
-    }
-
+    if (loaderRef.current) observer.observe(loaderRef.current);
     return () => observer.disconnect();
   }, [visibleCount, projects.length]);
 
@@ -124,8 +118,17 @@ export default function InstallationGallery() {
         </div>
       </header>
 
-      <div className="w-full px-4 py-8 md:px-12 md:py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+      <div className="w-full px-4 py-8 md:px-12 md:py-12 space-y-8 md:space-y-10">
+        <SectionPageIntro
+          title="品牌设计"
+          lines={[
+            "全维构建，定义品牌灵魂。",
+            "从顶层策略、核心基因到市场洞察，提供全方位的品牌全案服务。",
+            "以全局视角与高级美学，构筑完整的品牌情感生态与长远商业价值。",
+          ]}
+        />
+
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {projects.slice(0, visibleCount).map((project, i) => (
             <ParallaxCard key={project.id} project={project} index={i} />
           ))}
@@ -137,16 +140,6 @@ export default function InstallationGallery() {
           )}
         </div>
       </div>
-
-      <footer className="w-full px-6 py-24 md:px-16 flex flex-col items-center justify-center gap-10">
-        <div className="w-px h-16 bg-gray-100" />
-        <Link
-          to="/"
-          className="px-10 py-4 border border-black text-[10px] font-en uppercase tracking-[0.4em] hover:bg-black hover:text-white transition-all duration-500"
-        >
-          <SplitColorText text="Home" defaultColor="#111827" fontClass="font-en" />
-        </Link>
-      </footer>
     </section>
   );
 }

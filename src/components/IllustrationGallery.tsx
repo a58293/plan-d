@@ -3,7 +3,18 @@ import { useMemo, useRef, useState, useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { SplitColorText } from "./HoverColorText";
-import { illustrationCategories } from "../content";
+import SectionPageIntro from "./SectionPageIntro";
+
+type GroupMeta = {
+  key: "anime" | "film" | "game";
+  title: string;
+};
+
+const illustrationMeta: GroupMeta[] = [
+  { key: "anime", title: "动漫" },
+  { key: "film", title: "影视" },
+  { key: "game", title: "游戏" },
+];
 
 function shuffleArray<T>(items: T[]) {
   const arr = [...items];
@@ -12,6 +23,17 @@ function shuffleArray<T>(items: T[]) {
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
   return arr;
+}
+
+function buildVariants(folder: GroupMeta["key"], index: number) {
+  const num3 = String(index).padStart(3, "0");
+  const num2 = String(index).padStart(2, "0");
+  return [
+    `/images/illustration/${folder}/${num3}.jpg`,
+    `/images/illustration/${folder}/${num3}.webp`,
+    `/images/illustration/${folder}/${num2}.jpg`,
+    `/images/illustration/${folder}/${num2}.webp`,
+  ];
 }
 
 function checkImageExists(src: string) {
@@ -23,40 +45,34 @@ function checkImageExists(src: string) {
   });
 }
 
-function useResolvedIllustrationGroups() {
-  const [resolvedGroups, setResolvedGroups] = useState(
-    illustrationCategories.map((group) => ({ ...group, images: [] as string[] }))
-  );
+async function firstExisting(candidates: string[]) {
+  for (const src of candidates) {
+    // eslint-disable-next-line no-await-in-loop
+    if (await checkImageExists(src)) return src;
+  }
+  return null;
+}
 
-  useEffect(() => {
-    let cancelled = false;
+async function resolveFolderImages(folder: GroupMeta["key"], limit = 120) {
+  const results: string[] = [];
+  let misses = 0;
 
-    const run = async () => {
-      const next = await Promise.all(
-        illustrationCategories.map(async (group) => {
-          const checks = await Promise.all(
-            group.images.map(async (src) => ((await checkImageExists(src)) ? src : null))
-          );
-          return {
-            ...group,
-            images: Array.from(new Set(checks.filter(Boolean) as string[])),
-          };
-        })
-      );
+  for (let i = 1; i <= limit; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    const matched = await firstExisting(buildVariants(folder, i));
 
-      if (!cancelled) {
-        setResolvedGroups(next);
-      }
-    };
+    if (matched) {
+      results.push(matched);
+      misses = 0;
+    } else if (results.length > 0) {
+      misses += 1;
+      if (misses >= 4) break;
+    } else if (i >= 6) {
+      break;
+    }
+  }
 
-    run();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return resolvedGroups;
+  return results;
 }
 
 function PreviewMedia({ src, alt }: { src?: string; alt: string }) {
@@ -129,20 +145,53 @@ function DiagonalSeparators() {
   );
 }
 
-function IllustrationOverview() {
-  const groups = useResolvedIllustrationGroups();
+function useIllustrationPreviewMap() {
+  const [previews, setPreviews] = useState<Record<string, string | undefined>>({});
 
-  const previews = useMemo(
-    () =>
-      groups.map((group) => ({
-        ...group,
-        preview:
-          group.images.length > 0
-            ? group.images[Math.floor(Math.random() * group.images.length)]
-            : undefined,
-      })),
-    [groups]
-  );
+  useEffect(() => {
+    let cancelled = false;
+
+    illustrationMeta.forEach((group) => {
+      firstExisting(buildVariants(group.key, 1)).then((src) => {
+        if (!cancelled && src) {
+          setPreviews((prev) => ({ ...prev, [group.key]: src }));
+        }
+      });
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return previews;
+}
+
+function useFolderImages(folder?: GroupMeta["key"]) {
+  const [images, setImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!folder) return undefined;
+
+    setImages([]);
+
+    resolveFolderImages(folder).then((resolved) => {
+      if (!cancelled) {
+        setImages(resolved);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [folder]);
+
+  return images;
+}
+
+function IllustrationOverview() {
+  const previews = useIllustrationPreviewMap();
 
   return (
     <motion.main
@@ -160,22 +209,22 @@ function IllustrationOverview() {
         </div>
       </header>
 
-      <div className="flex-1 px-5 py-8 md:px-10 md:py-10 lg:px-16 flex items-center">
+      <div className="flex-1 px-5 py-8 md:px-10 md:py-10 lg:px-16">
         <div className="w-full max-w-7xl mx-auto space-y-7 md:space-y-9">
-          <div className="space-y-3 md:space-y-4">
-            <h1 className="font-site text-[clamp(32px,4.2vw,64px)] tracking-[0.05em] text-[#111827] leading-none">
-              <SplitColorText text="商业海报" defaultColor="#111827" fontClass="font-site" />
-            </h1>
-            <p className="font-site text-[15px] md:text-[17px] text-[#6B7280] tracking-[0.06em]">
-              <SplitColorText text="动漫 / 影视 / 游戏" defaultColor="#6B7280" fontClass="font-site" />
-            </p>
-          </div>
+          <SectionPageIntro
+            title="商业插画与海报"
+            lines={[
+              "电影级张力，驱动商业转化。",
+              "苛求光影与构图美感，为产品发布、活动宣发提供高精度的定制海报。",
+              "用磅礴的视觉冲击力，牢牢锁定市场焦点。",
+            ]}
+          />
 
           <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-5 items-stretch">
             <DiagonalSeparators />
-            <OverviewCard title="动漫" image={previews.find((g) => g.key === "anime")?.preview} to="/illustration/anime" />
-            <OverviewCard title="影视" image={previews.find((g) => g.key === "film")?.preview} to="/illustration/film" />
-            <OverviewCard title="游戏" image={previews.find((g) => g.key === "game")?.preview} to="/illustration/game" />
+            <OverviewCard title="动漫" image={previews["anime"]} to="/illustration/anime" />
+            <OverviewCard title="影视" image={previews["film"]} to="/illustration/film" />
+            <OverviewCard title="游戏" image={previews["game"]} to="/illustration/game" />
           </div>
         </div>
       </div>
@@ -185,11 +234,10 @@ function IllustrationOverview() {
 
 function IllustrationCategoryGallery() {
   const { category = "" } = useParams();
-  const groups = useResolvedIllustrationGroups();
-  const group = groups.find((item) => item.key === category);
+  const group = illustrationMeta.find((item) => item.key === category);
   const location = useLocation();
-
-  const images = useMemo(() => (group ? shuffleArray(group.images) : []), [group, location.key]);
+  const folderImages = useFolderImages(group?.key);
+  const images = useMemo(() => shuffleArray(folderImages), [folderImages, location.key]);
   const [visibleCount, setVisibleCount] = useState(9);
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
@@ -244,7 +292,7 @@ function IllustrationCategoryGallery() {
             </h1>
             <p className="font-site text-[15px] md:text-[17px] text-[#6B7280] tracking-[0.06em]">
               <SplitColorText
-                text={group.images.length > 0 ? "随机序列展示" : "将图片放入对应文件夹后，这里会自动读取并随机展示"}
+                text={folderImages.length > 0 ? "随机序列展示" : "正在读取对应文件夹图片…"}
                 defaultColor="#6B7280"
                 fontClass="font-site"
               />
