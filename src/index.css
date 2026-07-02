@@ -18,8 +18,8 @@
 }
 
 @font-face {
-  font-family: "SiteXiaoWei";
-  src: url("/fonts/ZCoolXiaoWei.ttf") format("truetype");
+  font-family: "SiteFont";
+  src: url("/fonts/站酷小薇体.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -28,7 +28,7 @@
 @theme {
   --font-en: "Genkai", "Times New Roman", Georgia, serif;
   --font-zh: "NamiSong", "Songti SC", "STSong", "SimSun", serif;
-  --font-site: "SiteXiaoWei", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
+  --font-site: "SiteFont", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
   --font-mincho: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
   --font-custom: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
 }
@@ -68,7 +68,7 @@ body {
 }
 
 .font-site {
-  font-family: "SiteXiaoWei", "NamiSong", "Songti SC", "STSong", "SimSun", serif !important;
+  font-family: "SiteFont", "NamiSong", "Songti SC", "STSong", "SimSun", serif !important;
   font-weight: 400 !important;
   font-style: normal !important;
   font-synthesis: none !important;

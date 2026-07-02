@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
+import { SplitColorText } from "./HoverColorText";
 import { homeCategories } from "../content";
 
 const categoryOverrides = {
@@ -51,6 +52,10 @@ export default function HomeGallery() {
         {categories.map((item, i) => {
           const isBjd = item.id === "bjd";
           const centerLabel = (item as { cardLabel?: string }).cardLabel || item.labelCn || item.label;
+          const labelSizeClass =
+            centerLabel.length >= 7
+              ? "text-[14px] md:text-[18px]"
+              : "text-[16px] md:text-[20px]";
 
           const Content = (
             <motion.div
@@ -74,8 +79,15 @@ export default function HomeGallery() {
               />
 
               <div className="absolute inset-0 flex items-center justify-center px-4 pointer-events-none">
-                <span className="font-site text-[15px] md:text-[18px] leading-none tracking-[0.08em] text-gray-900 bg-white/84 backdrop-blur-[2px] px-4 py-2 rounded-full shadow-[0_4px_16px_rgba(0,0,0,0.08)] text-center">
-                  {centerLabel}
+                <div className="absolute w-[64%] h-[34%] rounded-full bg-black/18 blur-3xl opacity-80" />
+                <span
+                  className={`relative font-site ${labelSizeClass} leading-none tracking-[0.06em] text-[#F7F3EA] text-center [text-shadow:0_2px_12px_rgba(0,0,0,0.35),0_1px_3px_rgba(0,0,0,0.65)]`}
+                >
+                  <SplitColorText
+                    text={centerLabel}
+                    defaultColor="#F7F3EA"
+                    fontClass="font-site"
+                  />
                 </span>
               </div>
 
@@ -83,7 +95,11 @@ export default function HomeGallery() {
                 <>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/24 via-transparent to-transparent" />
                   <span className="absolute right-3 bottom-3 font-site text-[12px] md:text-sm tracking-[0.08em] text-white/95 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)] pointer-events-none">
-                    敬请等待
+                    <SplitColorText
+                      text="敬请等待"
+                      defaultColor="#ffffff"
+                      fontClass="font-site"
+                    />
                   </span>
                 </>
               )}
