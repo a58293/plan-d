@@ -1,7 +1,8 @@
-import { motion } from "motion/react";
+
+import { motion, AnimatePresence } from "motion/react";
 import { useMemo, useRef, useState, useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { SplitColorText } from "./HoverColorText";
 import SectionPageIntro from "./SectionPageIntro";
 
@@ -169,16 +170,19 @@ function useIllustrationPreviewMap() {
 
 function useFolderImages(folder?: GroupMeta["key"]) {
   const [images, setImages] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     if (!folder) return undefined;
 
     setImages([]);
+    setIsLoading(true);
 
     resolveFolderImages(folder).then((resolved) => {
       if (!cancelled) {
         setImages(resolved);
+        setIsLoading(false);
       }
     });
 
@@ -187,7 +191,89 @@ function useFolderImages(folder?: GroupMeta["key"]) {
     };
   }, [folder]);
 
-  return images;
+  return { images, isLoading };
+}
+
+function Lightbox({
+  images,
+  currentIndex,
+  onClose,
+  onPrev,
+  onNext,
+}: {
+  images: string[];
+  currentIndex: number;
+  onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
+}) {
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+      if (event.key === "ArrowLeft") onPrev();
+      if (event.key === "ArrowRight") onNext();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose, onPrev, onNext]);
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 z-[100] bg-black/88 backdrop-blur-sm flex items-center justify-center p-4 md:p-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
+        <button
+          className="absolute top-4 right-4 md:top-6 md:right-6 text-white/90 hover:text-white transition-colors"
+          onClick={onClose}
+          aria-label="关闭"
+        >
+          <X className="w-7 h-7" />
+        </button>
+
+        {images.length > 1 && (
+          <>
+            <button
+              className="absolute left-3 md:left-6 text-white/80 hover:text-white transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                onPrev();
+              }}
+              aria-label="上一张"
+            >
+              <ChevronLeft className="w-8 h-8 md:w-10 md:h-10" />
+            </button>
+            <button
+              className="absolute right-3 md:right-6 text-white/80 hover:text-white transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                onNext();
+              }}
+              aria-label="下一张"
+            >
+              <ChevronRight className="w-8 h-8 md:w-10 md:h-10" />
+            </button>
+          </>
+        )}
+
+        <motion.img
+          key={images[currentIndex]}
+          src={images[currentIndex]}
+          alt={`预览大图 ${currentIndex + 1}`}
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.98 }}
+          transition={{ duration: 0.25 }}
+          className="max-w-[92vw] max-h-[88vh] object-contain rounded-[14px] shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+          referrerPolicy="no-referrer"
+        />
+      </motion.div>
+    </AnimatePresence>
+  );
 }
 
 function IllustrationOverview() {
@@ -236,10 +322,11 @@ function IllustrationCategoryGallery() {
   const { category = "" } = useParams();
   const group = illustrationMeta.find((item) => item.key === category);
   const location = useLocation();
-  const folderImages = useFolderImages(group?.key);
+  const { images: folderImages, isLoading } = useFolderImages(group?.key);
   const images = useMemo(() => shuffleArray(folderImages), [folderImages, location.key]);
   const [visibleCount, setVisibleCount] = useState(9);
   const loaderRef = useRef<HTMLDivElement | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   useEffect(() => {
     setVisibleCount(9);
@@ -292,16 +379,42 @@ function IllustrationCategoryGallery() {
             </h1>
           </div>
 
+          {isLoading && images.length === 0 ? (
+            <div className="rounded-[24px] border border-dashed border-gray-200 bg-[#FBFAF7] px-6 py-14 md:px-10 md:py-20 text-center">
+              <p className="font-site text-[16px] md:text-[18px] leading-[1.9] tracking-[0.04em] text-[#6B7280]">
+                <SplitColorText
+                  text={`正在读取 ${group.title} 图片，请稍候…`}
+                  defaultColor="#6B7280"
+                  fontClass="font-site"
+                />
+              </p>
+            </div>
+          ) : null}
+
+          {!isLoading && images.length === 0 ? (
+            <div className="rounded-[24px] border border-dashed border-gray-200 bg-[#FBFAF7] px-6 py-14 md:px-10 md:py-20 text-center">
+              <p className="font-site text-[16px] md:text-[18px] leading-[1.9] tracking-[0.04em] text-[#6B7280]">
+                <SplitColorText
+                  text={`请在 public/images/illustration/${group.key}/ 中放入 001.jpg / 001.webp 这类顺序编号图片。`}
+                  defaultColor="#6B7280"
+                  fontClass="font-site"
+                />
+              </p>
+            </div>
+          ) : null}
+
           {images.length > 0 ? (
             <>
               <div className="columns-2 md:columns-3 gap-3 md:gap-4 [column-fill:_balance]">
                 {images.slice(0, visibleCount).map((src, index) => (
-                  <motion.div
+                  <motion.button
+                    type="button"
                     key={`${group.key}-${src}-${index}`}
                     initial={{ opacity: 0, y: 14 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.45, delay: index * 0.02 }}
-                    className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-[20px] bg-[#F4F2EC]"
+                    className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-[20px] bg-[#F4F2EC] cursor-zoom-in text-left"
+                    onClick={() => setLightboxIndex(index)}
                   >
                     <img
                       src={src}
@@ -311,7 +424,7 @@ function IllustrationCategoryGallery() {
                       decoding="async"
                       referrerPolicy="no-referrer"
                     />
-                  </motion.div>
+                  </motion.button>
                 ))}
               </div>
 
@@ -320,6 +433,16 @@ function IllustrationCategoryGallery() {
           ) : null}
         </div>
       </div>
+
+      {lightboxIndex !== null && images.length > 0 ? (
+        <Lightbox
+          images={images}
+          currentIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onPrev={() => setLightboxIndex((prev) => (prev === null ? 0 : (prev - 1 + images.length) % images.length))}
+          onNext={() => setLightboxIndex((prev) => (prev === null ? 0 : (prev + 1) % images.length))}
+        />
+      ) : null}
     </motion.main>
   );
 }
