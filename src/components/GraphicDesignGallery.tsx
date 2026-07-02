@@ -4,24 +4,6 @@ import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { graphicProjects, ProjectItem } from "../content";
 
-const STORAGE_KEY = "graphic-gallery-visible-count";
-const SCROLL_KEY = "graphic-gallery-scroll-y";
-
-const getBaseVisibleCount = () => {
-  if (typeof window === "undefined") return 9;
-  return window.innerWidth >= 1024 ? 12 : 9;
-};
-
-const getInitialVisibleCount = (max: number) => {
-  if (typeof window === "undefined") return Math.min(9, max);
-  const saved = Number(sessionStorage.getItem(STORAGE_KEY));
-  const fallback = getBaseVisibleCount();
-  if (Number.isFinite(saved) && saved > 0) {
-    return Math.min(Math.max(saved, fallback), max);
-  }
-  return Math.min(fallback, max);
-};
-
 const ParallaxCard: React.FC<{ project: ProjectItem; index: number }> = ({ project, index }) => {
   const ref = useRef<HTMLDivElement>(null);
   const hasGallery = project.galleryImages && project.galleryImages.length > 0;
@@ -65,66 +47,39 @@ const ParallaxCard: React.FC<{ project: ProjectItem; index: number }> = ({ proje
 
 export default function GraphicDesignGallery() {
   const projects = graphicProjects;
-  const [visibleCount, setVisibleCount] = useState(() => getInitialVisibleCount(projects.length));
-  const loaderRef = useRef<HTMLDivElement>(null);
-  const restoredScrollRef = useRef(false);
-
-  useEffect(() => {
-    const nextValue = Math.min(visibleCount, projects.length);
-    sessionStorage.setItem(STORAGE_KEY, String(nextValue));
-  }, [visibleCount, projects.length]);
+  const [visibleCount, setVisibleCount] = useState(9);
 
   useEffect(() => {
     const handleResize = () => {
-      const minVisible = getBaseVisibleCount();
-      setVisibleCount((prev) => Math.min(Math.max(prev, minVisible), projects.length));
+      if (window.innerWidth >= 1024 && visibleCount === 9) {
+        setVisibleCount(12);
+      }
     };
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [projects.length]);
-
-  useEffect(() => {
-    const saveScroll = () => {
-      sessionStorage.setItem(SCROLL_KEY, String(window.scrollY));
-    };
-
-    window.addEventListener("scroll", saveScroll, { passive: true });
-    return () => {
-      saveScroll();
-      window.removeEventListener("scroll", saveScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (restoredScrollRef.current) return;
-    const savedScroll = Number(sessionStorage.getItem(SCROLL_KEY));
-    if (Number.isFinite(savedScroll) && savedScroll > 0) {
-      requestAnimationFrame(() => {
-        window.scrollTo({ top: savedScroll, behavior: "auto" });
-      });
-    }
-    restoredScrollRef.current = true;
-  }, []);
+  }, [visibleCount]);
 
   const handleLoadMore = () => {
     setVisibleCount((prev) => Math.min(prev + 9, projects.length));
   };
 
-  useEffect(() => {
-    const node = loaderRef.current;
-    if (!node) return;
+  const loaderRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting && visibleCount < projects.length) {
+        if (entries[0].isIntersecting && visibleCount < projects.length) {
           handleLoadMore();
         }
       },
       { threshold: 0.1, rootMargin: "300px" }
     );
 
-    observer.observe(node);
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
     return () => observer.disconnect();
   }, [visibleCount, projects.length]);
 

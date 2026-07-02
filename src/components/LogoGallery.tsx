@@ -4,25 +4,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { logoImages, ImageItem } from "../content";
 
-const STORAGE_KEY = "logo-gallery-visible-count";
-const SCROLL_KEY = "logo-gallery-scroll-y";
-
-const getBaseVisibleCount = () => {
-  if (typeof window === "undefined") return 12;
-  return window.innerWidth >= 1024 ? 20 : 12;
-};
-
-const getInitialVisibleCount = (max: number) => {
-  if (typeof window === "undefined") return Math.min(12, max);
-  const saved = Number(sessionStorage.getItem(STORAGE_KEY));
-  const fallback = getBaseVisibleCount();
-  if (Number.isFinite(saved) && saved > 0) {
-    return Math.min(Math.max(saved, fallback), max);
-  }
-  return Math.min(fallback, max);
-};
-
-const LogoCard: React.FC<{ image: ImageItem; index: number }> = ({ image, index }) => {
+const LogoCard: React.FC<{ image: ImageItem, index: number }> = ({ image, index }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   return (
@@ -44,81 +26,56 @@ const LogoCard: React.FC<{ image: ImageItem; index: number }> = ({ image, index 
         className="w-full h-full object-contain transition-all duration-500"
         referrerPolicy="no-referrer"
       />
-
+      
+      {/* Subtle index number for a technical feel */}
       <div className="absolute bottom-4 right-4 font-mono text-[10px] text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity">
-        ID_{String(image.id).padStart(2, "0")}
+        ID_{String(image.id).padStart(2, '0')}
       </div>
     </motion.div>
   );
-};
+}
 
 export default function LogoGallery() {
   const images = logoImages;
-  const [visibleCount, setVisibleCount] = useState(() => getInitialVisibleCount(images.length));
-  const loaderRef = useRef<HTMLDivElement>(null);
-  const restoredScrollRef = useRef(false);
-
-  useEffect(() => {
-    const nextValue = Math.min(visibleCount, images.length);
-    sessionStorage.setItem(STORAGE_KEY, String(nextValue));
-  }, [visibleCount, images.length]);
+  const [visibleCount, setVisibleCount] = useState(12);
 
   useEffect(() => {
     const handleResize = () => {
-      const minVisible = getBaseVisibleCount();
-      setVisibleCount((prev) => Math.min(Math.max(prev, minVisible), images.length));
+      if (window.innerWidth >= 1024 && visibleCount === 12) {
+        setVisibleCount(20);
+      }
     };
     handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [images.length]);
-
-  useEffect(() => {
-    const saveScroll = () => {
-      sessionStorage.setItem(SCROLL_KEY, String(window.scrollY));
-    };
-
-    window.addEventListener("scroll", saveScroll, { passive: true });
-    return () => {
-      saveScroll();
-      window.removeEventListener("scroll", saveScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (restoredScrollRef.current) return;
-    const savedScroll = Number(sessionStorage.getItem(SCROLL_KEY));
-    if (Number.isFinite(savedScroll) && savedScroll > 0) {
-      requestAnimationFrame(() => {
-        window.scrollTo({ top: savedScroll, behavior: "auto" });
-      });
-    }
-    restoredScrollRef.current = true;
-  }, []);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [visibleCount]);
 
   const handleLoadMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 12, images.length));
+    setVisibleCount(prev => Math.min(prev + 12, images.length));
   };
 
-  useEffect(() => {
-    const node = loaderRef.current;
-    if (!node) return;
+  const loaderRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting && visibleCount < images.length) {
+        if (entries[0].isIntersecting && visibleCount < images.length) {
           handleLoadMore();
         }
       },
       { threshold: 0.1, rootMargin: "200px" }
     );
 
-    observer.observe(node);
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
     return () => observer.disconnect();
   }, [visibleCount, images.length]);
 
   return (
     <section className="relative w-full min-h-screen bg-white overflow-hidden flex flex-col">
+      {/* Header with Back Button */}
       <div className="w-full px-4 pt-8 md:px-12 md:pt-12 flex justify-between items-center">
         <Link to="/" className="inline-flex items-center gap-2 text-gray-400 hover:text-black transition-colors group">
           <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
@@ -126,20 +83,23 @@ export default function LogoGallery() {
         </Link>
       </div>
 
+      {/* Grid Layout */}
       <div className="flex-1 w-full px-4 py-8 md:px-12 md:py-16">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8">
           {images.slice(0, visibleCount).map((image, i) => (
             <LogoCard key={image.id} image={image} index={i} />
           ))}
         </div>
-
+        
+        {/* Infinite Scroll Sentinel */}
         <div ref={loaderRef} className="w-full h-20 flex justify-center items-center mt-8">
           {visibleCount < images.length && (
             <div className="w-6 h-6 border-2 border-gray-100 border-t-gray-400 rounded-full animate-spin" />
           )}
         </div>
       </div>
-
+      
+      {/* Footer info */}
       <footer className="w-full px-4 py-8 md:px-12 border-t border-gray-50 flex justify-between items-center text-[10px] font-mono text-gray-400 uppercase tracking-widest">
         <span>© {new Date().getFullYear()} Plan.D Studio</span>
         <span>Total {images.length} Marks</span>

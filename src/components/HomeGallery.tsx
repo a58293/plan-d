@@ -3,13 +3,57 @@ import { Link } from "react-router-dom";
 import { SplitColorText } from "./HoverColorText";
 import { homeCategories } from "../content";
 
+const categoryOverrides = {
+  logo: {
+    className: "col-span-2 row-span-2 md:col-span-2 md:row-span-2 md:col-start-1 md:row-start-1",
+  },
+  bjd: {
+    label: "球形关节人偶",
+    className: "col-span-2 row-span-1 md:col-span-1 md:row-span-2 md:col-start-4 md:row-start-1",
+  },
+  spatial: {
+    label: "装置艺术设计",
+    className: "col-span-1 row-span-1 md:col-span-1 md:row-span-1 md:col-start-3 md:row-start-1",
+  },
+  installation: {
+    label: "品牌设计",
+    className: "col-span-1 row-span-1 md:col-span-1 md:row-span-1 md:col-start-3 md:row-start-2",
+  },
+  graphic: {
+    label: "VI设计",
+    className: "col-span-2 row-span-1 md:col-span-2 md:row-span-1 md:col-start-1 md:row-start-3",
+  },
+  illustration: {
+    label: "商业插画海报",
+    className: "col-span-2 row-span-1 md:col-span-2 md:row-span-1 md:col-start-3 md:row-start-3",
+  },
+  mcn: {
+    hidden: true,
+  },
+} as const;
+
 export default function HomeGallery() {
-  const categories = homeCategories;
+  const categories = homeCategories
+    .map((item) => ({
+      ...item,
+      ...(categoryOverrides[item.id as keyof typeof categoryOverrides] ?? {}),
+    }))
+    .filter((item) => !(item as { hidden?: boolean }).hidden);
 
   return (
-    <section className="w-full min-h-[80vh] bg-white flex items-center justify-center p-4 md:p-12 relative">
+    <section className="w-full min-h-[80vh] bg-white flex items-center justify-center px-4 py-6 md:px-12 md:py-10 relative">
       <div className="w-full max-w-6xl grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[150px] md:auto-rows-[200px]">
         {categories.map((item, i) => {
+          const displayText = item.label;
+          const isChinese = /[\u4e00-\u9fff]/.test(displayText);
+          const labelFontClass = isChinese ? "font-zh" : "font-en";
+          const desktopTextClass = isChinese
+            ? "text-white text-base md:text-lg font-semibold tracking-[0.04em]"
+            : "text-white text-xl md:text-2xl font-bold tracking-[0.16em]";
+          const mobileTextClass = isChinese
+            ? "text-white text-xs md:text-sm font-semibold tracking-[0.03em]"
+            : "text-white text-sm font-bold tracking-[0.14em]";
+
           const Content = (
             <motion.div
               className="relative w-full h-full overflow-hidden group cursor-pointer rounded-2xl"
@@ -21,7 +65,7 @@ export default function HomeGallery() {
             >
               <img
                 src={item.src}
-                alt={item.label}
+                alt={displayText}
                 loading={i === 0 ? "eager" : "lazy"}
                 fetchPriority={i === 0 ? "high" : "auto"}
                 decoding="async"
@@ -34,11 +78,11 @@ export default function HomeGallery() {
               <>
                 <div className="hidden lg:flex absolute inset-0 bg-transparent transition-colors duration-300 flex-col items-center justify-center gap-2">
                   {item.id !== "logo" && (
-                    <h3 className="font-en text-white text-xl md:text-2xl font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 tracking-[0.18em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                    <h3 className={`${labelFontClass} ${desktopTextClass} opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`}>
                       <SplitColorText
-                        text={item.label}
+                        text={displayText}
                         defaultColor="#ffffff"
-                        fontClass="font-en"
+                        fontClass={labelFontClass}
                       />
                     </h3>
                   )}
@@ -46,11 +90,11 @@ export default function HomeGallery() {
 
                 <div className="lg:hidden absolute inset-x-0 bottom-0 p-3 pt-8 flex flex-col items-start justify-end">
                   {item.id !== "logo" && (
-                    <h3 className="font-en text-white text-sm font-bold tracking-[0.16em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                    <h3 className={`${labelFontClass} ${mobileTextClass} drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`}>
                       <SplitColorText
-                        text={item.label}
+                        text={displayText}
                         defaultColor="#ffffff"
-                        fontClass="font-en"
+                        fontClass={labelFontClass}
                       />
                     </h3>
                   )}

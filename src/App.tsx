@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomeGallery from "./components/HomeGallery";
 import StudioIntro from "./components/StudioIntro";
@@ -19,6 +19,33 @@ const ProductDesignDetail = lazy(() => import("./components/ProductDesignDetail"
 const LogoGallery = lazy(() => import("./components/LogoGallery"));
 
 function Home() {
+  const isResettingRef = useRef(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isResettingRef.current) return;
+
+      const scrollTop = window.scrollY || window.pageYOffset;
+      const viewportHeight = window.innerHeight;
+      const fullHeight = document.documentElement.scrollHeight;
+
+      if (scrollTop + viewportHeight >= fullHeight - 6) {
+        isResettingRef.current = true;
+        window.scrollTo({ top: 0, behavior: "auto" });
+
+        window.setTimeout(() => {
+          isResettingRef.current = false;
+        }, 120);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <main className="min-h-screen w-full bg-white">
       <HomeGallery />

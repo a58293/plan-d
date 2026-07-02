@@ -1,135 +1,54 @@
 import { motion } from "motion/react";
-import { SplitColorText } from "./HoverColorText";
+import { logoImages } from "../content";
 
 export default function StudioIntro() {
+  const homepageLogos = logoImages.slice(0, 18);
+
   return (
-    <section className="w-full bg-white px-5 md:px-10 lg:px-16 py-8 md:py-10 overflow-x-hidden">
+    <section className="w-full bg-white px-5 md:px-10 lg:px-16 py-10 md:py-14">
       <div className="max-w-6xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.7 }}
-          className="min-h-[100svh] flex flex-col justify-center"
+          className="space-y-8 md:space-y-10"
         >
-          <div className="space-y-8 md:space-y-10">
-            <div className="space-y-8 md:space-y-10">
-              <h2 className="font-mincho font-normal uppercase text-gray-900 leading-none text-[clamp(18px,5.6vw,64px)] tracking-[0.08em] whitespace-nowrap">
-                <SplitColorText
-                  text="ART · CRAFT · CULTURE"
-                  defaultColor="#111827"
-                  fontClass="font-mincho"
-                />
-              </h2>
+          <div className="max-w-5xl space-y-5 md:space-y-6 border-t border-gray-200 pt-8 md:pt-10">
+            <h2 className="font-zh text-[clamp(26px,4vw,50px)] leading-[1.22] tracking-[0.03em] text-gray-900">
+              以造物之心，重塑商业美学。
+            </h2>
 
-              <div className="font-mincho font-normal text-[clamp(16px,2vw,30px)] leading-[1.3] text-gray-800 space-y-6 md:space-y-7 tracking-[0.04em] max-w-5xl">
-                <div className="space-y-1">
-                  <p>
-                    <SplitColorText
-                      text="In a world growing fast and complex,"
-                      defaultColor="#1f2937"
-                      fontClass="font-mincho"
-                    />
-                  </p>
-                  <p>
-                    <SplitColorText
-                      text="Plan D seeks to be a quiet, luminous presence."
-                      defaultColor="#1f2937"
-                      fontClass="font-mincho"
-                    />
-                  </p>
-                </div>
+            <div className="font-zh text-[clamp(17px,1.8vw,28px)] leading-[1.8] tracking-[0.02em] text-gray-700 space-y-3 md:space-y-4">
+              <p>绘屿造物（Lumen Auralis）是一家专注品牌构建与视觉传达的先锋设计机构。</p>
+              <p>我们将顶尖艺术造诣注入商业逻辑，通过品牌全案、平面VI与商业海报的精准输出，打破平庸，为您的品牌建立不可替代的视觉壁垒与商业溢价。</p>
+            </div>
+          </div>
 
-                <div className="space-y-1">
-                  <p>
-                    <SplitColorText
-                      text="A space where stories are shared,"
-                      defaultColor="#1f2937"
-                      fontClass="font-mincho"
-                    />
-                  </p>
-                  <p>
-                    <SplitColorText
-                      text="to inspire and empower."
-                      defaultColor="#1f2937"
-                      fontClass="font-mincho"
-                    />
-                  </p>
-                </div>
-
-                <div className="space-y-1">
-                  <p>
-                    <SplitColorText
-                      text="Through Art, Craft, and Culture,"
-                      defaultColor="#1f2937"
-                      fontClass="font-mincho"
-                    />
-                  </p>
-                  <p>
-                    <SplitColorText
-                      text="we carry forward Love, Beauty, and Imagination."
-                      defaultColor="#1f2937"
-                      fontClass="font-mincho"
-                    />
-                  </p>
-                </div>
-              </div>
+          <div className="space-y-4 md:space-y-5">
+            <div className="flex items-center gap-4">
+              <span className="font-zh text-sm md:text-base tracking-[0.12em] text-gray-500 whitespace-nowrap">
+                合作品牌
+              </span>
+              <div className="h-px flex-1 bg-gray-200" />
             </div>
 
-            <div className="space-y-8 md:space-y-10 pt-8 md:pt-10 border-t border-gray-300">
-              <h2 className="font-mincho font-normal uppercase text-gray-900 leading-none text-[clamp(24px,4vw,64px)] tracking-[0.12em]">
-                <SplitColorText
-                  text="PLAN D"
-                  defaultColor="#111827"
-                  fontClass="font-mincho"
-                />
-              </h2>
-
-              <div className="font-mincho font-normal text-[clamp(16px,2vw,30px)] leading-[1.45] text-gray-800 space-y-6 md:space-y-7 tracking-[0.03em] max-w-5xl">
-                <div className="space-y-1">
-                  <p>
-                    <SplitColorText
-                      text="Plan D 是一处持续实验的创作空间。"
-                      defaultColor="#1f2937"
-                      fontClass="font-mincho"
-                    />
-                  </p>
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 md:gap-4">
+              {homepageLogos.map((item) => (
+                <div
+                  key={item.id}
+                  className="h-20 md:h-24 rounded-2xl border border-gray-200 bg-[#faf9f6] flex items-center justify-center p-4 md:p-5 transition-transform duration-300 hover:-translate-y-0.5"
+                >
+                  <img
+                    src={item.src}
+                    alt={item.alt || `合作品牌 ${item.id}`}
+                    loading="lazy"
+                    decoding="async"
+                    className="max-w-full max-h-full object-contain opacity-90"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
-
-                <div className="space-y-1">
-                  <p>
-                    <SplitColorText
-                      text="关注艺术、工艺与文化的连接，"
-                      defaultColor="#1f2937"
-                      fontClass="font-mincho"
-                    />
-                  </p>
-                  <p>
-                    <SplitColorText
-                      text="探寻创作者在当下的表达。"
-                      defaultColor="#1f2937"
-                      fontClass="font-mincho"
-                    />
-                  </p>
-                </div>
-
-                <div className="space-y-1">
-                  <p>
-                    <SplitColorText
-                      text="在喧嚣的世界里，"
-                      defaultColor="#1f2937"
-                      fontClass="font-mincho"
-                    />
-                  </p>
-                  <p>
-                    <SplitColorText
-                      text="我们选择缓慢、专注与长期。"
-                      defaultColor="#1f2937"
-                      fontClass="font-mincho"
-                    />
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </motion.div>
