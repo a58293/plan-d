@@ -77,7 +77,7 @@ function BrandMark({ logo }: { logo: HomeCategory }) {
         </span>
         <span className="hidden h-5 w-px bg-[#E2DDD5] sm:inline-block" />
         <span className="hidden font-en text-[12px] tracking-[0.08em] text-[#334155] whitespace-nowrap sm:inline-block md:text-[13px]">
-          LUMEN AURALIS
+          <SplitColorText text="LUMEN AURALIS" defaultColor="#334155" fontClass="font-en" />
         </span>
       </div>
     </div>
@@ -112,14 +112,14 @@ function WorkTileCard({ tile, index }: { tile: WorkTile; index: number }) {
 
         <div className="absolute left-4 top-4 md:left-5 md:top-5 lg:left-6 lg:top-6">
           <span className="font-en text-[9px] uppercase tracking-[0.24em] text-white/76 md:text-[10px] lg:text-[11px]">
-            {tile.subtitle}
+            <SplitColorText text={tile.subtitle} defaultColor="rgba(255,255,255,0.76)" fontClass="font-en" />
           </span>
         </div>
 
         {tile.disabledText ? (
           <div className="absolute right-4 top-4 rounded-full border border-white/40 bg-black/12 px-3 py-1 backdrop-blur-[2px] md:right-5 md:top-5 lg:right-6 lg:top-6">
             <span className="font-site text-[12px] tracking-[0.12em] text-white/92 md:text-[13px]">
-              {tile.disabledText}
+              <SplitColorText text={tile.disabledText} defaultColor="rgba(255,255,255,0.92)" fontClass="font-site" />
             </span>
           </div>
         ) : null}
@@ -138,14 +138,24 @@ function WorkTileCard({ tile, index }: { tile: WorkTile; index: number }) {
 export default function HomeGallery() {
   const logo = getCategory("logo");
 
+  // Mobile order: 商业插画 -> 品牌设计 -> 装置艺术 -> VI设计 -> 球形关节人偶
   const tiles: WorkTile[] = [
+    {
+      id: "illustration",
+      title: "商业插画",
+      label: "商业插画",
+      subtitle: "Illustration",
+      category: getCategory("illustration"),
+      className: "md:col-span-2 lg:col-start-1 lg:col-end-13 lg:row-start-8 lg:row-end-11",
+      imageClassName: "object-center",
+    },
     {
       id: "installation",
       title: "品牌设计",
       label: "品牌设计",
       subtitle: "Brand Design",
       category: getCategory("installation"),
-      className: "md:col-span-2 lg:col-start-1 lg:col-end-8 lg:row-start-1 lg:row-end-4",
+      className: "md:col-span-2 lg:col-start-2 lg:col-end-9 lg:row-start-1 lg:row-end-4",
       imageClassName: "object-[50%_42%]",
     },
     {
@@ -154,7 +164,7 @@ export default function HomeGallery() {
       label: "装置艺术",
       subtitle: "Spatial Installation",
       category: getCategory("spatial"),
-      className: "md:col-span-1 lg:col-start-1 lg:col-end-5 lg:row-start-4 lg:row-end-8",
+      className: "md:col-span-1 lg:col-start-2 lg:col-end-6 lg:row-start-4 lg:row-end-6",
       imageClassName: "object-[50%_46%]",
     },
     {
@@ -163,7 +173,7 @@ export default function HomeGallery() {
       label: "VI设计",
       subtitle: "Visual Identity",
       category: getCategory("graphic"),
-      className: "md:col-span-1 lg:col-start-5 lg:col-end-9 lg:row-start-4 lg:row-end-8",
+      className: "md:col-span-1 lg:col-start-2 lg:col-end-6 lg:row-start-6 lg:row-end-8",
       imageClassName: "object-[50%_48%]",
     },
     {
@@ -176,15 +186,6 @@ export default function HomeGallery() {
       imageClassName: "object-[50%_44%]",
       disabled: true,
       disabledText: "敬请等待",
-    },
-    {
-      id: "illustration",
-      title: "商业插画",
-      label: "商业插画",
-      subtitle: "Illustration",
-      category: getCategory("illustration"),
-      className: "md:col-span-2 lg:col-start-1 lg:col-end-13 lg:row-start-8 lg:row-end-11",
-      imageClassName: "object-center",
     },
   ];
 
@@ -203,7 +204,7 @@ export default function HomeGallery() {
             transition={{ duration: 0.72, ease: "easeOut" }}
           >
             <p className="font-en text-[12px] uppercase tracking-[0.16em] text-[#475569] md:text-[14px]">
-              LUMEN AURALIS STUDIO
+              <SplitColorText text="LUMEN AURALIS STUDIO" defaultColor="#475569" fontClass="font-en" />
             </p>
 
             <h1 className="mt-10 max-w-[860px] font-site text-[clamp(48px,6.1vw,104px)] leading-[0.98] tracking-[0.028em] text-[#0F172A]">
@@ -219,10 +220,18 @@ export default function HomeGallery() {
 
             <div className="mt-12 max-w-[640px] space-y-6 font-site text-[18px] leading-[2.05] tracking-[0.03em] text-[#495260] md:text-[20px]">
               <p>
-                绘屿造物（Lumen Auralis）是一家专注品牌构建与视觉传达的设计工作室。
+                <SplitColorText
+                  text="绘屿造物（Lumen Auralis）是一家专注品牌构建与视觉传达的设计工作室。"
+                  defaultColor="#495260"
+                  fontClass="font-site"
+                />
               </p>
               <p>
-                我们关注品牌如何被看见、被理解、被记住。从品牌定位到视觉系统，从平面 VI 到商业海报，我们以完整的设计逻辑和克制的审美表达，帮助品牌建立清晰、统一且具有识别度的视觉形象。
+                <SplitColorText
+                  text="我们关注品牌如何被看见、被理解、被记住。从品牌定位到视觉系统，从平面 VI 到商业海报，我们以完整的设计逻辑和克制的审美表达，帮助品牌建立清晰、统一且具有识别度的视觉形象。"
+                  defaultColor="#495260"
+                  fontClass="font-site"
+                />
               </p>
             </div>
           </motion.div>

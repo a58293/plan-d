@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { SplitColorText } from "./HoverColorText";
 import { logoImages } from "../content";
 
 export default function StudioIntro() {
@@ -16,10 +17,10 @@ export default function StudioIntro() {
           <div className="mb-9 flex items-center justify-between gap-6 md:mb-12">
             <div>
               <p className="font-en text-[11px] uppercase tracking-[0.26em] text-[#8A8175]">
-                Cooperative Brands
+                <SplitColorText text="Cooperative Brands" defaultColor="#8A8175" fontClass="font-en" />
               </p>
               <h2 className="mt-3 font-site text-[20px] tracking-[0.18em] text-[#111827] md:text-[24px]">
-                合作品牌
+                <SplitColorText text="合作品牌" defaultColor="#111827" fontClass="font-site" />
               </h2>
             </div>
             <div className="hidden h-px flex-1 bg-[#DDD8CE] md:block" />
