@@ -13,6 +13,8 @@ type WorkTile = {
   className: string;
   imageClassName?: string;
   category: HomeCategory;
+  disabled?: boolean;
+  disabledText?: string;
 };
 
 function getCategory(id: string) {
@@ -25,11 +27,17 @@ function SmartLink({
   category,
   className,
   children,
+  disabled = false,
 }: {
   category: HomeCategory;
   className?: string;
   children: React.ReactNode;
+  disabled?: boolean;
 }) {
+  if (disabled) {
+    return <div className={className}>{children}</div>;
+  }
+
   if (category.href) {
     return (
       <a href={category.href} target="_blank" rel="noopener noreferrer" className={className}>
@@ -67,7 +75,7 @@ function BrandMark({ logo }: { logo: HomeCategory }) {
         <span className="font-site text-[20px] tracking-[0.22em] text-[#111827] whitespace-nowrap md:text-[24px]">
           <SplitColorText text="绘屿造物" defaultColor="#111827" fontClass="font-site" />
         </span>
-        <span className="hidden h-5 w-px bg-[#DDD9D1] sm:inline-block" />
+        <span className="hidden h-5 w-px bg-[#E2DDD5] sm:inline-block" />
         <span className="hidden font-en text-[12px] tracking-[0.08em] text-[#334155] whitespace-nowrap sm:inline-block md:text-[13px]">
           LUMEN AURALIS
         </span>
@@ -80,7 +88,8 @@ function WorkTileCard({ tile, index }: { tile: WorkTile; index: number }) {
   return (
     <SmartLink
       category={tile.category}
-      className={`group relative block min-h-[220px] overflow-hidden rounded-[2px] bg-white ring-1 ring-[#E9E3D8] shadow-[0_22px_50px_rgba(28,32,40,0.05)] transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_28px_60px_rgba(28,32,40,0.08)] ${tile.className}`}
+      disabled={tile.disabled}
+      className={`group relative block min-h-[220px] overflow-hidden rounded-[2px] bg-white ring-1 ring-[#EAE4DA] shadow-[0_22px_50px_rgba(28,32,40,0.05)] transition-all duration-500 ${tile.disabled ? "cursor-default" : "hover:-translate-y-0.5 hover:shadow-[0_28px_60px_rgba(28,32,40,0.08)]"} ${tile.className}`}
     >
       <motion.div
         className="relative h-full w-full"
@@ -96,7 +105,7 @@ function WorkTileCard({ tile, index }: { tile: WorkTile; index: number }) {
           fetchPriority={index < 2 ? "high" : "auto"}
           decoding="async"
           referrerPolicy="no-referrer"
-          className={`h-full w-full object-cover saturate-[0.96] contrast-[0.98] brightness-[1.03] transition-transform duration-700 group-hover:scale-[1.02] ${tile.imageClassName ?? ""}`}
+          className={`h-full w-full object-cover saturate-[0.98] contrast-[0.99] brightness-[1.03] transition-transform duration-700 ${tile.disabled ? "" : "group-hover:scale-[1.02]"} ${tile.imageClassName ?? ""}`}
         />
 
         <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/44 via-[#0F172A]/8 to-transparent opacity-78 transition-opacity duration-500 group-hover:opacity-88" />
@@ -106,6 +115,14 @@ function WorkTileCard({ tile, index }: { tile: WorkTile; index: number }) {
             {tile.subtitle}
           </span>
         </div>
+
+        {tile.disabledText ? (
+          <div className="absolute right-4 top-4 rounded-full border border-white/40 bg-black/12 px-3 py-1 backdrop-blur-[2px] md:right-5 md:top-5 lg:right-6 lg:top-6">
+            <span className="font-site text-[12px] tracking-[0.12em] text-white/92 md:text-[13px]">
+              {tile.disabledText}
+            </span>
+          </div>
+        ) : null}
 
         <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 lg:p-6">
           <div className="mb-3 h-px w-12 bg-white/60" />
@@ -128,35 +145,8 @@ export default function HomeGallery() {
       label: "品牌设计",
       subtitle: "Brand Design",
       category: getCategory("installation"),
-      className: "md:col-span-2 lg:col-start-2 lg:col-end-9 lg:row-start-1 lg:row-end-4",
+      className: "md:col-span-2 lg:col-start-1 lg:col-end-8 lg:row-start-1 lg:row-end-4",
       imageClassName: "object-[50%_42%]",
-    },
-    {
-      id: "bjd",
-      title: "球形关节人偶",
-      label: "球形关节人偶",
-      subtitle: "BJD Project",
-      category: getCategory("bjd"),
-      className: "md:col-span-1 lg:col-start-9 lg:col-end-13 lg:row-start-1 lg:row-end-6",
-      imageClassName: "object-[50%_44%]",
-    },
-    {
-      id: "graphic",
-      title: "VI设计",
-      label: "VI设计",
-      subtitle: "Visual Identity",
-      category: getCategory("graphic"),
-      className: "md:col-span-1 lg:col-start-1 lg:col-end-5 lg:row-start-4 lg:row-end-7",
-      imageClassName: "object-[50%_48%]",
-    },
-    {
-      id: "illustration",
-      title: "商业插画",
-      label: "商业插画",
-      subtitle: "Illustration",
-      category: getCategory("illustration"),
-      className: "md:col-span-1 lg:col-start-5 lg:col-end-9 lg:row-start-4 lg:row-end-7",
-      imageClassName: "object-center",
     },
     {
       id: "spatial",
@@ -164,8 +154,37 @@ export default function HomeGallery() {
       label: "装置艺术",
       subtitle: "Spatial Installation",
       category: getCategory("spatial"),
-      className: "md:col-span-2 lg:col-start-3 lg:col-end-12 lg:row-start-7 lg:row-end-11",
+      className: "md:col-span-1 lg:col-start-2 lg:col-end-6 lg:row-start-4 lg:row-end-6",
       imageClassName: "object-[50%_46%]",
+    },
+    {
+      id: "graphic",
+      title: "VI设计",
+      label: "VI设计",
+      subtitle: "Visual Identity",
+      category: getCategory("graphic"),
+      className: "md:col-span-1 lg:col-start-2 lg:col-end-6 lg:row-start-6 lg:row-end-8",
+      imageClassName: "object-[50%_48%]",
+    },
+    {
+      id: "bjd",
+      title: "球形关节人偶",
+      label: "球形关节人偶",
+      subtitle: "BJD Project",
+      category: getCategory("bjd"),
+      className: "md:col-span-1 lg:col-start-9 lg:col-end-13 lg:row-start-1 lg:row-end-8",
+      imageClassName: "object-[50%_44%]",
+      disabled: true,
+      disabledText: "敬请等待",
+    },
+    {
+      id: "illustration",
+      title: "商业插画",
+      label: "商业插画",
+      subtitle: "Illustration",
+      category: getCategory("illustration"),
+      className: "md:col-span-2 lg:col-start-1 lg:col-end-13 lg:row-start-8 lg:row-end-11",
+      imageClassName: "object-center",
     },
   ];
 
@@ -197,10 +216,19 @@ export default function HomeGallery() {
             </h1>
 
             <div className="mt-16 h-px w-[76%] bg-[#E5DED2]" />
+
+            <div className="mt-12 max-w-[640px] space-y-6 font-site text-[18px] leading-[2.05] tracking-[0.03em] text-[#495260] md:text-[20px]">
+              <p>
+                绘屿造物（Lumen Auralis）是一家专注品牌构建与视觉传达的设计工作室。
+              </p>
+              <p>
+                我们关注品牌如何被看见、被理解、被记住。从品牌定位到视觉系统，从平面 VI 到商业海报，我们以完整的设计逻辑和克制的审美表达，帮助品牌建立清晰、统一且具有识别度的视觉形象。
+              </p>
+            </div>
           </motion.div>
 
           <div className="flex items-center lg:justify-end lg:pt-3">
-            <div className="relative grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:h-[76vh] lg:min-h-[660px] lg:grid-cols-12 lg:grid-rows-10 lg:gap-3">
+            <div className="relative grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:h-[78vh] lg:min-h-[680px] lg:grid-cols-12 lg:grid-rows-10 lg:gap-3">
               {tiles.map((tile, index) => (
                 <WorkTileCard key={tile.id} tile={tile} index={index} />
               ))}
