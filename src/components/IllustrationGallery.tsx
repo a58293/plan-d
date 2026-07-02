@@ -1,230 +1,92 @@
-import React, { useState, useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-  useMotionValue,
-  useVelocity,
-  useAnimationFrame
-} from "motion/react";
-import { wrap } from "motion/react";
-import { ArrowLeft, Plus, Shuffle, ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "motion/react";
+import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { illustrationImages } from "../content";
 
-// --- Parallax Marquee Component ---
+const groups = [
+  { title: "动漫", images: illustrationImages.slice(0, 13) },
+  { title: "影视", images: illustrationImages.slice(13, 26) },
+  { title: "游戏", images: illustrationImages.slice(26, 39) },
+];
 
-interface ParallaxProps {
-  children: React.ReactNode;
-  baseVelocity: number;
-}
-
-const ParallaxText: React.FC<ParallaxProps> = ({ children, baseVelocity = 100 }) => {
-  const baseX = useMotionValue(0);
-  const { scrollY } = useScroll();
-  const scrollVelocity = useVelocity(scrollY);
-  const smoothVelocity = useSpring(scrollVelocity, {
-    damping: 50,
-    stiffness: 400
-  });
-  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
-    clamp: false
-  });
-
-  /**
-   * This is a magic wrapping for the length of the text - you
-   * have to replace for wrapping that works for you or dynamically
-   * calculate
-   */
-  const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`);
-
-  const directionFactor = useRef<number>(1);
-  useAnimationFrame((t, delta) => {
-    let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
-
-    /**
-     * This is what changes the direction of the scroll once we
-     * switch scrolling directions.
-     */
-    if (velocityFactor.get() < 0) {
-      directionFactor.current = -1;
-    } else if (velocityFactor.get() > 0) {
-      directionFactor.current = 1;
-    }
-
-    moveBy += directionFactor.current * moveBy * velocityFactor.get();
-
-    baseX.set(baseX.get() + moveBy);
-  });
-
-  /**
-   * The number of times to repeat the child text should be dynamic based on the size of the text and viewport.
-   * For simplicity, we repeat it 4 times here.
-   */
+function DiagonalDivider() {
   return (
-    <div className="parallax overflow-hidden m-0 whitespace-nowrap flex flex-nowrap">
-      <motion.div className="scroller font-black uppercase text-6xl md:text-9xl flex whitespace-nowrap flex-nowrap" style={{ x }}>
-        <span className="block mr-8 md:mr-24">{children} </span>
-        <span className="block mr-8 md:mr-24">{children} </span>
-        <span className="block mr-8 md:mr-24">{children} </span>
-        <span className="block mr-8 md:mr-24">{children} </span>
-      </motion.div>
+    <div className="hidden lg:flex items-stretch justify-center px-2">
+      <div className="w-px h-full min-h-[560px] bg-gray-300/90 origin-center rotate-[18deg]" />
     </div>
   );
 }
 
-// --- Helper: Shuffle Array ---
-const shuffleArray = <T,>(array: T[]): T[] => {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-};
-
-// --- Image Marquee Component ---
-
-const ImageMarquee: React.FC<{ images: string[] }> = ({ images }) => {
-  const baseX = useMotionValue(0);
-  const { scrollY } = useScroll();
-  const scrollVelocity = useVelocity(scrollY);
-  const smoothVelocity = useSpring(scrollVelocity, {
-    damping: 40,
-    stiffness: 200
-  });
-  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 4], {
-    clamp: false
-  });
-
-  // Dynamically calculate numSets based on image count to avoid rendering too many DOM nodes
-  // We need at least 2 sets to loop. If there are few images, we need more sets to fill the screen.
-  const numSets = Math.max(2, Math.ceil(12 / Math.max(1, images.length)));
-  const wrapPercent = -100 / numSets;
-  
-  const x = useTransform(baseX, (v) => `${wrap(wrapPercent, 0, v)}%`);
-
-  const directionFactor = useRef<number>(-1);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const startBaseX = useRef(0);
-
-  useAnimationFrame((t, delta) => {
-    if (isDragging.current) return;
-
-    // Constant pixel speed: roughly 12 seconds per image for a slow, elegant pan
-    const baseSpeedPercentPerSecond = Math.abs(wrapPercent) / (Math.max(1, images.length) * 12);
-    let currentSpeed = baseSpeedPercentPerSecond;
-
-    if (velocityFactor.get() < 0) {
-      directionFactor.current = 1;
-    } else if (velocityFactor.get() > 0) {
-      directionFactor.current = -1;
-    }
-
-    let moveBy = directionFactor.current * currentSpeed * (delta / 1000);
-    moveBy += directionFactor.current * Math.abs(moveBy) * velocityFactor.get();
-
-    baseX.set(baseX.get() + moveBy);
-  });
-
-  const handlePointerDown = (e: React.PointerEvent) => {
-    isDragging.current = true;
-    startX.current = e.clientX;
-    startBaseX.current = baseX.get();
-    try {
-      e.currentTarget.setPointerCapture(e.pointerId);
-    } catch (err) {
-      // Ignore capture errors
-    }
-  };
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!isDragging.current) return;
-    const deltaX = e.clientX - startX.current;
-    
-    // Dynamic sensitivity: 1 pixel of drag should equal roughly 1 pixel of scroll.
-    // Assuming average image + gap width is ~400px.
-    // wrapPercent corresponds to (images.length * 400) pixels.
-    const sensitivity = Math.abs(wrapPercent) / (Math.max(1, images.length) * 400);
-    
-    baseX.set(startBaseX.current + deltaX * sensitivity);
-  };
-
-  const handlePointerUp = (e: React.PointerEvent) => {
-    isDragging.current = false;
-    try {
-      e.currentTarget.releasePointerCapture(e.pointerId);
-    } catch (err) {
-      // Ignore release errors
-    }
-  };
-
+function PosterBlock({ title, images }: { title: string; images: string[] }) {
   return (
-    <>
-      <div 
-        className="overflow-hidden py-8 flex flex-nowrap w-full h-screen items-center cursor-grab active:cursor-grabbing touch-none select-none"
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
-        onPointerLeave={handlePointerUp}
-        onDragStart={(e) => e.preventDefault()}
-      >
-        <motion.div className="flex flex-nowrap w-max flex-shrink-0" style={{ x }}>
-          {Array.from({ length: numSets }).map((_, setIdx) => (
-            <div key={setIdx} className="flex flex-nowrap flex-shrink-0 gap-4 md:gap-8 pr-4 md:pr-8 pointer-events-none">
-              {images.map((src, i) => (
-                <div key={i} className="flex-shrink-0 h-[300px] md:h-[500px] rounded-lg shadow-lg overflow-hidden bg-gray-50/50 flex items-center justify-center">
-                  <img 
-                    src={src} 
-                    alt="Illustration" 
-                    loading={setIdx === 0 && i < 6 ? "eager" : "lazy"}
-                    fetchPriority={setIdx === 0 && i < 4 ? "high" : "auto"}
-                    decoding="async"
-                    className="w-auto h-full object-cover pointer-events-none" 
-                    referrerPolicy="no-referrer"
-                    draggable={false}
-                  />
-                </div>
-              ))}
-            </div>
-          ))}
-        </motion.div>
+    <section className="min-w-0">
+      <div className="mb-6 md:mb-7 flex items-center gap-4">
+        <h2 className="font-site text-[clamp(24px,2.2vw,40px)] tracking-[0.08em] text-[#111827] whitespace-nowrap">
+          {title}
+        </h2>
+        <div className="h-px flex-1 bg-gray-200" />
       </div>
 
-      {/* Floating Shuffle Button Removed */}
-    </>
+      <div className="grid grid-cols-2 gap-3 md:gap-4">
+        {images.map((src, index) => (
+          <motion.div
+            key={`${title}-${index}`}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.45, ease: "easeOut", delay: index * 0.02 }}
+            className={`overflow-hidden rounded-[20px] bg-[#F6F5F1] ${index % 5 === 0 ? "col-span-2" : "col-span-1"}`}
+          >
+            <img
+              src={src}
+              alt={`${title} ${index + 1}`}
+              loading={index < 4 ? "eager" : "lazy"}
+              fetchPriority={index < 2 ? "high" : "auto"}
+              decoding="async"
+              className={`w-full ${index % 5 === 0 ? "aspect-[16/9]" : "aspect-[3/4]"} object-cover`}
+              referrerPolicy="no-referrer"
+            />
+          </motion.div>
+        ))}
+      </div>
+    </section>
   );
 }
 
 export default function IllustrationGallery() {
-  const [images] = useState(() => shuffleArray(illustrationImages));
-
   return (
-    <motion.main 
-      className="min-h-screen bg-white text-gray-900 overflow-x-hidden"
+    <motion.main
+      className="min-h-screen bg-white text-gray-900"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 0.6 }}
     >
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 w-full p-6 md:p-12 z-50 mix-blend-difference text-white flex justify-between items-center">
-        <Link to="/" className="group flex items-center gap-2 font-tech uppercase tracking-widest text-sm hover:text-gray-300 transition-colors">
-          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-          Back
-        </Link>
-        <div className="font-tech font-black text-xl tracking-widest">PLAN D</div>
-      </nav>
-
-      {/* Hero Section */}
-      <section className="h-screen flex flex-col justify-center items-center relative overflow-hidden">
-        <div className="z-10 w-full">
-            <ImageMarquee key={images.length} images={images} />
+      <header className="sticky top-0 z-40 bg-white/92 backdrop-blur-md border-b border-gray-100">
+        <div className="w-full px-5 py-5 md:px-10 md:py-6 lg:px-16 flex items-center justify-between gap-6">
+          <Link to="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-black transition-colors group">
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+            <span className="font-en text-[11px] uppercase tracking-[0.28em]">Back</span>
+          </Link>
+          <div className="font-site text-[15px] md:text-base tracking-[0.12em] text-[#111827]">绘屿造物</div>
         </div>
-      </section>
+      </header>
 
+      <div className="px-5 md:px-10 lg:px-16 pt-8 md:pt-10 pb-16 md:pb-20">
+        <div className="max-w-7xl mx-auto space-y-8 md:space-y-10">
+          <div className="space-y-3 md:space-y-4">
+            <h1 className="font-site text-[clamp(30px,4.2vw,58px)] tracking-[0.05em] text-[#111827] leading-none">商业海报</h1>
+            <p className="font-site text-[16px] md:text-[18px] text-[#6B7280] tracking-[0.04em]">动漫 / 影视 / 游戏</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr_auto_1fr] gap-y-10 lg:gap-y-0 lg:gap-x-4 items-start">
+            <PosterBlock title={groups[0].title} images={groups[0].images} />
+            <DiagonalDivider />
+            <PosterBlock title={groups[1].title} images={groups[1].images} />
+            <DiagonalDivider />
+            <PosterBlock title={groups[2].title} images={groups[2].images} />
+          </div>
+        </div>
+      </div>
     </motion.main>
   );
 }

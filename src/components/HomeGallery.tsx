@@ -6,7 +6,7 @@ import { homeCategories } from "../content";
 const categoryOverrides = {
   logo: {
     className: "col-span-2 row-span-2 md:col-span-2 md:row-span-2 md:col-start-1 md:row-start-1",
-    cardLabel: "客户集",
+    cardLabel: "",
   },
   bjd: {
     label: "球形关节人偶",
@@ -52,12 +52,10 @@ export default function HomeGallery() {
         {categories.map((item, i) => {
           const isBjd = item.id === "bjd";
           const centerLabel = (item as { cardLabel?: string }).cardLabel || item.labelCn || item.label;
-          const labelSizeClass =
-            centerLabel.length >= 7
-              ? "text-[14px] md:text-[18px]"
-              : "text-[16px] md:text-[20px]";
+          const showCenterLabel = centerLabel.trim().length > 0;
+          const labelSizeClass = centerLabel.length >= 7 ? "text-[14px] md:text-[18px]" : "text-[16px] md:text-[20px]";
 
-          const Content = (
+          const content = (
             <motion.div
               className={`relative w-full h-full overflow-hidden rounded-[22px] ${isBjd ? "cursor-default" : "group cursor-pointer"}`}
               initial={{ opacity: 0, scale: 0.97, y: 18 }}
@@ -68,38 +66,32 @@ export default function HomeGallery() {
             >
               <img
                 src={item.src}
-                alt={centerLabel}
+                alt={centerLabel || item.label}
                 loading={i === 0 ? "eager" : "lazy"}
                 fetchPriority={i === 0 ? "high" : "auto"}
                 decoding="async"
-                className={`w-full h-full transition-transform duration-700 ${
-                  !isBjd ? "group-hover:scale-105" : ""
-                } ${item.objectFit === "contain" ? "object-contain p-4 md:p-5" : "object-cover"}`}
+                className={`w-full h-full transition-transform duration-700 ${!isBjd ? "group-hover:scale-105" : ""} ${item.objectFit === "contain" ? "object-contain p-4 md:p-5" : "object-cover"}`}
                 referrerPolicy="no-referrer"
               />
 
-              <div className="absolute inset-0 flex items-center justify-center px-4 pointer-events-none">
-                <div className="absolute w-[64%] h-[34%] rounded-full bg-black/18 blur-3xl opacity-80" />
-                <span
-                  className={`relative font-site ${labelSizeClass} leading-none tracking-[0.06em] text-[#F7F3EA] text-center [text-shadow:0_2px_12px_rgba(0,0,0,0.35),0_1px_3px_rgba(0,0,0,0.65)]`}
-                >
-                  <SplitColorText
-                    text={centerLabel}
-                    defaultColor="#F7F3EA"
-                    fontClass="font-site"
-                  />
-                </span>
-              </div>
+              {showCenterLabel && (
+                <div className="absolute inset-0 flex items-center justify-center px-4 pointer-events-none">
+                  <div className="absolute w-[62%] h-[34%] rounded-full bg-black/16 blur-3xl opacity-80" />
+                  <span className={`relative font-site ${labelSizeClass} leading-none tracking-[0.06em] text-[#F6F1E8] text-center [text-shadow:0_2px_10px_rgba(0,0,0,0.35),0_1px_3px_rgba(0,0,0,0.62)]`}>
+                    <SplitColorText
+                      text={centerLabel}
+                      defaultColor="#F6F1E8"
+                      fontClass="font-site"
+                    />
+                  </span>
+                </div>
+              )}
 
               {isBjd && (
                 <>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/24 via-transparent to-transparent" />
                   <span className="absolute right-3 bottom-3 font-site text-[12px] md:text-sm tracking-[0.08em] text-white/95 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)] pointer-events-none">
-                    <SplitColorText
-                      text="敬请等待"
-                      defaultColor="#ffffff"
-                      fontClass="font-site"
-                    />
+                    <SplitColorText text="敬请等待" defaultColor="#ffffff" fontClass="font-site" />
                   </span>
                 </>
               )}
@@ -107,35 +99,23 @@ export default function HomeGallery() {
           );
 
           if (isBjd) {
-            return (
-              <div key={item.id} className={item.className} aria-disabled="true">
-                {Content}
-              </div>
-            );
+            return <div key={item.id} className={item.className} aria-disabled="true">{content}</div>;
           }
 
           if (item.href) {
             return (
-              <a
-                key={item.id}
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={item.className}
-              >
-                {Content}
+              <a key={item.id} href={item.href} target="_blank" rel="noopener noreferrer" className={item.className}>
+                {content}
               </a>
             );
           }
 
           return item.link ? (
             <Link key={item.id} to={item.link} className={item.className}>
-              {Content}
+              {content}
             </Link>
           ) : (
-            <div key={item.id} className={item.className}>
-              {Content}
-            </div>
+            <div key={item.id} className={item.className}>{content}</div>
           );
         })}
       </div>

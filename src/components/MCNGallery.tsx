@@ -222,7 +222,7 @@ export default function MCNGallery() {
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
           Back
         </Link>
-        <div className="font-tech font-black text-xl tracking-widest">PLAN D</div>
+        <div className="font-tech font-black text-xl tracking-widest">绘屿造物</div>
       </nav>
 
       {/* Content */}
@@ -252,7 +252,7 @@ export default function MCNGallery() {
       <footer className="py-12 px-6 md:px-12 bg-black text-white border-t border-white/10 z-30">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
              <div className="font-typewriter text-gray-500 text-xs">
-                © 2024 PLAN D MCN.
+                © 2024 绘屿造物 MCN。
             </div>
             <div className="font-mono text-xs tracking-widest text-gray-500">
                 REPRESENTING UNIQUE TALENT

@@ -50,7 +50,7 @@ const photoRange = (prefix: string, count: number, start = 1) =>
 // 1. 首页分类与封面 (Covers & Logo)
 // ==========================================
 const _homeCategories = [
-  { id: "logo", label: "LOGO", labelCn: "客户集", src: coverLogo("covers/logo"), className: "col-span-2 row-span-2", link: "/logos", objectFit: "contain" as const },
+  { id: "logo", label: "LOGO", labelCn: "", src: coverLogo("covers/logo"), className: "col-span-2 row-span-2", link: "/logos", objectFit: "contain" as const },
   { id: "bjd", label: "BJD", labelCn: "球关节人偶", src: photo("covers/bjd"), className: "col-span-1 row-span-1", href: "https://planabcf.netlify.app/", objectFit: "cover" as const },
   { id: "spatial", label: "SPATIAL", labelCn: "空间设计", src: photo("covers/spatial"), className: "col-span-1 row-span-1", link: "/spatial", objectFit: "cover" as const },
   { id: "installation", label: "PRODUCT DESIGN", labelCn: "产品设计", src: photo("covers/installation"), className: "col-span-1 row-span-1", link: "/installation", objectFit: "cover" as const },

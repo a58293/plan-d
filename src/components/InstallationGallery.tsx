@@ -94,7 +94,7 @@ export default function InstallationGallery() {
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
           <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Back</span>
         </Link>
-        <div className="font-tech font-black text-xl tracking-widest">PLAN D</div>
+        <div className="font-tech font-black text-xl tracking-widest">绘屿造物</div>
       </header>
 
       {/* Uniform Grid Layout with Stack Effect */}
