@@ -1,6 +1,5 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
-import { SplitColorText } from "./HoverColorText";
 import { homeCategories } from "../content";
 
 type HomeCategory = (typeof homeCategories)[number];
@@ -9,9 +8,8 @@ type WorkTile = {
   id: string;
   title: string;
   label: string;
-  subtitle?: string;
+  subtitle: string;
   className: string;
-  mobileClassName?: string;
   imageClassName?: string;
   category: HomeCategory;
 };
@@ -75,7 +73,7 @@ function BrandMark({ logo }: { logo: HomeCategory }) {
       </div>
       <div className="flex items-center gap-3 md:gap-4">
         <span className="font-site text-[20px] md:text-[24px] tracking-[0.22em] text-[#111827] whitespace-nowrap">
-          <SplitColorText text="绘屿造物" defaultColor="#111827" fontClass="font-site" />
+          绘屿造物
         </span>
         <span className="hidden sm:inline-block h-5 w-px bg-[#D8D3C9]" />
         <span className="hidden sm:inline-block font-en text-[12px] md:text-[13px] tracking-[0.08em] text-[#334155] whitespace-nowrap">
@@ -90,11 +88,11 @@ function WorkTileCard({ tile, index }: { tile: WorkTile; index: number }) {
   return (
     <SmartLink
       category={tile.category}
-      className={`group relative block overflow-hidden bg-[#E9E5DD] ${tile.mobileClassName ?? "aspect-[4/3]"} lg:absolute ${tile.className}`}
+      className={`group relative block min-h-[210px] overflow-hidden bg-[#E9E5DD] ring-1 ring-[#E5DED2] transition-all duration-500 hover:ring-[#CFC5B7] ${tile.className}`}
     >
       <motion.div
         className="relative h-full w-full"
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "160px" }}
         transition={{ duration: 0.68, ease: "easeOut", delay: index * 0.045 }}
@@ -106,18 +104,21 @@ function WorkTileCard({ tile, index }: { tile: WorkTile; index: number }) {
           fetchPriority={index < 2 ? "high" : "auto"}
           decoding="async"
           referrerPolicy="no-referrer"
-          className={`h-full w-full object-cover saturate-[0.82] contrast-[0.96] brightness-[0.96] transition-transform duration-700 group-hover:scale-[1.025] ${tile.imageClassName ?? ""}`}
+          className={`h-full w-full object-cover saturate-[0.72] contrast-[0.94] brightness-[0.98] transition-transform duration-700 group-hover:scale-[1.025] ${tile.imageClassName ?? ""}`}
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0D1320]/52 via-[#0D1320]/8 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-88" />
-        <div className="absolute inset-0 ring-1 ring-inset ring-white/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#111827]/42 via-[#111827]/6 to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-82" />
 
-        <div className="absolute inset-x-0 bottom-0 p-4 text-[#F6F1E8] md:p-5 lg:p-6">
-          <p className="font-en text-[9px] md:text-[10px] tracking-[0.24em] uppercase opacity-70">
-            {tile.subtitle || tile.label}
-          </p>
-          <h3 className="mt-2 font-site text-[clamp(17px,1.6vw,28px)] leading-[1.1] tracking-[0.1em] [text-shadow:0_2px_12px_rgba(0,0,0,0.28)]">
-            <SplitColorText text={tile.label} defaultColor="#F6F1E8" fontClass="font-site" />
+        <div className="absolute left-4 top-4 md:left-5 md:top-5">
+          <span className="font-en text-[9px] uppercase tracking-[0.24em] text-white/70 md:text-[10px]">
+            {tile.subtitle}
+          </span>
+        </div>
+
+        <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
+          <div className="mb-3 h-px w-10 bg-white/60" />
+          <h3 className="font-site text-[18px] leading-none tracking-[0.12em] text-[#F8F3EA] md:text-[22px] lg:text-[26px] [text-shadow:0_2px_12px_rgba(0,0,0,0.26)]">
+            {tile.label}
           </h3>
         </div>
       </motion.div>
@@ -135,8 +136,7 @@ export default function HomeGallery() {
       label: "品牌设计",
       subtitle: "Brand Design",
       category: getCategory("installation"),
-      className: "left-[7%] top-[4%] h-[24%] w-[48%]",
-      mobileClassName: "aspect-[16/9]",
+      className: "md:col-span-2 lg:col-start-2 lg:col-end-8 lg:row-start-1 lg:row-end-4",
     },
     {
       id: "bjd",
@@ -144,8 +144,7 @@ export default function HomeGallery() {
       label: "球形关节人偶",
       subtitle: "BJD Project",
       category: getCategory("bjd"),
-      className: "right-[3%] top-[0%] h-[42%] w-[35%]",
-      mobileClassName: "aspect-[3/4]",
+      className: "md:col-span-1 lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:row-end-6",
       imageClassName: "object-[50%_42%]",
     },
     {
@@ -154,8 +153,7 @@ export default function HomeGallery() {
       label: "VI设计",
       subtitle: "Visual Identity",
       category: getCategory("graphic"),
-      className: "left-[0%] top-[36%] h-[24%] w-[28%]",
-      mobileClassName: "aspect-[4/3]",
+      className: "md:col-span-1 lg:col-start-1 lg:col-end-5 lg:row-start-4 lg:row-end-7",
     },
     {
       id: "illustration",
@@ -163,8 +161,7 @@ export default function HomeGallery() {
       label: "商业插画",
       subtitle: "Illustration",
       category: getCategory("illustration"),
-      className: "left-[29%] top-[31%] h-[31%] w-[35%]",
-      mobileClassName: "aspect-[4/3]",
+      className: "md:col-span-1 lg:col-start-5 lg:col-end-10 lg:row-start-4 lg:row-end-8",
       imageClassName: "object-center",
     },
     {
@@ -173,8 +170,7 @@ export default function HomeGallery() {
       label: "装置艺术",
       subtitle: "Spatial Installation",
       category: getCategory("spatial"),
-      className: "left-[9%] top-[70%] h-[22%] w-[53%]",
-      mobileClassName: "aspect-[16/9]",
+      className: "md:col-span-2 lg:col-start-3 lg:col-end-12 lg:row-start-8 lg:row-end-11",
       imageClassName: "object-[50%_44%]",
     },
   ];
@@ -190,7 +186,7 @@ export default function HomeGallery() {
           </div>
         </header>
 
-        <div className="grid flex-1 grid-cols-1 gap-12 pt-12 lg:grid-cols-[41%_59%] lg:gap-12 lg:pt-10 xl:gap-16">
+        <div className="grid flex-1 grid-cols-1 gap-12 pt-12 lg:grid-cols-[41%_59%] lg:gap-14 lg:pt-10 xl:gap-16">
           <motion.div
             className="flex flex-col justify-center lg:pb-10"
             initial={{ opacity: 0, y: 24 }}
@@ -202,12 +198,8 @@ export default function HomeGallery() {
             </p>
 
             <h1 className="mt-10 max-w-[760px] font-site text-[clamp(54px,7.1vw,116px)] leading-[1.06] tracking-[0.035em] text-[#0F172A]">
-              <span className="block">
-                <SplitColorText text="以造物之心，" defaultColor="#0F172A" fontClass="font-site" />
-              </span>
-              <span className="block">
-                <SplitColorText text="重塑商业美学" defaultColor="#0F172A" fontClass="font-site" />
-              </span>
+              <span className="block">以造物之心，</span>
+              <span className="block">重塑商业美学</span>
             </h1>
 
             <div className="mt-16 max-w-[860px] border-t border-[#DDD8CE] pt-8">
@@ -219,7 +211,7 @@ export default function HomeGallery() {
                   >
                     <div className="font-en text-[11px] tracking-[0.08em] text-[#64707D]">{service.no}</div>
                     <div className="mt-3 font-site text-[15px] tracking-[0.06em] text-[#111827]">
-                      <SplitColorText text={service.title} defaultColor="#111827" fontClass="font-site" />
+                      {service.title}
                     </div>
                     <div className="mt-1 font-en text-[11px] leading-snug tracking-[0.02em] text-[#7A838D]">
                       {service.en}
@@ -233,7 +225,7 @@ export default function HomeGallery() {
               to="/graphic"
               className="group mt-12 inline-flex w-fit items-center gap-8 font-site text-[17px] tracking-[0.12em] text-[#111827]"
             >
-              <SplitColorText text="探索更多服务" defaultColor="#111827" fontClass="font-site" />
+              <span>探索更多服务</span>
               <span className="relative inline-flex h-px w-16 bg-[#111827] transition-all duration-300 group-hover:w-24">
                 <span className="absolute right-0 top-1/2 h-2 w-2 -translate-y-1/2 rotate-45 border-r border-t border-[#111827]" />
               </span>
@@ -241,7 +233,7 @@ export default function HomeGallery() {
           </motion.div>
 
           <div className="flex items-center lg:justify-end lg:pt-3">
-            <div className="relative flex w-full flex-col gap-5 md:gap-6 lg:h-[78vh] lg:min-h-[640px] lg:gap-0 lg:before:absolute lg:before:left-[2%] lg:before:top-[14%] lg:before:h-[70%] lg:before:w-px lg:before:bg-[#DDD8CE] lg:after:absolute lg:after:left-[16%] lg:after:top-[94%] lg:after:h-px lg:after:w-[54%] lg:after:bg-[#DDD8CE]">
+            <div className="relative grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:h-[76vh] lg:min-h-[640px] lg:grid-cols-12 lg:grid-rows-10 lg:gap-3 lg:before:absolute lg:before:left-[0.5%] lg:before:top-[12%] lg:before:h-[72%] lg:before:w-px lg:before:bg-[#DDD8CE] lg:after:absolute lg:after:left-[18%] lg:after:bottom-[0] lg:after:h-px lg:after:w-[64%] lg:after:bg-[#DDD8CE]">
               {tiles.map((tile, index) => (
                 <WorkTileCard key={tile.id} tile={tile} index={index} />
               ))}
