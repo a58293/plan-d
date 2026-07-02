@@ -21,14 +21,14 @@ const ParallaxCard: React.FC<{ project: ProjectItem; index: number }> = ({ proje
 
       <motion.div
         ref={ref}
-        className="relative h-full flex items-center justify-center cursor-pointer overflow-hidden bg-white transition-all duration-500"
+        className="relative h-full cursor-pointer overflow-hidden bg-white transition-all duration-500"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <motion.div
-          className="w-full h-full flex items-center justify-center"
+          className="w-full h-full"
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.4 }}
         >
@@ -38,7 +38,7 @@ const ParallaxCard: React.FC<{ project: ProjectItem; index: number }> = ({ proje
             loading={index === 0 ? "eager" : "lazy"}
             fetchPriority={index === 0 ? "high" : "auto"}
             decoding="async"
-            className="w-full h-full object-contain transition-all duration-500"
+            className="w-full h-full object-cover transition-all duration-500"
             referrerPolicy="no-referrer"
           />
         </motion.div>
