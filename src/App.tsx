@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Suspense, lazy, useEffect, useRef } from "react";
+import { Suspense, lazy, useEffect, useLayoutEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomeGallery from "./components/HomeGallery";
 import StudioIntro from "./components/StudioIntro";
@@ -18,38 +18,102 @@ const InstallationGallery = lazy(() => import("./components/InstallationGallery"
 const ProductDesignDetail = lazy(() => import("./components/ProductDesignDetail"));
 const LogoGallery = lazy(() => import("./components/LogoGallery"));
 
+function HomeContent() {
+  return (
+    <>
+      <HomeGallery />
+      <StudioIntro />
+    </>
+  );
+}
+
 function Home() {
-  const isResettingRef = useRef(false);
+  const segmentRef = useRef<HTMLDivElement | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const initializedRef = useRef(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (isResettingRef.current) return;
-
-      const scrollTop = window.scrollY || window.pageYOffset;
-      const viewportHeight = window.innerHeight;
-      const fullHeight = document.documentElement.scrollHeight;
-
-      if (scrollTop + viewportHeight >= fullHeight - 6) {
-        isResettingRef.current = true;
-        window.scrollTo({ top: 0, behavior: "auto" });
-
-        window.setTimeout(() => {
-          isResettingRef.current = false;
-        }, 120);
-      }
+  useLayoutEffect(() => {
+    const setMiddlePosition = () => {
+      const segmentHeight = segmentRef.current?.offsetHeight ?? 0;
+      if (!segmentHeight) return;
+      window.scrollTo({ top: segmentHeight, behavior: "auto" });
+      initializedRef.current = true;
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    const timer = window.setTimeout(setMiddlePosition, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const previous = history.scrollRestoration;
+    history.scrollRestoration = "manual";
+    html.style.overscrollBehaviorY = "none";
+
+    const recenter = () => {
+      if (rafRef.current !== null) return;
+
+      rafRef.current = window.requestAnimationFrame(() => {
+        rafRef.current = null;
+        const segmentHeight = segmentRef.current?.offsetHeight ?? 0;
+        if (!segmentHeight || !initializedRef.current) return;
+
+        const scrollTop = window.scrollY || window.pageYOffset;
+        const upperBound = segmentHeight * 0.5;
+        const lowerBound = segmentHeight * 1.5;
+
+        if (scrollTop <= upperBound) {
+          window.scrollTo({ top: scrollTop + segmentHeight, behavior: "auto" });
+        } else if (scrollTop >= lowerBound) {
+          window.scrollTo({ top: scrollTop - segmentHeight, behavior: "auto" });
+        }
+      });
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      const segmentHeight = segmentRef.current?.offsetHeight ?? 0;
+      if (!segmentHeight) return;
+
+      if (!initializedRef.current) {
+        window.scrollTo({ top: segmentHeight, behavior: "auto" });
+        initializedRef.current = true;
+        return;
+      }
+
+      const scrollTop = window.scrollY || window.pageYOffset;
+      if (scrollTop < segmentHeight * 0.5 || scrollTop > segmentHeight * 1.5) {
+        window.scrollTo({ top: segmentHeight, behavior: "auto" });
+      }
+    });
+
+    if (segmentRef.current) {
+      resizeObserver.observe(segmentRef.current);
+    }
+
+    window.addEventListener("scroll", recenter, { passive: true });
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", recenter);
+      resizeObserver.disconnect();
+      html.style.overscrollBehaviorY = "";
+      history.scrollRestoration = previous;
+      if (rafRef.current !== null) {
+        window.cancelAnimationFrame(rafRef.current);
+      }
     };
   }, []);
 
   return (
-    <main className="min-h-screen w-full bg-white">
-      <HomeGallery />
-      <StudioIntro />
+    <main className="w-full bg-white">
+      <div aria-hidden="true">
+        <HomeContent />
+      </div>
+      <div ref={segmentRef}>
+        <HomeContent />
+      </div>
+      <div aria-hidden="true">
+        <HomeContent />
+      </div>
     </main>
   );
 }
