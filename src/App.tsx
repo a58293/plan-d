@@ -116,7 +116,7 @@ function Home() {
   }, []);
 
   return (
-    <main className="w-full bg-[#F8F7F3]">
+    <main className="w-full bg-[#FFFDFC]">
       <div aria-hidden="true">
         <HomeContent />
       </div>
@@ -132,7 +132,7 @@ function Home() {
 
 function GraphicDesign() {
   return (
-    <main className="min-h-screen w-full bg-[#F8F7F3]">
+    <main className="min-h-screen w-full bg-[#FFFDFC]">
       <GraphicDesignGallery />
     </main>
   );
@@ -140,7 +140,7 @@ function GraphicDesign() {
 
 function LogoCollection() {
   return (
-    <main className="min-h-screen w-full bg-[#F8F7F3]">
+    <main className="min-h-screen w-full bg-[#FFFDFC]">
       <LogoGallery />
     </main>
   );
@@ -148,7 +148,7 @@ function LogoCollection() {
 
 // 页面切换时的加载占位符
 const PageLoader = () => (
-  <div className="min-h-screen w-full bg-[#F8F7F3] flex items-center justify-center">
+  <div className="min-h-screen w-full bg-[#FFFDFC] flex items-center justify-center">
     <div className="w-8 h-8 border-2 border-gray-200 border-t-black rounded-full animate-spin"></div>
   </div>
 );

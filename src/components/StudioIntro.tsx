@@ -5,7 +5,7 @@ export default function StudioIntro() {
   const homepageLogos = logoImages;
 
   return (
-    <section className="w-full bg-[#F8F7F3] px-5 py-14 md:px-10 md:py-18 lg:px-16 xl:px-20">
+    <section className="w-full bg-[#FFFDFC] px-5 py-14 md:px-10 md:py-18 lg:px-16 xl:px-20">
       <div className="mx-auto max-w-[1600px] border-t border-[#DDD8CE] pt-9 md:pt-12">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
