@@ -214,9 +214,9 @@ function IllustrationOverview() {
           <SectionPageIntro
             title="商业插画与海报"
             lines={[
-              "电影级张力，驱动商业转化。",
-              "苛求光影与构图美感，为产品发布、活动宣发提供高精度的定制海报。",
-              "用磅礴的视觉冲击力，牢牢锁定市场焦点。",
+              "高精度视觉呈现，赋能品牌表达。",
+              "将扎实的美学功底与商业诉求深度融合。",
+              "为产品发布、活动宣发提供定制级的商业插画与海报设计。",
             ]}
           />
 
@@ -290,13 +290,6 @@ function IllustrationCategoryGallery() {
             <h1 className="font-site text-[clamp(30px,4vw,58px)] tracking-[0.05em] text-[#111827] leading-none">
               <SplitColorText text={group.title} defaultColor="#111827" fontClass="font-site" />
             </h1>
-            <p className="font-site text-[15px] md:text-[17px] text-[#6B7280] tracking-[0.06em]">
-              <SplitColorText
-                text={folderImages.length > 0 ? "随机序列展示" : "正在读取对应文件夹图片…"}
-                defaultColor="#6B7280"
-                fontClass="font-site"
-              />
-            </p>
           </div>
 
           {images.length > 0 ? (
@@ -324,17 +317,7 @@ function IllustrationCategoryGallery() {
 
               {visibleCount < images.length && <div ref={loaderRef} className="h-10" />}
             </>
-          ) : (
-            <div className="rounded-[24px] border border-dashed border-gray-200 bg-[#FBFAF7] px-6 py-14 md:px-10 md:py-20 text-center">
-              <p className="font-site text-[16px] md:text-[18px] leading-[1.9] tracking-[0.04em] text-[#6B7280]">
-                <SplitColorText
-                  text={`请在 public/images/illustration/${group.key}/ 中放入 001.jpg / 001.webp 这类顺序编号图片。`}
-                  defaultColor="#6B7280"
-                  fontClass="font-site"
-                />
-              </p>
-            </div>
-          )}
+          ) : null}
         </div>
       </div>
     </motion.main>
