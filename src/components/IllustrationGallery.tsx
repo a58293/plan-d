@@ -388,9 +388,9 @@ function IllustrationCategoryGallery() {
           </div>
 
           {isResolving ? (
-            <div className="rounded-[24px] border border-dashed border-gray-200 bg-[#FBFAF7] px-6 py-14 md:px-10 md:py-16 text-center">
+            <div className="py-14 md:py-16 text-center">
               <p className="font-site text-[16px] md:text-[18px] leading-[1.9] tracking-[0.04em] text-[#6B7280]">
-                <SplitColorText text="正在读取图片，请稍候…" defaultColor="#6B7280" fontClass="font-site" />
+                <SplitColorText text="正在加载图片" defaultColor="#6B7280" fontClass="font-site" />
               </p>
             </div>
           ) : images.length > 0 ? (

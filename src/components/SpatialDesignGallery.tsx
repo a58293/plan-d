@@ -8,9 +8,14 @@ import SectionPageIntro from "./SectionPageIntro";
 
 const ParallaxCard: React.FC<{ project: ProjectItem; index: number }> = ({ project, index }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const isFeaturedWide = index === 9;
 
   return (
-    <div className="col-span-1 aspect-[3/2] relative group">
+    <div
+      className={`relative group col-span-1 aspect-[3/2] ${
+        isFeaturedWide ? "md:col-span-2 lg:col-span-3 aspect-[16/7]" : ""
+      }`}
+    >
       <motion.div
         ref={ref}
         className="relative h-full flex items-center justify-center cursor-pointer overflow-hidden bg-white transition-all duration-500"
