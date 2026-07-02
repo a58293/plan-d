@@ -56,7 +56,7 @@ const _homeCategories = [
   { id: "installation", label: "PRODUCT DESIGN", labelCn: "产品设计", src: photo("covers/installation"), className: "col-span-1 row-span-1", link: "/installation", objectFit: "cover" as const },
   { id: "mcn", label: "MCN", labelCn: "模特经纪", src: photo("covers/mcn"), className: "col-span-1 row-span-1", link: "/mcn", objectFit: "cover" as const },
   { id: "graphic", label: "GRAPHIC", labelCn: "平面设计", src: photo("covers/graphic"), className: "col-span-2 row-span-1", link: "/graphic", objectFit: "cover" as const },
-  { id: "illustration", label: "ILLUSTRATION", labelCn: "插画艺术", src: photo("covers/illustration"), className: "col-span-2 row-span-1", link: "/illustration", objectFit: "cover" as const },
+  { id: "illustration", label: "ILLUSTRATION", labelCn: "商业海报", src: photo("covers/illustration"), className: "col-span-2 row-span-1", link: "/illustration", objectFit: "cover" as const },
 ];
 
 export const homeCategories = _homeCategories;
@@ -161,14 +161,45 @@ const _logoImages: ImageItem[] = Array.from({ length: 30 }, (_, i) => ({
 export const logoImages = _logoImages;
 
 // ==========================================
-// 3. 插画艺术 (Illustration)
+// 3. 商业海报 (Illustration / Posters)
+// 目录规则：
+// public/images/illustration/anime/01.jpg(.webp)
+// public/images/illustration/film/01.jpg(.webp)
+// public/images/illustration/game/01.jpg(.webp)
+// 修改下方 count 即可控制每个文件夹的图片数量
 // ==========================================
-const _illustrationImages = Array.from(
-  { length: 39 },
-  (_, i) => photo(`illustration/${String(i + 1).padStart(2, "0")}`)
-);
+const illustrationCategoryCounts = {
+  anime: 13,
+  film: 13,
+  game: 13,
+} as const;
 
-export const illustrationImages = _illustrationImages;
+const buildIllustrationImages = (folder: keyof typeof illustrationCategoryCounts) =>
+  Array.from(
+    { length: illustrationCategoryCounts[folder] },
+    (_, i) => photo(`illustration/${folder}/${String(i + 1).padStart(2, "0")}`)
+  );
+
+export const illustrationCategories = [
+  {
+    key: "anime" as const,
+    title: "动漫",
+    images: buildIllustrationImages("anime"),
+  },
+  {
+    key: "film" as const,
+    title: "影视",
+    images: buildIllustrationImages("film"),
+  },
+  {
+    key: "game" as const,
+    title: "游戏",
+    images: buildIllustrationImages("game"),
+  },
+];
+
+export const illustrationImages = illustrationCategories.flatMap((item) => item.images);
+
 
 // ==========================================
 // 4. 空间设计 (Spatial Design)
