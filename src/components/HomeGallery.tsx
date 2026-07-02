@@ -164,7 +164,7 @@ export default function HomeGallery() {
       label: "装置艺术",
       subtitle: "Spatial Installation",
       category: getCategory("spatial"),
-      className: "md:col-span-1 lg:col-start-2 lg:col-end-6 lg:row-start-4 lg:row-end-6",
+      className: "md:col-span-1 lg:col-start-5 lg:col-end-9 lg:row-start-4 lg:row-end-8",
       imageClassName: "object-[50%_46%]",
     },
     {
@@ -173,7 +173,7 @@ export default function HomeGallery() {
       label: "VI设计",
       subtitle: "Visual Identity",
       category: getCategory("graphic"),
-      className: "md:col-span-1 lg:col-start-2 lg:col-end-6 lg:row-start-6 lg:row-end-8",
+      className: "md:col-span-1 lg:col-start-1 lg:col-end-5 lg:row-start-4 lg:row-end-8",
       imageClassName: "object-[50%_48%]",
     },
     {
