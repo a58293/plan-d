@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
-import { useMemo, useRef, useState, useEffect } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useRef, useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { SplitColorText } from "./HoverColorText";
 import SectionPageIntro from "./SectionPageIntro";
@@ -16,14 +16,11 @@ const illustrationMeta: GroupMeta[] = [
   { key: "game", title: "游戏" },
 ];
 
-function shuffleArray<T>(items: T[]) {
-  const arr = [...items];
-  for (let i = arr.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
+const illustrationPreviewSelection: Record<GroupMeta["key"], number> = {
+  anime: 1,
+  film: 1,
+  game: 1,
+};
 
 function buildVariants(folder: GroupMeta["key"], index: number) {
   const num3 = String(index).padStart(3, "0");
@@ -152,7 +149,8 @@ function useIllustrationPreviewMap() {
     let cancelled = false;
 
     illustrationMeta.forEach((group) => {
-      firstExisting(buildVariants(group.key, 1)).then((src) => {
+      const selectedIndex = illustrationPreviewSelection[group.key] ?? 1;
+      firstExisting(buildVariants(group.key, selectedIndex)).then((src) => {
         if (!cancelled && src) {
           setPreviews((prev) => ({ ...prev, [group.key]: src }));
         }
@@ -323,9 +321,8 @@ function IllustrationOverview() {
 function IllustrationCategoryGallery() {
   const { category = "" } = useParams();
   const group = illustrationMeta.find((item) => item.key === category);
-  const location = useLocation();
   const { images: folderImages, isResolving } = useFolderImages(group?.key);
-  const images = useMemo(() => shuffleArray(folderImages), [folderImages, location.key]);
+  const images = folderImages;
   const [visibleCount, setVisibleCount] = useState(9);
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -388,9 +385,9 @@ function IllustrationCategoryGallery() {
           </div>
 
           {isResolving ? (
-            <div className="py-14 md:py-16 text-center">
+            <div className="rounded-[24px] border border-dashed border-gray-200 bg-[#FBFAF7] px-6 py-14 md:px-10 md:py-16 text-center">
               <p className="font-site text-[16px] md:text-[18px] leading-[1.9] tracking-[0.04em] text-[#6B7280]">
-                <SplitColorText text="正在加载图片" defaultColor="#6B7280" fontClass="font-site" />
+                <SplitColorText text="正在读取图片，请稍候…" defaultColor="#6B7280" fontClass="font-site" />
               </p>
             </div>
           ) : images.length > 0 ? (
