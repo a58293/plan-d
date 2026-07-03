@@ -218,7 +218,7 @@ export default function HomeGallery() {
 
             <div className="mt-16 h-px w-[76%] bg-[#E5DED2]" />
 
-            <div className="mt-12 max-w-[640px] space-y-6 font-site text-[18px] leading-[2.05] tracking-[0.03em] text-[#495260] md:text-[20px]">
+            <div className="mt-12 max-w-[680px] space-y-6 font-site text-[18px] leading-[2.05] tracking-[0.03em] text-[#495260] md:text-[22px] lg:text-[24px] xl:text-[25px]">
               <p>
                 <SplitColorText
                   text="绘屿造物（Lumen Auralis）是一家专注品牌构建与视觉传达的设计工作室。"
