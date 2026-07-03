@@ -152,7 +152,7 @@ export const graphicImages = _graphicProjects;
 // ==========================================
 // 2.5 品牌标识 (Logo Design)
 // ==========================================
-const _logoImages: ImageItem[] = Array.from({ length: 30 }, (_, i) => ({
+const _logoImages: ImageItem[] = Array.from({ length: 33 }, (_, i) => ({
   id: i + 1,
   src: logoAsset(`logo/${String(i + 1).padStart(2, "0")}`),
   alt: `Logo 设计 ${String(i + 1).padStart(2, "0")}`,
@@ -204,7 +204,7 @@ export const illustrationImages = illustrationCategories.flatMap((item) => item.
 // ==========================================
 // 4. 空间设计 (Spatial Design)
 // ==========================================
-const _spatialProjects: ProjectItem[] = Array.from({ length: 14 }, (_, i) => ({
+const _spatialProjects: ProjectItem[] = Array.from({ length: 17 }, (_, i) => ({
   id: i + 1,
   title: `项目名称 ${String(i + 1).padStart(2, "0")}`,
   description: `这里是空间设计项目 ${String(i + 1).padStart(2, "0")} 的详细描述文案，介绍设计理念等。`,
@@ -226,14 +226,7 @@ const _installationProjects: ProjectItem[] = [
     src: photo("installation/01"),
     location: "丽江",
     year: "2026",
-    galleryImages: [
-      photo("installation/01-1"),
-      photo("installation/01-2"),
-      photo("installation/01-4"),
-      photo("installation/01-5"),
-      photo("installation/01-6"),
-      photo("installation/01-7"),
-    ],
+    galleryImages: photoRange("installation/01", 10),
   },
   {
     id: 3,
@@ -241,7 +234,7 @@ const _installationProjects: ProjectItem[] = [
     src: photo("installation/03"),
     location: "昆明",
     year: "2025",
-    galleryImages: photoRange("installation/03", 11),
+    galleryImages: photoRange("installation/03", 8),
   },
   {
     id: 4,
@@ -249,7 +242,7 @@ const _installationProjects: ProjectItem[] = [
     src: photo("installation/04"),
     location: "丽江",
     year: "2025",
-    galleryImages: [photo("installation/04-2"), photo("installation/04-3")],
+    galleryImages: photoRange("installation/04", 3),
   },
   {
     id: 5,
@@ -257,7 +250,7 @@ const _installationProjects: ProjectItem[] = [
     src: photo("installation/05"),
     location: "昆明",
     year: "2024",
-    galleryImages: photoRange("installation/05", 4),
+    galleryImages: [photo("installation/05-1"), photo("installation/05-2"), photo("installation/05-4")],
   },
   {
     id: 6,
@@ -365,7 +358,7 @@ const _installationProjects: ProjectItem[] = [
     src: photo("installation/18"),
     location: "大理",
     year: "2019",
-    galleryImages: photoRange("installation/18", 6),
+    galleryImages: photoRange("installation/18", 8),
   },
   {
     id: 19,
