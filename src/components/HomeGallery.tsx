@@ -157,6 +157,7 @@ export default function HomeGallery() {
       category: getCategory("installation"),
       className: "md:col-span-2 lg:col-start-2 lg:col-end-9 lg:row-start-1 lg:row-end-4",
       imageClassName: "object-[50%_42%]",
+      disabled: true,
     },
     {
       id: "spatial",
@@ -166,6 +167,7 @@ export default function HomeGallery() {
       category: getCategory("spatial"),
       className: "md:col-span-1 lg:col-start-5 lg:col-end-9 lg:row-start-4 lg:row-end-8",
       imageClassName: "object-[50%_46%]",
+      disabled: true,
     },
     {
       id: "graphic",
@@ -175,6 +177,7 @@ export default function HomeGallery() {
       category: getCategory("graphic"),
       className: "md:col-span-1 lg:col-start-1 lg:col-end-5 lg:row-start-4 lg:row-end-8",
       imageClassName: "object-[50%_48%]",
+      disabled: true,
     },
     {
       id: "bjd",

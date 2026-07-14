@@ -3,7 +3,7 @@ import { SplitColorText } from "./HoverColorText";
 import { logoImages } from "../content";
 
 export default function StudioIntro() {
-  const homepageLogos = logoImages;
+  const homepageLogos = logoImages.slice(0, 10);
 
   return (
     <section className="w-full bg-[#FFFDFC] px-5 py-14 md:px-10 md:py-18 lg:px-16 xl:px-20">
