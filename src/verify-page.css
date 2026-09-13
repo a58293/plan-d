@@ -20,7 +20,6 @@
 .verify-world button, .verify-world input { font: inherit; }
 
 .verify-atmosphere { position: fixed; inset: 0; pointer-events: none; }
-.verify-atmosphere::before { content: "AUTHENTIC"; position: absolute; right: -1vw; top: 18vh; color: rgba(32, 86, 81, .035); font: 17vw/.8 Georgia, serif; letter-spacing: -.05em; }
 .verify-atmosphere span { position: absolute; right: clamp(30px, 9vw, 150px); top: 13vh; width: min(46vw, 650px); aspect-ratio: 1; border: 1px solid rgba(46, 104, 98, .09); border-radius: 50%; }
 .verify-atmosphere span:nth-child(2) { inset: auto clamp(65px, 14vw, 220px) auto auto; top: 22vh; width: min(30vw, 430px); border-style: dashed; animation: verify-orbit 54s linear infinite; }
 .verify-atmosphere i { position: absolute; right: 28%; top: 9vh; width: 1px; height: 78vh; background: linear-gradient(transparent, rgba(38, 91, 86, .13), transparent); }
