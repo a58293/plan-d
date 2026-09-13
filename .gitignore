@@ -6,4 +6,10 @@ coverage/
 *.log
 .env*
 !.env.example
+!.env.production
 images1/
+素材管理/
+# Historical originals and local reports are not part of the current website repository.
+public/images/
+artifacts/
+.secrets/

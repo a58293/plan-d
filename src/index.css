@@ -1,34 +1,12 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "Genkai";
-  src: url("/fonts/Genkaimincho.ttf") format("truetype");
-  unicode-range: U+0000-00FF;
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "NamiSong";
-  src: url("/fonts/NamiLaoSong-A.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "SiteFont";
-  src: url("/fonts/站酷小薇体.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
+/* Legacy Genkai/NamiSong files fail browser decoding; preserve files but use
+   the existing fallback stack until valid originals/custom fonts are supplied. */
 
 @theme {
   --font-en: "Genkai", "Times New Roman", Georgia, serif;
   --font-zh: "NamiSong", "Songti SC", "STSong", "SimSun", serif;
-  --font-site: "SiteFont", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
+  --font-site: "NamiSong", "Songti SC", "STSong", "SimSun", serif;
   --font-mincho: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
   --font-custom: "Genkai", "NamiSong", "Songti SC", "STSong", "SimSun", serif;
 }
@@ -68,7 +46,7 @@ body {
 }
 
 .font-site {
-  font-family: "SiteFont", "NamiSong", "Songti SC", "STSong", "SimSun", serif !important;
+  font-family: "NamiSong", "Songti SC", "STSong", "SimSun", serif !important;
   font-weight: 400 !important;
   font-style: normal !important;
   font-synthesis: none !important;
@@ -95,4 +73,12 @@ h1, h2, h3, h4, h5, h6, p, span, div, a {
 
 @utility perspective-1500 {
   perspective: 1500px;
+}
+
+/* One readable text family across navigation, forms, dialogs and body copy.
+   Display headings and brand wordmarks retain their editorial serif family. */
+html body :is(button,input,textarea,select,label,p,li,dt,dd,footer,nav),
+html body :is(button,label,nav) :is(span,b,strong,small,a),
+html body :is(.site-search-layer,.purchase-dialog) * {
+  font-family:system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif !important;
 }

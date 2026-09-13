@@ -1,2 +1,0 @@
-覆盖这3个文件：GraphicDesignGallery.tsx, InstallationGallery.tsx, ProductDesignDetail.tsx
-品牌设计页全部保持统一卡片尺寸；只有装置艺术的10号图特殊处理。
