@@ -16,7 +16,10 @@ function firstScreenImages(pathname: string) {
   if (pathname === "/") paths.push(requiredImage(currentFeaturedProduct.physicalMedia));
   if (pathname === "/series/flower-gods") {
     paths.push(requiredImage('jingxinChoice'));
-    paths.push(requiredImage('flowerCloudSea'), requiredImage('flowerColumns'), requiredImage('jingxinForeground'), requiredImage('flowerPendingScene'));
+    if (!window.matchMedia('(max-width: 700px)').matches) {
+      paths.push(requiredImage('flowerCloudSea'), requiredImage('flowerColumns'), requiredImage('jingxinForeground'));
+    }
+    // The unpublished seat isn't visible initially; do not block the opening on it.
   }
   if (pathname === "/series/flower-gods/jingxin") paths.push(requiredImage('jingxinPortrait'));
 

@@ -7,6 +7,7 @@ import "./verify-page.css";
 import './soft-ui.css';
 import './mobile-ux-redesign.css';
 import { verificationApiUrl, verifyAuthenticity, type VerificationResponse } from './verification';
+import {beginVerificationOperation, completeVerificationOperation} from './verification-operation';
 
 const officialLogo = requiredImage('brandLogo');
 const samples = [
@@ -98,33 +99,46 @@ function LiveConsole() {
   const [checking, setChecking] = useState(false);
   const [result, setResult] = useState<VerificationResponse | null>(null);
   const controllerRef = useRef<AbortController | null>(null);
+  const pendingSubmit = useRef(false);
 
   useEffect(() => () => controllerRef.current?.abort(), []);
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    if (checking) return;
+    if (pendingSubmit.current) return;
     const normalizedCertificate = certificate.normalize("NFKC").trim().toUpperCase().replace(/[\s-]+/g, "");
     const normalizedOrder = order.normalize("NFKC").trim().replace(/[\s-]+/g, "");
     if (!/^[A-Z0-9]{12,32}$/.test(normalizedCertificate) || !/^\d{10,32}$/.test(normalizedOrder)) {
       setResult({ ok: false, result: "invalid_input", message: "请核对娃证编号与订单号格式。" });
       return;
     }
+    pendingSubmit.current = true;
     setChecking(true);
     setResult(null);
     const controller = new AbortController();
     controllerRef.current = controller;
     const timeout = window.setTimeout(() => controller.abort(), 8000);
     try {
-      setResult(await verifyAuthenticity(normalizedCertificate, normalizedOrder, controller.signal));
+      const operationId = beginVerificationOperation(normalizedCertificate, normalizedOrder);
+      const response = await verifyAuthenticity(normalizedCertificate, normalizedOrder, controller.signal, operationId);
+      if (['valid_first','valid_repeat','not_found','blocked','void','invalid_input','idempotency_conflict'].includes(response.result)) {
+        completeVerificationOperation(operationId);
+      }
+      setResult(response);
     } catch {
-      setResult({ ok: false, result: "service_unavailable", message: "核验服务暂时不可用，请稍后重试。" });
+      setResult({ ok: false, result: "service_unavailable", message: "本次结果暂未确认，请稍后重试。重试将沿用本次请求，避免重复计数。" });
     } finally {
       window.clearTimeout(timeout);
       setChecking(false);
+      pendingSubmit.current = false;
       controllerRef.current = null;
     }
   };
-  const reset = () => { setResult(null); setCertificate(""); setOrder(""); };
+  const reset = () => {
+    if (result?.result !== 'service_unavailable' && result?.result !== 'rate_limited') {
+      setCertificate(''); setOrder('');
+    }
+    setResult(null);
+  };
   const first = result?.result === "valid_first";
   const repeat = result?.result === "valid_repeat";
   const successful = first || repeat;
@@ -144,7 +158,7 @@ function LiveConsole() {
       <blockquote>{result.message}</blockquote>
       {successful && <dl><div><dt>作品</dt><dd>{result.product?.name || "—"} · {result.product?.seriesName || "—"}</dd></div><div><dt>批次 / 序列</dt><dd>{result.product?.batchCode || "—"} / {result.product?.serialNumber || "—"}</dd></div><div><dt>核验记录</dt><dd>{result.verification?.count || 0} 次{repeat && result.verification?.firstVerifiedAt ? ` · 首次 ${new Date(result.verification.firstVerifiedAt).toLocaleString("zh-CN")}` : ""}</dd></div></dl>}
       {!successful && result.requestId && <p className="verify-failure-note">如需客服协助，请提供查询编号：{result.requestId}</p>}
-      <button type="button" onClick={reset}>重新核验</button>
+      <button type="button" onClick={reset}>{result.result === 'service_unavailable' || result.result === 'rate_limited' ? '返回并重试本次核验' : '重新核验'}</button>
     </div>}
     <footer><span>编号与订单须同时匹配</span><span>OFFICIAL CHANNEL</span></footer>
   </section>;

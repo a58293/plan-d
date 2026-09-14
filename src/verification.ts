@@ -6,6 +6,7 @@ export type VerificationResultCode =
   | "void"
   | "rate_limited"
   | "invalid_input"
+  | "idempotency_conflict"
   | "service_unavailable"
   | "forbidden";
 
@@ -42,12 +43,12 @@ function configuredEndpoint() {
 
 export const verificationApiUrl = configuredEndpoint();
 
-export async function verifyAuthenticity(certificate: string, order: string, signal: AbortSignal) {
+export async function verifyAuthenticity(certificate: string, order: string, signal: AbortSignal, operationId: string) {
   if (!verificationApiUrl) throw new Error("NOT_CONFIGURED");
   const response = await fetch(verificationApiUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ certificate, order }),
+    body: JSON.stringify({ certificate, order, operationId }),
     cache: "no-store",
     credentials: "omit",
     referrerPolicy: "no-referrer",

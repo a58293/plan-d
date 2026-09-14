@@ -5,10 +5,10 @@ export type FontSettings = Record<FontRole, FontSetting>;
 // 将字体放入 public/fonts/custom，然后填写文件名；空字符串保留现有字体。
 // 推荐 WOFF2；普通字体 weight 填 "400"，可变字体可填 "100 900"。
 export const customFonts: FontSettings = {
-  body:  { file: "江西拙楷3.0.ttf", weight: "400" }, // 全站文字基础字体
-  title: { file: "江西拙楷3.0.ttf", weight: "400" }, // 中文大标题：用户提供的江西拙楷 3.0
-  latin: { file: "江西拙楷3.0.ttf", weight: "400" }, // 英文与数字
-  ui:    { file: "江西拙楷3.0.ttf", weight: "400" }, // 导航、按钮、表单
+  body:  { file: "江西拙楷3.0.woff2", weight: "400" }, // 全字库无损压缩，原字体保留在本地
+  title: { file: "江西拙楷3.0.woff2", weight: "400" },
+  latin: { file: "江西拙楷3.0.woff2", weight: "400" },
+  ui:    { file: "江西拙楷3.0.woff2", weight: "400" },
 };
 
 export async function applyCustomFonts(settings: FontSettings = customFonts) {

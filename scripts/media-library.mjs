@@ -114,7 +114,7 @@ export async function collectPublicSupport(project) {
   // Publish only active support files. Duplicate and historical fonts stay in
   // the local library without adding several megabytes to every deployment.
   for (const name of [
-    'fonts/custom/江西拙楷3.0.ttf',
+    'fonts/custom/江西拙楷3.0.woff2',
     '_headers', '_redirects', 'robots.txt', 'favicon.png',
     '24dce09b1e7c6dc046ed86dc4718697e.txt',
   ]) await add(path.join(root,name));
