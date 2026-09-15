@@ -157,7 +157,6 @@ function LiveConsole() {
       <h2>{first ? "首次核验通过" : repeat ? "凭证有效 · 已核验" : result.result === "rate_limited" ? "请稍后再试" : "未通过核验"}</h2>
       <blockquote>{result.message}</blockquote>
       {successful && <dl><div><dt>作品</dt><dd>{result.product?.name || "—"} · {result.product?.seriesName || "—"}</dd></div><div><dt>批次 / 序列</dt><dd>{result.product?.batchCode || "—"} / {result.product?.serialNumber || "—"}</dd></div><div><dt>核验记录</dt><dd>{result.verification?.count || 0} 次{repeat && result.verification?.firstVerifiedAt ? ` · 首次 ${new Date(result.verification.firstVerifiedAt).toLocaleString("zh-CN")}` : ""}</dd></div></dl>}
-      {!successful && result.requestId && <p className="verify-failure-note">如需客服协助，请提供查询编号：{result.requestId}</p>}
       <button type="button" onClick={reset}>{result.result === 'service_unavailable' || result.result === 'rate_limited' ? '返回并重试本次核验' : '重新核验'}</button>
     </div>}
     <footer><span>编号与订单须同时匹配</span><span>OFFICIAL CHANNEL</span></footer>
