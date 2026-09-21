@@ -1,11 +1,12 @@
 import {useEffect, useRef, useState} from 'react';
 import './seasonal-opening.css';
 import {commerce} from './commerce';
+import {applyCustomFonts} from './custom-fonts';
 
 // Change both the issue id and versioned file name when publishing a new issue.
 export const openingIssue = 'lotus-2026-09-still-v2';
 export const openingKey = `lumen-opening:${openingIssue}`;
-const source = '/opening/lotus-2026-09-still-v2.mp4';
+const source = '/opening/lotus-2026-09-compatible-v3.mp4';
 const posterSource = '/opening/lotus-2026-09-still-v2.webp';
 const videoEnd = 10.8;
 export function shouldShowOpening(path: string) {
@@ -26,9 +27,20 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
   const [exiting, setExiting] = useState(false);
   const exitFrame = useRef(0);
   const exitTimer = useRef(0);
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState<number | null>(0);
+  const nativeFallback = useRef(false);
   const [attempt, setAttempt] = useState(0);
   const closed = useRef(false);
+  const fontsRequested = useRef(false);
+  useEffect(() => {
+    // Load the site's real UI font after the opening media is ready, not only
+    // after leaving the opening. Do not make font download a playback gate.
+    if (ready && !fontsRequested.current) {
+      fontsRequested.current = true;
+      void applyCustomFonts();
+    }
+  }, [ready]);
   const finish = (destination?: string) => {
     if (closed.current) return;
     closed.current = true;
@@ -67,10 +79,11 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
       if (!disposed && !settled) { settled = true; abort.abort(); video.current?.pause(); setState('error'); }
     }, 45000);
     capturing.current = false;
+    nativeFallback.current = false;
+    setDownloadProgress(0); setSrc('');
     setReady(false); setShowChoices(false); setShowPoster(false); setState('loading');
-    // A single MP4 clock: 10.8s of video, 196s of continuous audio (no player handoff).
-    // Do not block on the entire song. Require a contiguous buffered opening plus
-    // audio headroom and a decoded, pixel-matched poster before enabling Start.
+    // Download the small compatibility encode explicitly. Do not depend on
+    // Safari's pre-play buffer policy. Progress measures actual received bytes.
     const element = video.current;
     const check = () => {
       if (disposed || settled || !posterReady || !element) return;
@@ -87,7 +100,6 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
     const fail = () => { if (!disposed) { settled = true; clearTimeout(timer); setState('error'); } };
     element?.addEventListener('canplay', check);
     element?.addEventListener('progress', check);
-    element?.addEventListener('error', fail);
     const poll = window.setInterval(check, 250);
     // Some mobile browsers refuse to preload 12s until play() is called.
     // Fetching the compact file explicitly breaks that circular wait, while
@@ -96,18 +108,31 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
       if (settled || disposed) return;
       void fetch(source, {signal:abort.signal, cache:'force-cache'}).then(async response => {
         if (!response.ok || !response.headers.get('content-type')?.includes('video/')) throw new Error('Invalid media');
-        const blob = await response.blob();
+        const total = Number(response.headers.get('content-length'));
+        let blob: Blob;
+        if (response.body) {
+          const reader = response.body.getReader();
+          const chunks: Uint8Array<ArrayBuffer>[] = [];
+          let received = 0;
+          while (true) {
+            const {done, value} = await reader.read();
+            if (done) break;
+            if (disposed || settled) { await reader.cancel(); return; }
+            chunks.push(new Uint8Array(value)); received += value.byteLength;
+            setDownloadProgress(total > 0 ? Math.min(99, Math.floor(received / total * 100)) : null);
+          }
+          blob = new Blob(chunks, {type:'video/mp4'});
+        } else { setDownloadProgress(null); blob = await response.blob(); }
         if (!blob.size) throw new Error('Empty media');
         if (disposed || settled) return;
+        setDownloadProgress(100);
         fallbackUrl = URL.createObjectURL(blob);
         fallbackDownloaded = true;
         setSrc(fallbackUrl);
         if (element) { element.src = fallbackUrl; element.load(); }
         check();
       }).catch(() => { if (!disposed && !settled) fail(); });
-    }, 4000);
-    setSrc(source);
-    if (element) { element.src = source; element.load(); }
+    }, 0);
     const image = poster.current;
     const titleImage = new Image();
     titleImage.src = '/opening/lotus-calligraphy-v1.webp';
@@ -124,7 +149,6 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
       disposed = true; abort.abort(); clearTimeout(timer); clearTimeout(fallbackTimer); clearInterval(poll);
       element?.removeEventListener('canplay', check);
       element?.removeEventListener('progress', check);
-      element?.removeEventListener('error', fail);
       element?.pause();
       element?.removeAttribute('src'); element?.load();
       if (fallbackUrl) URL.revokeObjectURL(fallbackUrl);
@@ -133,7 +157,9 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
   useEffect(() => {
     if (state !== 'ready' || !ready) return;
     if (document.hidden) { setState('paused'); return; }
-    void video.current?.play().catch(() => setState('paused'));
+    const timer = window.setTimeout(() => { video.current?.pause(); setState('paused'); }, 12000);
+    void video.current?.play().then(() => clearTimeout(timer), () => { clearTimeout(timer); setState('paused'); });
+    return () => clearTimeout(timer);
   }, [ready, state]);
   useEffect(() => {
     const pause = () => {
@@ -188,7 +214,13 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
           try { localStorage.setItem(openingKey, 'seen'); } catch { /* storage optional */ }
         }
       }}
-      onError={() => setState('error')} onEnded={() => { setShowChoices(true); setState('ended'); }} />
+      onError={() => {
+        // Some deployed CSPs / Safari versions reject blob media. The same
+        // downloaded URL can still be played natively after an explicit tap.
+        if (src.startsWith('blob:') && !nativeFallback.current) {
+          nativeFallback.current = true; setSrc(source); setReady(true); setState('paused');
+        } else if (src) setState('error');
+      }} onEnded={() => { setShowChoices(true); setState('ended'); }} />
     <img ref={poster} className={`seasonal-opening-still${showPoster ? ' is-visible' : ''}`} alt="莲花照亮水下的镜昕" aria-hidden={!showPoster} />
     <div className="seasonal-opening-tools">
       <button onClick={() => { setMuted(!muted); if (state === 'paused') play(); }} aria-pressed={muted}>{muted ? '开启声音' : '静音'}</button>
@@ -204,8 +236,11 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
       </button>
       <button disabled={exiting} onClick={() => finish()}>进入主页</button>
     </div></section></div>}
-    {state === 'loading' && <div className="opening-loading" role="status" aria-label="正在载入影像"><span /><span /><span /></div>}
+    {(state === 'loading' || state === 'ready') && <div className="opening-download" role="status">
+      <strong>{downloadProgress === null ? '正在下载' : `${downloadProgress}%`}</strong>
+      <small>{downloadProgress === 100 ? '正在准备播放' : '载入影像'}</small>
+    </div>}
     {state === 'error' && <div className="opening-recovery"><p role="status">影像暂未载入</p><button onClick={() => setAttempt(n => n + 1)}>重试</button></div>}
-    {state === 'paused' && !showChoices && <button className="opening-resume" onClick={play} aria-label="继续播放">▷</button>}
+    {state === 'paused' && !showChoices && <button className="opening-resume" onClick={play} aria-label="继续播放">▷<small>点击播放{muted ? '' : ' · 有声'}</small></button>}
   </div>;
 }

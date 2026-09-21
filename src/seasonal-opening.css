@@ -20,20 +20,25 @@
 .seasonal-opening button:focus-visible { outline:2px solid #d5e9f6; outline-offset:4px; }
 .seasonal-opening button:disabled { opacity:.5; cursor:wait; }
 @media(max-width:600px) { .seasonal-opening-tools { gap:6px; right:12px; } .seasonal-opening-tools button { padding:8px 12px; } }
-.seasonal-opening-tools button { border:0; background:transparent; padding:8px 12px; font-size:12px; font-family:system-ui,sans-serif!important; letter-spacing:.08em; color:#d4dee7; text-shadow:0 1px 8px #000; }
+.seasonal-opening-tools button { border:0; background:transparent; padding:8px 12px; font-size:12px; letter-spacing:.08em; color:#d4dee7; text-shadow:0 1px 8px #000; }
 .seasonal-opening .opening-resume { position:absolute; border-radius:50%; width:64px; height:64px; padding:0; font-size:30px; background:#08132188; border-color:#ccd9e755; }
 .opening-loading { position:absolute; display:flex; gap:8px; }
 .opening-loading span { width:3px; height:3px; background:#c3d9e9; border-radius:50%; animation:opening-breathe 1.6s ease-in-out infinite; }
 .opening-loading span:nth-child(2) { animation-delay:.2s; }
 .opening-loading span:nth-child(3) { animation-delay:.4s; }
 @keyframes opening-breathe { 50% { opacity:.2; } }
-.opening-recovery { position:absolute; text-align:center; font:13px/1.8 system-ui,sans-serif; color:#bdc9d2; }
+.opening-recovery { position:absolute; text-align:center; font-size:13px; line-height:1.8; color:#bdc9d2; }
+.opening-download { position:absolute; display:grid; justify-items:center; gap:12px; color:#dce7ef; }
+.opening-download strong { font-size:30px; font-weight:400; font-variant-numeric:tabular-nums; }
+.opening-download small { font-size:12px; letter-spacing:.15em; opacity:.75; }
+.opening-resume small { position:absolute; top:76px; left:50%; transform:translateX(-50%); white-space:nowrap; font-size:12px; letter-spacing:.1em; color:#dce7ef; }
 .opening-replay { display:inline-flex; align-items:center; gap:9px; border:0; border-bottom:1px solid currentColor; background:transparent; color:inherit; font:inherit; font-size:13px; padding:9px 0; width:max-content; cursor:pointer; opacity:.8; }
 .hero-actions .opening-replay { order:10; flex-basis:auto; }
 .mh-heading .opening-replay { margin-top:18px; }
 .opening-replay:focus-visible { outline:2px solid currentColor; outline-offset:5px; }
 @media(prefers-reduced-motion:reduce) { .opening-loading span { animation:none; } }
-.opening-editorial .seasonal-opening-choices button { min-width:0; flex:1; max-width:170px; padding:10px 12px; font-size:13px; letter-spacing:.12em; background:#0c182d99; border-color:#b5c5e166; border-radius:0; font-family:system-ui,sans-serif!important; }
+.opening-editorial .seasonal-opening-choices button { min-width:0; flex:1; max-width:170px; padding:10px 12px; font-size:13px; letter-spacing:.12em; background:#0c182d99; border-color:#b5c5e166; border-radius:0; }
+.seasonal-opening, .seasonal-opening button, .seasonal-opening small, .opening-replay { font-family:var(--custom-font-ui,var(--custom-font-body,"Songti SC","STSong","SimSun",serif)); font-weight:400; }
 .opening-editorial .seasonal-opening-choices button:not(:disabled):hover { background:#1a2b44cc; border-color:#d2dff3; }
 @media(max-width:700px) and (orientation:portrait) {
  .opening-editorial-stage { width:100%; height:100%; aspect-ratio:auto; }

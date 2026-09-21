@@ -115,7 +115,7 @@ export async function collectPublicSupport(project) {
   // the local library without adding several megabytes to every deployment.
   for (const name of [
     'fonts/custom/江西拙楷3.0.woff2',
-    'opening/lotus-2026-09-still-v2.mp4',
+    'opening/lotus-2026-09-compatible-v3.mp4',
     'opening/lotus-2026-09-still-v2.webp',
     'opening/lotus-calligraphy-v1.webp',
     '_headers', '_redirects', 'robots.txt', 'favicon.png',
