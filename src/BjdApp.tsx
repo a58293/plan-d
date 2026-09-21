@@ -7,6 +7,7 @@ import { requiredImage, siteMedia, collectorPhotos } from "./media-library";
 import SeriesScrolls from "./SeriesScrolls";
 import SiteSearch from './SiteSearch';
 import MobileHome from './MobileHome';
+import ReplayOpeningButton from './ReplayOpeningButton';
 import { commerce } from './commerce';
 import "./bjd.css";
 import "./brand-home-redesign.css";
@@ -78,6 +79,7 @@ function Hero({ onExplore, onOpenFeatured, active }: { onExplore: () => void; on
         <h1><span className="hero-line"><SplitColorText text="在一粒光里" /></span><span className="hero-line hero-line-second"><SplitColorText text="遇见花神" /></span></h1>
         <p className="hero-intro">绘屿造物原创球形关节人偶档案。循着花与光的轨迹，进入每一位神灵独有的故事。</p>
         <div className="hero-actions">
+          <ReplayOpeningButton />
           <a className="primary-button home-featured-entry" href={featured.href} onClick={event => {
             if (!onOpenFeatured || !isPlainNavigation(event)) return;
             event.preventDefault(); onOpenFeatured();

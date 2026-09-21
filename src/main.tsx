@@ -37,6 +37,11 @@ const loaderSessionKey = 'lumen-intro-seen-v1';
 function SiteRoot() {
   const [showOpening, setShowOpening] = useState(() => shouldShowOpening(pathname));
   useEffect(() => {
+    const replay = () => setShowOpening(true);
+    window.addEventListener('lumen:replay-opening', replay);
+    return () => window.removeEventListener('lumen:replay-opening', replay);
+  }, []);
+  useEffect(() => {
     if (!showOpening) void initialAssets.ready.then(() => applyCustomFonts());
   }, [showOpening]);
   const [showLoader, setShowLoader] = useState(() => {

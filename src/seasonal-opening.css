@@ -16,7 +16,17 @@
 .seasonal-opening button { min-height:44px; padding:10px 20px; border:1px solid #9eaab466; border-radius:2px; background:#07111de6; color:#eef3f6; font:inherit; cursor:pointer; }
 .seasonal-opening button:focus-visible { outline:2px solid #d5e9f6; outline-offset:4px; }
 .seasonal-opening button:disabled { opacity:.5; cursor:wait; }
-.seasonal-opening-prompt { position:absolute; text-align:center; padding:28px; max-width:90%; background:#02060bf2; }
-.seasonal-opening-label { font-size:12px; letter-spacing:.18em; }
-.seasonal-opening-prompt small { display:block; margin-top:16px; opacity:.75; }
 @media(max-width:600px) { .seasonal-opening-tools { gap:6px; right:12px; } .seasonal-opening-tools button { padding:8px 12px; } }
+.seasonal-opening-tools button { border:0; background:transparent; padding:8px 12px; font-size:12px; font-family:system-ui,sans-serif!important; letter-spacing:.08em; color:#d4dee7; text-shadow:0 1px 8px #000; }
+.seasonal-opening .opening-resume { position:absolute; border-radius:50%; width:64px; height:64px; padding:0; font-size:30px; background:#08132188; border-color:#ccd9e755; }
+.opening-loading { position:absolute; display:flex; gap:8px; }
+.opening-loading span { width:3px; height:3px; background:#c3d9e9; border-radius:50%; animation:opening-breathe 1.6s ease-in-out infinite; }
+.opening-loading span:nth-child(2) { animation-delay:.2s; }
+.opening-loading span:nth-child(3) { animation-delay:.4s; }
+@keyframes opening-breathe { 50% { opacity:.2; } }
+.opening-recovery { position:absolute; text-align:center; font:13px/1.8 system-ui,sans-serif; color:#bdc9d2; }
+.opening-replay { display:inline-flex; align-items:center; gap:9px; border:0; border-bottom:1px solid currentColor; background:transparent; color:inherit; font:inherit; font-size:13px; padding:9px 0; width:max-content; cursor:pointer; opacity:.8; }
+.hero-actions .opening-replay { order:10; flex-basis:auto; }
+.mh-heading .opening-replay { margin-top:18px; }
+.opening-replay:focus-visible { outline:2px solid currentColor; outline-offset:5px; }
+@media(prefers-reduced-motion:reduce) { .opening-loading span { animation:none; } }

@@ -13,7 +13,7 @@ export default function MobileHome({onOpenFlowerGods,onOpenFeatured}:{onOpenFlow
     <header className="mh-header"><a href="/" className="mh-brand"><img src={requiredImage('brandLogo')} alt="绘屿造物"/><span>LUMEN AURALIS<small>绘屿造物</small></span></a><MobileActions/></header>
     <main>
       <section className="mh-cover" aria-labelledby="mh-title">
-        <div className="mh-heading"><p>花神卷 · 当期作品</p><h1 id="mh-title">循光，<br/>遇见花神。</h1><span>THE FLORAL DEITIES / 01</span></div>
+        <div className="mh-heading"><p>花神卷 · 当期作品</p><h1 id="mh-title">循光，<br/>遇见花神。</h1><span>THE FLORAL DEITIES / 01</span><ReplayOpeningButton /></div>
         <figure className="mh-art"><img src={requiredImage(original?currentFeaturedProduct.conceptMedia:currentFeaturedProduct.physicalMedia)} alt={'镜昕 · '+(original?'角色原画':'实体全身造型')} fetchPriority="high" decoding="async" /></figure>
         <div className="mh-caption"><div><strong>镜昕</strong><span>荷花女神 · 原创 BJD</span></div><div className="mh-switch" aria-label="作品展示"><button aria-pressed={!original} onClick={()=>setOriginal(false)}>实体</button><button aria-pressed={original} onClick={()=>setOriginal(true)}>原画</button></div></div>
         <a className="mh-cta" href={currentFeaturedProduct.href} onClick={follow(onOpenFeatured)}>走近镜昕 <span>↗</span></a>
@@ -27,3 +27,4 @@ export default function MobileHome({onOpenFlowerGods,onOpenFeatured}:{onOpenFlow
     <footer className="mh-footer"><strong>LUMEN AURALIS</strong><p>绘屿造物 · 原创球形关节人偶</p><a href="tel:19988424290">客服 19988424290</a><small>工作日 10:00—17:00</small><div><a href="/legal/terms">网站条款</a><a href="/legal/authenticity">防伪说明</a></div></footer>
   </div>;
 }
+import ReplayOpeningButton from './ReplayOpeningButton';

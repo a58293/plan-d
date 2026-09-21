@@ -26,7 +26,7 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
   const [exiting, setExiting] = useState(false);
   const exitFrame = useRef(0);
   const exitTimer = useRef(0);
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(true);
   const [attempt, setAttempt] = useState(0);
   const closed = useRef(false);
   const finish = (destination?: string) => {
@@ -99,6 +99,11 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
     };
   }, [attempt]);
   useEffect(() => {
+    if (state !== 'ready' || !ready) return;
+    if (document.hidden) { setState('paused'); return; }
+    void video.current?.play().catch(() => setState('paused'));
+  }, [ready, state]);
+  useEffect(() => {
     const pause = () => {
       if (document.hidden && video.current && !video.current.paused) video.current.pause();
     };
@@ -154,7 +159,7 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
       onError={() => setState('error')} onEnded={() => { setShowChoices(true); setState('ended'); }} />
     <img ref={poster} className={`seasonal-opening-still${showPoster ? ' is-visible' : ''}`} alt="莲花照亮水下的镜昕" aria-hidden={!showPoster} />
     <div className="seasonal-opening-tools">
-      <button onClick={() => setMuted(!muted)} aria-pressed={muted}>{muted ? '开启声音' : '静音'}</button>
+      <button onClick={() => { setMuted(!muted); if (state === 'paused') play(); }} aria-pressed={muted}>{muted ? '开启声音' : '静音'}</button>
       {state === 'playing' && <button onClick={() => video.current?.pause()}>暂停</button>}
       {showChoices && state === 'paused' && <button onClick={play}>继续播放</button>}
       <button onClick={() => finish()}>跳过序章</button>
@@ -165,12 +170,8 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
       </button>
       <button disabled={exiting} onClick={() => finish()}>进入主页</button>
     </div>}
-    {state !== 'playing' && (!showChoices || state === 'error') && <div className="seasonal-opening-prompt">
-      <p className="seasonal-opening-label">LUMEN AURALIS · 本期序章</p>
-      <p role="status">{state === 'loading' ? '正在准备完整影像…' : state === 'error' ? '影像暂未准备好，可重试或跳过。' : state === 'paused' ? '播放已暂停' : '一朵莲，照见深水。'}</p>
-      {state === 'error' ? <button onClick={() => setAttempt(n => n + 1)}>重新加载</button>
-        : <button disabled={!ready} onClick={play}>{state === 'paused' ? '继续播放' : '开启本期'}</button>}
-      {state === 'ready' && <small>10 秒后可进入主页 · {muted ? '静音播放' : '点击后播放音乐'}</small>}
-    </div>}
+    {state === 'loading' && <div className="opening-loading" role="status" aria-label="正在载入影像"><span /><span /><span /></div>}
+    {state === 'error' && <div className="opening-recovery"><p role="status">影像暂未载入</p><button onClick={() => setAttempt(n => n + 1)}>重试</button></div>}
+    {state === 'paused' && !showChoices && <button className="opening-resume" onClick={play} aria-label="继续播放">▷</button>}
   </div>;
 }
