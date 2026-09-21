@@ -7,6 +7,7 @@ import {resolveSiteRoute} from './flower-gods-catalog';
 import {PageRevealContext} from './page-reveal-context';
 import {applySiteMetadata} from './site-metadata';
 import SiteErrorBoundary from './SiteErrorBoundary';
+import SeasonalOpening, {shouldShowOpening} from './SeasonalOpening';
 import './index.css';
 import './typography-color.css';
 import './brand-identity-refresh.css';
@@ -35,6 +36,7 @@ void initialAssets.ready.then(() => applyCustomFonts());
 const loaderSessionKey = 'lumen-intro-seen-v1';
 
 function SiteRoot() {
+  const [showOpening, setShowOpening] = useState(() => shouldShowOpening(pathname));
   const [showLoader, setShowLoader] = useState(() => {
     return true;
   });
@@ -44,13 +46,16 @@ function SiteRoot() {
   };
   return (
     <>
-      <PageRevealContext.Provider value={!showLoader}>
+      <div inert={showLoader || showOpening}>
+      <PageRevealContext.Provider value={!showLoader && !showOpening}>
         <SiteErrorBoundary><Suspense fallback={null}>
           {pathname === '/verify' ? <VerifyPage /> : legalPage ? <LegalPage page={legalPage} />
             : resolveSiteRoute(pathname).view !== 'not-found' ? <UnifiedBjdSite /> : <NotFoundPage />}
         </Suspense></SiteErrorBoundary>
       </PageRevealContext.Provider>
+      </div>
       {showLoader && <BrandLoadingScreen tracker={initialAssets} onComplete={finishLoader} />}
+      {!showLoader && showOpening && <SeasonalOpening onComplete={() => setShowOpening(false)} />}
     </>
   );
 }

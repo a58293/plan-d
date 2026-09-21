@@ -1,0 +1,18 @@
+.seasonal-opening { position:fixed; inset:0; z-index:10000; background:#02060b; color:#e4e9eb; display:grid; place-items:center; }
+.seasonal-opening video { width:100%; height:100%; object-fit:contain; }
+.seasonal-opening { transition:opacity .4s ease; }
+.seasonal-opening.is-exiting { opacity:0; pointer-events:none; }
+.seasonal-opening-choices { position:absolute; bottom:max(8%,env(safe-area-inset-bottom)); display:flex; justify-content:center; gap:18px; animation:opening-choices-in .7s ease both; }
+.seasonal-opening-choices button { min-width:140px; background:#05121be6; border-color:#b9ccda99; }
+.seasonal-opening-choices button:disabled { cursor:default; }
+.seasonal-opening-choices small { display:block; font-size:11px; margin-top:3px; }
+@keyframes opening-choices-in { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@media(prefers-reduced-motion:reduce) { .seasonal-opening-choices { animation:none; } .seasonal-opening { transition:none; } }
+.seasonal-opening-tools { position:absolute; top:max(20px,env(safe-area-inset-top)); right:max(20px,env(safe-area-inset-right)); display:flex; gap:10px; }
+.seasonal-opening button { min-height:44px; padding:10px 20px; border:1px solid #9eaab466; border-radius:2px; background:#07111de6; color:#eef3f6; font:inherit; cursor:pointer; }
+.seasonal-opening button:focus-visible { outline:2px solid #d5e9f6; outline-offset:4px; }
+.seasonal-opening button:disabled { opacity:.5; cursor:wait; }
+.seasonal-opening-prompt { position:absolute; text-align:center; padding:28px; max-width:90%; background:#02060bf2; }
+.seasonal-opening-label { font-size:12px; letter-spacing:.18em; }
+.seasonal-opening-prompt small { display:block; margin-top:16px; opacity:.75; }
+@media(max-width:600px) { .seasonal-opening-tools { gap:6px; right:12px; } .seasonal-opening-tools button { padding:8px 12px; } }
