@@ -157,9 +157,27 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
   useEffect(() => {
     if (state !== 'ready' || !ready) return;
     if (document.hidden) { setState('paused'); return; }
-    const timer = window.setTimeout(() => { video.current?.pause(); setState('paused'); }, 12000);
-    void video.current?.play().then(() => clearTimeout(timer), () => { clearTimeout(timer); setState('paused'); });
-    return () => clearTimeout(timer);
+    const element = video.current;
+    if (!element) return;
+    let cancelled = false;
+    const timer = window.setTimeout(() => {
+      cancelled = true; element.pause(); setState('paused');
+    }, 12000);
+    void (async () => {
+      try { await element.play(); }
+      catch (error) {
+        if (cancelled) return;
+        // Only autoplay permission failures warrant a muted retry. Decode and
+        // network errors must not be disguised as a sound preference change.
+        if (error instanceof DOMException && error.name === 'NotAllowedError' && !document.hidden) {
+          element.muted = true;
+          setMuted(true);
+          try { await element.play(); }
+          catch { if (!cancelled) setState('paused'); }
+        } else { setState('paused'); }
+      } finally { clearTimeout(timer); }
+    })();
+    return () => { cancelled = true; clearTimeout(timer); };
   }, [ready, state]);
   useEffect(() => {
     const pause = () => {
@@ -206,7 +224,11 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
     <video ref={video} src={src || undefined} preload="auto" playsInline muted={muted}
       aria-label="水下气泡、暗手与莲花照亮海报，配有音乐，无对白"
       onPlaying={() => setState('playing')} onPause={() => setState(s => s === 'playing' ? 'paused' : s)}
-      onWaiting={() => { if (ready) { video.current?.pause(); setState('paused'); } }}
+      onWaiting={() => {
+        // Initial decoding also emits waiting. Pausing here before playing
+        // aborts the pending autoplay promise and prevents its muted retry.
+        if (state === 'playing') { video.current?.pause(); setState('paused'); }
+      }}
       onTimeUpdate={() => {
         if ((video.current?.currentTime ?? 0) >= videoEnd) freezeFrame();
         if ((video.current?.currentTime ?? 0) >= 10 && !showChoices) {
@@ -223,7 +245,11 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
       }} onEnded={() => { setShowChoices(true); setState('ended'); }} />
     <img ref={poster} className={`seasonal-opening-still${showPoster ? ' is-visible' : ''}`} alt="莲花照亮水下的镜昕" aria-hidden={!showPoster} />
     <div className="seasonal-opening-tools">
-      <button onClick={() => { setMuted(!muted); if (state === 'paused') play(); }} aria-pressed={muted}>{muted ? '开启声音' : '静音'}</button>
+      <button onClick={() => {
+        // Apply in the gesture itself, before Safari's user activation expires.
+        if (video.current) video.current.muted = !muted;
+        setMuted(!muted); if (state === 'paused') play();
+      }} aria-pressed={muted}>{muted ? '开启声音' : '静音'}</button>
       {state === 'playing' && <button onClick={() => video.current?.pause()}>暂停</button>}
       {showChoices && state === 'paused' && <button onClick={play}>继续播放</button>}
       <button onClick={() => finish()}>跳过序章</button>
