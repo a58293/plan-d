@@ -3,9 +3,11 @@ import './seasonal-opening.css';
 import {commerce} from './commerce';
 
 // Change both the issue id and versioned file name when publishing a new issue.
-export const openingIssue = 'lotus-2026-09-long-v1';
+export const openingIssue = 'lotus-2026-09-still-v2';
 export const openingKey = `lumen-opening:${openingIssue}`;
-const source = '/opening/lotus-2026-09-long-v1.mp4';
+const source = '/opening/lotus-2026-09-still-v2.mp4';
+const posterSource = '/opening/lotus-2026-09-still-v2.webp';
+const videoEnd = 10.8;
 export function shouldShowOpening(path: string) {
   if (path !== '/') return false;
   try { return localStorage.getItem(openingKey) !== 'seen'; } catch { return true; }
@@ -14,8 +16,11 @@ export function shouldShowOpening(path: string) {
 export default function SeasonalOpening({onComplete}: {onComplete: () => void}) {
   const video = useRef<HTMLVideoElement>(null);
   const dialog = useRef<HTMLDivElement>(null);
+  const poster = useRef<HTMLImageElement>(null);
+  const capturing = useRef(false);
   const [src, setSrc] = useState('');
   const [ready, setReady] = useState(false);
+  const [showPoster, setShowPoster] = useState(false);
   const [state, setState] = useState<'loading'|'ready'|'playing'|'paused'|'ended'|'error'>('loading');
   const [showChoices, setShowChoices] = useState(false);
   const [exiting, setExiting] = useState(false);
@@ -52,36 +57,45 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
     return () => { document.body.style.overflow = overflow; previous?.focus(); };
   }, []);
   useEffect(() => {
-    const controller = new AbortController();
     let disposed = false;
-    let objectUrl = '';
+    let posterReady = false;
+    let settled = false;
     const timer = window.setTimeout(() => {
-      controller.abort();
-      if (!disposed) setState('error');
+      if (!disposed && !settled) { settled = true; video.current?.pause(); setState('error'); }
     }, 45000);
-    setSrc(''); setReady(false); setShowChoices(false); setState('loading');
-    // Wait for the whole response, not canplaythrough's bandwidth estimate.
-    void fetch(source, {signal: controller.signal, cache: 'force-cache'})
-      .then(async response => {
-        if (!response.ok) throw new Error('Opening download failed');
-        const blob = await response.blob();
-        if (!blob.size || !blob.type.startsWith('video/')) throw new Error('Invalid opening media');
-        if (disposed) return;
-        objectUrl = URL.createObjectURL(blob);
-        setSrc(objectUrl);
-      }).catch(() => { if (!disposed) setState('error'); });
-    // Includes decode readiness; a complete download alone is not enough.
+    capturing.current = false;
+    setReady(false); setShowChoices(false); setShowPoster(false); setState('loading');
+    // A single MP4 clock: 10.8s of video, 196s of continuous audio (no player handoff).
+    // Do not block on the entire song. Require a contiguous buffered opening plus
+    // audio headroom and a decoded, pixel-matched poster before enabling Start.
     const element = video.current;
-    const loaded = () => {
-      if (disposed) return;
-      clearTimeout(timer); setReady(true); setState('ready');
+    const check = () => {
+      if (disposed || settled || !posterReady || !element || element.readyState < 3) return;
+      for (let i = 0; i < element.buffered.length; i++) {
+        if (element.buffered.start(i) <= 0.05 && element.buffered.end(i) >= videoEnd + 1.2) {
+          settled = true; clearTimeout(timer); setReady(true); setState('ready'); break;
+        }
+      }
     };
-    element?.addEventListener('canplay', loaded, {once: true});
+    const fail = () => { if (!disposed) { settled = true; clearTimeout(timer); setState('error'); } };
+    element?.addEventListener('canplay', check);
+    element?.addEventListener('progress', check);
+    element?.addEventListener('error', fail);
+    const poll = window.setInterval(check, 250);
+    setSrc(source);
+    if (element) { element.src = source; element.load(); }
+    const image = poster.current;
+    if (image) {
+      image.src = posterSource;
+      void image.decode().then(() => { posterReady = true; check(); }, fail);
+    }
     return () => {
-      disposed = true; controller.abort(); clearTimeout(timer);
-      element?.removeEventListener('canplay', loaded);
+      disposed = true; clearTimeout(timer); clearInterval(poll);
+      element?.removeEventListener('canplay', check);
+      element?.removeEventListener('progress', check);
+      element?.removeEventListener('error', fail);
       element?.pause();
-      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      element?.removeAttribute('src'); element?.load();
     };
   }, [attempt]);
   useEffect(() => {
@@ -98,6 +112,24 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
       if (document.hidden) video.current?.pause();
     }).catch(() => setState('paused'));
   };
+  const freezeFrame = () => {
+    const element = video.current, image = poster.current;
+    if (capturing.current || !element || !image || !element.videoWidth) return;
+    capturing.current = true;
+    try {
+      // Capture the browser's decoded frame, including its colour conversion.
+      // This avoids device-specific differences between video YUV and image RGB.
+      const canvas = document.createElement('canvas');
+      canvas.width = element.videoWidth; canvas.height = element.videoHeight;
+      const context = canvas.getContext('2d');
+      if (!context) return; // Retain the video last frame as the safe fallback.
+      context.drawImage(element, 0, 0);
+      image.src = canvas.toDataURL('image/png');
+      void image.decode().then(() => {
+        if (poster.current === image && !closed.current) setShowPoster(true);
+      }).catch(() => { /* Underlying last frame stays visible; never flash. */ });
+    } catch { /* Canvas unavailable: keep the held video frame, audio continues. */ }
+  };
   return <div className={`seasonal-opening${exiting ? ' is-exiting' : ''}`} ref={dialog} role="dialog" aria-modal="true" aria-label="本期海报序章" tabIndex={-1}
     onKeyDown={event => {
       if (event.key === 'Escape') finish();
@@ -113,12 +145,14 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
       onPlaying={() => setState('playing')} onPause={() => setState(s => s === 'playing' ? 'paused' : s)}
       onWaiting={() => { if (ready) { video.current?.pause(); setState('paused'); } }}
       onTimeUpdate={() => {
+        if ((video.current?.currentTime ?? 0) >= videoEnd) freezeFrame();
         if ((video.current?.currentTime ?? 0) >= 10 && !showChoices) {
           setShowChoices(true);
           try { localStorage.setItem(openingKey, 'seen'); } catch { /* storage optional */ }
         }
       }}
       onError={() => setState('error')} onEnded={() => { setShowChoices(true); setState('ended'); }} />
+    <img ref={poster} className={`seasonal-opening-still${showPoster ? ' is-visible' : ''}`} alt="莲花照亮水下的镜昕" aria-hidden={!showPoster} />
     <div className="seasonal-opening-tools">
       <button onClick={() => setMuted(!muted)} aria-pressed={muted}>{muted ? '开启声音' : '静音'}</button>
       {state === 'playing' && <button onClick={() => video.current?.pause()}>暂停</button>}

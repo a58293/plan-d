@@ -1,4 +1,4 @@
-import {lazy, StrictMode, Suspense, useState} from 'react';
+import {lazy, StrictMode, Suspense, useState, useEffect} from 'react';
 import {createRoot} from 'react-dom/client';
 import BrandLoadingScreen from './BrandLoadingScreen.tsx';
 import {applyCustomFonts} from './custom-fonts';
@@ -32,11 +32,13 @@ const pageCode = pathname === '/' ? import('./BjdApp')
 const initialAssets = trackInitialAssets(pathname, pageCode);
 // Let the visible imagery win the network race; typography swaps in directly
 // afterwards and remains cached for the rest of the visit.
-void initialAssets.ready.then(() => applyCustomFonts());
 const loaderSessionKey = 'lumen-intro-seen-v1';
 
 function SiteRoot() {
   const [showOpening, setShowOpening] = useState(() => shouldShowOpening(pathname));
+  useEffect(() => {
+    if (!showOpening) void initialAssets.ready.then(() => applyCustomFonts());
+  }, [showOpening]);
   const [showLoader, setShowLoader] = useState(() => {
     return true;
   });

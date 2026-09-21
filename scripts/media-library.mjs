@@ -108,14 +108,15 @@ export async function collectPublicSupport(project) {
     if (!stat.isFile() || stat.isSymbolicLink()) throw Error(`不支持的公开资源：${file}`);
     inside(root, path.relative(root, await fs.realpath(file)));
     const extension=path.extname(file).toLowerCase();
-    const mime=extension==='.mp4'?'video/mp4':extension==='.ttf'?'font/ttf':extension==='.woff2'?'font/woff2':extension==='.png'?'image/png':extension==='.txt'?'text/plain; charset=utf-8':'application/octet-stream';
+    const mime=extension==='.webp'?'image/webp':extension==='.mp4'?'video/mp4':extension==='.ttf'?'font/ttf':extension==='.woff2'?'font/woff2':extension==='.png'?'image/png':extension==='.txt'?'text/plain; charset=utf-8':'application/octet-stream';
     result.push({file, url:'/'+path.relative(root,file).split(path.sep).join('/'), bytes:await fs.readFile(file), mime});
   }
   // Publish only active support files. Duplicate and historical fonts stay in
   // the local library without adding several megabytes to every deployment.
   for (const name of [
     'fonts/custom/江西拙楷3.0.woff2',
-    'opening/lotus-2026-09-long-v1.mp4',
+    'opening/lotus-2026-09-still-v2.mp4',
+    'opening/lotus-2026-09-still-v2.webp',
     '_headers', '_redirects', 'robots.txt', 'favicon.png',
     '24dce09b1e7c6dc046ed86dc4718697e.txt',
   ]) await add(path.join(root,name));
