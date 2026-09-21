@@ -6,7 +6,10 @@
 .seasonal-opening-still.is-visible { opacity:1; }
 .seasonal-opening { transition:opacity .4s ease; }
 .seasonal-opening.is-exiting { opacity:0; pointer-events:none; }
-.seasonal-opening-choices { position:absolute; bottom:max(8%,env(safe-area-inset-bottom)); display:flex; justify-content:center; gap:18px; animation:opening-choices-in .7s ease both; }
+.opening-editorial-stage { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:min(100vw,200dvh); aspect-ratio:2; pointer-events:none; }
+.opening-editorial { position:absolute; top:25%; left:5%; width:34%; text-align:center; animation:opening-choices-in 1.1s ease both; }
+.opening-calligraphy { display:block; width:100%; height:auto; filter:drop-shadow(0 2px 12px #020b24aa); }
+.seasonal-opening-choices { display:flex; justify-content:center; gap:14px; margin-top:14px; pointer-events:auto; }
 .seasonal-opening-choices button { min-width:140px; background:#05121be6; border-color:#b9ccda99; }
 .seasonal-opening-choices button:disabled { cursor:default; }
 .seasonal-opening-choices small { display:block; font-size:11px; margin-top:3px; }
@@ -30,3 +33,14 @@
 .mh-heading .opening-replay { margin-top:18px; }
 .opening-replay:focus-visible { outline:2px solid currentColor; outline-offset:5px; }
 @media(prefers-reduced-motion:reduce) { .opening-loading span { animation:none; } }
+.opening-editorial .seasonal-opening-choices button { min-width:0; flex:1; max-width:170px; padding:10px 12px; font-size:13px; letter-spacing:.12em; background:#0c182d99; border-color:#b5c5e166; border-radius:0; font-family:system-ui,sans-serif!important; }
+.opening-editorial .seasonal-opening-choices button:not(:disabled):hover { background:#1a2b44cc; border-color:#d2dff3; }
+@media(max-width:700px) and (orientation:portrait) {
+ .opening-editorial-stage { width:100%; height:100%; aspect-ratio:auto; }
+ .opening-editorial { top:calc(50% + 25vw + 10px); left:50%; transform:translateX(-50%); width:min(82vw,310px); animation:opening-mobile-title-in 1.1s ease both; }
+ .opening-calligraphy { width:180px; margin:0 auto; }
+ .seasonal-opening-choices { margin-top:4px; gap:12px; }
+ .opening-editorial .seasonal-opening-choices button { padding:8px 10px; }
+}
+@keyframes opening-mobile-title-in { from { opacity:0; } to { opacity:1; } }
+@media(prefers-reduced-motion:reduce) { .opening-editorial { animation:none; } }

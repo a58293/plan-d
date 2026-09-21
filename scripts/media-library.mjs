@@ -117,6 +117,7 @@ export async function collectPublicSupport(project) {
     'fonts/custom/江西拙楷3.0.woff2',
     'opening/lotus-2026-09-still-v2.mp4',
     'opening/lotus-2026-09-still-v2.webp',
+    'opening/lotus-calligraphy-v1.webp',
     '_headers', '_redirects', 'robots.txt', 'favicon.png',
     '24dce09b1e7c6dc046ed86dc4718697e.txt',
   ]) await add(path.join(root,name));

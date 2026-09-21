@@ -60,8 +60,11 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
     let disposed = false;
     let posterReady = false;
     let settled = false;
+    let fallbackUrl = '';
+    const abort = new AbortController();
+    let fallbackDownloaded = false;
     const timer = window.setTimeout(() => {
-      if (!disposed && !settled) { settled = true; video.current?.pause(); setState('error'); }
+      if (!disposed && !settled) { settled = true; abort.abort(); video.current?.pause(); setState('error'); }
     }, 45000);
     capturing.current = false;
     setReady(false); setShowChoices(false); setShowPoster(false); setState('loading');
@@ -70,7 +73,11 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
     // audio headroom and a decoded, pixel-matched poster before enabling Start.
     const element = video.current;
     const check = () => {
-      if (disposed || settled || !posterReady || !element || element.readyState < 3) return;
+      if (disposed || settled || !posterReady || !element) return;
+      if (fallbackDownloaded) {
+        settled = true; clearTimeout(timer); setReady(true); setState('ready'); return;
+      }
+      if (element.readyState < 3) return;
       for (let i = 0; i < element.buffered.length; i++) {
         if (element.buffered.start(i) <= 0.05 && element.buffered.end(i) >= videoEnd + 1.2) {
           settled = true; clearTimeout(timer); setReady(true); setState('ready'); break;
@@ -82,20 +89,45 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
     element?.addEventListener('progress', check);
     element?.addEventListener('error', fail);
     const poll = window.setInterval(check, 250);
+    // Some mobile browsers refuse to preload 12s until play() is called.
+    // Fetching the compact file explicitly breaks that circular wait, while
+    // retaining complete opening data and the same audio/video clock.
+    const fallbackTimer = window.setTimeout(() => {
+      if (settled || disposed) return;
+      void fetch(source, {signal:abort.signal, cache:'force-cache'}).then(async response => {
+        if (!response.ok || !response.headers.get('content-type')?.includes('video/')) throw new Error('Invalid media');
+        const blob = await response.blob();
+        if (!blob.size) throw new Error('Empty media');
+        if (disposed || settled) return;
+        fallbackUrl = URL.createObjectURL(blob);
+        fallbackDownloaded = true;
+        setSrc(fallbackUrl);
+        if (element) { element.src = fallbackUrl; element.load(); }
+        check();
+      }).catch(() => { if (!disposed && !settled) fail(); });
+    }, 4000);
     setSrc(source);
     if (element) { element.src = source; element.load(); }
     const image = poster.current;
+    const titleImage = new Image();
+    titleImage.src = '/opening/lotus-calligraphy-v1.webp';
     if (image) {
       image.src = posterSource;
-      void image.decode().then(() => { posterReady = true; check(); }, fail);
+      // A decorative title must never block video playback.
+      void titleImage.decode().catch(() => {});
+      void image.decode().then(() => { posterReady = true; check(); }, () => {
+        // The video itself retains the last frame if the companion image fails.
+        posterReady = true; check();
+      });
     }
     return () => {
-      disposed = true; clearTimeout(timer); clearInterval(poll);
+      disposed = true; abort.abort(); clearTimeout(timer); clearTimeout(fallbackTimer); clearInterval(poll);
       element?.removeEventListener('canplay', check);
       element?.removeEventListener('progress', check);
       element?.removeEventListener('error', fail);
       element?.pause();
       element?.removeAttribute('src'); element?.load();
+      if (fallbackUrl) URL.revokeObjectURL(fallbackUrl);
     };
   }, [attempt]);
   useEffect(() => {
@@ -164,12 +196,14 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
       {showChoices && state === 'paused' && <button onClick={play}>继续播放</button>}
       <button onClick={() => finish()}>跳过序章</button>
     </div>
-    {showChoices && <div className="seasonal-opening-choices" aria-label="序章结束后的选择">
+    {showChoices && <div className="opening-editorial-stage"><section className="opening-editorial" aria-label="泥沼生花，水月照心">
+      <img className="opening-calligraphy" src="/opening/lotus-calligraphy-v1.webp" alt="泥沼生花，水月照心" width="1536" height="1024" />
+      <div className="seasonal-opening-choices" aria-label="序章结束后的选择">
       <button disabled={!commerce.featuredProductUrl || exiting} onClick={() => finish(commerce.featuredProductUrl || undefined)}>
         立即购买{!commerce.featuredProductUrl && <small>即将开放</small>}
       </button>
       <button disabled={exiting} onClick={() => finish()}>进入主页</button>
-    </div>}
+    </div></section></div>}
     {state === 'loading' && <div className="opening-loading" role="status" aria-label="正在载入影像"><span /><span /><span /></div>}
     {state === 'error' && <div className="opening-recovery"><p role="status">影像暂未载入</p><button onClick={() => setAttempt(n => n + 1)}>重试</button></div>}
     {state === 'paused' && !showChoices && <button className="opening-resume" onClick={play} aria-label="继续播放">▷</button>}
