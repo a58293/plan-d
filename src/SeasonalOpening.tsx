@@ -6,7 +6,7 @@ import {applyCustomFonts} from './custom-fonts';
 // Change both the issue id and versioned file name when publishing a new issue.
 export const openingIssue = 'lotus-2026-09-still-v2';
 export const openingKey = `lumen-opening:${openingIssue}`;
-const source = '/opening/lotus-2026-09-compatible-v3.mp4';
+const source = '/opening/lotus-2026-09-music-v4.mp4';
 const posterSource = '/opening/lotus-2026-09-still-v2.webp';
 const videoEnd = 10.8;
 export function shouldShowOpening(path: string) {
