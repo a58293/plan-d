@@ -294,6 +294,6 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
       <small>{downloadProgress === 100 ? '正在准备播放' : '载入影像'}</small>
     </div>}
     {state === 'error' && <div className="opening-recovery"><p role="status">影像暂未载入</p><button onClick={() => setAttempt(n => n + 1)}>重试</button></div>}
-    {state === 'paused' && !showChoices && <button className="opening-resume" onClick={play} aria-label="继续播放">▷<small>点击播放{muted ? '' : ' · 有声'}</small></button>}
+    {state === 'paused' && !showChoices && <button className="opening-resume" onClick={play} aria-label="继续播放">▷<small>轻触，入此水境</small></button>}
   </div>;
 }
