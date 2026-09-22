@@ -37,7 +37,7 @@
 .mh-heading .opening-replay { margin-top:18px; }
 .opening-replay:focus-visible { outline:2px solid currentColor; outline-offset:5px; }
 @media(prefers-reduced-motion:reduce) { .opening-loading span { animation:none; } }
-.opening-editorial .seasonal-opening-choices button { min-width:0; flex:1; max-width:170px; padding:10px 12px; font-size:13px; letter-spacing:.12em; background:#0c182d99; border-color:#b5c5e166; border-radius:0; }
+.opening-editorial .seasonal-opening-choices button { min-width:0; flex:1; max-width:170px; padding:10px 12px; font-size:13px; letter-spacing:.12em; background:#0c182d99; border-color:#b5c5e166; border-radius:12px; }
 .seasonal-opening, .seasonal-opening button, .seasonal-opening small, .opening-replay { font-family:var(--custom-font-ui,var(--custom-font-body,"Songti SC","STSong","SimSun",serif)); font-weight:400; }
 .opening-editorial .seasonal-opening-choices button:not(:disabled):hover { background:#1a2b44cc; border-color:#d2dff3; }
 @media(max-width:700px) and (orientation:portrait) {
