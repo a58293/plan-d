@@ -36,8 +36,10 @@ const loaderSessionKey = 'lumen-intro-seen-v1';
 
 function SiteRoot() {
   const [showOpening, setShowOpening] = useState(() => shouldShowOpening(pathname));
+  const [openingTail, setOpeningTail] = useState(false);
+  const [openingRun, setOpeningRun] = useState(0);
   useEffect(() => {
-    const replay = () => setShowOpening(true);
+    const replay = () => { setOpeningTail(false); setOpeningRun(n => n + 1); setShowOpening(true); };
     window.addEventListener('lumen:replay-opening', replay);
     return () => window.removeEventListener('lumen:replay-opening', replay);
   }, []);
@@ -62,7 +64,9 @@ function SiteRoot() {
       </PageRevealContext.Provider>
       </div>
       {showLoader && <BrandLoadingScreen tracker={initialAssets} onComplete={finishLoader} />}
-      {!showLoader && showOpening && <SeasonalOpening onComplete={() => setShowOpening(false)} />}
+      {!showLoader && (showOpening || openingTail) && <SeasonalOpening key={openingRun}
+        onReveal={() => { setOpeningTail(true); setShowOpening(false); }}
+        onComplete={() => { setOpeningTail(false); setShowOpening(false); }} />}
     </>
   );
 }

@@ -14,7 +14,7 @@ export function shouldShowOpening(path: string) {
   try { return localStorage.getItem(openingKey) !== 'seen'; } catch { return true; }
 }
 
-export default function SeasonalOpening({onComplete}: {onComplete: () => void}) {
+export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () => void; onReveal: () => void}) {
   const video = useRef<HTMLVideoElement>(null);
   const dialog = useRef<HTMLDivElement>(null);
   const poster = useRef<HTMLImageElement>(null);
@@ -27,6 +27,8 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
   const [exiting, setExiting] = useState(false);
   const exitFrame = useRef(0);
   const exitTimer = useRef(0);
+  const revealTimer = useRef(0);
+  const audioContext = useRef<AudioContext | null>(null);
   const [muted, setMuted] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState<number | null>(0);
   const nativeFallback = useRef(false);
@@ -49,25 +51,50 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
     const element = video.current;
     const start = performance.now();
     const initialVolume = element?.volume ?? 1;
+    // Start the context in the exit gesture. GainNode fades also work where
+    // mobile Safari ignores HTMLMediaElement.volume. Keep the same media clock.
+    let gainActive = false;
+    if (element && !element.muted && !element.paused) {
+      try {
+        const context = new AudioContext();
+        audioContext.current = context;
+        void context.resume().then(() => {
+          if (context.state !== 'running' || video.current !== element) return;
+          const gain = context.createGain();
+          const media = context.createMediaElementSource(element);
+          media.connect(gain); gain.connect(context.destination);
+          const remaining = Math.max(.01, 2 - (performance.now() - start) / 1000);
+          gain.gain.setValueAtTime(element.volume, context.currentTime);
+          element.volume = 1;
+          gain.gain.linearRampToValueAtTime(0, context.currentTime + remaining);
+          gainActive = true;
+        }).catch(() => {});
+      } catch { /* Desktop volume fade remains available without Web Audio. */ }
+    }
     const fade = () => {
-      if (element) element.volume = Math.max(0, initialVolume * (1 - (performance.now() - start) / 400));
-      if (performance.now() - start < 400) exitFrame.current = requestAnimationFrame(fade);
+      if (element && !gainActive) element.volume = Math.max(0, initialVolume * (1 - (performance.now() - start) / 2000));
+      if (performance.now() - start < 2000) exitFrame.current = requestAnimationFrame(fade);
     };
     exitFrame.current = requestAnimationFrame(fade);
+    if (!destination) revealTimer.current = window.setTimeout(onReveal, 420);
     exitTimer.current = window.setTimeout(() => {
       element?.pause();
       if (destination) window.location.assign(destination);
       else onComplete();
-    }, 420);
+    }, 2020);
   };
-  useEffect(() => () => { cancelAnimationFrame(exitFrame.current); clearTimeout(exitTimer.current); }, []);
+  useEffect(() => () => {
+    cancelAnimationFrame(exitFrame.current); clearTimeout(exitTimer.current); clearTimeout(revealTimer.current);
+    void audioContext.current?.close().catch(() => {});
+  }, []);
   useEffect(() => {
+    if (exiting) return;
     const previous = document.activeElement as HTMLElement | null;
     const overflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     dialog.current?.focus();
     return () => { document.body.style.overflow = overflow; previous?.focus(); };
-  }, []);
+  }, [exiting]);
   useEffect(() => {
     let disposed = false;
     let posterReady = false;
@@ -211,7 +238,7 @@ export default function SeasonalOpening({onComplete}: {onComplete: () => void}) 
       }).catch(() => { /* Underlying last frame stays visible; never flash. */ });
     } catch { /* Canvas unavailable: keep the held video frame, audio continues. */ }
   };
-  return <div className={`seasonal-opening${exiting ? ' is-exiting' : ''}`} ref={dialog} role="dialog" aria-modal="true" aria-label="本期海报序章" tabIndex={-1}
+  return <div className={`seasonal-opening${exiting ? ' is-exiting' : ''}`} ref={dialog} inert={exiting} aria-hidden={exiting} role="dialog" aria-modal={!exiting} aria-label="本期海报序章" tabIndex={-1}
     onKeyDown={event => {
       if (event.key === 'Escape') finish();
       if (event.key === 'Tab') {
