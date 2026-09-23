@@ -28,11 +28,35 @@
 .story-book-controls span { font-size:11px; color:#86a2ac; }
 .story-book-controls button { width:48px; flex:none; font-size:18px; }
 .story-book-controls button:disabled { opacity:.25; cursor:default; }
-.turn-next .story-page:last-child { transform-origin:left center; animation:story-turn-next .5s ease both; }
-.turn-previous .story-page:first-child { transform-origin:right center; animation:story-turn-previous .5s ease both; }
-@keyframes story-turn-next { from { transform:rotateY(-16deg); filter:brightness(.65); } to { transform:rotateY(0); filter:brightness(1); } }
-@keyframes story-turn-previous { from { transform:rotateY(16deg); filter:brightness(.65); } to { transform:rotateY(0); filter:brightness(1); } }
+.story-turn-layer { position:absolute; inset:0; pointer-events:none; perspective:2000px; z-index:3; }
+.story-leaf { position:absolute; inset:0 0 0 50%; transform-origin:left center; transform-style:preserve-3d; animation:story-leaf-forward .8s cubic-bezier(.25,.1,.25,1) both; }
+.story-leaf-front,.story-leaf-back { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+.story-leaf-back { transform:rotateY(180deg); }
+.story-leaf .story-page,.story-stationary .story-page { height:100%; }
+.story-leaf-front::after,.story-leaf-back::after { content:''; position:absolute; inset:0; border-radius:inherit; background:linear-gradient(90deg,#0008,transparent 20%,#e7d9b321 75%,#0005); animation:story-fold-shadow .8s ease both; pointer-events:none; }
+.story-stationary { position:absolute; inset:0 50% 0 0; }
+.is-previous .story-stationary { inset:0 0 0 50%; }
+.is-previous .story-leaf { inset:0 50% 0 0; transform-origin:right center; animation-name:story-leaf-backward; }
+.is-single .story-leaf { inset:0; }
+@keyframes story-leaf-forward { 0% { transform:rotateY(0deg); } 45% { transform:rotateY(-80deg) rotateZ(-1deg); } 100% { transform:rotateY(-180deg); } }
+@keyframes story-leaf-backward { 0% { transform:rotateY(0deg); } 45% { transform:rotateY(80deg) rotateZ(1deg); } 100% { transform:rotateY(180deg); } }
+@keyframes story-fold-shadow { 0%,100% { opacity:0; } 45%,65% { opacity:1; } }
+.flower-story-dialog { border-color:#8daca133; background:linear-gradient(145deg,#11212a,#07131b); box-shadow:0 30px 100px #000b,inset 0 0 0 5px #142a3033; }
+.flower-story-shell header { border-bottom:1px solid #c5c5a51a; margin:0 24px 20px; padding:22px 4px 18px; }
+.flower-story-shell small { color:#aeb9a3; }
+.flower-story-shell h2 { letter-spacing:.1em; }
+.story-book-stage { margin:0 28px; box-shadow:0 3px #66766a66,0 6px #16252e,0 8px 20px #0008; border-radius:4px; }
+.story-page { background:linear-gradient(90deg,#152b37,#152a34 88%,#091820); border-color:#8daca12b; padding:30px 38px 40px; }
+.story-page:nth-child(2) { background:linear-gradient(90deg,#091820,#152a34 12%,#152b37); }
+.story-page-body { line-height:2; color:#d1dcd9; }
+.story-page-body h3 { letter-spacing:.12em; padding-bottom:16px; border-bottom:1px solid #b6b39033; }
+.story-book-controls { padding:18px 28px; }
+.story-book-controls button { border-radius:50%; border-color:#abbda133; }
+.story-book-controls select { background:transparent; letter-spacing:.08em; }
+.story-book-controls option { background:#10222c; }
 .flower-story-dialog :focus-visible,.flower-story-trigger:focus-visible { outline:2px solid #a9d3dc; outline-offset:-2px; }
 @media(max-width:799px) { .flower-story-dialog { width:calc(100vw - 16px); height:calc(100dvh - 20px); border-radius:12px; } .flower-story-shell header { padding:14px 16px; } .flower-story-shell h2 { font-size:20px; } .story-book-stage { margin:0 10px; } .story-spread { grid-template-columns:minmax(0,1fr); } .story-measure { width:100%; } .story-page { padding:22px 20px 34px; } .story-page-body { font-size:15px; line-height:1.95; } .story-book-controls { padding:10px 14px; } }
 @media(max-height:480px) { .flower-story-shell header { padding:8px 16px; } .flower-story-shell small { display:none; } .flower-story-shell h2 { font-size:18px; margin:0; } .story-page { padding-top:12px; } .story-book-controls { padding-top:6px; padding-bottom:6px; } }
 @media(prefers-reduced-motion:reduce) { .story-spread .story-page { animation:none; } }
+@media(max-width:799px) { .flower-story-shell header { margin:0 16px 12px; padding:16px 0; } .flower-story-shell h2 { letter-spacing:0; } .story-book-stage { margin:0 16px; } .story-page { padding:22px 22px 34px; } .story-book-controls { padding:14px 18px; } }
+@media(max-height:480px) { .flower-story-shell header { padding:6px 0; margin-bottom:8px; } .story-page { padding-top:12px; } .story-book-controls { padding:6px 18px; } }

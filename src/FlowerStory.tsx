@@ -6,7 +6,16 @@ import './flower-story.css';
 const stories: Record<string, {title: string; text: string}> = {
   jingxin: {title: '泥沼生花，水月照心', text: jingxin},
 };
-type Page = {chapter: number; heading?: string; paragraphs: string[]; blank?: boolean};
+type Page = {chapter: number; heading?: string; paragraphs: string[]};
+
+function BookPage({page, number}: {page?: Page; number: number}) {
+  return <section className="story-page" aria-label={`第 ${number} 页`}>
+    <div className="story-page-body" tabIndex={0}>
+      {page?.heading && <h3>{page.heading}</h3>}
+      {page?.paragraphs.map((paragraph,i)=><p key={i}>{paragraph}</p>)}
+    </div><span className="story-folio" aria-hidden="true">{String(number).padStart(2,'0')}</span>
+  </section>;
+}
 
 function StoryBook({text, title}: {text: string; title: string}) {
   const chapters = useMemo(() => {
@@ -24,7 +33,10 @@ function StoryBook({text, title}: {text: string; title: string}) {
   const [pages, setPages] = useState<Page[]>([]);
   const [index, setIndex] = useState(0);
   const [spread, setSpread] = useState(1);
-  const [direction, setDirection] = useState('next');
+  const [turning, setTurning] = useState<{from: number; direction: 'next'|'previous'} | null>(null);
+  const turnTimer = useRef(0);
+  const turningRef = useRef(false);
+  useEffect(() => () => clearTimeout(turnTimer.current), []);
   const touch = useRef<{x: number; y: number} | null>(null);
   useEffect(() => {
     const box = measure.current;
@@ -59,11 +71,11 @@ function StoryBook({text, title}: {text: string; title: string}) {
           }
         }
         result.push(page);
-        if (count === 2 && result.length % 2) result.push({chapter: chapterIndex, paragraphs: [], blank: true});
       });
       box.replaceChildren();
       const target = Math.max(0, result.findIndex(p => p.chapter === chapterBefore));
       current.current = target; pageList.current = result;
+      clearTimeout(turnTimer.current); turningRef.current = false; setTurning(null);
       setSpread(count); setPages(result); setIndex(target);
     };
     const schedule = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(paginate); };
@@ -72,8 +84,15 @@ function StoryBook({text, title}: {text: string; title: string}) {
     return () => { cancelAnimationFrame(frame); observer.disconnect(); document.fonts.removeEventListener('loadingdone', schedule); };
   }, [chapters]);
   const turn = (target: number) => {
-    const next = Math.max(0, Math.min(Math.max(0, pages.length - spread), Math.floor(target / spread) * spread));
-    setDirection(next < index ? 'previous' : 'next'); current.current = next; setIndex(next);
+    if (turningRef.current) return;
+    const next = Math.max(0, Math.min(pages.length-1, target));
+    if (next === index) return;
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      turningRef.current = true;
+      setTurning({from:index,direction:next<index?'previous':'next'});
+      turnTimer.current = window.setTimeout(()=>{turningRef.current=false;setTurning(null);},800);
+    }
+    current.current = next; setIndex(next);
   };
   const chapterIndex = pages[index]?.chapter ?? 0;
   return <div className="story-book" onKeyDown={event => {
@@ -87,23 +106,23 @@ function StoryBook({text, title}: {text: string; title: string}) {
         if (start && Math.abs(t.clientX-start.x)>55 && Math.abs(t.clientX-start.x)>Math.abs(t.clientY-start.y)*1.5) turn(index + (t.clientX<start.x?spread:-spread));
       }}>
       <div className="story-page story-measure" aria-hidden="true"><div className="story-page-body" ref={measure} /></div>
-      <div className={`story-spread turn-${direction}`} key={`${index}-${spread}-${pages.length}`}>
-        {pages.slice(index,index+spread).map((page, offset) => <section className="story-page" key={index+offset} aria-label={`第 ${index+offset+1} 页`}>
-          <div className="story-page-body" tabIndex={0}>
-            {page.heading && <h3>{page.heading}</h3>}
-            {page.paragraphs.map((paragraph,i)=><p key={i}>{paragraph}</p>)}
-            {page.blank && <div className="story-page-rest" aria-label="本章结束"><span aria-hidden="true">◇</span><div>{chapters[page.chapter].heading.replace(/^[^、，,]+[、，,]/,'')}</div><small>镜昕 · 荷花女神</small></div>}
-          </div>
-          <span className="story-folio" aria-hidden="true">{String(index+offset+1).padStart(2,'0')}</span>
-        </section>)}
+      <div className="story-spread">
+        {pages.slice(index,index+spread).map((page, offset) => <BookPage key={index+offset} page={page} number={index+offset+1} />)}
       </div>
+      {turning && <div className={`story-turn-layer is-${turning.direction} ${spread===1?'is-single':''}`} aria-hidden="true" inert>
+        {spread===2 && <div className="story-stationary"><BookPage page={pages[turning.from+(turning.direction==='next'?0:1)]} number={turning.from+(turning.direction==='next'?1:2)} /></div>}
+        <div className="story-leaf">
+          <div className="story-leaf-front"><BookPage page={pages[turning.from+(turning.direction==='next'?spread-1:0)]} number={turning.from+(turning.direction==='next'?spread:1)} /></div>
+          <div className="story-leaf-back"><BookPage page={pages[index+(turning.direction==='next'?0:spread-1)]} number={index+(turning.direction==='next'?1:spread)} /></div>
+        </div>
+      </div>}
     </div>
     <div className="story-book-controls">
-      <button onClick={()=>turn(index-spread)} disabled={index===0} aria-label="上一页">←</button>
-      <div><select aria-label="选择章节" value={chapterIndex} onChange={event=>turn(pages.findIndex(p=>p.chapter===Number(event.target.value)))}>
+      <button onClick={()=>turn(index-spread)} disabled={index===0||!!turning} aria-label="上一页">←</button>
+      <div><select aria-label="选择章节" disabled={!!turning} value={chapterIndex} onChange={event=>turn(pages.findIndex(p=>p.chapter===Number(event.target.value)))}>
         {chapters.map((chapter,i)=><option key={i} value={i}>{chapter.heading}</option>)}
       </select><span role="status" aria-live="polite">{pages.length ? `${index+1}${spread===2?`–${Math.min(index+spread,pages.length)}`:''} / ${pages.length}` : '正在排版'}</span></div>
-      <button onClick={()=>turn(index+spread)} disabled={index+spread>=pages.length} aria-label="下一页">→</button>
+      <button onClick={()=>turn(index+spread)} disabled={index+spread>=pages.length||!!turning} aria-label="下一页">→</button>
     </div>
   </div>;
 }
