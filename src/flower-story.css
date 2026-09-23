@@ -10,6 +10,9 @@
 .flower-story-shell article { overflow:auto; overscroll-behavior:contain; touch-action:pan-y; padding:8px 40px 32px; line-height:2.05; font-size:16px; }
 .flower-story-shell h3 { margin:28px 0 18px; color:#e2d9bd; font-size:20px; font-weight:400; line-height:1.7; }
 .flower-story-shell p { margin:0 0 20px; }
-.flower-story-shell footer { text-align:center; margin:40px 0 8px; font-size:12px; color:#9eb9bd; letter-spacing:.15em; }
+.flower-story-shell article { scrollbar-width:thin; scrollbar-color:#64818b #0c1c27; }
+.flower-story-shell article::-webkit-scrollbar { width:6px; }
+.flower-story-shell article::-webkit-scrollbar-track { background:#0c1c27; }
+.flower-story-shell article::-webkit-scrollbar-thumb { background:#64818b; border-radius:8px; }
 .flower-story-dialog :focus-visible,.flower-story-trigger:focus-visible { outline:2px solid #a9d3dc; outline-offset:3px; }
 @media(max-width:600px) { .flower-story-dialog { width:calc(100vw - 20px); height:calc(100dvh - 24px); border-radius:16px; } .flower-story-shell header { padding:18px 20px; } .flower-story-shell article { padding:4px 22px 24px; font-size:15px; } .flower-story-shell h2 { font-size:23px; } }

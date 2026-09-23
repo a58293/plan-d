@@ -298,7 +298,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
         立即购买{!commerce.featuredProductUrl && <small>即将开放</small>}
       </button>
       <button disabled={exiting} onClick={() => finish()}>进入主页</button>
-    </div><FlowerStory slug="jingxin" onOpenChange={open => setMusicLevel(open ? .18 : 1, open ? .7 : 1.2)} /></section></div>}
+    </div><FlowerStory slug="jingxin" onOpenChange={open => setMusicLevel(open ? .18 : 1, 3)} /></section></div>}
     {(state === 'loading' || state === 'ready') && <div className="opening-download" role="status">
       <strong>{downloadProgress === null ? '正在下载' : `${downloadProgress}%`}</strong>
       <small>{downloadProgress === 100 ? '正在准备播放' : '载入影像'}</small>
