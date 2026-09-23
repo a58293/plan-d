@@ -17,6 +17,43 @@ function BookPage({page, number}: {page?: Page; number: number}) {
   </section>;
 }
 
+// A connected ribbon of narrow paper sections, not a single rigid plane.
+function CurvedLeaf({front, back, frontNumber, backNumber, reverse}: {
+  front?: Page; back?: Page; frontNumber: number; backNumber: number; reverse: boolean;
+}) {
+  const root = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = root.current;
+    if (!element) return;
+    const strips = Array.from(element.children) as HTMLElement[];
+    const width = element.clientWidth, step = width / strips.length;
+    element.style.setProperty('--leaf-width', `${width}px`);
+    const start = performance.now(); let frame = 0;
+    const animate = () => {
+      const t = Math.min(1, (performance.now()-start)/1050);
+      const progress = t*t*(3-2*t);
+      let x=0,z=0;
+      strips.forEach((strip,i) => {
+        const u=(i+.5)/strips.length;
+        const angle=Math.PI*progress + .85*Math.sin(Math.PI*progress)*(u-.5);
+        strip.style.width=`${step+.3}px`;
+        strip.style.transform=`translate3d(${reverse?width-x-step:x}px,0,${z}px) rotateY(${(reverse?1:-1)*angle}rad)`;
+        strip.style.setProperty('--strip-shade', `${.08+.17*Math.sin(Math.PI*progress)*Math.abs(u-.35)}`);
+        x+=step*Math.cos(angle); z+=step*Math.sin(angle);
+      });
+      if(t<1) frame=requestAnimationFrame(animate);
+    };
+    frame=requestAnimationFrame(animate);
+    return ()=>cancelAnimationFrame(frame);
+  }, [reverse]);
+  return <div ref={root} className={`story-curved-leaf${reverse?' is-reverse':''}`}>
+    {Array.from({length:16},(_,i)=><div className="story-paper-strip" key={i}>
+      <div className="story-strip-face"><div className="story-strip-content" style={{left:`calc(var(--leaf-width) * -${reverse?15-i:i}/16)`}}><BookPage page={front} number={frontNumber}/></div></div>
+      <div className="story-strip-face is-back"><div className="story-strip-content" style={{left:`calc(var(--leaf-width) * -${reverse?i:15-i}/16)`}}><BookPage page={back} number={backNumber}/></div></div>
+    </div>)}
+  </div>;
+}
+
 function StoryBook({text, title}: {text: string; title: string}) {
   const chapters = useMemo(() => {
     const result: {heading: string; paragraphs: string[]}[] = [];
@@ -90,7 +127,7 @@ function StoryBook({text, title}: {text: string; title: string}) {
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       turningRef.current = true;
       setTurning({from:index,direction:next<index?'previous':'next'});
-      turnTimer.current = window.setTimeout(()=>{turningRef.current=false;setTurning(null);},800);
+      turnTimer.current = window.setTimeout(()=>{turningRef.current=false;setTurning(null);},1080);
     }
     current.current = next; setIndex(next);
   };
@@ -111,11 +148,12 @@ function StoryBook({text, title}: {text: string; title: string}) {
       </div>
       {turning && <div className={`story-turn-layer is-${turning.direction} ${spread===1?'is-single':''}`} aria-hidden="true" inert>
         {spread===2 && <div className="story-stationary"><BookPage page={pages[turning.from+(turning.direction==='next'?0:1)]} number={turning.from+(turning.direction==='next'?1:2)} /></div>}
-        <div className="story-leaf">
-          <div className="story-leaf-front"><BookPage page={pages[turning.from+(turning.direction==='next'?spread-1:0)]} number={turning.from+(turning.direction==='next'?spread:1)} /></div>
-          <div className="story-leaf-back"><BookPage page={pages[index+(turning.direction==='next'?0:spread-1)]} number={index+(turning.direction==='next'?1:spread)} /></div>
-        </div>
+        <CurvedLeaf reverse={turning.direction==='previous'}
+          front={pages[turning.from+(turning.direction==='next'?spread-1:0)]} frontNumber={turning.from+(turning.direction==='next'?spread:1)}
+          back={pages[index+(turning.direction==='next'?0:spread-1)]} backNumber={index+(turning.direction==='next'?1:spread)} />
       </div>}
+      <button className="story-edge story-edge-left" aria-label="点击左侧翻到上一页" disabled={index===0||!!turning} onClick={()=>turn(index-spread)}><span>‹</span></button>
+      <button className="story-edge story-edge-right" aria-label="点击右侧翻到下一页" disabled={index+spread>=pages.length||!!turning} onClick={()=>turn(index+spread)}><span>›</span></button>
     </div>
     <div className="story-book-controls">
       <button onClick={()=>turn(index-spread)} disabled={index===0||!!turning} aria-label="上一页">←</button>
