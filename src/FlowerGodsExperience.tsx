@@ -8,6 +8,7 @@ import { FLOWER_GODS_PATH, isPlainNavigation } from "./flower-gods-catalog";
 import { requiredImage, detailImage, siteMedia, officialPhotos, type MediaId } from './media-library';
 import { commerce } from './commerce';
 import MobileFlower from './MobileFlower';
+import FlowerStory from './FlowerStory';
 import PurchaseMenu from './PurchaseMenu';
 import {jingxinProductInfo} from './jingxin-product-info';
 import "./flower-gods-experience.css";
@@ -401,6 +402,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
             <div className="prologue-title-index"><span>01</span><i /><span>LOTUS DEITY</span></div>
             <p className="prologue-title-kicker">原典序列 01</p>
             <h1><SplitColorText text="镜昕" /></h1>
+            <FlowerStory slug="jingxin" />
             {commerce.featuredProductUrl || commerce.shopUrl
               ? <a className="desktop-taobao-entry" href={commerce.featuredProductUrl || commerce.shopUrl!} target="_blank" rel="noopener noreferrer">淘宝购买 ↗</a>
               : <PurchaseMenu currentSlug="jingxin" label="淘宝购买 ↗" className="desktop-taobao-entry"/>}

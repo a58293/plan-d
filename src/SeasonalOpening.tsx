@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from 'react';
 import './seasonal-opening.css';
 import {commerce} from './commerce';
 import {applyCustomFonts} from './custom-fonts';
+import FlowerStory from './FlowerStory';
 
 // Change both the issue id and versioned file name when publishing a new issue.
 export const openingIssue = 'lotus-2026-09-still-v2';
@@ -29,12 +30,46 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
   const exitTimer = useRef(0);
   const revealTimer = useRef(0);
   const audioContext = useRef<AudioContext | null>(null);
+  const audioGain = useRef<GainNode | null>(null);
+  const levelRequest = useRef(0);
   const [muted, setMuted] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState<number | null>(0);
   const nativeFallback = useRef(false);
   const [attempt, setAttempt] = useState(0);
   const closed = useRef(false);
   const fontsRequested = useRef(false);
+  const setMusicLevel = (target: number, seconds: number) => {
+    const element = video.current;
+    if (!element) return;
+    const request = ++levelRequest.current;
+    cancelAnimationFrame(exitFrame.current);
+    const start = performance.now();
+    const initial = element.volume;
+    const fallback = () => {
+      if (request !== levelRequest.current) return;
+      const fraction = Math.min(1, (performance.now() - start) / (seconds * 1000));
+      element.volume = initial + (target - initial) * fraction;
+      if (fraction < 1) exitFrame.current = requestAnimationFrame(fallback);
+    };
+    try {
+      const context = audioContext.current ?? new AudioContext();
+      audioContext.current = context;
+      void context.resume().then(() => {
+        if (request !== levelRequest.current || video.current !== element) return;
+        if (context.state !== 'running') { fallback(); return; }
+        let gain = audioGain.current;
+        if (!gain) {
+          gain = context.createGain();
+          gain.gain.value = element.volume;
+          context.createMediaElementSource(element).connect(gain);
+          gain.connect(context.destination); audioGain.current = gain;
+          element.volume = 1;
+        }
+        gain.gain.cancelAndHoldAtTime(context.currentTime);
+        gain.gain.linearRampToValueAtTime(target, context.currentTime + seconds);
+      }).catch(fallback);
+    } catch { fallback(); }
+  };
   useEffect(() => {
     // Load the site's real UI font after the opening media is ready, not only
     // after leaving the opening. Do not make font download a playback gate.
@@ -49,33 +84,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
     setExiting(true);
     try { localStorage.setItem(openingKey, 'seen'); } catch { /* Private browsing remains usable. */ }
     const element = video.current;
-    const start = performance.now();
-    const initialVolume = element?.volume ?? 1;
-    // Start the context in the exit gesture. GainNode fades also work where
-    // mobile Safari ignores HTMLMediaElement.volume. Keep the same media clock.
-    let gainActive = false;
-    if (element && !element.muted && !element.paused) {
-      try {
-        const context = new AudioContext();
-        audioContext.current = context;
-        void context.resume().then(() => {
-          if (context.state !== 'running' || video.current !== element) return;
-          const gain = context.createGain();
-          const media = context.createMediaElementSource(element);
-          media.connect(gain); gain.connect(context.destination);
-          const remaining = Math.max(.01, 2 - (performance.now() - start) / 1000);
-          gain.gain.setValueAtTime(element.volume, context.currentTime);
-          element.volume = 1;
-          gain.gain.linearRampToValueAtTime(0, context.currentTime + remaining);
-          gainActive = true;
-        }).catch(() => {});
-      } catch { /* Desktop volume fade remains available without Web Audio. */ }
-    }
-    const fade = () => {
-      if (element && !gainActive) element.volume = Math.max(0, initialVolume * (1 - (performance.now() - start) / 2000));
-      if (performance.now() - start < 2000) exitFrame.current = requestAnimationFrame(fade);
-    };
-    exitFrame.current = requestAnimationFrame(fade);
+    setMusicLevel(0, 2);
     if (!destination) revealTimer.current = window.setTimeout(onReveal, 420);
     exitTimer.current = window.setTimeout(() => {
       element?.pause();
@@ -84,6 +93,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
     }, 2020);
   };
   useEffect(() => () => {
+    levelRequest.current++;
     cancelAnimationFrame(exitFrame.current); clearTimeout(exitTimer.current); clearTimeout(revealTimer.current);
     void audioContext.current?.close().catch(() => {});
   }, []);
@@ -288,7 +298,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
         立即购买{!commerce.featuredProductUrl && <small>即将开放</small>}
       </button>
       <button disabled={exiting} onClick={() => finish()}>进入主页</button>
-    </div></section></div>}
+    </div><FlowerStory slug="jingxin" onOpenChange={open => setMusicLevel(open ? .18 : 1, open ? .7 : 1.2)} /></section></div>}
     {(state === 'loading' || state === 'ready') && <div className="opening-download" role="status">
       <strong>{downloadProgress === null ? '正在下载' : `${downloadProgress}%`}</strong>
       <small>{downloadProgress === 100 ? '正在准备播放' : '载入影像'}</small>

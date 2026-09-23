@@ -5,6 +5,7 @@ import {VerificationConsole} from './VerifyPage';
 import {MobileActions} from './PurchaseMenu';
 import {jingxinProductInfo} from './jingxin-product-info';
 import './mobile-flower.css';
+import FlowerStory from './FlowerStory';
 
 type Item = {key: string; title: string; position: string; scale: number; description: string};
 type Props = {details: Item[]; pieces: Item[]; onBack?: () => void};
@@ -66,6 +67,7 @@ export default function MobileFlower({details, pieces, onBack}:Props) {
     <header className="mf-header"><a href="/series/flower-gods" onClick={e=>{if(onBack){e.preventDefault();onBack();}}}>← 花神卷</a><MobileActions currentSlug="jingxin"/></header>
     <nav className="mf-nav" aria-label="角色内容">{[['intro','角色介绍'],['detail','造型细节'],['info','产品信息'],['auth','防伪核验']].map(([id,label])=><a key={id} href={'#'+id} aria-current={section===id?'location':undefined}>{label}</a>)}</nav>
     <section id="intro" className="mf-intro"><p className="mf-kicker">花神卷 · 原典 01</p><h1>镜昕 <small>荷花女神</small></h1><p>循着花与光的轨迹，走近镜昕。</p>
+      <FlowerStory slug="jingxin" />
       <div className="mf-options" aria-label="展示方式">{(['original','physical'] as const).map(value=><button key={value} aria-pressed={mode===value} onClick={()=>setMode(value)}>{value==='original'?'原画':'实体'}</button>)}</div>
       <img className="mf-portrait" src={requiredImage(mode==='physical'?'jingxinPortrait':'jingxinConcept')} alt={'镜昕'+(mode==='physical'?'实体全身':'原画')} fetchPriority="high" decoding="async" />
       <a className="mf-primary" href="#detail">查看造型细节 <span>↓</span></a>
