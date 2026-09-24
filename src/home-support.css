@@ -6,3 +6,5 @@
 .home-experience[data-home-chapter="support"] .home-pagination{bottom:calc(var(--home-footer-height) + 12px)}
 .home-experience[data-home-chapter="support"] .home-scene-caption{bottom:calc(var(--home-footer-height) + 18px)}
 .home-experience[data-home-chapter="support"] .home-pagination,.home-experience[data-home-chapter="support"] .home-scene-caption{color:#164b42}
+.report-social{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,320px);gap:40px;align-items:start;margin-top:40px}.report-social p{line-height:1.9}.report-social img{display:block;width:100%;height:auto}.social-account{user-select:all;overflow-wrap:anywhere}.report-social .report-actions a{display:inline-block;padding:12px 20px;background:#164b42;color:#fff;text-decoration:none;border-radius:8px}.report-social h2{font-size:24px}.report-social [role="status"]{min-height:2em}
+@media(max-width:700px){.report-social{grid-template-columns:1fr;gap:24px}.report-social> a{max-width:360px;width:100%;justify-self:center}}

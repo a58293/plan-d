@@ -15,7 +15,7 @@ export default function HelpPage() {
         <details><summary>如何查询防伪记录？</summary><p>进入防伪核验页面，按页面提示填写娃证编号与淘宝订单号。请妥善保管这些信息，不要在公开评论中发布完整编号。</p><a href="/verify">进入防伪核验 ↗</a></details>
         <details><summary>序章没有声音，或影像加载较慢怎么办？</summary><p>部分浏览器需要轻触页面后才能播放声音，请检查页面声音开关与设备音量。网络较慢时可稍后重试，或先进入主页浏览；主页提供返回序章的入口。</p></details>
         <details><summary>发现疑似仿冒或盗图怎么办？</summary><p>请保留相关链接、账号信息及截图，通过举报说明页面整理线索。不要公开无关人员的个人资料。</p><a href="/report">查看举报说明 ↗</a></details>
-        <details><summary>如何联系客服？</summary><p>客服时间：工作日 10:00—17:00。咨询订单时，请准备订单信息和问题描述。</p><a href="tel:19988424290">客服：19988424290</a></details>
+        <details><summary>如何联系客服？</summary><p>可以在小红书搜索“绘屿造物 Lumen Auralis”，小红书号 6765312465，通过账号私信联系。咨询订单时，请准备订单信息和问题描述。</p><a href="/report">查看官方账号名片 ↗</a></details>
       </div>
     </main>
   </div>;
