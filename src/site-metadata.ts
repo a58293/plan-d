@@ -29,6 +29,7 @@ export function metadataForRoute(route: SiteRoute): PageMetadata {
 }
 
 export function metadataForPath(pathname: string): PageMetadata {
+  if(pathname.replace(/\/+$/, '') === '/report') return {title:'侵权举报｜绘屿造物',description:'向绘屿造物提供疑似仿冒、盗图或冒充官方的线索。'};
   const legal = pathname.match(/^\/legal\/(terms|authenticity)\/?$/)?.[1];
   if (legal) {
     const titles = { terms: '网站使用条款', authenticity: '防伪服务说明' };

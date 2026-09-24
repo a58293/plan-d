@@ -17,6 +17,8 @@ import './series-scrolls.css';
 import './home-product-theme.css';
 import './custom-fonts.css';
 import './mobile-compat.css';
+import './ui-unified.css';
+document.documentElement.classList.add('site-ui');
 
 const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
 applySiteMetadata(pathname);
@@ -24,6 +26,7 @@ const UnifiedBjdSite = lazy(() => import('./UnifiedBjdSite.tsx'));
 const VerifyPage = lazy(() => import('./VerifyPage.tsx'));
 const NotFoundPage = lazy(() => import('./NotFoundPage.tsx'));
 const LegalPage = lazy(() => import('./LegalPage.tsx'));
+const ReportPage = lazy(() => import('./ReportPage.tsx'));
 const legalPage = pathname.match(/^\/legal\/(terms|authenticity)$/)?.[1] as 'terms' | 'authenticity' | undefined;
 const pageCode = pathname === '/' ? import('./BjdApp')
   : pathname === '/series/flower-gods/jingxin' ? import('./FlowerGodsExperience')
@@ -58,7 +61,7 @@ function SiteRoot() {
       <div inert={showLoader || showOpening}>
       <PageRevealContext.Provider value={!showLoader && !showOpening}>
         <SiteErrorBoundary><Suspense fallback={null}>
-          {pathname === '/verify' ? <VerifyPage /> : legalPage ? <LegalPage page={legalPage} />
+          {pathname === '/report' ? <ReportPage /> : pathname === '/verify' ? <VerifyPage /> : legalPage ? <LegalPage page={legalPage} />
             : resolveSiteRoute(pathname).view !== 'not-found' ? <UnifiedBjdSite /> : <NotFoundPage />}
         </Suspense></SiteErrorBoundary>
       </PageRevealContext.Provider>

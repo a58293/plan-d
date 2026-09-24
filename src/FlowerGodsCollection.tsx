@@ -6,6 +6,7 @@ import { TransparentGoddess } from './TransparentGoddess';
 import { flowerGodPath, isPlainNavigation, type FlowerGod } from './flower-gods-catalog';
 import { CAROUSEL_SEAT_SPACING, CAROUSEL_SETTLE_MS, carouselWindow, dragDisplacement, firstPublishedSeat, flowerSeats, shortestSeatMove, swipeDirection, wrapSeat } from './flower-carousel';
 import SiteSearch from './SiteSearch';
+import Breadcrumbs from './Breadcrumbs';
 import {MobileActions} from './PurchaseMenu';
 import './flower-gods-collection.css';
 import './soft-ui.css';
@@ -81,6 +82,7 @@ export default function FlowerGodsCollection({ onNavigate }: Props) {
   };
   if (window.matchMedia('(max-width: 700px)').matches) return <main className="mf-page mf-collection">
     <header className="mf-header"><a href="/" onClick={followLink(onNavigate, '/')}>← 首页</a><MobileActions/></header>
+    <Breadcrumbs path="/series/flower-gods"/>
     <section><p className="mf-kicker">THE FLORAL DEITIES</p><h1>花神卷</h1><p>循花而行，遇见每一位花神。</p>
       {flowerSeats.filter(seat=>seat.deity).map(seat=>{const deity=seat.deity!;return <article key={seat.id} className="mf-collection-card"><a href={flowerGodPath(deity)} onClick={followLink(onNavigate,flowerGodPath(deity))}><img src={deity.image} alt={deity.name+'完整造型'} /><div><h2>{deity.name}</h2><p>{deity.flower}</p><span>查看角色 ↗</span></div></a></article>;})}
       <aside className="mf-pending"><span>下一位花神</span><p>花期未至 · 敬请期待</p></aside>
@@ -98,6 +100,7 @@ export default function FlowerGodsCollection({ onNavigate }: Props) {
       </a>
       <div className="flower-collection-actions"><SiteSearch tone="dark" /><a className="flower-collection-back" href="/#series" onClick={followLink(onNavigate, '/#series')}>← 返回系列</a></div>
     </header>
+    <Breadcrumbs path="/series/flower-gods"/>
     <main className="flower-collection-main">
       <div className="flower-collection-heading">
         <div><h1>花神卷</h1><p className="flower-collection-kicker">THE FLORAL DEITIES</p></div>

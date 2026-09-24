@@ -1,11 +1,12 @@
 import {useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
-import {requiredImage, detailImage, type MediaId} from './media-library';
+import {requiredImage, detailImage, siteMedia, officialPhotos, type MediaId} from './media-library';
 import {VerificationConsole} from './VerifyPage';
 import {MobileActions} from './PurchaseMenu';
 import {jingxinProductInfo} from './jingxin-product-info';
 import './mobile-flower.css';
 import FlowerStory from './FlowerStory';
+import Breadcrumbs from './Breadcrumbs';
 
 type Item = {key: string; title: string; position: string; scale: number; description: string};
 type Props = {details: Item[]; pieces: Item[]; onBack?: () => void};
@@ -65,9 +66,11 @@ export default function MobileFlower({details, pieces, onBack}:Props) {
   },[]);
   return <main className="mf-page" ref={root}>
     <header className="mf-header"><a href="/series/flower-gods" onClick={e=>{if(onBack){e.preventDefault();onBack();}}}>← 花神卷</a><MobileActions currentSlug="jingxin"/></header>
-    <nav className="mf-nav" aria-label="角色内容">{[['intro','角色介绍'],['detail','造型细节'],['info','产品信息'],['auth','防伪核验']].map(([id,label])=><a key={id} href={'#'+id} aria-current={section===id?'location':undefined}>{label}</a>)}</nav>
+    <Breadcrumbs path="/series/flower-gods/jingxin" section={({'intro':'登场','detail':'细节','gallery':'官图','info':'产品信息','auth':'核验'} as Record<string,string>)[section]}/>
+    <nav className="mf-nav" aria-label="角色内容">{[['intro','角色介绍'],['detail','造型细节'],['gallery','官方摄影'],['auth','防伪核验']].map(([id,label])=><a key={id} href={'#'+id} aria-current={section===id?'location':undefined}>{label}</a>)}</nav>
     <section id="intro" className="mf-intro"><p className="mf-kicker">花神卷 · 原典 01</p><h1>镜昕 <small>荷花女神</small></h1><p>循着花与光的轨迹，走近镜昕。</p>
       <FlowerStory slug="jingxin" />
+      <div className="character-product-entry"><a href="#info">产品信息 ＋</a></div>
       <div className="mf-options" aria-label="展示方式">{(['original','physical'] as const).map(value=><button key={value} aria-pressed={mode===value} onClick={()=>setMode(value)}>{value==='original'?'原画':'实体'}</button>)}</div>
       <img className="mf-portrait" src={requiredImage(mode==='physical'?'jingxinPortrait':'jingxinConcept')} alt={'镜昕'+(mode==='physical'?'实体全身':'原画')} fetchPriority="high" decoding="async" />
       <a className="mf-primary" href="#detail">查看造型细节 <span>↓</span></a>
@@ -78,6 +81,7 @@ export default function MobileFlower({details, pieces, onBack}:Props) {
       <button className="mf-detail-image" aria-label={'放大查看'+item.title} onClick={()=>setViewer(true)}><img src={media.src} alt={item.title} loading="lazy" decoding="async" style={{transform:`scale(${media.scale})`,transformOrigin:media.position}}/><span>放大查看 ＋</span></button>
       <h3>{item.title}</h3><p>{item.description}</p>
     </section>
+    <section id="gallery"><p className="mf-kicker">OFFICIAL PHOTOGRAPHY</p><h2>官方摄影</h2><p>镜昕 · 实体官拍</p><div className="mf-gallery-grid">{officialPhotos.map((id,index)=>{const photo=siteMedia[id];return <div key={id}>{photo.src?<img src={photo.src} alt={photo.alt} loading="lazy"/>:<span>{index===0?'首辑影像':'镜昕'} · 拍摄素材待更新</span>}</div>;})}</div></section>
     <section id="info"><p className="mf-kicker">PRODUCT NOTES</p><h2>产品信息</h2><dl>{jingxinProductInfo.map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl><p>客服 19988424290<br/>工作日 10:00—17:00</p></section>
     <section id="auth" className="mf-auth"><p className="mf-kicker">OFFICIAL VERIFICATION</p><h2>防伪核验</h2><p>请准备娃证编号与购买时的淘宝订单号。</p><VerificationConsole /></section>
     <footer className="mf-footer">绘屿造物 · LUMEN AURALIS</footer>

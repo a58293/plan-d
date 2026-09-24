@@ -168,7 +168,7 @@ function Footer() {
   return (
     <footer className="home-footer">
       <p className="home-footer-summary">绘屿造物 · 客服 19988424290 · 工作日 10:00—17:00</p>
-      <p className="home-footer-copyright">© 2026 LUMEN AURALIS · <a href="/legal/terms">网站条款</a> · <a href="/legal/authenticity">防伪说明</a></p>
+      <p className="home-footer-copyright">© 2026 LUMEN AURALIS · <a href="/legal/terms">网站条款</a> · <a href="/legal/authenticity">防伪说明</a> · <a href="/report">侵权举报</a></p>
     </footer>
   );
 }

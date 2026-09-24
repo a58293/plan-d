@@ -8,6 +8,7 @@ import { FLOWER_GODS_PATH, isPlainNavigation } from "./flower-gods-catalog";
 import { requiredImage, detailImage, siteMedia, officialPhotos, type MediaId } from './media-library';
 import { commerce } from './commerce';
 import MobileFlower from './MobileFlower';
+import Breadcrumbs from './Breadcrumbs';
 import FlowerStory from './FlowerStory';
 import PurchaseMenu from './PurchaseMenu';
 import {jingxinProductInfo} from './jingxin-product-info';
@@ -351,8 +352,9 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
           <span><strong><SplitColorText text="LUMEN AURALIS" /></strong><small>← 返回花神卷 · 选择花神</small></span>
         </a>
         <div className="experience-chapter-title" aria-live="polite"><span>0{activeChapter + 1}</span>{theme.label} · {theme.en}</div>
-        <div className="experience-header-actions"><SiteSearch tone="dark" /><button className="product-info-trigger" type="button" onClick={() => setProductInfoOpen(true)}>产品信息 <span>＋</span></button><a className="experience-verify-link" href="/verify">防伪核验 <span>↗</span></a></div>
+        <div className="experience-header-actions"><SiteSearch tone="dark" /><a className="experience-verify-link" href="/verify">防伪核验 <span>↗</span></a></div>
       </header>
+      <Breadcrumbs path="/series/flower-gods/jingxin" section={theme.label}/>
 
       {productInfoOpen && <div className="product-info-overlay" onMouseDown={event => {
         if (event.target === event.currentTarget) setProductInfoOpen(false);
@@ -406,6 +408,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
             {commerce.featuredProductUrl || commerce.shopUrl
               ? <a className="desktop-taobao-entry" href={commerce.featuredProductUrl || commerce.shopUrl!} target="_blank" rel="noopener noreferrer">淘宝购买 ↗</a>
               : <PurchaseMenu currentSlug="jingxin" label="淘宝购买 ↗" className="desktop-taobao-entry"/>}
+            <div className="character-product-entry"><button className="product-info-trigger" type="button" onClick={() => setProductInfoOpen(true)}>产品信息 <span>＋</span></button></div>
           </div>
 
           <div className="prologue-copy chapter-reveal">
