@@ -9,3 +9,4 @@
 }
 @media(prefers-reduced-motion:reduce){.orb-arc{animation:none}.orb-leaf,.nav-orb{transition:none}}
 .mobile-navigation .nav-orb{border-radius:50%!important}.mobile-navigation .orb-leaf{border-radius:30px!important}
+.mobile-navigation .nav-orb{touch-action:none;user-select:none;font-size:25px;background:rgba(222,237,224,.76);color:#164c43;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}.mobile-navigation .orb-leaf,.mobile-navigation .orb-context,.mobile-navigation .orb-paging,.mobile-navigation .orb-parent{background:rgba(232,242,232,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
