@@ -340,16 +340,11 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
       <header className="experience-header">
         <a
           className="experience-brand"
-          href={FLOWER_GODS_PATH}
-          aria-label="返回花神卷，选择花神"
-          onClick={(event) => {
-            if (!onBackCollection || !isPlainNavigation(event)) return;
-            event.preventDefault();
-            onBackCollection();
-          }}
+          href="/"
+          aria-label="返回绘屿造物首页"
         >
           <span className="experience-brand-mark"><img className="brand-logo-image" src={officialLogo} alt="" /></span>
-          <span><strong><SplitColorText text="LUMEN AURALIS" /></strong><small>← 返回花神卷 · 选择花神</small></span>
+          <span><strong><SplitColorText text="LUMEN AURALIS" /></strong><small>绘屿造物</small></span>
         </a>
         <div className="experience-chapter-title" aria-live="polite"><span>0{activeChapter + 1}</span>{theme.label} · {theme.en}</div>
         <div className="experience-header-actions"><SiteSearch tone="dark" /><a className="experience-verify-link" href="/verify">防伪核验 <span>↗</span></a></div>

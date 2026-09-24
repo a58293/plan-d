@@ -4,6 +4,7 @@ import {currentFeaturedProduct} from './current-product-theme';
 import {isPlainNavigation, flowerGods, flowerGodPath} from './flower-gods-catalog';
 import {MobileActions} from './PurchaseMenu';
 import './mobile-home.css';
+import HomeSupport from './HomeSupport';
 
 export default function MobileHome({onOpenFlowerGods,onOpenFeatured}:{onOpenFlowerGods?:()=>void;onOpenFeatured?:()=>void}) {
   const [original,setOriginal]=useState(false);
@@ -23,6 +24,7 @@ export default function MobileHome({onOpenFlowerGods,onOpenFeatured}:{onOpenFlow
       </section>
       <section className="mh-collectors" id="collectors"><span className="mh-eyebrow">02 / COLLECTORS' MOMENTS</span><h2>花开在你的日常。</h2>{photos.length?<div className="mh-photo-list">{photos.map(photo=><img key={photo.src} src={photo.src!} alt={photo.alt} loading="lazy"/>)}</div>:<p>等待第一份经授权的藏家影像。<br/>关于相遇的故事，将在这里慢慢展开。</p>}</section>
       <section className="mh-auth" id="verify"><span className="mh-eyebrow">03 / AUTHENTICITY</span><h2>珍藏有据，<br/>相遇有迹。</h2><p>凭娃证编号与淘宝订单号，<br/>查询作品的官方出品记录。</p><a href="/verify">进入防伪核验 <span>↗</span></a></section>
+      <HomeSupport />
     </main>
     <footer className="mh-footer"><strong>LUMEN AURALIS</strong><p>绘屿造物 · 原创球形关节人偶</p><a href="tel:19988424290">客服 19988424290</a><small>工作日 10:00—17:00</small><div><a href="/legal/terms">网站条款</a><a href="/legal/authenticity">防伪说明</a><a href="/report">侵权举报</a></div></footer>
   </div>;

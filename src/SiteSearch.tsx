@@ -8,7 +8,8 @@ const fixedEntries = [
   { title: '花神卷', subtitle: '选择并探索花神', href: '/series/flower-gods', keywords: '系列 花神 选择 云海' },
   { title: '防伪核验', subtitle: '娃证与订单双重核对', href: '/verify', keywords: '验证 真伪 娃证 淘宝 订单' },
   { title: '防伪服务说明', subtitle: '查询范围与结果说明', href: '/legal/authenticity', keywords: '验证 防伪 说明' },
-  { title: '侵权举报', subtitle: '仿冒、盗图与冒充官方线索', href: '/report', keywords: '举报 投诉 侵权 盗版 仿冒' },
+  { title: '举报说明', subtitle: '仿冒、盗图与冒充官方线索', href: '/report', keywords: '举报 投诉 侵权 盗版 仿冒' },
+  { title: '帮助说明', subtitle: '浏览、购买、核验与联系方法', href: '/help', keywords: '帮助 客服 购买 声音 加载' },
 ];
 
 const searchEntries = [

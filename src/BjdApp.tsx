@@ -7,6 +7,7 @@ import { requiredImage, siteMedia, collectorPhotos } from "./media-library";
 import SeriesScrolls from "./SeriesScrolls";
 import SiteSearch from './SiteSearch';
 import MobileHome from './MobileHome';
+import HomeSupport from './HomeSupport';
 import ReplayOpeningButton from './ReplayOpeningButton';
 import { commerce } from './commerce';
 import "./bjd.css";
@@ -24,6 +25,7 @@ const homeChapters = [
   { id: "series", label: "系列", en: "COLLECTIONS" },
   { id: "collectors", label: "藏家", en: "MOMENTS" },
   { id: "verify", label: "核验", en: "AUTHENTICITY" },
+  { id: "support", label: "帮助", en: "SUPPORT" },
 ];
 
 type HomeNavigationProps = {
@@ -310,7 +312,8 @@ export default function BjdApp({ onOpenFlowerGods, onOpenFeatured }: BjdAppProps
           <div className="home-chapter" data-home-scroll data-state={chapterState(0)} aria-hidden={chapterState(0) !== 'active'}><Hero active={activeChapter === 0} onExplore={() => goToChapter(1)} onOpenFeatured={onOpenFeatured} /></div>
           <div className="home-chapter" data-home-scroll data-state={chapterState(1)} aria-hidden={chapterState(1) !== 'active'}><SeriesScrolls onOpenFlowerGods={onOpenFlowerGods} /></div>
           <div className="home-chapter" data-home-scroll data-state={chapterState(2)} aria-hidden={chapterState(2) !== 'active'}><CollectorPreview /></div>
-          <div className="home-chapter home-chapter-final" data-home-scroll data-state={chapterState(3)} aria-hidden={chapterState(3) !== 'active'}><VerifyPreview /><Footer /></div>
+          <div className="home-chapter" data-home-scroll data-state={chapterState(3)} aria-hidden={chapterState(3) !== 'active'}><VerifyPreview /></div>
+          <div className="home-chapter home-chapter-final" data-home-scroll data-state={chapterState(4)} aria-hidden={chapterState(4) !== 'active'}><HomeSupport /><Footer /></div>
         </main>
 
         <nav className="home-pagination" aria-label="首页章节">

@@ -27,6 +27,7 @@ const VerifyPage = lazy(() => import('./VerifyPage.tsx'));
 const NotFoundPage = lazy(() => import('./NotFoundPage.tsx'));
 const LegalPage = lazy(() => import('./LegalPage.tsx'));
 const ReportPage = lazy(() => import('./ReportPage.tsx'));
+const HelpPage = lazy(() => import('./HelpPage.tsx'));
 const legalPage = pathname.match(/^\/legal\/(terms|authenticity)$/)?.[1] as 'terms' | 'authenticity' | undefined;
 const pageCode = pathname === '/' ? import('./BjdApp')
   : pathname === '/series/flower-gods/jingxin' ? import('./FlowerGodsExperience')
@@ -61,7 +62,7 @@ function SiteRoot() {
       <div inert={showLoader || showOpening}>
       <PageRevealContext.Provider value={!showLoader && !showOpening}>
         <SiteErrorBoundary><Suspense fallback={null}>
-          {pathname === '/report' ? <ReportPage /> : pathname === '/verify' ? <VerifyPage /> : legalPage ? <LegalPage page={legalPage} />
+          {pathname === '/help' ? <HelpPage /> : pathname === '/report' ? <ReportPage /> : pathname === '/verify' ? <VerifyPage /> : legalPage ? <LegalPage page={legalPage} />
             : resolveSiteRoute(pathname).view !== 'not-found' ? <UnifiedBjdSite /> : <NotFoundPage />}
         </Suspense></SiteErrorBoundary>
       </PageRevealContext.Provider>
