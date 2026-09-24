@@ -85,7 +85,7 @@ function Hero({ onExplore, onOpenFeatured, active }: { onExplore: () => void; on
           <a className="primary-button home-featured-entry" href={featured.href} onClick={event => {
             if (!onOpenFeatured || !isPlainNavigation(event)) return;
             event.preventDefault(); onOpenFeatured();
-          }}><span>走进{featured.name}<small>当期主推 · {featured.flower}</small></span><b aria-hidden="true">↗</b></a>
+          }}><span>当期主推 · {featured.flower}<small>走进{featured.name}</small></span><b aria-hidden="true">↗</b></a>
           <a className="home-explore-entry" href="#series" onClick={(event) => { if (!isPlainNavigation(event)) return; event.preventDefault(); onExplore(); }}>探索系列 <span aria-hidden="true">↗</span></a>
           <a className="home-verify-button" href="/verify">
             <span>防伪验证</span>
