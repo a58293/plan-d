@@ -10,3 +10,6 @@
 @media(prefers-reduced-motion:reduce){.orb-arc{animation:none}.orb-leaf,.nav-orb{transition:none}}
 .mobile-navigation .nav-orb{border-radius:50%!important}.mobile-navigation .orb-leaf{border-radius:30px!important}
 .mobile-navigation .nav-orb{touch-action:none;user-select:none;font-size:25px;background:rgba(222,237,224,.76);color:#164c43;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}.mobile-navigation .orb-leaf,.mobile-navigation .orb-context,.mobile-navigation .orb-paging,.mobile-navigation .orb-parent{background:rgba(232,242,232,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+/* Match the permanent desktop navigation palette, not the current product. */
+html.site-ui .mobile-navigation .nav-orb,html.site-ui .mobile-navigation .orb-leaf,html.site-ui .mobile-navigation .orb-context,html.site-ui .mobile-navigation .orb-paging,html.site-ui .mobile-navigation .orb-parent{background:rgba(248,247,242,.97);color:#183f36;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color-scheme:light}
+html.site-ui .mobile-navigation .orb-leaf small{color:#50645b;opacity:1}html.site-ui .mobile-navigation .orb-leaf[aria-disabled=true]{color:#647168;background:#efeee8}
