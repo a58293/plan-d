@@ -1,4 +1,5 @@
 import { resolveSiteRoute, type SiteRoute } from './flower-gods-catalog';
+import {categoryPages} from './category-pages';
 
 type PageMetadata = {
   title: string;
@@ -29,6 +30,7 @@ export function metadataForRoute(route: SiteRoute): PageMetadata {
 }
 
 export function metadataForPath(pathname: string): PageMetadata {
+  const category=categoryPages[pathname.replace(/\/+$/, '')];if(category)return {title:category.title+'｜绘屿造物',description:category.description};
   if(pathname.replace(/\/+$/, '') === '/bodies') return {title:'体型与部件｜绘屿造物',description:'探索体型分类、已公开角色与部件资料。'};
   if(pathname.replace(/\/+$/, '') === '/bodies/female') return {title:'女体分类｜绘屿造物',description:'浏览女体分类与已公开的女体 70 角色。'};
   if(pathname.replace(/\/+$/, '') === '/bodies/female-70') return {title:'女体 70｜绘屿造物',description:'浏览女体 70 分类下的已公开角色，进入镜昕荷花女神档案与产品信息。'};

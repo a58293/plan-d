@@ -1,0 +1,5 @@
+import {categoryPages} from './category-pages';
+import Breadcrumbs from './Breadcrumbs';
+import {MobileActions} from './PurchaseMenu';
+import './category-page.css';
+export default function CategoryPage({path}:{path:string}){const page=categoryPages[path];return <div className="category-world"><header className="mf-header"><a href="/">绘屿造物</a><MobileActions/></header><Breadcrumbs path={path}/><main><p className="category-eyebrow">LUMEN AURALIS / DIRECTORY</p><h1>{page.title}</h1><p className="category-description">{page.description}</p><div className="category-list">{page.items.map(item=>item.href?<a key={item.title} href={item.href}><span>{item.title}{item.note&&<small>{item.note}</small>}</span><span aria-hidden="true">↗</span></a>:<div key={item.title} className="category-unavailable"><span>{item.title}</span><small>{item.note||'资料待公开'}</small></div>)}</div>{!page.items.length&&<p className="category-empty">暂无已公开内容</p>}<footer><a href={page.parent||'/'}>‹ 返回{page.parent?categoryPages[page.parent].title:'首页'}</a><a href="/contact">联系官方 ↗</a></footer></main></div>;}

@@ -1,9 +1,14 @@
 import {flowerGods, flowerGodPath} from './flower-gods-catalog';
+import {categoryPages} from './category-pages';
 
 export default function Breadcrumbs({path, section}: {path: string; section?: string}) {
   const items: {label: string; href?: string}[] = [{label:'首页',href:'/'}];
   const deity=flowerGods.find(g=>flowerGodPath(g)===path);
-  if(path==='/bodies'||path==='/bodies/female'||path==='/bodies/female-70') {
+  if(categoryPages[path]) {
+    const chain:string[]=[];let current:string|undefined=path;
+    while(current&&categoryPages[current]){chain.unshift(current);current=categoryPages[current].parent;}
+    chain.forEach(p=>items.push({label:categoryPages[p].title,href:p===path?undefined:p}));
+  } else if(path==='/bodies'||path==='/bodies/female'||path==='/bodies/female-70') {
     items.push({label:'体型与部件',href:path==='/bodies'?undefined:'/bodies'});
     if(path!=='/bodies')items.push({label:'女体',href:path==='/bodies/female'?undefined:'/bodies/female'});
     if(path==='/bodies/female-70')items.push({label:'女体 70'});

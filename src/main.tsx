@@ -1,5 +1,6 @@
 import {lazy, StrictMode, Suspense, useState, useEffect} from 'react';
 import {createRoot} from 'react-dom/client';
+import {categoryPages} from './category-pages';
 import BrandLoadingScreen from './BrandLoadingScreen.tsx';
 import {applyCustomFonts} from './custom-fonts';
 import {trackInitialAssets} from './initial-assets';
@@ -33,6 +34,7 @@ const HelpPage = lazy(() => import('./HelpPage.tsx'));
 const ContactPage = lazy(() => import('./ContactPage.tsx'));
 const BodyCategoryPage = lazy(() => import('./BodyCategoryPage.tsx'));
 const BodyIndexPage = lazy(() => import('./BodyIndexPage.tsx'));
+const CategoryPage = lazy(() => import('./CategoryPage.tsx'));
 const legalPage = pathname.match(/^\/legal\/(terms|authenticity)$/)?.[1] as 'terms' | 'authenticity' | undefined;
 const pageCode = pathname === '/' ? import('./BjdApp')
   : pathname === '/series/flower-gods/jingxin' ? import('./FlowerGodsExperience')
@@ -67,7 +69,7 @@ function SiteRoot() {
       <div inert={showLoader || showOpening}>
       <PageRevealContext.Provider value={!showLoader && !showOpening}>
         <SiteErrorBoundary><Suspense fallback={null}>
-          {pathname === '/bodies' || pathname === '/bodies/female' ? <BodyIndexPage female={pathname==='/bodies/female'}/> : pathname === '/bodies/female-70' ? <BodyCategoryPage /> : pathname === '/contact' ? <ContactPage /> : pathname === '/help' ? <HelpPage /> : pathname === '/report' ? <ReportPage /> : pathname === '/verify' ? <VerifyPage /> : legalPage ? <LegalPage page={legalPage} />
+          {categoryPages[pathname] ? <CategoryPage path={pathname}/> : pathname === '/bodies' || pathname === '/bodies/female' ? <BodyIndexPage female={pathname==='/bodies/female'}/> : pathname === '/bodies/female-70' ? <BodyCategoryPage /> : pathname === '/contact' ? <ContactPage /> : pathname === '/help' ? <HelpPage /> : pathname === '/report' ? <ReportPage /> : pathname === '/verify' ? <VerifyPage /> : legalPage ? <LegalPage page={legalPage} />
             : resolveSiteRoute(pathname).view !== 'not-found' ? <UnifiedBjdSite /> : <NotFoundPage />}
         </Suspense></SiteErrorBoundary>
       </PageRevealContext.Provider>
