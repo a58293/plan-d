@@ -10,3 +10,4 @@
 @media(max-width:700px){.report-social{grid-template-columns:1fr;gap:24px}.report-social> a{max-width:360px;width:100%;justify-self:center}}
 .support-art img{width:100%;height:100%;object-fit:cover;object-position:50% 35%;display:block}.support-art-original{background:#dce7dc}.support-art-original img{object-position:50% 45%}.support-art-help img{object-position:50% 30%}
 .support-art-help img{object-fit:contain;object-position:center;padding:12px;box-sizing:border-box}.support-art-help{background:linear-gradient(125deg,#c5d8cf,#eef0df)}
+.support-symbol-art{width:100%;height:clamp(170px,24vh,260px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#e3e9df;color:#365c4b}.support-symbol-art svg{height:72%;width:80%;max-width:280px}.support-symbol-art>span{font-size:10px;letter-spacing:.16em;color:#546e5e}.support-card:nth-child(2) .support-symbol-art{background:#eeeade;color:#5b6650}
