@@ -20,6 +20,7 @@ import './mobile-compat.css';
 import './ui-unified.css';
 document.documentElement.classList.add('site-ui');
 import MobileNavigation from './MobileNavigation';
+import DesktopNavigation from './DesktopNavigation';
 
 const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
 applySiteMetadata(pathname);
@@ -68,7 +69,7 @@ function SiteRoot() {
         </Suspense></SiteErrorBoundary>
       </PageRevealContext.Provider>
       </div>
-      {!showLoader && !showOpening && !openingTail && <MobileNavigation />}
+      {!showLoader && !showOpening && !openingTail && <><MobileNavigation /><DesktopNavigation /></>}
       {showLoader && <BrandLoadingScreen tracker={initialAssets} onComplete={finishLoader} />}
       {!showLoader && (showOpening || openingTail) && <SeasonalOpening key={openingRun}
         onReveal={() => { setOpeningTail(true); setShowOpening(false); }}
