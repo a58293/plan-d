@@ -34,7 +34,7 @@ export default function SiteSearch({ tone = 'light' }: { tone?: 'light' | 'dark'
   const layerRef = useRef<HTMLDivElement>(null);
   const results = useMemo(() => {
     const term = query.trim().toLocaleLowerCase();
-    if (!term) return searchEntries;
+    if (!term) return [];
     return searchEntries.filter(entry => `${entry.title} ${entry.subtitle} ${entry.keywords}`.toLocaleLowerCase().includes(term));
   }, [query]);
 
@@ -62,23 +62,23 @@ export default function SiteSearch({ tone = 'light' }: { tone?: 'light' | 'dark'
   }, [open]);
 
   return <>
-    <button ref={triggerRef} className="site-search-trigger" data-tone={tone} type="button" onClick={() => setOpen(true)} aria-haspopup="dialog" aria-expanded={open}>
-      <span aria-hidden="true">☰</span><b>目录</b>
+    <button ref={triggerRef} className="site-search-trigger" data-tone={tone} type="button" onClick={() => {setQuery('');setOpen(true);}} aria-haspopup="dialog" aria-expanded={open}>
+      <span aria-hidden="true">⌕</span><b>搜索</b>
     </button>
-    {open && createPortal(<div ref={layerRef} className="site-search-layer" role="dialog" aria-modal="true" aria-label="网站目录" onMouseDown={event => {
+    {open && createPortal(<div ref={layerRef} className="site-search-layer" role="dialog" aria-modal="true" aria-label="网站搜索" onMouseDown={event => {
       if (event.target === event.currentTarget) setOpen(false);
     }}>
       <section className="site-search-panel">
-        <header><p>网站目录 · LUMEN AURALIS</p><button type="button" onClick={() => setOpen(false)} aria-label="关闭目录">×</button></header>
+        <header><p>搜索</p><button type="button" onClick={() => setOpen(false)} aria-label="关闭搜索">×</button></header>
         <label className="site-search-field">
           <span aria-hidden="true">⌕</span>
-          <input ref={inputRef} aria-label="筛选目录" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="筛选系列、花神或服务" autoComplete="off" />
+          <input ref={inputRef} aria-label="搜索关键词" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="搜索角色、体型或帮助" autoComplete="off" />
         </label>
-        <div className="site-search-results" role="list" aria-live="polite">
+        {query.trim()&&<div className="site-search-results" role="list" aria-live="polite">
           {results.length ? results.map(entry => <a role="listitem" href={entry.href} key={entry.href} onClick={() => setOpen(false)}>
             <span><strong>{entry.title}</strong><small>{entry.subtitle}</small></span><b aria-hidden="true">↗</b>
           </a>) : <p className="site-search-empty">暂时没有找到相关内容</p>}
-        </div>
+        </div>}
       </section>
     </div>,document.body)}
   </>;

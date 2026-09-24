@@ -1,4 +1,4 @@
-import {lazy, StrictMode, Suspense, useState, useEffect} from 'react';
+import {lazy, StrictMode, Suspense, useState, useEffect, useCallback} from 'react';
 import {createRoot} from 'react-dom/client';
 import {categoryPages} from './category-pages';
 import BrandLoadingScreen from './BrandLoadingScreen.tsx';
@@ -39,8 +39,16 @@ const legalPage = pathname.match(/^\/legal\/(terms|authenticity)$/)?.[1] as 'ter
 const pageCode = pathname === '/' ? import('./BjdApp')
   : pathname === '/series/flower-gods/jingxin' ? import('./FlowerGodsExperience')
   : pathname === '/series/flower-gods' ? import('./FlowerGodsCollection')
-  : pathname === '/verify' ? import('./VerifyPage') : Promise.resolve();
+  : pathname === '/verify' ? import('./VerifyPage')
+  : categoryPages[pathname] ? import('./CategoryPage')
+  : pathname === '/help' ? import('./HelpPage')
+  : pathname === '/contact' ? import('./ContactPage')
+  : pathname === '/report' ? import('./ReportPage')
+  : legalPage ? import('./LegalPage') : import('./NotFoundPage');
+const initialLoadStarted = performance.now();
 const initialAssets = trackInitialAssets(pathname, pageCode);
+let initialReadyAt:number|undefined;
+void initialAssets.ready.then(()=>{initialReadyAt=performance.now();});
 // Let the visible imagery win the network race; typography swaps in directly
 // afterwards and remains cached for the rest of the visit.
 const loaderSessionKey = 'lumen-intro-seen-v1';
@@ -60,10 +68,21 @@ function SiteRoot() {
   const [showLoader, setShowLoader] = useState(() => {
     return true;
   });
-  const finishLoader = () => {
+  const [showLoaderAnimation,setShowLoaderAnimation]=useState(false);
+  const finishLoader = useCallback(() => {
     try { window.sessionStorage.setItem(loaderSessionKey, 'yes'); } catch { /* storage may be unavailable */ }
     setShowLoader(false);
-  };
+  },[]);
+  useEffect(()=>{
+    let cancelled=false;
+    const timer=window.setTimeout(()=>{if(!cancelled)setShowLoaderAnimation(true);},Math.max(0,2000-(performance.now()-initialLoadStarted)));
+    void initialAssets.ready.then(()=>{
+      if(cancelled)return;
+      if((initialReadyAt??performance.now())-initialLoadStarted<2000){window.clearTimeout(timer);finishLoader();}
+      else setShowLoaderAnimation(true);
+    });
+    return()=>{cancelled=true;window.clearTimeout(timer);};
+  },[finishLoader]);
   return (
     <>
       <div inert={showLoader || showOpening}>
@@ -74,8 +93,9 @@ function SiteRoot() {
         </Suspense></SiteErrorBoundary>
       </PageRevealContext.Provider>
       </div>
-      {!showLoader && !showOpening && !openingTail && <><MobileNavigation /><DesktopNavigation /></>}
-      {showLoader && <BrandLoadingScreen tracker={initialAssets} onComplete={finishLoader} />}
+      <MobileNavigation visible={!showLoader && !showOpening && !openingTail}/>
+      {!showLoader && !showOpening && !openingTail && <DesktopNavigation />}
+      {showLoader && (showLoaderAnimation?<BrandLoadingScreen tracker={initialAssets} onComplete={finishLoader} />:<div aria-label="页面准备中" style={{position:'fixed',inset:0,background:'#f8f7f2',zIndex:10000}}/>)}
       {!showLoader && (showOpening || openingTail) && <SeasonalOpening key={openingRun}
         onReveal={() => { setOpeningTail(true); setShowOpening(false); }}
         onComplete={() => { setOpeningTail(false); setShowOpening(false); }} />}
