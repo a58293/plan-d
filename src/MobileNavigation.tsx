@@ -5,7 +5,10 @@ import './mobile-navigation.css';
 export default function MobileNavigation(){
  const [open,setOpen]=useState(false),[trail,setTrail]=useState<NavigationItem[]>([]);
  const root=useRef<HTMLDivElement>(null),orb=useRef<HTMLButtonElement>(null);
- const [position,setPosition]=useState<{x:number;y:number}|null>(null);
+ const [position,setPosition]=useState<{x:number;y:number}|null>(()=>{
+   try{const saved=JSON.parse(localStorage.getItem('lumen-nav-orb-position-v1')||'null');if(saved&&Number.isFinite(saved.x)&&Number.isFinite(saved.y))return {x:Math.max(12,Math.min(innerWidth-68,saved.x)),y:Math.max(12,Math.min(innerHeight-78,saved.y))};}catch{/* Storage may be unavailable. */}return null;
+ });
+ useEffect(()=>{if(position)try{localStorage.setItem('lumen-nav-orb-position-v1',JSON.stringify(position));}catch{/* Dragging still works without storage. */}},[position]);
  const orbDrag=useRef<{x:number;y:number;left:number;top:number;moved:boolean}|null>(null),orbMoved=useRef(false);
  useEffect(()=>{const resize=()=>setPosition(p=>p?{x:Math.max(12,Math.min(innerWidth-68,p.x)),y:Math.max(12,Math.min(innerHeight-78,p.y))}:null);window.addEventListener('resize',resize);return()=>window.removeEventListener('resize',resize);},[]);
  const items=trail.at(-1)?.children||siteNavigation;

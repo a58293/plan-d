@@ -4,6 +4,7 @@ import { flowerGodPath, flowerGods } from './flower-gods-catalog';
 import './site-search.css';
 
 const fixedEntries = [
+  {title:'女体 70',subtitle:'所属角色 · 镜昕荷花女神',href:'/bodies/female-70',keywords:'体型 女体 70 荷花 镜昕'},
   { title: '投稿与联系', subtitle: '藏家影像投稿与官方私信', href: '/contact', keywords: '投稿 联系 客服 小红书' },
   { title: '品牌首页', subtitle: '当期主推、系列与藏家返图', href: '/', keywords: '首页 当期 up 主推 实体 2d' },
   { title: '花神卷', subtitle: '选择并探索花神', href: '/series/flower-gods', keywords: '系列 花神 选择 云海' },

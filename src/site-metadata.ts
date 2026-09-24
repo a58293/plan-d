@@ -29,6 +29,7 @@ export function metadataForRoute(route: SiteRoute): PageMetadata {
 }
 
 export function metadataForPath(pathname: string): PageMetadata {
+  if(pathname.replace(/\/+$/, '') === '/bodies/female-70') return {title:'女体 70｜绘屿造物',description:'浏览女体 70 分类下的已公开角色，进入镜昕荷花女神档案与产品信息。'};
   if(pathname.replace(/\/+$/, '') === '/contact') return {title:'投稿与联系｜绘屿造物',description:'分享藏家影像，通过官方小红书联系绘屿造物。'};
   if(pathname.replace(/\/+$/, '') === '/help') return {title:'帮助说明｜绘屿造物',description:'浏览、购买、防伪查询与联系方法。'};
   if(pathname.replace(/\/+$/, '') === '/report') return {title:'侵权举报｜绘屿造物',description:'向绘屿造物提供疑似仿冒、盗图或冒充官方的线索。'};
