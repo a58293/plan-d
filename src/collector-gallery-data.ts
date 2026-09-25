@@ -1,7 +1,10 @@
 import {requiredImage} from './media-library';
-export type CollectorPhoto={id:string;src:string;alt:string;width:number;height:number;platform:string;author:string;profileUrl?:string;tags:string[];flowers:string[];authorized:boolean};
+export type CollectorPhoto={id:string;src:string;alt:string;width:number;height:number;platform:string;author:string;profileUrl?:string;publishedAt?:string;postUrl?:string;series?:string;groupId?:string;description?:string;tags:string[];flowers:string[];authorized:boolean};
 // Publish only images whose display permission and attribution have been confirmed.
 export const collectorGallery:CollectorPhoto[]=[];
+export const officialGallery:CollectorPhoto[]=[];
+export function photoPath(id:string,official=false){return '/stories/'+(official?'official':'collectors')+'/'+encodeURIComponent(id);}
+export function safePhotoLink(url?:string){try{return url&&new URL(url).protocol==='https:'?url:null;}catch{return null;}}
 // Each entry must be a separate transparent flower, not a complete background.
 // Reuse homepage relief assets. CSS viewports select a flower cluster without
 // editing the source or repeating the complete two-sided background.

@@ -30,6 +30,8 @@ export function metadataForRoute(route: SiteRoute): PageMetadata {
 }
 
 export function metadataForPath(pathname: string): PageMetadata {
+  if(/^\/stories\/(collectors|official)\/[^/]+$/.test(pathname))return {title:'影像详情｜绘屿造物',description:'摄影作品、创作者信息与相关系列影像。'};
+  if(pathname==='/stories/official')return {title:'官方拍图｜绘屿造物',description:'官方摄影作品与创作者档案。'};
   if(pathname.replace(/\/+$/, '')==='/stories/openings')return {title:'往期序章｜绘屿造物',description:'收藏已制作的序章，通过互动海报重回故事开始的地方。'};
   if(pathname.replace(/\/+$/, '')==='/stories/collectors')return {title:'藏家自拍｜绘屿造物',description:'经授权的藏家影像，按角色标签与平台浏览。'};
   const category=categoryPages[pathname.replace(/\/+$/, '')];if(category)return {title:category.title+'｜绘屿造物',description:category.description};
