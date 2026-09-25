@@ -6,3 +6,4 @@
 @media(max-width:700px) and (orientation:portrait){.archive-fullscreen .archive-layer-stage{overflow:visible}}.archive-fullscreen .archive-tilt-controls{max-height:90px}.archive-fullscreen .archive-title-layer{top:25%}
 .archive-fullscreen .archive-view-tools .archive-close{font-size:12px!important;min-width:44px;padding:10px!important}.archive-fullscreen-actions .flower-story-trigger{margin:0;align-self:center}
 .archive-fullscreen[data-tools=false] .archive-view-tools{transition:none}
+.archive-fullscreen .archive-fullscreen-actions a,.archive-fullscreen .archive-fullscreen-actions button,.archive-fullscreen .archive-closed,.archive-fullscreen .archive-fullscreen-actions a:hover,.archive-fullscreen .archive-fullscreen-actions button:hover{background:transparent!important;border:0!important;box-shadow:none!important;text-shadow:0 1px 7px #02060bcc}

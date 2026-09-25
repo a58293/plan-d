@@ -3,6 +3,7 @@ import './seasonal-opening.css';
 import {commerce} from './commerce';
 import {applyCustomFonts} from './custom-fonts';
 import FlowerStory from './FlowerStory';
+import {usePosterTilt} from './usePosterTilt';
 
 // Change both the issue id and versioned file name when publishing a new issue.
 export const openingIssue = 'lotus-2026-09-still-v2';
@@ -26,6 +27,10 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
   const [state, setState] = useState<'loading'|'ready'|'playing'|'paused'|'ended'|'error'>('loading');
   const [showChoices, setShowChoices] = useState(false);
   const [exiting, setExiting] = useState(false);
+  const tilt=usePosterTilt(showChoices&&!exiting,dialog);
+  const [toolsVisible,setToolsVisible]=useState(true),[storyOpen,setStoryOpen]=useState(false);
+  const move=(x:number,y:number)=>{dialog.current?.style.setProperty('--poster-x',x+'px');dialog.current?.style.setProperty('--poster-y',y+'px');};
+  useEffect(()=>{if(exiting)return;let timer=0;const wake=()=>{setToolsVisible(true);clearTimeout(timer);timer=window.setTimeout(()=>{if(!storyOpen)setToolsVisible(false);},3000);};const el=dialog.current;wake();for(const name of ['pointermove','pointerdown','keydown','focusin'])el?.addEventListener(name,wake);return()=>{clearTimeout(timer);for(const name of ['pointermove','pointerdown','keydown','focusin'])el?.removeEventListener(name,wake);};},[exiting,storyOpen,showChoices]);
   const exitFrame = useRef(0);
   const exitTimer = useRef(0);
   const revealTimer = useRef(0);
@@ -248,8 +253,12 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
       }).catch(() => { /* Underlying last frame stays visible; never flash. */ });
     } catch { /* Canvas unavailable: keep the held video frame, audio continues. */ }
   };
-  return <div className={`seasonal-opening${exiting ? ' is-exiting' : ''}`} ref={dialog} inert={exiting} aria-hidden={exiting} role="dialog" aria-modal={!exiting} aria-label="本期海报序章" tabIndex={-1}
+  return <div className={`seasonal-opening${exiting ? ' is-exiting' : ''}`} ref={dialog} data-explore={showChoices} data-tools={toolsVisible} inert={exiting} aria-hidden={exiting} role="dialog" aria-modal={!exiting} aria-label="本期海报序章" tabIndex={-1}
+    onPointerMove={event=>{if(!showChoices||exiting||tilt.enabled)return;if(event.pointerType==='touch'&&!event.buttons)return;const rect=event.currentTarget.getBoundingClientRect();move(((event.clientX-rect.left)/rect.width-.5)*24,((event.clientY-rect.top)/rect.height-.5)*18);}}
+    onPointerLeave={()=>move(0,0)} onPointerUp={()=>move(0,0)}
     onKeyDown={event => {
+      if(showChoices&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home'].includes(event.key)){event.preventDefault();move(event.key==='ArrowLeft'?-12:event.key==='ArrowRight'?12:0,event.key==='ArrowUp'?-9:event.key==='ArrowDown'?9:0);}
+
       if (event.key === 'Escape') finish();
       if (event.key === 'Tab') {
         const items = Array.from(dialog.current?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)') || []);
@@ -282,6 +291,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
       }} onEnded={() => { setShowChoices(true); setState('ended'); }} />
     <img ref={poster} className={`seasonal-opening-still${showPoster ? ' is-visible' : ''}`} alt="莲花照亮水下的镜昕" aria-hidden={!showPoster} />
     <div className="seasonal-opening-tools">
+      {showChoices&&tilt.mobile&&<button aria-pressed={tilt.enabled} onClick={()=>void tilt.toggle()}>{tilt.enabled?'关闭倾斜感应':'开启倾斜感应'}</button>}
       <button onClick={() => {
         // Apply in the gesture itself, before Safari's user activation expires.
         if (video.current) video.current.muted = !muted;
@@ -291,6 +301,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
       {showChoices && state === 'paused' && <button onClick={play}>继续播放</button>}
       <button onClick={() => finish()}>跳过序章</button>
     </div>
+    {showChoices&&tilt.mobile&&tilt.status&&<p className="opening-tilt-status" role="status">{tilt.status}</p>}
     {showChoices && <div className="opening-editorial-stage"><section className="opening-editorial" aria-label="泥沼生花，水月照心">
       <img className="opening-calligraphy" src="/opening/lotus-calligraphy-v1.webp" alt="泥沼生花，水月照心" width="1536" height="1024" />
       <div className="seasonal-opening-choices" aria-label="序章结束后的选择">
@@ -298,7 +309,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
         立即购买{!commerce.featuredProductUrl && <small>即将开放</small>}
       </button>
       <button disabled={exiting} onClick={() => finish()}>进入主页</button>
-    </div><FlowerStory slug="jingxin" onOpenChange={open => setMusicLevel(open ? .18 : 1, 3)} /></section></div>}
+    </div><FlowerStory slug="jingxin" onOpenChange={open => {setStoryOpen(open);setMusicLevel(open ? .18 : 1, 3);}} /></section></div>}
     {(state === 'loading' || state === 'ready') && <div className="opening-download" role="status">
       <strong>{downloadProgress === null ? '正在下载' : `${downloadProgress}%`}</strong>
       <small>{downloadProgress === 100 ? '正在准备播放' : '载入影像'}</small>
