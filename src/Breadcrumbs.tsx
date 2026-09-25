@@ -4,7 +4,7 @@ import {categoryPages} from './category-pages';
 export default function Breadcrumbs({path, section}: {path: string; section?: string}) {
   const items: {label: string; href?: string}[] = [{label:'首页',href:'/'}];
   const deity=flowerGods.find(g=>flowerGodPath(g)===path);
-  if(path==='/stories/collectors'){items.push({label:'影像与故事',href:'/stories'},{label:'藏家自拍'});} else if(categoryPages[path]) {
+  if(path==='/stories/openings'){items.push({label:'影像与故事',href:'/stories'},{label:'往期序章'});} else if(path==='/stories/collectors'){items.push({label:'影像与故事',href:'/stories'},{label:'藏家自拍'});} else if(categoryPages[path]) {
     const chain:string[]=[];let current:string|undefined=path;
     while(current&&categoryPages[current]){chain.unshift(current);current=categoryPages[current].parent;}
     chain.forEach(p=>items.push({label:categoryPages[p].title,href:p===path?undefined:p}));

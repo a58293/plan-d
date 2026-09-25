@@ -30,6 +30,7 @@ export function metadataForRoute(route: SiteRoute): PageMetadata {
 }
 
 export function metadataForPath(pathname: string): PageMetadata {
+  if(pathname.replace(/\/+$/, '')==='/stories/openings')return {title:'往期序章｜绘屿造物',description:'通过历期主推海报回看序章影像。'};
   if(pathname.replace(/\/+$/, '')==='/stories/collectors')return {title:'藏家自拍｜绘屿造物',description:'经授权的藏家影像，按角色标签与平台浏览。'};
   const category=categoryPages[pathname.replace(/\/+$/, '')];if(category)return {title:category.title+'｜绘屿造物',description:category.description};
   if(pathname.replace(/\/+$/, '') === '/bodies') return {title:'体型与部件｜绘屿造物',description:'探索体型分类、已公开角色与部件资料。'};
