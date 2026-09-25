@@ -5,7 +5,7 @@ export const siteNavigation:NavigationItem[]=[
  {title:'角色与系列',children:[{title:'花神卷',children:[{title:'全部花神',href:'/series/flower-gods'},{title:'镜昕 · 荷花女神',href:character}]},{title:'天使卷',pending:true},{title:'专属造物',children:[{title:'镜昕 · 莲台',pending:true}]}]},
  {title:'体型与部件',children:[{title:'体型总览',href:'/bodies'},{title:'女体',children:[{title:'全部女体',href:'/bodies/female'},{title:'女体 60',pending:true},{title:'女体 65',pending:true},{title:'女体 70',href:'/bodies/female-70'}]},{title:'男体',children:['70','75','80'].map(n=>({title:`男体 ${n}`,pending:true}))},{title:'独立部件',pending:true}]},
  {title:'服饰与配件',children:['娃衣','鞋袜','假发与眼珠','饰品与道具','展示与收纳'].map(title=>({title,pending:true}))},
- {title:'影像与故事',children:[{title:'镜昕 · 角色档案',href:character},{title:'藏家返图',href:'/#collectors'},{title:'投稿与联系',href:'/contact'}]},
+ {title:'影像与故事',children:[{title:'藏家自拍',href:'/stories/collectors'},{title:'官方拍图',pending:true},{title:'往期序章',pending:true},{title:'投稿与联系',href:'/contact'}]},
  {title:'帮助与服务',children:[{title:'帮助说明',href:'/help'},{title:'防伪核验',href:'/verify'},{title:'防伪说明',href:'/legal/authenticity'},{title:'投稿与联系',href:'/contact'},{title:'举报说明',href:'/report'},{title:'网站条款',href:'/legal/terms'}]},
 ];
 // Category landing pages remain separate from product/character detail pages.
