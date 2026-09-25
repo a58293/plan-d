@@ -1,15 +1,15 @@
 import {useState, type MouseEvent} from 'react';
-import {requiredImage, collectorPhotos, siteMedia} from './media-library';
+import {requiredImage} from './media-library';
 import {currentFeaturedProduct} from './current-product-theme';
 import {isPlainNavigation, flowerGods, flowerGodPath} from './flower-gods-catalog';
 import {MobileActions} from './PurchaseMenu';
 import './mobile-home.css';
 import HomeSupport from './HomeSupport';
+import HomeCollectorPreview from './HomeCollectorPreview';
 
 export default function MobileHome({onOpenFlowerGods,onOpenFeatured}:{onOpenFlowerGods?:()=>void;onOpenFeatured?:()=>void}) {
   const [original,setOriginal]=useState(false);
   const follow=(action?:()=>void)=>(event:MouseEvent<HTMLAnchorElement>)=>{if(action&&isPlainNavigation(event)){event.preventDefault();action();}};
-  const photos=collectorPhotos.map(id=>siteMedia[id]).filter(photo=>photo.src);
   return <div className="mh-page">
     <header className="mh-header"><a href="/" className="mh-brand"><img src={requiredImage('brandLogo')} alt="绘屿造物"/><span>LUMEN AURALIS<small>绘屿造物</small></span></a><MobileActions/></header>
     <main>
@@ -22,7 +22,7 @@ export default function MobileHome({onOpenFlowerGods,onOpenFeatured}:{onOpenFlow
       <section className="mh-volume" id="series"><div className="mh-section-heading"><span>01 / THE COLLECTION</span><h2>一卷花事，<br/>各有其神。</h2><p>以花为引，将想象塑成可珍藏的形体。</p></div>
         <nav className="deity-roster" aria-label="选择花神">{flowerGods.map(deity=><a key={deity.slug} href={flowerGodPath(deity)} onClick={flowerGodPath(deity)===currentFeaturedProduct.href?follow(onOpenFeatured):undefined} aria-label={'进入'+deity.flower+deity.name+'详情'}><span className="deity-avatar"><img src={deity.avatar} alt="" width="58" height="58"/></span><span>{deity.name}</span></a>)}{[1,2,3].map(index=><button key={index} disabled aria-label={'未公开花神 '+index}><span className="deity-avatar deity-placeholder">?</span><span>待揭晓</span></button>)}</nav>
       </section>
-      <section className="mh-collectors" id="collectors"><span className="mh-eyebrow">02 / COLLECTORS' MOMENTS</span><h2>花开在你的日常。</h2>{photos.length?<div className="mh-photo-list">{photos.map(photo=><img key={photo.src} src={photo.src!} alt={photo.alt} loading="lazy"/>)}</div>:<p>等待第一份经授权的藏家影像。<br/>关于相遇的故事，将在这里慢慢展开。</p>}</section>
+      <section className="mh-collectors" id="collectors"><HomeCollectorPreview/></section>
       <section className="mh-auth" id="verify"><span className="mh-eyebrow">03 / AUTHENTICITY</span><h2>珍藏有据，<br/>相遇有迹。</h2><p>凭娃证编号与淘宝订单号，<br/>查询作品的官方出品记录。</p><a href="/verify">进入防伪核验 <span>↗</span></a></section>
       <HomeSupport />
     </main>

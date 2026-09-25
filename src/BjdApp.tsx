@@ -3,7 +3,8 @@ import { SplitColorText } from "./components/HoverColorText";
 import { CinematicParticlePortrait } from "./CinematicParticlePortrait";
 import { isPlainNavigation } from "./flower-gods-catalog";
 import { currentFeaturedProduct, currentProductTheme, currentProductThemeStyle } from "./current-product-theme";
-import { requiredImage, siteMedia, collectorPhotos } from "./media-library";
+import HomeCollectorPreview from "./HomeCollectorPreview";
+import { requiredImage, siteMedia } from "./media-library";
 import SeriesScrolls from "./SeriesScrolls";
 import SiteSearch from './SiteSearch';
 import MobileHome from './MobileHome';
@@ -121,22 +122,7 @@ type BjdAppProps = {
 };
 
 function CollectorPreview() {
-  const placeholders = ["等待第一束光", "等待第一场花事", "等待第一位藏家"];
-  return (
-    <section className="section collectors-section" id="collectors">
-      <div className="section-heading reveal"><p className="eyebrow">COLLECTORS' MOMENTS</p><h2><SplitColorText text="藏家返图" /></h2><p>来自活动征集并经授权发布的收藏瞬间，由后台精选、整理与呈现。</p></div>
-      <div className="collector-grid reveal">
-        {placeholders.map((text, index) => {
-          const photo=siteMedia[collectorPhotos[index]];
-          return <div className={`collector-placeholder collector-${index + 1}${photo.src ? ' has-photo' : ''}`} key={text}>
-            {photo.src && <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />}
-            <span>0{index + 1}</span><p>{photo.src ? photo.alt : text}</p>
-          </div>;
-        })}
-      </div>
-      <p className="collector-note">{collectorPhotos.some(id=>siteMedia[id].src) ? '藏家摄影经授权收录，由绘屿造物精选呈现' : '首批活动返图将在获得授权后由绘屿造物发布'}</p>
-    </section>
-  );
+ return <section className="section collectors-section" id="collectors"><HomeCollectorPreview/></section>;
 }
 
 function VerifyPreview() {
