@@ -4,7 +4,7 @@ import { flowerGodPath, flowerGods } from './flower-gods-catalog';
 import './site-search.css';
 
 const fixedEntries = [
-  {title:'往期序章',subtitle:'主推海报与序章回看',href:'/stories/openings',keywords:'序章 视频 回看 历史 荷花'},
+  {title:'往期序章',subtitle:'主推海报与序章回看',href:'/stories/openings',keywords:'序章 互动海报 回看 历史 荷花'},
   {title:'体型与部件',subtitle:'体型分类与部件档案',href:'/bodies',keywords:'体型 部件 女体 男体'},
   {title:'女体分类',subtitle:'女体型号与已公开角色',href:'/bodies/female',keywords:'女体 60 65 70'},
   {title:'女体 70',subtitle:'所属角色 · 镜昕荷花女神',href:'/bodies/female-70',keywords:'体型 女体 70 荷花 镜昕'},
