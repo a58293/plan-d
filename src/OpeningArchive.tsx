@@ -5,6 +5,7 @@ import {openingKey} from './SeasonalOpening';
 import Breadcrumbs from './Breadcrumbs';
 import {MobileActions} from './PurchaseMenu';
 import FlowerStory from './FlowerStory';
+import {useSmoothPosterPointer} from './useSmoothPosterPointer';
 import {usePosterTilt} from './usePosterTilt';
 import './opening-archive.css';
 const issue={title:'镜昕 · 荷花女神',theme:'泥沼生花，水月照心',lettering:'/opening/lotus-calligraphy-v1.webp',poster:'/opening/lotus-2026-09-still-v2.webp'};
@@ -26,14 +27,14 @@ export default function OpeningArchive(){
  const open=()=>{trigger.current=document.activeElement as HTMLElement;setNow(Date.now());setMode('poster');setDisplay('all');setInteractive(true);};
  useEffect(()=>{if(!interactive)return;const timer=window.setInterval(()=>setNow(Date.now()),1000);const overflow=document.body.style.overflow;document.body.style.overflow='hidden';const siblings=Array.from(document.body.children).filter(e=>e instanceof HTMLElement&&e!==overlay.current) as HTMLElement[];const states=siblings.map(e=>e.inert);siblings.forEach(e=>e.inert=true);return()=>{clearInterval(timer);document.body.style.overflow=overflow;siblings.forEach((e,i)=>e.inert=states[i]);trigger.current?.focus();};},[interactive]);
  useEffect(()=>{if(interactive)stage.current?.focus();},[interactive]);
- const move=(x:number,y:number)=>{stage.current?.style.setProperty('--poster-x',x+'px');stage.current?.style.setProperty('--poster-y',y+'px');};
+ const move=useSmoothPosterPointer(stage,interactive&&canExplore&&!tilt.enabled);
  return <div className="opening-archive-world"><header className="mf-header"><a href="/">绘屿造物</a><MobileActions/></header><Breadcrumbs path="/stories/openings"/><main><p className="opening-archive-kicker">PROLOGUE ARCHIVE</p><h1>往期序章</h1><p>收藏已制作的序章，循着互动海报重回故事开始的地方。</p>
  {interactive&&createPortal(<section className="archive-interactive archive-fullscreen" data-display={display} data-tools={toolsVisible} data-mode={mode} data-explore={canExplore} ref={overlay} role="dialog" aria-modal="true" aria-label={issue.title+'互动序章'} onKeyDown={e=>{if(e.key==='Escape'){e.preventDefault();setInteractive(false);}if(e.key==='Tab'){const items=Array.from(overlay.current?.querySelectorAll<HTMLElement>('button:not(:disabled),a[href],select,[tabindex="0"]')||[]).filter(el=>el.getClientRects().length>0);const first=items[0],last=items.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}}}>
  <div className="archive-view-tools"><div role="group" aria-label="观看模式"><button aria-pressed={mode==='full'} onClick={()=>switchMode('full')}>完整播放</button><button aria-pressed={mode==='poster'} onClick={()=>switchMode('poster')}>只看海报</button></div><label>画面显示<select value={display} onChange={e=>setDisplay(e.target.value)}><option value="all">完整显示</option><option value="title">只留题字</option><option value="clean">纯净画面</option></select></label>{mode==='full'&&<><button onClick={()=>setMuted(!muted)}>{muted?'开启声音':'静音'}</button><button onClick={()=>{if(paused){void video.current?.play().catch(()=>setPlayError(true));}else video.current?.pause();}}>{paused?'继续播放':'暂停'}</button></>}<button className="archive-text-button archive-close" onClick={()=>setInteractive(false)} aria-label="关闭互动序章">关闭 ×</button></div>
  <div className="archive-layer-stage" ref={stage} tabIndex={0} aria-label={issue.theme+'；移动鼠标、拖动或按方向键探索图层'}
  onPointerMove={e=>{if(tilt.enabled||!canExplore)return;if(e.pointerType==='touch'&&!e.buttons)return;const r=e.currentTarget.getBoundingClientRect();move(((e.clientX-r.left)/r.width-.5)*16,((e.clientY-r.top)/r.height-.5)*12);}}
  onPointerDown={e=>{if(e.pointerType==='touch'&&!(e.target as HTMLElement).closest('button,a,select'))e.currentTarget.setPointerCapture(e.pointerId);}}
- onPointerUp={()=>move(0,0)} onPointerLeave={()=>move(0,0)} onBlur={()=>move(0,0)}
+ onPointerUp={e=>{if(e.pointerType==='touch')move(0,0);}} onPointerLeave={()=>move(0,0)} onBlur={()=>move(0,0)}
  onKeyDown={e=>{if(!canExplore)return;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home'].includes(e.key)){e.preventDefault();move(e.key==='ArrowLeft'?-8:e.key==='ArrowRight'?8:0,e.key==='ArrowUp'?-6:e.key==='ArrowDown'?6:0);}}}>
  {mode==='full'&&<video className="archive-full-video" ref={video} src="/opening/lotus-2026-09-music-v4.mp4" playsInline muted={muted} onTimeUpdate={()=>{if((video.current?.currentTime||0)>=10.8)setHeld(true);}} onPlay={()=>setPaused(false)} onPause={()=>setPaused(true)} onEnded={()=>{setHeld(true);setPaused(true);}} onError={()=>setPlayError(true)}/>}
  <img style={{opacity:mode==='poster'||held||playError?1:0}} className="archive-scene-layer" src={issue.poster} alt={issue.title+'水下莲花海报'}/>

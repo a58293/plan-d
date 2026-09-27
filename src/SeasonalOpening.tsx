@@ -3,6 +3,7 @@ import './seasonal-opening.css';
 import {commerce} from './commerce';
 import {applyCustomFonts} from './custom-fonts';
 import FlowerStory from './FlowerStory';
+import {useSmoothPosterPointer} from './useSmoothPosterPointer';
 import {usePosterTilt} from './usePosterTilt';
 
 // Change both the issue id and versioned file name when publishing a new issue.
@@ -29,7 +30,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
   const [exiting, setExiting] = useState(false);
   const tilt=usePosterTilt(showChoices&&!exiting,dialog);
   const [toolsVisible,setToolsVisible]=useState(true),[storyOpen,setStoryOpen]=useState(false);
-  const move=(x:number,y:number)=>{dialog.current?.style.setProperty('--poster-x',x+'px');dialog.current?.style.setProperty('--poster-y',y+'px');};
+  const move=useSmoothPosterPointer(dialog,showChoices&&!exiting&&!tilt.enabled);
   useEffect(()=>{if(exiting)return;let timer=0;const wake=()=>{setToolsVisible(true);clearTimeout(timer);timer=window.setTimeout(()=>{if(!storyOpen)setToolsVisible(false);},3000);};const el=dialog.current;wake();for(const name of ['pointermove','pointerdown','keydown','focusin'])el?.addEventListener(name,wake);return()=>{clearTimeout(timer);for(const name of ['pointermove','pointerdown','keydown','focusin'])el?.removeEventListener(name,wake);};},[exiting,storyOpen,showChoices]);
   const exitFrame = useRef(0);
   const exitTimer = useRef(0);
@@ -255,7 +256,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
   };
   return <div className={`seasonal-opening${exiting ? ' is-exiting' : ''}`} ref={dialog} data-explore={showChoices} data-tools={toolsVisible} inert={exiting} aria-hidden={exiting} role="dialog" aria-modal={!exiting} aria-label="本期海报序章" tabIndex={-1}
     onPointerMove={event=>{if(!showChoices||exiting||tilt.enabled)return;if(event.pointerType==='touch'&&!event.buttons)return;const rect=event.currentTarget.getBoundingClientRect();move(((event.clientX-rect.left)/rect.width-.5)*24,((event.clientY-rect.top)/rect.height-.5)*18);}}
-    onPointerLeave={()=>move(0,0)} onPointerUp={()=>move(0,0)}
+    onPointerLeave={()=>move(0,0)} onPointerUp={e=>{if(e.pointerType==='touch')move(0,0);}}
     onKeyDown={event => {
       if(showChoices&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home'].includes(event.key)){event.preventDefault();move(event.key==='ArrowLeft'?-12:event.key==='ArrowRight'?12:0,event.key==='ArrowUp'?-9:event.key==='ArrowDown'?9:0);}
 
