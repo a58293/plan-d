@@ -10,8 +10,7 @@ import SiteSearch from './SiteSearch';
 import MobileHome from './MobileHome';
 import HomeSupport from './HomeSupport';
 import ReplayOpeningButton from './ReplayOpeningButton';
-import HomeStoryEntry from './HomeStoryEntry';
-import './home-entry-refresh.css';
+import { commerce } from './commerce';
 import "./bjd.css";
 import "./brand-home-redesign.css";
 import "./home-chapter-experience.css";
@@ -23,10 +22,10 @@ import './mobile-ux-redesign.css';
 const officialLogo = requiredImage('brandLogo');
 
 const homeChapters = [
-  { id: "top", label: "当期主推", en: "CURRENT" },
-  { id: "stories", label: "故事与影像", en: "STORY" },
+  { id: "top", label: "序章", en: "HOME" },
   { id: "series", label: "系列", en: "COLLECTIONS" },
   { id: "collectors", label: "藏家", en: "MOMENTS" },
+  { id: "verify", label: "核验", en: "AUTHENTICITY" },
   { id: "support", label: "帮助", en: "SUPPORT" },
 ];
 
@@ -54,12 +53,12 @@ function Header({ activeChapter, onNavigate, onOpenFeatured }: HomeNavigationPro
         <span><strong><SplitColorText text="LUMEN AURALIS" /></strong><small>绘屿造物</small></span>
       </a>
       <nav aria-label="主导航">
-        <a {...chapterLink(2)}><SplitColorText text="系列" /></a>
+        <a {...chapterLink(1)}><SplitColorText text="系列" /></a>
         <a href={currentFeaturedProduct.href} onClick={event => {
           if (!onOpenFeatured || !isPlainNavigation(event)) return;
           event.preventDefault(); onOpenFeatured();
         }}><SplitColorText text="当期主推" /></a>
-        <a {...chapterLink(3)}><SplitColorText text="藏家瞬间" /></a>
+        <a {...chapterLink(2)}><SplitColorText text="藏家返图" /></a>
         <SiteSearch tone="dark" />
         <a className="nav-verify" href="/verify"><SplitColorText text="防伪核验" /><span>↗</span></a>
       </nav>
@@ -83,12 +82,20 @@ function Hero({ onExplore, onOpenFeatured, active }: { onExplore: () => void; on
         <h1><span className="hero-line"><SplitColorText text="在一粒光里" /></span><span className="hero-line hero-line-second"><SplitColorText text="遇见花神" /></span></h1>
         <p className="hero-intro">绘屿造物原创球形关节人偶档案。循着花与光的轨迹，进入每一位神灵独有的故事。</p>
         <div className="hero-actions">
-          <div className="home-opening-primary"><ReplayOpeningButton /></div>
+          <ReplayOpeningButton />
           <a className="primary-button home-featured-entry" href={featured.href} onClick={event => {
             if (!onOpenFeatured || !isPlainNavigation(event)) return;
             event.preventDefault(); onOpenFeatured();
-          }}><span>查看作品<small>{featured.name} · {featured.flower}</small></span><b aria-hidden="true">↗</b></a>
-
+          }}><span>当期主推 · {featured.flower}<small>走进{featured.name}</small></span><b aria-hidden="true">↗</b></a>
+          <a className="home-explore-entry" href="#series" onClick={(event) => { if (!isPlainNavigation(event)) return; event.preventDefault(); onExplore(); }}>探索系列 <span aria-hidden="true">↗</span></a>
+          <a className="home-verify-button" href="/verify">
+            <span>防伪验证</span>
+            <small>官方核验通道</small>
+            <b aria-hidden="true">↗</b>
+          </a>
+          {commerce.featuredProductUrl || commerce.shopUrl
+            ? <a className="home-shop-button" href={commerce.featuredProductUrl || commerce.shopUrl!} target="_blank" rel="noopener noreferrer">前往淘宝 <span aria-hidden="true">↗</span></a>
+            : <span className="home-shop-button is-pending" aria-disabled="true">淘宝店铺整理中</span>}
         </div>
       </div>
       <div className="hero-figure reveal">
@@ -116,6 +123,33 @@ type BjdAppProps = {
 
 function CollectorPreview() {
  return <section className="section collectors-section" id="collectors"><HomeCollectorPreview/></section>;
+}
+
+function VerifyPreview() {
+  return (
+    <section className="verify-section" id="verify">
+      <div className="verify-lotus" aria-hidden="true"><span className="petal petal-one" /><span className="petal petal-two" /><span className="petal petal-three" /><span className="petal petal-four" /><span className="petal petal-five" /></div>
+      <div className="verify-copy reveal">
+        <p className="eyebrow">CERTIFICATE OF AUTHENTICITY</p><h2><SplitColorText text="让每一份相遇，都有迹可循" /></h2>
+        <p>输入娃证编号与淘宝订单号，连接绘屿造物官方档案，查看作品身份与首次核验记录。</p>
+        <a className="light-button home-verify-primary" href="/verify" aria-label="进入绘屿造物官方防伪核验">
+          <div className="lookup-card-heading">
+            <img src={officialLogo} alt="" width="42" height="49" />
+            <span>核验前，请准备<small>BEFORE YOUR LOOKUP</small></span>
+          </div>
+          <div className="lookup-card-credentials">
+            <div><span>01</span><p>娃证编号<small>查看随娃附赠的实体娃证</small></p></div>
+            <div><span>02</span><p>淘宝订单号<small>查看购买时的订单详情</small></p></div>
+          </div>
+          <div className="lookup-card-action">
+            <span>进入防伪核验<small>OFFICIAL LOOKUP</small></span>
+            <span className="lookup-card-arrow" aria-hidden="true">↗</span>
+          </div>
+          <span className="lookup-card-note">加密比对 · 浏览器不保存订单信息</span>
+        </a>
+      </div>
+    </section>
+  );
 }
 
 function Footer() {
@@ -261,10 +295,10 @@ export default function BjdApp({ onOpenFlowerGods, onOpenFeatured }: BjdAppProps
       <div className="site-shell">
         <Header activeChapter={activeChapter} onNavigate={goToChapter} onOpenFeatured={onOpenFeatured} />
         <main className="home-stage">
-          <div className="home-chapter" data-home-scroll data-state={chapterState(0)} aria-hidden={chapterState(0) !== 'active'}><Hero active={activeChapter === 0} onExplore={() => goToChapter(2)} onOpenFeatured={onOpenFeatured} /></div>
-          <div className="home-chapter" data-home-scroll data-state={chapterState(1)} aria-hidden={chapterState(1) !== 'active'}><HomeStoryEntry /></div>
-          <div className="home-chapter" data-home-scroll data-state={chapterState(2)} aria-hidden={chapterState(2) !== 'active'}><SeriesScrolls onOpenFlowerGods={onOpenFlowerGods} /></div>
-          <div className="home-chapter" data-home-scroll data-state={chapterState(3)} aria-hidden={chapterState(3) !== 'active'}><CollectorPreview /></div>
+          <div className="home-chapter" data-home-scroll data-state={chapterState(0)} aria-hidden={chapterState(0) !== 'active'}><Hero active={activeChapter === 0} onExplore={() => goToChapter(1)} onOpenFeatured={onOpenFeatured} /></div>
+          <div className="home-chapter" data-home-scroll data-state={chapterState(1)} aria-hidden={chapterState(1) !== 'active'}><SeriesScrolls onOpenFlowerGods={onOpenFlowerGods} /></div>
+          <div className="home-chapter" data-home-scroll data-state={chapterState(2)} aria-hidden={chapterState(2) !== 'active'}><CollectorPreview /></div>
+          <div className="home-chapter" data-home-scroll data-state={chapterState(3)} aria-hidden={chapterState(3) !== 'active'}><VerifyPreview /></div>
           <div className="home-chapter home-chapter-final" data-home-scroll data-state={chapterState(4)} aria-hidden={chapterState(4) !== 'active'}><HomeSupport /><Footer /></div>
         </main>
 

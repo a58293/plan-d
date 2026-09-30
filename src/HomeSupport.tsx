@@ -7,6 +7,5 @@ export default function HomeSupport() {
       <a className="support-card" href="/report"><h3>举报说明</h3><p>发现疑似仿冒、盗图或冒充官方？了解需要准备的线索，以及如何联系我们。</p><span className="support-more">进一步了解 ↗</span></a>
       <a className="support-card" href="/help"><h3>帮助说明</h3><p>从浏览作品、购买入口到防伪查询，在这里找到常用说明与联系方法。</p><span className="support-more">进一步了解 ↗</span></a>
     </div>
-    <nav className="home-service-links" aria-label="帮助与服务"><a href="/verify">防伪核验 ↗</a><a href="/support/dressing">穿戴说明 ↗</a><a href="/contact">联系官方 ↗</a></nav>
   </section>;
 }
