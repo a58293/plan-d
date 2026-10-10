@@ -1,7 +1,7 @@
 import {useCallback,useEffect,useRef,type RefObject} from 'react';
 
 // Frame-rate independent easing; input updates a target rather than restarting CSS transitions.
-export function useSmoothPosterPointer(root:RefObject<HTMLDivElement|null>,enabled:boolean){
+export function useSmoothPosterPointer(root:RefObject<HTMLElement|null>,enabled:boolean){
  const target=useRef({x:0,y:0}),current=useRef({x:0,y:0}),frame=useRef(0),last=useRef(0);
  const move=useCallback((x:number,y:number)=>{
   if(!enabled)return;

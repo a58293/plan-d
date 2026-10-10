@@ -180,7 +180,7 @@ export default function FlowerStory({slug, onOpenChange}: {slug: string; onOpenC
   }, [open]);
   if (!story) return null;
   return <>
-    <button ref={trigger} type="button" className="flower-story-trigger" onClick={() => change(true)} aria-haspopup="dialog">她的故事 <span aria-hidden="true">↗</span></button>
+    <button ref={trigger} type="button" className="flower-story-trigger" onClick={() => change(true)} aria-haspopup="dialog">她的故事 </button>
     {open && createPortal(<dialog ref={dialog} className="flower-story-dialog" aria-labelledby={titleId}
       onCancel={event=>{event.preventDefault();event.stopPropagation();change(false);}}
       onKeyDown={event=>event.stopPropagation()} onWheel={event=>event.stopPropagation()}

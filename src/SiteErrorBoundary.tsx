@@ -22,7 +22,7 @@ export default class SiteErrorBoundary extends Component<Props, State> {
       <p>你可以重新载入页面；若仍未恢复，请稍后再试。</p>
       <div className="site-error-actions">
         <button type="button" onClick={() => window.location.reload()}>重新载入</button>
-        <a href="/">返回品牌首页 ↗</a>
+        <a href="/">返回品牌首页</a>
       </div>
     </main>;
   }

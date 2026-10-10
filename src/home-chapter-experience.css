@@ -91,6 +91,30 @@ body.home-experience-active {
   transition-delay: 0s;
 }
 
+/* On desktop the first scroll is revealed over the prologue instead of
+   pushing the visitor into a visibly separate page. */
+@media (min-width: 701px) {
+  .home-experience .home-chapter:has(> .series-scroll-live) {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    clip-path: inset(0 0 0 100%);
+    transition: clip-path 1.12s cubic-bezier(.2, .72, .22, 1), visibility 0s linear 1.12s;
+  }
+
+  .home-experience .home-chapter:has(> .series-scroll-live)[data-state="active"] {
+    clip-path: inset(0 0 0 0);
+    transition-delay: 0s;
+  }
+
+  .home-experience[data-home-chapter="series"] .home-chapter:first-child[data-state="past"] {
+    opacity: 1;
+    visibility: visible;
+    filter: none;
+    transform: none;
+  }
+}
+
 .home-experience .home-chapter > section {
   width: 100%;
   height: 100svh;
@@ -572,4 +596,26 @@ body.home-experience-active {
 
 @media (prefers-reduced-motion: reduce) {
   .home-experience .home-chapter { transition-duration: .01ms; filter: none; }
+}
+
+/* Chapter navigation reads like an edition index, without a decorative track. */
+.home-pagination::before,.home-pagination-line{display:none!important}
+.home-pagination button::after{display:none}
+.home-pagination button>span{font:500 11px/1.2 Georgia,serif;letter-spacing:.04em;opacity:.58;transition:opacity .3s ease,transform .35s ease}
+.home-pagination button.is-active>span{font-weight:600;opacity:1;transform:none}
+.home-pagination button.is-active>span::after{display:none}
+.home-pagination button.is-active>span{font-size:14px;letter-spacing:.02em}
+.home-pagination button>b{background:transparent;box-shadow:none;padding:0;color:inherit;text-shadow:0 1px 10px rgba(0,0,0,.35);font-size:11px;letter-spacing:.08em}
+.home-pagination button>b::after{display:none}
+.home-scene-caption>i{display:none}
+.home-scene-caption{gap:9px;font-size:9px;letter-spacing:.12em;opacity:.75}
+@media(min-width:641px){
+  .home-pagination{bottom:18px;gap:8px;padding:0}
+  .home-pagination button{width:38px;min-width:38px;min-height:35px}
+  .home-pagination button>b{bottom:calc(100% + 7px)}
+}
+@media(max-width:640px){
+  .home-pagination{bottom:13px}
+  .home-pagination button{min-height:42px}
+  .home-pagination button>span{font-size:12px}
 }

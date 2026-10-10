@@ -73,7 +73,7 @@ function DemoConsole() {
                 <input value={sample.order} readOnly autoComplete="off" aria-describedby="order-help" />
                 <em id="order-help">固定虚构订单，仅展示字段排版</em>
               </label>
-              <button className="verify-submit" type="submit" disabled={status === "checking"}>{status === "checking" ? "正在准备演示…" : "预览演示结果"}<span aria-hidden="true">↗</span></button>
+              <button className="verify-submit" type="submit" disabled={status === "checking"}>{status === "checking" ? "正在准备演示…" : "预览演示结果"}</button>
               <p className="verify-form-meta">DEMO ONLY · NO CUSTOMER DATA</p>
             </form>
           ) : (
@@ -150,7 +150,7 @@ function LiveConsole() {
       <label><span><b>娃证编号</b><small>CERTIFICATE</small></span><input value={certificate} onChange={event => setCertificate(event.target.value)} autoComplete="off" inputMode="text" maxLength={40} placeholder="请输入娃证上的唯一编号" required /><em>可忽略编号中的空格与短横线</em></label>
       <div className="verify-plus" aria-hidden="true"><span />＋<span /></div>
       <label><span><b>淘宝订单号</b><small>ORDER NUMBER</small></span><input value={order} onChange={event => setOrder(event.target.value)} autoComplete="off" inputMode="numeric" maxLength={40} placeholder="请输入购买时的淘宝订单号" required /><em>仅用于本次匹配，不在浏览器中保存</em></label>
-      <button className="verify-submit" type="submit" disabled={checking}>{checking ? "正在安全核验…" : "开始核验"}<span aria-hidden="true">↗</span></button>
+      <button className="verify-submit" type="submit" disabled={checking}>{checking ? "正在安全核验…" : "开始核验"}</button>
       <p className="verify-form-meta">SECURE LOOKUP · NO BROWSER STORAGE</p>
     </form> : <div className={successful ? "verify-success" : `verify-failure${result.result === "rate_limited" ? " is-limited" : ""}`} role="status" aria-live="polite">
       <div className={`verify-seal${successful ? "" : " verify-seal-failure"}`} aria-hidden="true"><span>{successful ? "✓" : result.result === "rate_limited" ? "!" : "×"}</span><i /></div>
@@ -178,7 +178,7 @@ export default function VerifyPage() {
     <header className="mobile-verify-header"><a href="/series/flower-gods">← 花神卷</a><MobileActions/></header>
     <Breadcrumbs path="/verify"/>
     <div className="verify-atmosphere" aria-hidden="true"><span /><span /><i /></div>
-    <header className="verify-header"><a className="verify-brand" href="/" aria-label="返回绘屿造物首页"><span className="verify-brand-mark"><img className="brand-logo-image" src={officialLogo} alt="" /></span><span><strong>LUMEN AURALIS</strong><small>绘屿造物</small></span></a><p>AUTHENTICITY · {live ? "VERIFICATION" : "DEMONSTRATION"}</p><div className="verify-header-actions"><SiteSearch /><a className="verify-back" href="/series/flower-gods">返回花神卷 <span>↗</span></a></div></header>
+    <header className="verify-header"><a className="verify-brand" href="/" aria-label="返回绘屿造物首页"><span className="verify-brand-mark"><img className="brand-logo-image" src={officialLogo} alt="" /></span><span><strong>LUMEN AURALIS</strong><small>绘屿造物</small></span></a><p>AUTHENTICITY · {live ? "VERIFICATION" : "DEMONSTRATION"}</p><div className="verify-header-actions"><SiteSearch /><a className="verify-back" href="/series/flower-gods">返回花神卷 </a></div></header>
     <main className="verify-main"><section className="verify-intro" aria-labelledby="verify-title"><div className="verify-index"><span>01</span><i /><span>{live ? "OFFICIAL VERIFICATION" : "INTERFACE PREVIEW"}</span></div><p className="verify-kicker">绘屿造物 · 身份核验</p><h1 id="verify-title"><span>为真形，</span><SplitColorText text="留下唯一凭证。" /></h1><p className="verify-lead">{live ? "输入娃证编号与购买订单号，查询作品的官方出品记录。首次核验时间会被记录，用于帮助识别异常重复查询。" : "正式核验暂未开放。这里仅展示未来的核验流程，不连接真实档案，也不接收真实娃证或淘宝订单。"}</p><ol className="verify-steps" aria-label="核验流程"><li><span>01</span><div><b>{live ? "输入双重凭证" : "选择虚构样例"}</b><small>{live ? "娃证编号与购买订单同时匹配" : "无需提供任何个人信息"}</small></div></li><li><span>02</span><div><b>{live ? "连接官方档案" : "预览界面状态"}</b><small>{live ? "加密比对，不在浏览器保存" : "匹配、未匹配与访问暂缓"}</small></div></li><li><span>03</span><div><b>{live ? "查看核验记录" : "等待正式开放"}</b><small>{live ? "留意首次时间与重复查询次数" : "服务端档案与安全机制尚待接入"}</small></div></li></ol><div className="verify-trust-note"><i aria-hidden="true">◌</i><p><b>{live ? "安全提示" : "请勿提交真实订单"}</b><span>{live ? "请仅从绘屿造物官网进入核验；核验通过不替代交易平台订单与售后凭证。" : "本页只使用固定虚构样例；不上传、不存储客户订单。演示结果不构成真伪或所有权证明。"}</span></p></div></section>{live ? <LiveConsole /> : <DemoConsole />}</main>
     <footer className="verify-page-footer"><span>© 2026 LUMEN AURALIS · <a href="/legal/authenticity">防伪说明</a></span><span>客服 19988424290 · 工作日 10:00—17:00</span></footer>
   </div>;

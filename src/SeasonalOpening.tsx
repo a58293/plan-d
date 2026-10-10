@@ -2,7 +2,6 @@ import {useEffect, useRef, useState} from 'react';
 import './seasonal-opening.css';
 import {commerce} from './commerce';
 import {applyCustomFonts} from './custom-fonts';
-import FlowerStory from './FlowerStory';
 import {useSmoothPosterPointer} from './useSmoothPosterPointer';
 import {usePosterTilt} from './usePosterTilt';
 
@@ -14,7 +13,7 @@ const posterSource = '/opening/lotus-2026-09-still-v2.webp';
 const videoEnd = 10.8;
 export function shouldShowOpening(path: string) {
   if (path !== '/') return false;
-  try { return localStorage.getItem(openingKey) !== 'seen'; } catch { return true; }
+  try { return sessionStorage.getItem(openingKey) !== 'seen'; } catch { return true; }
 }
 
 export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () => void; onReveal: () => void}) {
@@ -29,9 +28,9 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
   const [showChoices, setShowChoices] = useState(false);
   const [exiting, setExiting] = useState(false);
   const tilt=usePosterTilt(showChoices&&!exiting,dialog);
-  const [toolsVisible,setToolsVisible]=useState(true),[storyOpen,setStoryOpen]=useState(false);
+  const [toolsVisible,setToolsVisible]=useState(true);
   const move=useSmoothPosterPointer(dialog,showChoices&&!exiting&&!tilt.enabled);
-  useEffect(()=>{if(exiting)return;let timer=0;const wake=()=>{setToolsVisible(true);clearTimeout(timer);timer=window.setTimeout(()=>{if(!storyOpen)setToolsVisible(false);},3000);};const el=dialog.current;wake();for(const name of ['pointermove','pointerdown','keydown','focusin'])el?.addEventListener(name,wake);return()=>{clearTimeout(timer);for(const name of ['pointermove','pointerdown','keydown','focusin'])el?.removeEventListener(name,wake);};},[exiting,storyOpen,showChoices]);
+  useEffect(()=>{if(exiting)return;let timer=0;const wake=()=>{setToolsVisible(true);clearTimeout(timer);timer=window.setTimeout(()=>setToolsVisible(false),3000);};const el=dialog.current;wake();for(const name of ['pointermove','pointerdown','keydown','focusin'])el?.addEventListener(name,wake);return()=>{clearTimeout(timer);for(const name of ['pointermove','pointerdown','keydown','focusin'])el?.removeEventListener(name,wake);};},[exiting,showChoices]);
   const exitFrame = useRef(0);
   const exitTimer = useRef(0);
   const revealTimer = useRef(0);
@@ -88,15 +87,15 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
     if (closed.current) return;
     closed.current = true;
     setExiting(true);
-    try { localStorage.setItem(openingKey, 'seen'); } catch { /* Private browsing remains usable. */ }
+    try { sessionStorage.setItem(openingKey, 'seen'); } catch { /* Private browsing remains usable. */ }
     const element = video.current;
-    setMusicLevel(0, 2);
-    if (!destination) revealTimer.current = window.setTimeout(onReveal, 420);
+    setMusicLevel(0, 1.6);
+    if (!destination) revealTimer.current = window.setTimeout(onReveal, 320);
     exitTimer.current = window.setTimeout(() => {
       element?.pause();
       if (destination) window.location.assign(destination);
       else onComplete();
-    }, 2020);
+    }, 1680);
   };
   useEffect(() => () => {
     levelRequest.current++;
@@ -262,7 +261,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
 
       if (event.key === 'Escape') finish();
       if (event.key === 'Tab') {
-        const items = Array.from(dialog.current?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)') || []);
+        const items = Array.from(dialog.current?.querySelectorAll<HTMLElement>('button:not(:disabled), a[href]') || []);
         const first = items[0], last = items.at(-1);
         if (event.shiftKey && (document.activeElement === first || document.activeElement === dialog.current)) { event.preventDefault(); last?.focus(); }
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
@@ -280,7 +279,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
         if ((video.current?.currentTime ?? 0) >= videoEnd) freezeFrame();
         if ((video.current?.currentTime ?? 0) >= 10 && !showChoices) {
           setShowChoices(true);
-          try { localStorage.setItem(openingKey, 'seen'); } catch { /* storage optional */ }
+          try { sessionStorage.setItem(openingKey, 'seen'); } catch { /* storage optional */ }
         }
       }}
       onError={() => {
@@ -310,7 +309,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
         立即购买{!commerce.featuredProductUrl && <small>即将开放</small>}
       </button>
       <button disabled={exiting} onClick={() => finish()}>进入主页</button>
-    </div><FlowerStory slug="jingxin" onOpenChange={open => {setStoryOpen(open);setMusicLevel(open ? .18 : 1, 3);}} /></section></div>}
+    </div><a className="flower-story-trigger" href="/series/flower-gods/jingxin#gallery">她的故事</a></section></div>}
     {(state === 'loading' || state === 'ready') && <div className="opening-download" role="status">
       <strong>{downloadProgress === null ? '正在下载' : `${downloadProgress}%`}</strong>
       <small>{downloadProgress === 100 ? '正在准备播放' : '载入影像'}</small>

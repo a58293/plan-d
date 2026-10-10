@@ -19,6 +19,8 @@ import './home-product-theme.css';
 import './custom-fonts.css';
 import './mobile-compat.css';
 import './ui-unified.css';
+import './site-editorial-polish.css';
+import './home-prologue-handoff.css';
 document.documentElement.classList.add('site-ui');
 import MobileNavigation from './MobileNavigation';
 import DesktopNavigation from './DesktopNavigation';
@@ -55,6 +57,7 @@ void initialAssets.ready.then(()=>{initialReadyAt=performance.now();});
 // Let the visible imagery win the network race; typography swaps in directly
 // afterwards and remains cached for the rest of the visit.
 const loaderSessionKey = 'lumen-intro-seen-v1';
+const forceLoaderPreview = new URLSearchParams(window.location.search).has('previewLoader');
 
 function SiteRoot() {
   const [showOpening, setShowOpening] = useState(() => shouldShowOpening(pathname));
@@ -81,7 +84,7 @@ function SiteRoot() {
     const timer=window.setTimeout(()=>{if(!cancelled)setShowLoaderAnimation(true);},Math.max(0,2000-(performance.now()-initialLoadStarted)));
     void initialAssets.ready.then(()=>{
       if(cancelled)return;
-      if((initialReadyAt??performance.now())-initialLoadStarted<2000){window.clearTimeout(timer);finishLoader();}
+      if(!forceLoaderPreview && (initialReadyAt??performance.now())-initialLoadStarted<2000){window.clearTimeout(timer);finishLoader();}
       else setShowLoaderAnimation(true);
     });
     return()=>{cancelled=true;window.clearTimeout(timer);};

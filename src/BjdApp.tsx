@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SplitColorText } from "./components/HoverColorText";
-import { CinematicParticlePortrait } from "./CinematicParticlePortrait";
 import { isPlainNavigation } from "./flower-gods-catalog";
 import { currentFeaturedProduct, currentProductTheme, currentProductThemeStyle } from "./current-product-theme";
 import HomeCollectorPreview from "./HomeCollectorPreview";
-import { requiredImage, siteMedia } from "./media-library";
+import { requiredImage } from "./media-library";
 import SeriesScrolls from "./SeriesScrolls";
 import SiteSearch from './SiteSearch';
 import MobileHome from './MobileHome';
 import HomeSupport from './HomeSupport';
 import ReplayOpeningButton from './ReplayOpeningButton';
 import { commerce } from './commerce';
+import { useSmoothPosterPointer } from './useSmoothPosterPointer';
 import "./bjd.css";
 import "./brand-home-redesign.css";
 import "./home-chapter-experience.css";
@@ -60,58 +60,45 @@ function Header({ activeChapter, onNavigate, onOpenFeatured }: HomeNavigationPro
         }}><SplitColorText text="当期主推" /></a>
         <a {...chapterLink(2)}><SplitColorText text="藏家返图" /></a>
         <SiteSearch tone="dark" />
-        <a className="nav-verify" href="/verify"><SplitColorText text="防伪核验" /><span>↗</span></a>
+        <a className="nav-verify" href="/verify"><SplitColorText text="防伪核验" /></a>
       </nav>
     </header>
   );
 }
 
-function Hero({ onExplore, onOpenFeatured, active }: { onExplore: () => void; onOpenFeatured?: () => void; active: boolean }) {
-  const [displayMode, setDisplayMode] = useState<'physical' | 'concept'>('physical');
-  const [particlePlayed, setParticlePlayed] = useState(false);
+function Hero({ onExplore }: { onExplore: () => void }) {
   const featured = currentFeaturedProduct;
-  const isPhysical = displayMode === 'physical';
-  const animatePhysical = active && isPhysical && !particlePlayed;
-  const lightweightArtwork = window.matchMedia('(max-width: 700px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches;
-  const markParticlePlayed = useCallback(() => setParticlePlayed(true), []);
+  const [artMode,setArtMode]=useState<'poster'|'physical'>('poster');
+  const stage=useRef<HTMLElement>(null);
+  const move=useSmoothPosterPointer(stage,true);
   return (
-    <section className="hero home-featured-hero" id="top" data-display-mode={displayMode}>
-      <div className="hero-aura" aria-hidden="true" />
-      <div className="hero-copy reveal">
-        <p className="eyebrow home-current-up">当期主推 · {featured.name}<span>CURRENT FEATURE</span></p>
-        <h1><span className="hero-line"><SplitColorText text="在一粒光里" /></span><span className="hero-line hero-line-second"><SplitColorText text="遇见花神" /></span></h1>
-        <p className="hero-intro">绘屿造物原创球形关节人偶档案。循着花与光的轨迹，进入每一位神灵独有的故事。</p>
-        <div className="hero-actions">
-          <ReplayOpeningButton />
-          <a className="primary-button home-featured-entry" href={featured.href} onClick={event => {
-            if (!onOpenFeatured || !isPlainNavigation(event)) return;
-            event.preventDefault(); onOpenFeatured();
-          }}><span>当期主推 · {featured.flower}<small>走进{featured.name}</small></span><b aria-hidden="true">↗</b></a>
-          <a className="home-explore-entry" href="#series" onClick={(event) => { if (!isPlainNavigation(event)) return; event.preventDefault(); onExplore(); }}>探索系列 <span aria-hidden="true">↗</span></a>
-          <a className="home-verify-button" href="/verify">
-            <span>防伪验证</span>
-            <small>官方核验通道</small>
-            <b aria-hidden="true">↗</b>
-          </a>
-          {commerce.featuredProductUrl || commerce.shopUrl
-            ? <a className="home-shop-button" href={commerce.featuredProductUrl || commerce.shopUrl!} target="_blank" rel="noopener noreferrer">前往淘宝 <span aria-hidden="true">↗</span></a>
-            : <span className="home-shop-button is-pending" aria-disabled="true">淘宝店铺整理中</span>}
-        </div>
-      </div>
-      <div className="hero-figure reveal">
-        <div className="home-featured-art" id="home-featured-art" role="region" aria-label={`${featured.name}形象展示`}>
-          {isPhysical && animatePhysical && !lightweightArtwork
-            ? <CinematicParticlePortrait active src={requiredImage(featured.physicalMedia)} alt={`${featured.flower}${featured.name} · 实体展示`} onComplete={markParticlePlayed} />
-            : <img key={displayMode} src={requiredImage(isPhysical ? featured.physicalMedia : featured.conceptMedia)} alt={`${featured.flower}${featured.name} · ${isPhysical ? '实体展示' : '2D 原画'}`} decoding="async" fetchPriority="high" />}
-        </div>
-        <div className="home-featured-toolbar">
-          <p className="home-featured-caption" aria-live="polite">{featured.name}<small>{isPhysical ? '实体展示' : '2D 原画'}</small></p>
-          <div className="home-display-switch" role="group" aria-label="首页角色展示方式">
-            <button type="button" aria-pressed={isPhysical} aria-controls="home-featured-art" onClick={() => setDisplayMode('physical')}>实体</button>
-            <button type="button" aria-pressed={!isPhysical} aria-controls="home-featured-art" onClick={() => setDisplayMode('concept')}>2D 原画</button>
+    <section ref={stage} className="hero home-featured-hero home-prologue-hero" id="top" aria-labelledby="home-prologue-title" data-art-mode={artMode}
+      onPointerMove={event=>{if(event.pointerType==='touch'&&!event.buttons)return;const rect=event.currentTarget.getBoundingClientRect();move(((event.clientX-rect.left)/rect.width-.5)*24,((event.clientY-rect.top)/rect.height-.5)*18);}}
+      onPointerLeave={()=>move(0,0)}>
+      <img className="home-prologue-image" src="/opening/lotus-2026-09-still-v2.webp" alt="" fetchPriority="high" decoding="async" />
+      <div className="home-prologue-physical-scene" aria-hidden="true"><img src={requiredImage('lotusRelief')} alt="" loading="lazy" decoding="async" /></div>
+      <img className="home-prologue-physical" src={requiredImage(featured.physicalMedia)} alt="镜昕 · 荷花女神实体造型" loading="lazy" decoding="async" />
+      <div className="home-prologue-shade" aria-hidden="true" />
+      <div className="hero-copy home-prologue-content reveal">
+        <p className="eyebrow home-current-up">序章 / 01 · {featured.name}<span>THE FLORAL DEITIES</span></p>
+        <h1 id="home-prologue-title"><img src="/opening/lotus-calligraphy-v1.webp" alt="泥沼生花，水月照心" /></h1>
+        <p className="hero-intro">镜昕 · 荷花女神<br />从泥沼生花，向水月照心。</p>
+        <div className="hero-actions home-prologue-actions">
+          <div className="home-prologue-primary">
+            <a className="primary-button home-featured-entry" href="/series/flower-gods/jingxin#gallery"><span>她的故事</span></a>
+            <ReplayOpeningButton />
+          </div>
+          <div className="home-prologue-links">
+            <a className="home-explore-entry" href="#series" onClick={(event) => { if (!isPlainNavigation(event)) return; event.preventDefault(); onExplore(); }}>探索系列</a>
+            <a className="home-verify-button" href="/verify"><span>防伪验证</span></a>
+            {commerce.featuredProductUrl || commerce.shopUrl
+              ? <a className="home-shop-button" href={commerce.featuredProductUrl || commerce.shopUrl!} target="_blank" rel="noopener noreferrer">前往淘宝</a>
+              : <span className="home-shop-button is-pending" aria-disabled="true">淘宝店铺整理中</span>}
           </div>
         </div>
       </div>
+      <div className="home-prologue-mode" role="group" aria-label="首页展示方式"><button type="button" aria-pressed={artMode==='poster'} onClick={()=>setArtMode('poster')}>画报</button><button type="button" aria-pressed={artMode==='physical'} onClick={()=>setArtMode('physical')}>实物</button></div>
+      <p className="home-prologue-index" aria-hidden="true">LUMEN AURALIS <span>01 / 05</span></p>
     </section>
   );
 }
@@ -143,7 +130,6 @@ function VerifyPreview() {
           </div>
           <div className="lookup-card-action">
             <span>进入防伪核验<small>OFFICIAL LOOKUP</small></span>
-            <span className="lookup-card-arrow" aria-hidden="true">↗</span>
           </div>
           <span className="lookup-card-note">加密比对 · 浏览器不保存订单信息</span>
         </a>
@@ -295,8 +281,8 @@ export default function BjdApp({ onOpenFlowerGods, onOpenFeatured }: BjdAppProps
       <div className="site-shell">
         <Header activeChapter={activeChapter} onNavigate={goToChapter} onOpenFeatured={onOpenFeatured} />
         <main className="home-stage">
-          <div className="home-chapter" data-home-scroll data-state={chapterState(0)} aria-hidden={chapterState(0) !== 'active'}><Hero active={activeChapter === 0} onExplore={() => goToChapter(1)} onOpenFeatured={onOpenFeatured} /></div>
-          <div className="home-chapter" data-home-scroll data-state={chapterState(1)} aria-hidden={chapterState(1) !== 'active'}><SeriesScrolls onOpenFlowerGods={onOpenFlowerGods} /></div>
+          <div className="home-chapter" data-home-scroll data-state={chapterState(0)} aria-hidden={chapterState(0) !== 'active'}><Hero onExplore={() => goToChapter(1)} /></div>
+          <div className="home-chapter" data-home-scroll data-state={chapterState(1)} aria-hidden={chapterState(1) !== 'active'}><SeriesScrolls onOpenFlowerGods={onOpenFlowerGods} active={activeChapter === 1} /></div>
           <div className="home-chapter" data-home-scroll data-state={chapterState(2)} aria-hidden={chapterState(2) !== 'active'}><CollectorPreview /></div>
           <div className="home-chapter" data-home-scroll data-state={chapterState(3)} aria-hidden={chapterState(3) !== 'active'}><VerifyPreview /></div>
           <div className="home-chapter home-chapter-final" data-home-scroll data-state={chapterState(4)} aria-hidden={chapterState(4) !== 'active'}><HomeSupport /><Footer /></div>

@@ -39,7 +39,7 @@ function TotalHero() {
         <p className="total-lead">在这里查看花神的完整造型、创作细节与官方身份。第一位花神从散落的水光中凝聚，显出荷花女神镜昕的形态。</p>
         <div className="total-hero-actions">
           <a className="total-primary-action" href="#details">查看造型细节 <span>↓</span></a>
-          <a className="total-secondary-action" href="/verify">进入防伪验证 <span>↗</span></a>
+          <a className="total-secondary-action" href="/verify">进入防伪验证 </a>
         </div>
       </div>
 
@@ -100,7 +100,7 @@ function DetailGallery() {
             <figcaption>
               <span>{item.number}</span>
               <div><p>{item.subtitle}</p><h3>{item.title}</h3><small>{item.description}</small></div>
-              <b>查看细节 ↗</b>
+              <b>查看细节</b>
             </figcaption>
           </figure>
         ))}
@@ -120,7 +120,7 @@ function AuthenticationGateway() {
       </div>
       <div className="authentication-panel">
         <div className="authentication-formula"><span>娃证编号</span><i>+</i><span>淘宝订单号</span></div>
-        <a href="/verify">进入防伪验证 <b>↗</b></a>
+        <a href="/verify">进入防伪验证 </a>
         <small>OFFICIAL DATABASE · PRIVATE LOOKUP</small>
       </div>
     </section>

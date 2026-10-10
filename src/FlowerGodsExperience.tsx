@@ -5,11 +5,11 @@ import { CinematicParticlePortrait } from "./CinematicParticlePortrait";
 import SiteSearch from './SiteSearch';
 import { TransparentGoddess } from "./TransparentGoddess";
 import { FLOWER_GODS_PATH, isPlainNavigation } from "./flower-gods-catalog";
-import { requiredImage, detailImage, siteMedia, officialPhotos, type MediaId } from './media-library';
+import { requiredImage, detailImage, type MediaId } from './media-library';
+import EmbeddedStory from './EmbeddedStory';
 import { commerce } from './commerce';
 import MobileFlower from './MobileFlower';
 import Breadcrumbs from './Breadcrumbs';
-import FlowerStory from './FlowerStory';
 import PurchaseMenu from './PurchaseMenu';
 import {jingxinProductInfo} from './jingxin-product-info';
 import "./flower-gods-experience.css";
@@ -66,7 +66,8 @@ type FlowerGodsExperienceProps = {
 };
 
 export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExperienceProps) {
-  const [activeChapter, setActiveChapter] = useState(0);
+  const initialChapter = window.location.hash === '#gallery' ? 2 : 0;
+  const [activeChapter, setActiveChapter] = useState(initialChapter);
   const [portraitMode, setPortraitMode] = useState<"original" | "physical">("physical");
   const [activeDetail, setActiveDetail] = useState(0);
   const [lensMagnification, setLensMagnification] = useState(2.1);
@@ -82,8 +83,8 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
   const [transitionDirection, setTransitionDirection] = useState<"forward" | "backward">("forward");
   const scrollRef = useRef<HTMLDivElement>(null);
   const chapterRefs = useRef<Array<HTMLElement | null>>([]);
-  const activeChapterRef = useRef(0);
-  const targetChapterRef = useRef(0);
+  const activeChapterRef = useRef(initialChapter);
+  const targetChapterRef = useRef(initialChapter);
   const transitionInProgressRef = useRef(false);
   const transitionTimersRef = useRef<number[]>([]);
   const wheelDeltaRef = useRef(0);
@@ -326,7 +327,6 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
   const detailPosition = selectedImage.position;
   const detailScale = selectedImage.scale;
   const DetailImage = selectedImage.own ? 'img' : TransparentGoddess;
-  const publishedPhotos = officialPhotos.filter(id=>siteMedia[id].src).length;
 
   if (window.matchMedia('(max-width: 700px)').matches) {
     return <MobileFlower details={detailItems} pieces={garmentPieces} onBack={onBackCollection} />;
@@ -347,7 +347,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
           <span><strong><SplitColorText text="LUMEN AURALIS" /></strong><small>绘屿造物</small></span>
         </a>
         <div className="experience-chapter-title" aria-live="polite"><span>0{activeChapter + 1}</span>{theme.label} · {theme.en}</div>
-        <div className="experience-header-actions"><SiteSearch tone="dark" /><a className="experience-verify-link" href="/verify">防伪核验 <span>↗</span></a></div>
+        <div className="experience-header-actions"><SiteSearch tone="dark" /><a className="experience-verify-link" href="/verify">防伪核验 </a></div>
       </header>
       <Breadcrumbs path="/series/flower-gods/jingxin" section={theme.label}/>
 
@@ -364,7 +364,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
           </dl>
           <div className="product-info-contact"><span>客服 19988424290</span><span>工作日 10:00—17:00</span></div>
           {commerce.featuredProductUrl || commerce.shopUrl
-            ? <a className="product-info-shop" href={commerce.featuredProductUrl || commerce.shopUrl!} target="_blank" rel="noopener noreferrer">前往淘宝购买 <span>↗</span></a>
+            ? <a className="product-info-shop" href={commerce.featuredProductUrl || commerce.shopUrl!} target="_blank" rel="noopener noreferrer">前往淘宝购买 </a>
             : <span className="product-info-shop is-pending" aria-disabled="true">淘宝链接整理中</span>}
         </section>
       </div>}
@@ -399,10 +399,9 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
             <div className="prologue-title-index"><span>01</span><i /><span>LOTUS DEITY</span></div>
             <p className="prologue-title-kicker">原典序列 01</p>
             <h1><SplitColorText text="镜昕" /></h1>
-            <FlowerStory slug="jingxin" />
             {commerce.featuredProductUrl || commerce.shopUrl
-              ? <a className="desktop-taobao-entry" href={commerce.featuredProductUrl || commerce.shopUrl!} target="_blank" rel="noopener noreferrer">淘宝购买 ↗</a>
-              : <PurchaseMenu currentSlug="jingxin" label="淘宝购买 ↗" className="desktop-taobao-entry"/>}
+              ? <a className="desktop-taobao-entry" href={commerce.featuredProductUrl || commerce.shopUrl!} target="_blank" rel="noopener noreferrer">淘宝购买</a>
+              : <PurchaseMenu currentSlug="jingxin" label="淘宝购买" className="desktop-taobao-entry"/>}
             <div className="character-product-entry"><button className="product-info-trigger" type="button" onClick={() => setProductInfoOpen(true)}>产品信息 <span>＋</span></button></div>
           </div>
 
@@ -424,8 +423,8 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
                 onClick={() => setPortraitMode("physical")}
               ><span>02</span><b>实体</b><small>PHYSICAL</small></button>
             </div>
-            <button className="chapter-next" type="button" onClick={() => goToChapter(1)}>查看造型细节 <span>↗</span></button>
-            <a className="prologue-verify" href="/verify">防伪核验 <span>↗</span></a>
+            <button className="chapter-next" type="button" onClick={() => goToChapter(1)}>查看造型细节 </button>
+            <a className="prologue-verify" href="/verify">防伪核验 </a>
           </div>
 
           <div className="prologue-particle chapter-reveal" data-portrait-mode={portraitMode}>
@@ -598,29 +597,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
           data-chapter-index="2"
           data-state={chapterState(2)}
         >
-          <img className="lotus-relief lotus-relief-gallery" src={lotusReliefArtwork} alt="" aria-hidden="true" />
-          <div className="official-gallery-copy chapter-reveal">
-            <p className="experience-eyebrow">OFFICIAL PHOTOGRAPHY ARCHIVE</p>
-            <h2><span>官方</span><SplitColorText text="摄影" /></h2>
-            <p>{publishedPhotos ? '品牌正式拍摄的镜昕实体娃影像，按摄影作品顺序持续收录。' : '用于收录品牌正式拍摄的镜昕实体娃影像。首辑完成后，将按摄影作品顺序持续更新。'}</p>
-            <div className="official-photo-status" aria-label="官方摄影更新状态">
-              <span>FIRST EDITORIAL SHOOT</span>
-              <b>镜昕 · 实体官拍</b>
-              <small>{publishedPhotos ? `已收录 ${publishedPhotos} 幅作品` : '拍摄完成后开放浏览'}</small>
-            </div>
-          </div>
-          <figure className="official-gallery-stage official-gallery-contact chapter-reveal" aria-label={publishedPhotos ? '镜昕官方摄影接触表' : '镜昕官方摄影接触表，拍摄素材待更新'}>
-            <div className="official-contact-sheet">
-              {officialPhotos.map((id,index)=>{
-                const photo=siteMedia[id];
-                return <div key={id} className={`official-photo-frame${index===0?' official-photo-frame-main':''}${photo.src?' has-photo':''}`}>
-                  <span>FRAME 0{index+1}</span>
-                  {photo.src ? <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" /> : <><b>{index===0?'首辑影像':'镜昕'}</b><small>IMAGE PENDING</small></>}
-                </div>;
-              })}
-            </div>
-            <figcaption><span>VOL. 01</span><b>镜昕 · 首辑官拍</b><small>{publishedPhotos ? `${publishedPhotos} PHOTOGRAPHS` : 'COMING SOON'}</small></figcaption>
-          </figure>
+          <EmbeddedStory mode="contained" className="character-embedded-story" />
         </section>
 
         <section
@@ -637,7 +614,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
             <h2><span>官方身份</span><span><SplitColorText text="防伪核验" /></span></h2>
             <p>输入娃证编号与淘宝订单号，连接绘屿造物官方档案，查看作品身份与首次核验记录。</p>
             <div className="verification-formula"><span>娃证编号</span><i>＋</i><span>淘宝订单号</span></div>
-            <a href="/verify">进入防伪验证 <b>↗</b></a>
+            <a href="/verify">进入防伪验证 </a>
           </div>
         </section>
       </div>

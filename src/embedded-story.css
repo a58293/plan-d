@@ -1,0 +1,16 @@
+.embedded-story{position:relative;isolation:isolate;width:100%;background:#e9f0e9;scrollbar-width:none;overscroll-behavior:contain}
+html:has(.embedded-story){scrollbar-width:none}
+html:has(.embedded-story)::-webkit-scrollbar{display:none}
+.embedded-story::-webkit-scrollbar{display:none}
+.embedded-story-contained{height:100%;overflow-y:auto;overflow-x:hidden}
+.embedded-story-document{height:calc(var(--story-length)*100svh)}
+.embedded-story-track{position:relative;height:calc(var(--story-length)*100svh)}
+.embedded-story iframe{position:sticky;top:0;display:block;width:100%;height:100svh;border:0;pointer-events:none;background:#e9f0e9}
+.embedded-story-loading,.embedded-story-error{position:sticky;top:0;display:grid;place-content:center;min-height:100svh;margin:0;text-align:center;color:#315b50;font-size:14px}
+.embedded-story-error a{display:block;margin-top:15px;color:inherit}
+.embedded-story:focus-visible{outline:2px solid #17483e;outline-offset:-3px}
+@media(prefers-reduced-motion:reduce){.embedded-story-contained{overflow-y:auto}.embedded-story iframe{pointer-events:auto;overflow:auto}.embedded-story-track{height:100svh}.embedded-story-document{height:100svh}}
+.flower-experience .experience-chapter.official-gallery-chapter{display:block;padding:0!important;overflow:hidden}
+.flower-experience .official-gallery-chapter .character-embedded-story{position:absolute;inset:0;height:100%;z-index:5}
+.mf-page #gallery .embedded-story{width:calc(100% + 44px);margin:22px -22px 0}
+.official-shoot-world .embedded-story{margin-top:22px}

@@ -23,7 +23,7 @@ export default function MobileNavigation({visible=true}:{visible?:boolean}){
  <div className="orb-context"><span>{trail.length?trail.map(t=>t.title).join(' / '):'探索绘屿'}</span><button aria-label="收起全部目录" onClick={close}>×</button></div>
  {trail.length>0&&<button className="orb-parent" onClick={back}>‹ {trail.at(-1)?.title}</button>}
  <div key={trail.map(t=>t.title).join('/')} className="orb-list">
- {items.map(item=><button key={item.title} className="orb-leaf" disabled={item.pending} onClick={()=>enter(item)}><strong>{item.title}</strong><small>{item.pending?'资料待公开':item.children?'展开 ›':'查看 ↗'}</small></button>)}
+ {items.map(item=><button key={item.title} className="orb-leaf" disabled={item.pending} onClick={()=>enter(item)}><strong>{item.title}</strong><small>{item.pending?'资料待公开':item.children?'展开':'查看'}</small></button>)}
  </div><p className="orb-scroll-hint">上下滑动浏览栏目</p>
  </nav>}
  <button ref={orb} className="nav-orb" aria-controls="orb-menu" aria-label={!open?'打开分层目录':trail.length?'返回上一级目录':'收起分层目录'} aria-expanded={open}

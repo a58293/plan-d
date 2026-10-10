@@ -4,13 +4,14 @@ import {MobileActions} from './PurchaseMenu';
 import {collectorGallery,officialGallery,flowerSprites,flowerAllocation} from './collector-gallery-data';
 import './collector-gallery.css';
 import PhotoWall from './PhotoWall';
+import OfficialShoots from './OfficialShoots';
 
 function FlowerSlot({kind,index}:{kind:string;index:number}){
  const [shown,setShown]=useState(kind),[turn,setTurn]=useState(false);
  useEffect(()=>{if(kind===shown)return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduced){setShown(kind);return;}setTurn(true);const swap=setTimeout(()=>setShown(kind),260),end=setTimeout(()=>setTurn(false),560);return()=>{clearTimeout(swap);clearTimeout(end);};},[kind]);
  const sprite=flowerSprites[shown];return sprite?<span className="collector-flower" data-turn={turn} style={{backgroundImage:`url(${sprite.src})`,backgroundSize:sprite.size,backgroundPosition:sprite.position,left:((index*37)%94)+'%',top:((index*23)%90)+'%',rotate:((index*19)%60-30)+'deg'}}/>:null;
 }
-export default function CollectorGallery(){
+function CollectorsWall(){
  const official=location.pathname==='/stories/official';
  const [tag,setTag]=useState('全部'),[platform,setPlatform]=useState('全部'),[limit,setLimit]=useState(12),[weights,setWeights]=useState<Record<string,number>>({});
  const grid=useRef<HTMLDivElement>(null),sentinel=useRef<HTMLDivElement>(null);
@@ -23,6 +24,9 @@ export default function CollectorGallery(){
  const allocation=flowerAllocation(weights);
  return <div className="collector-world"><div className="collector-garden" aria-hidden="true">{allocation.map((kind,i)=><FlowerSlot key={i} kind={kind} index={i}/>)}</div><header className="mf-header"><a href="/">绘屿造物</a><MobileActions/></header><Breadcrumbs path={official?"/stories/official":"/stories/collectors"}/><main><p className="collector-eyebrow">COLLECTORS / MOMENTS</p><h1>{official?'官方拍图':'藏家自拍'}</h1><p>{official?'由官方收录的摄影作品。':'由藏家记录的相遇与日常。'}</p><div className="collector-filters"><label>角色与标签<select value={tag} onChange={e=>setTag(e.target.value)}>{['全部',...tags].map(t=><option key={t}>{t}</option>)}</select></label><label>平台<select value={platform} onChange={e=>setPlatform(e.target.value)}>{['全部',...platforms].map(t=><option key={t}>{t}</option>)}</select></label></div>
  <div ref={grid}><PhotoWall photos={photos} official={official}/></div>
- {!approved.length?<section className="collector-empty"><h2>{official?'官方影像筹备中':'等待第一份藏家影像'}</h2><p>经授权的照片将在这里展示，并标注平台、作者与角色标签。</p><a href="/contact">投稿与联系 ↗</a></section>:!filtered.length?<p>没有符合当前筛选的照片。</p>:null}
+ {!approved.length?<section className="collector-empty"><h2>{official?'官方影像筹备中':'等待第一份藏家影像'}</h2><p>经授权的照片将在这里展示，并标注平台、作者与角色标签。</p><a href="/contact">投稿与联系</a></section>:!filtered.length?<p>没有符合当前筛选的照片。</p>:null}
  <div ref={sentinel} className="collector-end">{limit<filtered.length?<button onClick={()=>setLimit(n=>n+12)}>加载更多照片</button>:photos.length?'已经看完当前分类的照片':''}</div></main></div>;
+}
+export default function CollectorGallery(){
+ return location.pathname==='/stories/official'?<OfficialShoots/>:<CollectorsWall/>;
 }

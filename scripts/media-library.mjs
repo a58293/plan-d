@@ -108,7 +108,7 @@ export async function collectPublicSupport(project) {
     if (!stat.isFile() || stat.isSymbolicLink()) throw Error(`不支持的公开资源：${file}`);
     inside(root, path.relative(root, await fs.realpath(file)));
     const extension=path.extname(file).toLowerCase();
-    const mime=extension==='.webp'?'image/webp':extension==='.mp4'?'video/mp4':extension==='.ttf'?'font/ttf':extension==='.woff2'?'font/woff2':extension==='.png'?'image/png':extension==='.txt'?'text/plain; charset=utf-8':'application/octet-stream';
+    const mime=extension==='.webp'?'image/webp':extension==='.mp4'?'video/mp4':extension==='.ttf'?'font/ttf':extension==='.woff2'?'font/woff2':extension==='.png'?'image/png':extension==='.html'?'text/html; charset=utf-8':extension==='.css'?'text/css; charset=utf-8':extension==='.js'?'text/javascript; charset=utf-8':extension==='.json'?'application/json; charset=utf-8':extension==='.txt'?'text/plain; charset=utf-8':'application/octet-stream';
     result.push({file, url:'/'+path.relative(root,file).split(path.sep).join('/'), bytes:await fs.readFile(file), mime});
   }
   // Publish only active support files. Duplicate and historical fonts stay in
@@ -118,8 +118,29 @@ export async function collectPublicSupport(project) {
     'opening/lotus-2026-09-music-v4.mp4',
     'opening/lotus-2026-09-still-v2.webp',
     'opening/lotus-calligraphy-v1.webp',
+    'series-scroll-closed.png',
+    'series-scroll-landscape-first.png',
+    'series-scroll-before-accents.png',
+    'series-scroll-concept.png',
     '_headers', '_redirects', 'robots.txt', 'favicon.png',
     '24dce09b1e7c6dc046ed86dc4718697e.txt',
   ]) await add(path.join(root,name));
+  // Only the approved, self-contained story experience is publicly shipped.
+  // The authoring workspace and unrelated local previews remain private.
+  for (const name of [
+    'story-experiences/jingxin.html',
+    'story-experiences/jingxin-scene.css',
+    'story-experiences/jingxin-scene.js',
+    'story-experiences/publish-project.js',
+    'story-experiences/assets/portrait.webp',
+    'story-experiences/assets/lotus.webp',
+    'story-experiences/assets/relief.webp',
+    'story-experiences/assets/columns.webp',
+    'story-experiences/assets/moon-scene.webp',
+    'story-experiences/assets/cloud.webp',
+  ]) await add(path.join(root,name));
+  const projectFile=path.join(root,'story-experiences','jingxin-project.json');
+  try { await fs.access(projectFile); await add(projectFile); }
+  catch (error) { if (error?.code!=='ENOENT') throw error; }
   return result;
 }

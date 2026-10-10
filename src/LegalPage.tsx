@@ -31,7 +31,7 @@ export default function LegalPage({ page }: { page: keyof typeof pages }) {
   return <div className="legal-world">
     <header className="legal-header">
       <a className="legal-brand" href="/"><img src={requiredImage('brandLogo')} alt="" /><span>LUMEN AURALIS<small>绘屿造物</small></span></a>
-      <div><SiteSearch /><a href="/">返回首页 ↗</a></div>
+      <div><SiteSearch /><a href="/">返回首页</a></div>
     </header>
     <Breadcrumbs path={`/legal/${page}`}/>
     <main>

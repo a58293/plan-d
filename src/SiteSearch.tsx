@@ -78,7 +78,7 @@ export default function SiteSearch({ tone = 'light' }: { tone?: 'light' | 'dark'
         </label>
         {query.trim()&&<div className="site-search-results" role="list" aria-live="polite">
           {results.length ? results.map(entry => <a role="listitem" href={entry.href} key={entry.href} onClick={() => setOpen(false)}>
-            <span><strong>{entry.title}</strong><small>{entry.subtitle}</small></span><b aria-hidden="true">↗</b>
+            <span><strong>{entry.title}</strong><small>{entry.subtitle}</small></span>
           </a>) : <p className="site-search-empty">暂时没有找到相关内容</p>}
         </div>}
       </section>

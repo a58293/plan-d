@@ -26,7 +26,7 @@ export default function PurchaseMenu({currentSlug, label='购买', className=''}
       <div className="purchase-sheet"><header><div><small>LUMEN AURALIS</small><h2 id="purchase-title">选购作品</h2></div><button type="button" aria-label="关闭购买窗口" onClick={()=>setOpen(false)}>×</button></header>
       <p>通过淘宝查看商品与购买。</p><ul>{ordered.map(product=>{const featured=product.slug===featuredSlug;const url=productPurchaseUrl(product.slug,featured);return <li key={product.slug} data-product={product.slug}>
         <span className="deity-avatar"><img src={product.avatar} alt="" width="56" height="56"/></span><div><h3>{product.name}<small>{product.slug===currentSlug?'当前浏览':featured?'当期主推':''}</small></h3><p>{product.flower}</p><a className="purchase-detail" href={flowerGodPath(product)}>查看详情</a></div>
-        {url?<a className="purchase-outbound" href={url} target="_blank" rel="noopener noreferrer">去淘宝 ↗</a>:<span className="purchase-unavailable">购买链接待公布</span>}
+        {url?<a className="purchase-outbound" href={url} target="_blank" rel="noopener noreferrer">去淘宝</a>:<span className="purchase-unavailable">购买链接待公布</span>}
       </li>;})}</ul><footer>请在淘宝确认价格、配置与发货时间。</footer></div>
     </dialog>,document.body)}
   </>;

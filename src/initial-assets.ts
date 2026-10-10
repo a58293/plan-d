@@ -1,5 +1,4 @@
 import {requiredImage} from './media-library';
-import {currentFeaturedProduct} from './current-product-theme';
 
 export type InitialAssetTracker = {
   ready: Promise<void>;
@@ -13,7 +12,7 @@ function firstScreenImages(pathname: string) {
     requiredImage('loaderArt'),
     requiredImage('loaderStar'),
   ];
-  if (pathname === "/") paths.push(requiredImage(currentFeaturedProduct.physicalMedia));
+  if (pathname === "/") paths.push('/opening/lotus-2026-09-still-v2.webp', '/opening/lotus-calligraphy-v1.webp');
   if (pathname === "/series/flower-gods") {
     paths.push(requiredImage('jingxinChoice'));
     if (!window.matchMedia('(max-width: 700px)').matches) {
