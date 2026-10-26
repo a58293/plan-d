@@ -83,18 +83,17 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
       void applyCustomFonts();
     }
   }, [ready]);
-  const finish = (destination?: string) => {
+  const finish = () => {
     if (closed.current) return;
     closed.current = true;
     setExiting(true);
     try { sessionStorage.setItem(openingKey, 'seen'); } catch { /* Private browsing remains usable. */ }
     const element = video.current;
     setMusicLevel(0, 1.6);
-    if (!destination) revealTimer.current = window.setTimeout(onReveal, 320);
+    revealTimer.current = window.setTimeout(onReveal, 320);
     exitTimer.current = window.setTimeout(() => {
       element?.pause();
-      if (destination) window.location.assign(destination);
-      else onComplete();
+      onComplete();
     }, 1680);
   };
   useEffect(() => () => {
@@ -307,9 +306,9 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
     }}><section className="opening-editorial" aria-label="泥沼生花，水月照心">
       <img className="opening-calligraphy" src="/opening/lotus-calligraphy-v1.webp" alt="泥沼生花，水月照心" width="1536" height="1024" />
       <div className="seasonal-opening-choices" aria-label="序章结束后的选择">
-      <button disabled={!commerce.featuredProductUrl || exiting} onClick={() => finish(commerce.featuredProductUrl || undefined)}>
-        立即购买{!commerce.featuredProductUrl && <small>即将开放</small>}
-      </button>
+      {commerce.featuredProductUrl
+        ? <a href={commerce.featuredProductUrl} target="_blank" rel="noopener noreferrer" onClick={() => finish()}>立即购买</a>
+        : <button disabled>立即购买<small>即将开放</small></button>}
       <button disabled={exiting} onClick={() => finish()}>进入主页</button>
     </div><a className="flower-story-trigger" href="/series/flower-gods/jingxin#gallery">她的故事</a></section></div>}
     {(state === 'loading' || state === 'ready') && <div className="opening-download" role="status">
@@ -320,4 +319,5 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
     {state === 'paused' && !showChoices && <button className="opening-resume" onClick={play} aria-label="继续播放"><small>轻触，入此水境</small></button>}
   </div>;
 }
+
 

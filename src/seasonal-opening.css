@@ -10,8 +10,8 @@
 .opening-editorial { position:absolute; top:25%; left:5%; width:34%; text-align:center; animation:opening-choices-in 1.1s ease both; }
 .opening-calligraphy { display:block; width:100%; height:auto; filter:drop-shadow(0 2px 12px #020b24aa); }
 .seasonal-opening-choices { display:flex; justify-content:center; gap:14px; margin-top:14px; pointer-events:auto; }
-.seasonal-opening-choices button { min-width:140px; background:#05121be6; border-color:#b9ccda99; }
-.seasonal-opening-choices button:disabled { cursor:default; }
+.seasonal-opening-choices :is(button,a) { min-width:140px; background:#05121be6; border-color:#b9ccda99; }
+.seasonal-opening-choices :is(button,a):disabled { cursor:default; }
 .seasonal-opening-choices small { display:block; font-size:11px; margin-top:3px; }
 @keyframes opening-choices-in { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 @media(prefers-reduced-motion:reduce) { .seasonal-opening-choices { animation:none; } .seasonal-opening { transition:none; } }
@@ -37,9 +37,9 @@
 .mh-heading .opening-replay { margin-top:18px; }
 .opening-replay:focus-visible { outline:2px solid currentColor; outline-offset:5px; }
 @media(prefers-reduced-motion:reduce) { .opening-loading span { animation:none; } }
-.opening-editorial .seasonal-opening-choices button { min-width:0; flex:1; max-width:170px; padding:10px 12px; font-size:13px; letter-spacing:.12em; background:#0c182d99; border-color:#b5c5e166; border-radius:12px; }
+.opening-editorial .seasonal-opening-choices :is(button,a) { min-width:0; flex:1; max-width:170px; padding:10px 12px; font-size:13px; letter-spacing:.12em; background:#0c182d99; border-color:#b5c5e166; border-radius:12px; }
 .seasonal-opening, .seasonal-opening button, .seasonal-opening small, .opening-replay { font-family:var(--custom-font-ui,var(--custom-font-body,"Songti SC","STSong","SimSun",serif)); font-weight:400; }
-.opening-editorial .seasonal-opening-choices button:not(:disabled):hover { background:#1a2b44cc; border-color:#d2dff3; }
+.opening-editorial .seasonal-opening-choices :is(button:not(:disabled),a):hover { background:#1a2b44cc; border-color:#d2dff3; }
 @media(max-width:700px) and (orientation:portrait) {
  /* Rotate only the opening, never the page or the device orientation. */
  .seasonal-opening { inset:auto; left:50%; top:50%; width:100dvh; height:100vw; transform:translate(-50%,-50%) rotate(90deg); overflow:hidden; }
@@ -47,14 +47,15 @@
  .seasonal-opening-tools { top:12px; right:max(16px,env(safe-area-inset-bottom)); }
  .opening-editorial { top:20%; }
  .seasonal-opening-choices { margin-top:6px; gap:8px; }
- .opening-editorial .seasonal-opening-choices button { padding:6px; font-size:12px; letter-spacing:.04em; }
+ .opening-editorial .seasonal-opening-choices :is(button,a) { padding:6px; font-size:12px; letter-spacing:.04em; }
 }
 @media(max-height:500px) and (orientation:landscape) {
  .seasonal-opening-tools { top:12px; right:max(16px,env(safe-area-inset-right)); }
  .opening-editorial { top:20%; }
  .seasonal-opening-choices { margin-top:6px; gap:8px; }
- .opening-editorial .seasonal-opening-choices button { padding:6px; font-size:12px; letter-spacing:.04em; }
+ .opening-editorial .seasonal-opening-choices :is(button,a) { padding:6px; font-size:12px; letter-spacing:.04em; }
 }
 @media(prefers-reduced-motion:reduce) { .opening-editorial { animation:none; } }
-.seasonal-opening{--poster-x:0px;--poster-y:0px;--opening-x:var(--poster-x);--opening-y:var(--poster-y);overflow:hidden;touch-action:pan-y}.seasonal-opening[data-explore=true]>video,.seasonal-opening[data-explore=true]>.seasonal-opening-still{transform:translate(calc(var(--opening-x)*-.5),calc(var(--opening-y)*-.5)) scale(1.02);transition:transform .18s ease-out}.seasonal-opening[data-explore=true] .opening-calligraphy{transform:translate(var(--opening-x),var(--opening-y));transition:transform .18s ease-out}.seasonal-opening[data-tools=false] .seasonal-opening-tools,.seasonal-opening[data-tools=false] .opening-tilt-status{opacity:0;pointer-events:none}.opening-tilt-status{position:absolute;bottom:12px;right:20px;font-size:12px;color:#e4e9eb}.seasonal-opening .opening-editorial .seasonal-opening-choices button,.seasonal-opening .opening-editorial .seasonal-opening-choices button:not(:disabled):hover,.seasonal-opening .opening-editorial .flower-story-trigger{background:transparent!important;border:0!important;box-shadow:none!important;text-shadow:0 1px 7px #02060bcc}@media(max-width:700px) and (orientation:portrait){.seasonal-opening{--opening-x:var(--poster-y);--opening-y:calc(var(--poster-x)*-1)}}@media(prefers-reduced-motion:reduce){.seasonal-opening[data-explore=true]>video,.seasonal-opening[data-explore=true]>.seasonal-opening-still,.seasonal-opening[data-explore=true] .opening-calligraphy{transform:none;transition:none}}
-.seasonal-opening .opening-editorial .seasonal-opening-choices button,.seasonal-opening .opening-editorial .flower-story-trigger{font-size:18px;line-height:1.5;min-height:44px}.seasonal-opening .opening-editorial .seasonal-opening-choices small{font-size:14px}.seasonal-opening[data-explore=true]>video,.seasonal-opening[data-explore=true]>.seasonal-opening-still,.seasonal-opening[data-explore=true] .opening-calligraphy{transition:none;will-change:transform}@media(max-height:500px),(max-width:700px){.seasonal-opening .opening-editorial .seasonal-opening-choices button,.seasonal-opening .opening-editorial .flower-story-trigger{font-size:16px}.seasonal-opening .opening-editorial .seasonal-opening-choices small{font-size:13px}}
+.seasonal-opening{--poster-x:0px;--poster-y:0px;--opening-x:var(--poster-x);--opening-y:var(--poster-y);overflow:hidden;touch-action:pan-y}.seasonal-opening[data-explore=true]>video,.seasonal-opening[data-explore=true]>.seasonal-opening-still{transform:translate(calc(var(--opening-x)*-.5),calc(var(--opening-y)*-.5)) scale(1.02);transition:transform .18s ease-out}.seasonal-opening[data-explore=true] .opening-calligraphy{transform:translate(var(--opening-x),var(--opening-y));transition:transform .18s ease-out}.seasonal-opening[data-tools=false] .seasonal-opening-tools,.seasonal-opening[data-tools=false] .opening-tilt-status{opacity:0;pointer-events:none}.opening-tilt-status{position:absolute;bottom:12px;right:20px;font-size:12px;color:#e4e9eb}.seasonal-opening .opening-editorial .seasonal-opening-choices :is(button,a),.seasonal-opening .opening-editorial .seasonal-opening-choices :is(button:not(:disabled),a):hover,.seasonal-opening .opening-editorial .flower-story-trigger{background:transparent!important;border:0!important;box-shadow:none!important;text-shadow:0 1px 7px #02060bcc}@media(max-width:700px) and (orientation:portrait){.seasonal-opening{--opening-x:var(--poster-y);--opening-y:calc(var(--poster-x)*-1)}}@media(prefers-reduced-motion:reduce){.seasonal-opening[data-explore=true]>video,.seasonal-opening[data-explore=true]>.seasonal-opening-still,.seasonal-opening[data-explore=true] .opening-calligraphy{transform:none;transition:none}}
+.seasonal-opening .opening-editorial .seasonal-opening-choices :is(button,a),.seasonal-opening .opening-editorial .flower-story-trigger{font-size:18px;line-height:1.5;min-height:44px}.seasonal-opening .opening-editorial .seasonal-opening-choices small{font-size:14px}.seasonal-opening[data-explore=true]>video,.seasonal-opening[data-explore=true]>.seasonal-opening-still,.seasonal-opening[data-explore=true] .opening-calligraphy{transition:none;will-change:transform}@media(max-height:500px),(max-width:700px){.seasonal-opening .opening-editorial .seasonal-opening-choices :is(button,a),.seasonal-opening .opening-editorial .flower-story-trigger{font-size:16px}.seasonal-opening .opening-editorial .seasonal-opening-choices small{font-size:13px}}
+
