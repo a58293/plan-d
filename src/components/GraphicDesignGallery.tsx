@@ -82,7 +82,7 @@ export default function GraphicDesignGallery() {
     <section className="relative w-full min-h-screen bg-white flex flex-col">
       <header className="w-full px-6 py-8 md:px-16 flex justify-between items-center border-b border-gray-50">
         <Link to="/" className="inline-flex items-center gap-2 text-gray-400 hover:text-black transition-colors group">
-          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+          
           <span className="font-en text-[10px] uppercase tracking-[0.3em]">
             <SplitColorText text="Back" defaultColor="#9CA3AF" fontClass="font-en" />
           </span>

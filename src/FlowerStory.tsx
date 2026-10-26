@@ -152,15 +152,15 @@ function StoryBook({text, title}: {text: string; title: string}) {
           front={pages[turning.from+(turning.direction==='next'?spread-1:0)]} frontNumber={turning.from+(turning.direction==='next'?spread:1)}
           back={pages[index+(turning.direction==='next'?0:spread-1)]} backNumber={index+(turning.direction==='next'?1:spread)} />
       </div>}
-      <button className="story-edge story-edge-left" aria-label="点击左侧翻到上一页" disabled={index===0||!!turning} onClick={()=>turn(index-spread)}><span>‹</span></button>
-      <button className="story-edge story-edge-right" aria-label="点击右侧翻到下一页" disabled={index+spread>=pages.length||!!turning} onClick={()=>turn(index+spread)}><span>›</span></button>
+      <button className="story-edge story-edge-left" aria-label="点击左侧翻到上一页" disabled={index===0||!!turning} onClick={()=>turn(index-spread)}>上一页</button>
+      <button className="story-edge story-edge-right" aria-label="点击右侧翻到下一页" disabled={index+spread>=pages.length||!!turning} onClick={()=>turn(index+spread)}>下一页</button>
     </div>
     <div className="story-book-controls">
-      <button onClick={()=>turn(index-spread)} disabled={index===0||!!turning} aria-label="上一页">←</button>
+      <button onClick={()=>turn(index-spread)} disabled={index===0||!!turning} aria-label="上一页"></button>
       <div><select aria-label="选择章节" disabled={!!turning} value={chapterIndex} onChange={event=>turn(pages.findIndex(p=>p.chapter===Number(event.target.value)))}>
         {chapters.map((chapter,i)=><option key={i} value={i}>{chapter.heading}</option>)}
       </select><span role="status" aria-live="polite">{pages.length ? `${index+1}${spread===2?`–${Math.min(index+spread,pages.length)}`:''} / ${pages.length}` : '正在排版'}</span></div>
-      <button onClick={()=>turn(index+spread)} disabled={index+spread>=pages.length||!!turning} aria-label="下一页">→</button>
+      <button onClick={()=>turn(index+spread)} disabled={index+spread>=pages.length||!!turning} aria-label="下一页"></button>
     </div>
   </div>;
 }

@@ -175,7 +175,7 @@ export function ParticlePortrait({ src, alt }: { src: string; alt: string }) {
       <canvas ref={canvasRef} className="particle-portrait-canvas" aria-hidden="true" />
       <div className="particle-portrait-status" aria-hidden="true">
         <span />
-        <p>{assembled ? "FORM COMPLETE" : "PARTICLE FORMING"}</p>
+        <p>{assembled ? "形象已呈现" : "形象汇聚中"}</p>
       </div>
     </div>
   );

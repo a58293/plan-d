@@ -23,8 +23,8 @@ export default function PurchaseMenu({currentSlug, label='购买', className=''}
   const ordered=orderPurchaseProducts(products,featuredSlug,currentSlug);
   return <><button ref={trigger} type="button" className={'purchase-trigger '+className} aria-haspopup="dialog" aria-expanded={open} onClick={()=>setOpen(true)}>{label}</button>
     {open&&createPortal(<dialog className="purchase-dialog" ref={dialog} aria-labelledby="purchase-title" onCancel={()=>setOpen(false)} onClick={event=>{if(event.target===event.currentTarget)setOpen(false);}}>
-      <div className="purchase-sheet"><header><div><small>LUMEN AURALIS</small><h2 id="purchase-title">选购作品</h2></div><button type="button" aria-label="关闭购买窗口" onClick={()=>setOpen(false)}>×</button></header>
-      <p>通过淘宝查看商品与购买。</p><ul>{ordered.map(product=>{const featured=product.slug===featuredSlug;const url=productPurchaseUrl(product.slug,featured);return <li key={product.slug} data-product={product.slug}>
+      <div className="purchase-sheet"><header><div><small>绘屿造物</small><h2 id="purchase-title">选购作品</h2></div><button type="button" aria-label="关闭购买窗口" onClick={()=>setOpen(false)}>×</button></header>
+      <p>通过淘宝查看商品与购买。付款前请先阅读<a href="/purchase-notice">购买须知</a>。</p><ul>{ordered.map(product=>{const featured=product.slug===featuredSlug;const url=productPurchaseUrl(product.slug,featured);return <li key={product.slug} data-product={product.slug}>
         <span className="deity-avatar"><img src={product.avatar} alt="" width="56" height="56"/></span><div><h3>{product.name}<small>{product.slug===currentSlug?'当前浏览':featured?'当期主推':''}</small></h3><p>{product.flower}</p><a className="purchase-detail" href={flowerGodPath(product)}>查看详情</a></div>
         {url?<a className="purchase-outbound" href={url} target="_blank" rel="noopener noreferrer">去淘宝</a>:<span className="purchase-unavailable">购买链接待公布</span>}
       </li>;})}</ul><footer>请在淘宝确认价格、配置与发货时间。</footer></div>

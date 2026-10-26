@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>入眼预览 · 绘屿造物</title>
+  <style>
+    :root{color-scheme:light;--ink:#173a35;--muted:#74827c;--gold:#a58b61;--paper:#eef0ea}*{box-sizing:border-box}body{margin:0;background:#e9eee8;color:var(--ink);font-family:"Noto Sans SC","Microsoft YaHei",sans-serif}.page{min-height:100svh;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,.55fr)}.stage{position:relative;min-height:690px;overflow:hidden;background:radial-gradient(circle at 50% 42%,#f8f7f1 0,#e8ede7 52%,#d7e1db 100%)}.stage:before{content:"";position:absolute;inset:4%;border:1px solid rgba(31,71,62,.12);pointer-events:none}.brand{position:absolute;z-index:5;left:5.5%;top:5%;font-size:11px;letter-spacing:.22em;color:#39645b}.brand b{display:block;font-family:Georgia,serif;font-size:28px;font-weight:400;line-height:1.1}.stage-label{position:absolute;z-index:5;left:6%;bottom:5%;font:10px Georgia,serif;letter-spacing:.2em;color:#58766d}.visual{position:absolute;inset:0;display:grid;place-items:center;perspective:1200px}.head{position:relative;width:min(65vw,720px);height:min(62vw,620px);max-height:75vh;min-height:400px;transition:transform .6s cubic-bezier(.2,.8,.2,1);transform:rotateY(var(--view,0deg));filter:drop-shadow(0 42px 37px rgba(47,72,60,.18))}.resin{position:absolute;inset:5% 2%;border-radius:46% 45% 48% 47% / 43% 44% 51% 52%;background:radial-gradient(ellipse at 48% 30%,#fcfaf4 8%,#e9e7dd 45%,#cfd5ce 78%,#aab8b0 100%);box-shadow:inset 25px 20px 38px rgba(255,255,255,.85),inset -35px -28px 55px rgba(75,103,92,.25),0 5px 0 rgba(255,255,255,.5)}.resin:after{content:"";position:absolute;left:45%;top:39%;width:11%;height:31%;border-radius:50%;background:linear-gradient(90deg,transparent,#dddcd3 42%,#f7f3e9 69%,transparent);filter:blur(5px);opacity:.9}.photo{position:absolute;inset:0;background-position:center;background-size:contain;background-repeat:no-repeat;display:none}.eye{position:absolute;z-index:3;width:27%;height:28%;top:34%;left:20%;cursor:grab;touch-action:none;transform:translate(-50%,-50%) rotate(var(--eye-angle,0deg)) scale(var(--eye-size,1));transition:filter .3s;filter:drop-shadow(0 5px 9px rgba(40,52,50,.25))}.eye.right{left:80%}.eye:active{cursor:grabbing}.socket{position:absolute;inset:-18% -9%;border-radius:50%;background:radial-gradient(ellipse at center,transparent 37%,rgba(112,117,106,.3) 53%,#e5e5dd 65%,#f7f5ec 78%);box-shadow:inset 0 12px 20px rgba(72,80,76,.22),0 -12px 18px rgba(255,255,255,.67);pointer-events:none}.orb{position:absolute;inset:8% 11%;border-radius:50%;background:#e8edf0;box-shadow:inset -10px -10px 16px #9cabb7,inset 8px 9px 12px white,0 0 2px #82929d;overflow:hidden}.orb img{position:absolute;width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}.lid{position:absolute;inset:-12% -10%;border:0 solid transparent;border-top:17px solid rgba(230,230,219,.95);border-radius:50%;box-shadow:0 -5px 11px rgba(112,121,111,.08);pointer-events:none}.photo-mode .resin{display:none}.photo-mode .photo{display:block}.photo-mode .head{width:min(75vw,820px);height:min(69vw,690px);filter:none}.photo-mode .eye{width:17%;height:20%;top:45%;left:38%}.photo-mode .eye.right{left:62%}.photo-mode .socket,.photo-mode .lid{display:none}.photo-mode .orb{inset:0;opacity:.92}.photo-mode .orb img{mix-blend-mode:multiply}.panel{min-width:0;background:#f7f7f2;padding:clamp(30px,4.5vw,76px) clamp(26px,3.5vw,60px);box-shadow:-18px 0 48px rgba(35,63,51,.06);display:flex;flex-direction:column}.back{font-size:12px;color:#577167;text-decoration:none;width:max-content}.kicker{margin:68px 0 8px;font:11px Georgia,serif;letter-spacing:.26em;color:var(--gold)}h1{font-family:"Noto Serif SC","Songti SC",serif;font-weight:400;letter-spacing:.14em;font-size:clamp(30px,3vw,48px);margin:0}.intro{font-size:13px;line-height:1.9;color:#6c7e75;margin:18px 0 32px}.group{padding:22px 0;border-top:1px solid #dbe1d8}.group-title{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:15px;font-size:12px;letter-spacing:.13em}.group-title small{letter-spacing:0;color:#89998d}.choices{display:flex;gap:9px;flex-wrap:wrap}button,.upload-label{font:inherit;cursor:pointer;border:1px solid #cbd7cc;color:#425e54;background:transparent;border-radius:3px;padding:11px 17px;font-size:12px;transition:background .2s,border-color .2s,color .2s}button:hover,.upload-label:hover{border-color:#789387}button.active{background:#173a35;border-color:#173a35;color:#fff}.swatch{display:inline-block;vertical-align:middle;width:16px;height:16px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #abb6ad;margin-right:7px}.swatch.deep{background:#556472}.swatch.light{background:#a9b8c2}.slide-row{display:flex;align-items:center;gap:15px}input[type=range]{width:100%;accent-color:#31564c}.slide-row span{font:12px Georgia,serif;width:36px;text-align:right}.hint{font-size:11px;line-height:1.7;color:#87978d;margin:12px 0 0}.upload-label{display:inline-block}.upload-label input{display:none}.actions{display:flex;gap:8px;flex-wrap:wrap}.footer{margin-top:auto;padding-top:30px;font-size:11px;line-height:1.8;color:#87978d}.photo-mode #view-group{opacity:.45}.photo-mode #view-group button{pointer-events:none}@media(max-width:880px){.page{display:flex;flex-direction:column}.stage{min-height:54svh}.head{width:min(95vw,620px);height:min(80vw,510px);min-height:300px;max-height:48svh}.photo-mode .head{width:min(95vw,650px);height:min(85vw,540px)}.panel{padding:30px 24px}.kicker{margin-top:38px}.brand{top:6%}.stage-label{bottom:4%}}
+    /* The default study shows only two resin sockets, never a whole doll head. */
+    .stage{height:100svh;min-height:620px;position:sticky;top:0}
+    .head{height:min(38vw,390px);min-height:280px;max-height:55vh}
+    .resin{display:none}
+    .eye{top:50%;left:30%;width:29%;height:54%}
+    .eye.right{left:70%}
+    .socket{inset:-19% -17%;background:radial-gradient(ellipse at center,transparent 35%,rgba(95,111,103,.24) 47%,#d9ddd6 55%,#faf9f2 73%,#e3e8df 86%);box-shadow:inset 0 11px 20px rgba(78,91,82,.16),0 18px 32px rgba(73,94,82,.12),0 -4px 10px rgba(255,255,255,.8)}
+    .photo-mode .head{width:var(--photo-width,500px);height:var(--photo-height,500px);min-height:0;max-height:none;cursor:crosshair}
+    .photo-mode .photo{background-size:100% 100%}
+    .sclera-layer{position:absolute;inset:0;z-index:2;display:none;background-size:100% 100%;background-repeat:no-repeat;pointer-events:none}
+    .photo-mode.auto-fit .sclera-layer{display:block}
+    .photo-mode.sclera-off .sclera-layer{display:none}
+    .iris-layer{position:absolute;inset:0;z-index:3;width:100%;height:100%;display:none;pointer-events:none}
+    .photo-mode.auto-fit .iris-layer{display:block}
+    .photo-mode.auto-fit .eye{opacity:0;filter:none}
+    .photo-mode .eye{width:var(--iris-diameter,42px);height:var(--iris-diameter,42px);filter:drop-shadow(0 2px 3px rgba(15,30,32,.32))}
+    .photo-mode .eye.pending{display:none}
+    .photo-mode .eye::before{content:"";position:absolute;left:50%;top:50%;width:225%;height:112%;transform:translate(-50%,-50%);border-radius:50% 50% 48% 48% / 62% 62% 42% 42%;background:radial-gradient(ellipse at 48% 38%,#fff 0%,#f5f5f0 58%,#e0e4df 100%);box-shadow:inset 0 3px 5px rgba(80,87,82,.23),0 1px 2px rgba(40,52,49,.14)}
+    .photo-mode.auto-fit .eye::before{display:none}
+    .calibration-layer{position:absolute;inset:0;z-index:5;width:100%;height:100%;display:none;pointer-events:none}
+    .photo-mode.calibrating .calibration-layer,.photo-mode.calibrated .calibration-layer{display:block}
+    .calibration-layer circle{fill:#f8f7f1;stroke:#173a35;stroke-width:2;filter:drop-shadow(0 1px 3px #fff)}
+    .calibration-layer path{fill:none;stroke:#d2a76d;stroke-width:2;stroke-dasharray:5 4}
+    .photo-mode.calibrated .calibration-layer{pointer-events:none}
+    .photo-mode.calibrated .calibration-layer circle{pointer-events:all;cursor:grab}
+    .photo-mode.calibrating .head{cursor:crosshair}
+    .photo-mode.calibrating .eye{pointer-events:none;opacity:0}
+    .photo-mode.calibrated .sclera-layer,.photo-mode.calibrated .iris-layer{display:block}
+    .photo-mode.calibrated .eye{opacity:0;filter:none}
+    .photo-mode .orb{z-index:1;inset:0;background:transparent;box-shadow:none;opacity:.98}
+    .photo-mode .orb img{mix-blend-mode:normal;mask-image:radial-gradient(circle,#000 47%,rgba(0,0,0,.95) 56%,transparent 70%)}
+    .placement-note{position:absolute;z-index:6;left:50%;bottom:10%;transform:translateX(-50%);padding:10px 16px;background:rgba(23,58,53,.87);color:white;font-size:12px;letter-spacing:.08em;white-space:nowrap;display:none;pointer-events:none}
+    .photo-mode .placement-note{display:block}.photo-mode .placement-note[hidden]{display:none}
+    @media(max-width:880px){.stage{height:54svh;min-height:360px;position:relative}.head{height:min(52vw,340px);min-height:220px}.eye{width:31%;height:56%}}
+  </style>
+</head>
+<body>
+<main class="page" id="app">
+  <section class="stage" aria-label="互动入眼预览画面">
+    <div class="brand"><b>Λ</b>绘屿造物<br>绘屿造物</div>
+    <div class="visual"><div class="head" id="head"><div class="resin"></div><div class="photo" id="photo"></div><div class="sclera-layer" id="sclera-layer" aria-hidden="true"></div><canvas class="iris-layer" id="iris-layer" aria-hidden="true"></canvas><svg class="calibration-layer" id="calibration-layer" aria-label="眼睑校准点"></svg><div class="eye" id="left-eye" aria-label="左侧眼珠，可拖动"><div class="orb"><img id="deep-eye-a" alt="深色实物眼珠局部"></div><div class="socket"></div><div class="lid"></div></div><div class="eye right" id="right-eye" aria-label="右侧眼珠，可拖动"><div class="orb"><img id="deep-eye-b" alt="深色实物眼珠局部"></div><div class="socket"></div><div class="lid"></div></div></div></div><div class="placement-note" id="placement-note" hidden>请点击照片中左侧的眼眶中心</div>
+    <div class="stage-label">DRAG THE EYES TO FIND THE RIGHT GAZE · 互动效果仅供参考</div>
+  </section>
+  <aside class="panel">
+    <a class="back" href="http://127.0.0.1:4183/#series">返回系列</a>
+    <p class="kicker">AN EYE STUDY / 互动预览</p><h1>让目光，落在她眼里。</h1>
+    <p class="intro">先在树脂眼眶里试一试深浅两色；也可以上传自己的娃头照片，亲手调整入眼的位置与大小。</p>
+    <div class="group"><div class="group-title">预览方式</div><div class="choices"><button class="active" id="mode-resin">树脂眼眶</button><label class="upload-label">上传我的娃头<input id="upload" type="file" accept="image/*"></label><button id="calibrate-eyes" hidden>校准眼角与眼睑</button><button id="auto-eyes" hidden>自动识别眼眶</button><button id="replace-eyes" hidden>仅定位眼珠</button><button id="toggle-sclera" hidden aria-pressed="true">隐藏眼白</button><button id="clear-photo" hidden>清除照片</button></div><p class="hint" id="photo-hint">上传后可手动标出左右眼的两侧眼角、上眼睑和下眼睑。照片仅在本机浏览器处理，刷新即清除。</p></div>
+    <div class="group"><div class="group-title">眼珠配色 <small>基于实拍修饰的商品展示图</small></div><div class="choices"><button class="active" data-color="deep"><i class="swatch deep"></i>深色</button><button data-color="light"><i class="swatch light"></i>浅色</button></div></div>
+    <div class="group"><div class="group-title">入眼大小 <small>模拟比例，不代表商品规格</small></div><div class="slide-row"><input type="range" id="size" min="75" max="130" value="100"><span id="size-value">100%</span></div><p class="hint">拖动画面中的眼珠，可调整左右眼的位置。</p></div>
+    <div class="group"><div class="group-title">入眼角度</div><div class="slide-row"><input type="range" id="angle" min="-25" max="25" value="0"><span id="angle-value">0°</span></div></div>
+    <div class="group" id="view-group"><div class="group-title">观看角度 <small>仅默认眼眶可切换</small></div><div class="choices"><button data-view="-18">左侧</button><button class="active" data-view="0">正面</button><button data-view="18">右侧</button></div></div>
+    <p class="footer">这是交互样稿。眼珠展示图已柔化原始照片中的强反光，花瓣细节及色差可能与实物有别，请以实物照片和实际商品为准。上传照片模式仅模拟该照片的拍摄视角。</p>
+  </aside>
+</main>
+<script>
+  const app=document.getElementById('app'), head=document.getElementById('head'), photo=document.getElementById('photo'),sclera=document.getElementById('sclera-layer'),irisLayer=document.getElementById('iris-layer'),calibrationLayer=document.getElementById('calibration-layer');
+  const eyes=[document.getElementById('left-eye'),document.getElementById('right-eye')];
+  const source=new Image(); source.src='/eye-product-display-v1.png';
+  const images={},irisImages={}; let currentColor='deep', photoUrl='', placementStep=-1,uploadedImage=null,socketMask=null,calibrationStep=-1,landmarks=[[],[]];
+  source.onload=()=>{
+    const points={deep:[.50,.198],light:[.50,.827]};
+    for(const [name,[cx,cy]] of Object.entries(points)){
+      const side=Math.min(source.naturalWidth,source.naturalHeight)*.265;
+      const canvas=document.createElement('canvas');canvas.width=canvas.height=420;
+      canvas.getContext('2d').drawImage(source,cx*source.naturalWidth-side/2,cy*source.naturalHeight-side/2,side,side,0,0,420,420);
+      images[name]=canvas.toDataURL('image/png');
+      const irisSide=Math.min(source.naturalWidth,source.naturalHeight)*.145;
+      const iris=document.createElement('canvas');iris.width=iris.height=420;
+      iris.getContext('2d').drawImage(source,cx*source.naturalWidth-irisSide/2,cy*source.naturalHeight-irisSide/2,irisSide,irisSide,0,0,420,420);
+      irisImages[name]=iris.toDataURL('image/png');
+    }
+    updateColor();
+  };
+  function updateColor(){eyes.forEach(eye=>{const image=eye.querySelector('img');image.onload=renderIris;image.src=(app.classList.contains('photo-mode')?irisImages[currentColor]:images[currentColor])||source.src})}
+  document.querySelectorAll('[data-color]').forEach(button=>button.onclick=()=>{currentColor=button.dataset.color;document.querySelectorAll('[data-color]').forEach(b=>b.classList.toggle('active',b===button));updateColor()});
+  const placementNote=document.getElementById('placement-note');
+  function beginPlacement(){app.classList.remove('auto-fit');socketMask=null;sclera.style.backgroundImage='';placementStep=0;eyes.forEach(eye=>eye.classList.add('pending'));placementNote.hidden=false;placementNote.textContent='请点击照片中左侧的眼眶中心'}
+  function setPhoto(url){if(photoUrl)URL.revokeObjectURL(photoUrl);photoUrl=url;photo.style.backgroundImage=url?`url("${url}")`:'';sclera.style.backgroundImage='';socketMask=null;calibrationStep=-1;landmarks=[[],[]];calibrationLayer.replaceChildren();app.classList.toggle('photo-mode',!!url);app.classList.remove('auto-fit','calibrating','calibrated','sclera-off');document.getElementById('mode-resin').classList.toggle('active',!url);document.getElementById('clear-photo').hidden=!url;document.getElementById('replace-eyes').hidden=!url;document.getElementById('auto-eyes').hidden=!url;document.getElementById('calibrate-eyes').hidden=!url;document.getElementById('toggle-sclera').hidden=!url;document.getElementById('toggle-sclera').textContent='隐藏眼白';document.getElementById('toggle-sclera').setAttribute('aria-pressed','true');head.style.setProperty('--view','0deg');document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view==='0'));if(!url){uploadedImage=null;placementStep=-1;placementNote.hidden=true;head.style.removeProperty('--photo-width');head.style.removeProperty('--photo-height');head.style.removeProperty('--iris-diameter');eyes.forEach(eye=>eye.classList.remove('pending'))}updateColor()}
+  function detectSockets(img){
+    const w=320,h=Math.round(img.naturalHeight*w/img.naturalWidth),scan=document.createElement('canvas');scan.width=w;scan.height=h;
+    const ctx=scan.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0,w,h);
+    const pixels=ctx.getImageData(0,0,w,h).data,mask=new Uint8Array(w*h),seen=new Uint8Array(w*h),groups=[];
+    for(let y=Math.floor(h*.37);y<Math.floor(h*.77);y++)for(let x=Math.floor(w*.12);x<Math.floor(w*.88);x++){
+      const i=y*w+x,p=i*4,r=pixels[p],g=pixels[p+1],b=pixels[p+2];
+      if(r>48&&r<185&&r>g*1.13&&g>b*1.1&&r-b>28)mask[i]=1;
+    }
+    for(let i=0;i<mask.length;i++){
+      if(!mask[i]||seen[i])continue;
+      const stack=[i],members=[];seen[i]=1;let minX=w,maxX=0,minY=h,maxY=0;
+      while(stack.length){const n=stack.pop(),x=n%w,y=Math.floor(n/w);members.push(n);minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y);
+        for(const next of [n-1,n+1,n-w,n+w]){if(next<0||next>=mask.length||seen[next]||!mask[next])continue;if(Math.abs(next%w-x)>1)continue;seen[next]=1;stack.push(next)}
+      }
+      const bw=maxX-minX+1,bh=maxY-minY+1;
+      if(members.length>w*h*.0005&&bw>w*.045&&bw<w*.27&&bh>h*.012&&bh<h*.13)groups.push({members,minX,maxX,minY,maxY,cx:(minX+maxX)/2,cy:(minY+maxY)/2,bw,bh});
+    }
+    let pair=null,best=-Infinity;
+    for(const a of groups)for(const b of groups){if(a.cx>=b.cx)continue;const dx=(b.cx-a.cx)/w,dy=Math.abs(a.cy-b.cy)/h;
+      if(dx<.2||dx>.67||dy>.07||Math.max(a.bw,b.bw)/Math.min(a.bw,b.bw)>1.8)continue;
+      const score=(a.members.length+b.members.length)/(w*h)-dy*.4-Math.abs((a.cx+b.cx)/w-1)*.05;
+      if(score>best){best=score;pair=[a,b]}
+    }
+    if(!pair)return null;
+    const full=document.createElement('canvas');full.width=img.naturalWidth;full.height=img.naturalHeight;
+    const selected=new Uint8Array(w*h);
+    pair.forEach(group=>{
+      const rows=new Map();group.members.forEach(i=>{const y=Math.floor(i/w),x=i%w,span=rows.get(y)||[x,x];span[0]=Math.min(span[0],x);span[1]=Math.max(span[1],x);rows.set(y,span)});
+      for(const [y,[left,right]] of rows)for(let x=Math.max(0,left-1);x<=Math.min(w-1,right+1);x++)selected[y*w+x]=1;
+    });
+    const maskCanvas=document.createElement('canvas');maskCanvas.width=w;maskCanvas.height=h;
+    const maskCtx=maskCanvas.getContext('2d'),maskData=maskCtx.createImageData(w,h);
+    selected.forEach((value,i)=>{if(value){const p=i*4;maskData.data[p]=maskData.data[p+1]=maskData.data[p+2]=255;maskData.data[p+3]=255}});
+    maskCtx.putImageData(maskData,0,0);
+    const layer=document.createElement('canvas');layer.width=full.width;layer.height=full.height;
+    const lc=layer.getContext('2d');lc.filter=`blur(${Math.max(1,full.width/w*.32)}px)`;lc.drawImage(maskCanvas,0,0,full.width,full.height);lc.filter='none';
+    lc.globalCompositeOperation='source-in';const white=lc.createLinearGradient(0,0,0,full.height);
+    white.addColorStop(0,'#f1f3ef');white.addColorStop(.5,'#fafaf7');white.addColorStop(1,'#e9ede9');lc.fillStyle=white;lc.fillRect(0,0,full.width,full.height);
+    return {pair,w,h,sclera:layer.toDataURL('image/png'),mask:layer};
+  }
+  function renderIris(){
+    if(!uploadedImage||!socketMask||!(app.classList.contains('auto-fit')||app.classList.contains('calibrated')))return;
+    const width=uploadedImage.naturalWidth,height=uploadedImage.naturalHeight;
+    irisLayer.width=width;irisLayer.height=height;
+    const final=irisLayer.getContext('2d');final.clearRect(0,0,width,height);
+    const temp=document.createElement('canvas');temp.width=width;temp.height=height;const ctx=temp.getContext('2d');
+    const base=parseFloat(getComputedStyle(head).getPropertyValue('--iris-diameter'))||42;
+    const diameter=base/Math.max(1,head.clientWidth)*width*(Number(document.getElementById('size').value)/100);
+    const angle=Number(document.getElementById('angle').value)*Math.PI/180;
+    eyes.forEach(eye=>{const img=eye.querySelector('img');if(!img.complete||!img.naturalWidth)return;
+      const x=parseFloat(eye.style.left)/100*width,y=parseFloat(eye.style.top)/100*height;
+      ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.drawImage(img,-diameter/2,-diameter/2,diameter,diameter);ctx.restore();
+    });
+    ctx.globalCompositeOperation='destination-in';ctx.drawImage(socketMask,0,0,width,height);
+    final.drawImage(temp,0,0);
+  }
+  const pointNames=['外眼角','内眼角','上眼睑最高处','下眼睑最低处'];
+  function beginCalibration(){
+    if(!uploadedImage)return;
+    app.classList.remove('auto-fit','calibrated');app.classList.add('calibrating');
+    calibrationStep=0;landmarks=[[],[]];socketMask=null;sclera.style.backgroundImage='';calibrationLayer.replaceChildren();
+    placementStep=-1;placementNote.hidden=false;updateCalibrationNote();
+    document.getElementById('photo-hint').textContent='请按画面提示点出每只眼的四个位置；标完后可拖动圆点重新校准。照片仅在本机处理。';
+  }
+  function updateCalibrationNote(){
+    const eyeName=calibrationStep<4?'画面左侧':'画面右侧';
+    placementNote.textContent=`请点${eyeName}眼的${pointNames[calibrationStep%4]}（${calibrationStep+1}/8）`;
+  }
+  function normalizedPoint(e){const r=head.getBoundingClientRect();return {x:Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),y:Math.max(0,Math.min(1,(e.clientY-r.top)/r.height))}}
+  function eyePath(points,w,h){
+    const [outer,inner,upper,lower]=points;
+    const a=outer.x<inner.x?outer:inner,b=outer.x<inner.x?inner:outer;
+    const ux=2*upper.x-(a.x+b.x)/2,uy=2*upper.y-(a.y+b.y)/2;
+    const lx=2*lower.x-(a.x+b.x)/2,ly=2*lower.y-(a.y+b.y)/2;
+    const p=(v,scale)=>Math.round(v*scale*100)/100;
+    return `M ${p(a.x,w)} ${p(a.y,h)} Q ${p(ux,w)} ${p(uy,h)} ${p(b.x,w)} ${p(b.y,h)} Q ${p(lx,w)} ${p(ly,h)} ${p(a.x,w)} ${p(a.y,h)} Z`;
+  }
+  function drawCalibrationGuides(){
+    calibrationLayer.setAttribute('viewBox','0 0 1000 1000');calibrationLayer.setAttribute('preserveAspectRatio','none');calibrationLayer.replaceChildren();
+    landmarks.forEach((points,eyeIndex)=>{
+      if(points.length===4){const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',eyePath(points,1000,1000));calibrationLayer.append(path)}
+      points.forEach((point,pointIndex)=>{const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');dot.setAttribute('cx',point.x*1000);dot.setAttribute('cy',point.y*1000);dot.setAttribute('r','7');dot.dataset.eye=eyeIndex;dot.dataset.point=pointIndex;calibrationLayer.append(dot)})
+    });
+  }
+  function applyCalibration(){
+    if(!uploadedImage||landmarks.some(points=>points.length!==4))return;
+    const w=uploadedImage.naturalWidth,h=uploadedImage.naturalHeight;
+    const mask=document.createElement('canvas');mask.width=w;mask.height=h;const ctx=mask.getContext('2d');
+    ctx.fillStyle='white';const paths=landmarks.map(points=>new Path2D(eyePath(points,w,h)));paths.forEach(path=>ctx.fill(path));
+    socketMask=mask;
+    const white=document.createElement('canvas');white.width=w;white.height=h;const wc=white.getContext('2d');
+    wc.fillStyle='#f7f7f2';paths.forEach(path=>wc.fill(path));
+    sclera.style.backgroundImage=`url("${white.toDataURL('image/png')}")`;
+    landmarks.forEach((points,index)=>{
+      const corners=points.slice(0,2),cx=(corners[0].x+corners[1].x)/2,cy=(points[2].y+points[3].y)/2;
+      eyes[index].style.left=cx*100+'%';eyes[index].style.top=cy*100+'%';
+    });
+    const averageWidth=landmarks.reduce((sum,points)=>sum+Math.abs(points[0].x-points[1].x),0)/2;
+    head.style.setProperty('--iris-diameter',Math.max(18,Math.round(averageWidth*head.clientWidth*.74))+'px');
+    app.classList.remove('calibrating');app.classList.add('calibrated');calibrationStep=-1;placementNote.hidden=true;
+    drawCalibrationGuides();renderIris();
+    document.getElementById('photo-hint').textContent='已按你标出的眼睑轮廓入眼。可拖动细小圆点修正轮廓，也可调整眼珠大小与位置。';
+  }
+  function autoFit(){if(!uploadedImage)return;const result=detectSockets(uploadedImage);if(!result){beginPlacement();document.getElementById('photo-hint').textContent='这张照片未能可靠识别两侧眼眶，请依次点击眼眶中心后微调。建议使用正面、光线均匀的空眼眶照片。';return}
+    sclera.style.backgroundImage=`url("${result.sclera}")`;socketMask=result.mask;app.classList.add('auto-fit');placementStep=-1;placementNote.hidden=true;
+    const diameter=Math.round((result.pair[0].bw+result.pair[1].bw)/2/result.w*head.clientWidth*.92);head.style.setProperty('--iris-diameter',Math.max(22,Math.min(110,diameter))+'px');
+    result.pair.forEach((socket,i)=>{eyes[i].style.left=socket.cx/result.w*100+'%';eyes[i].style.top=socket.cy/result.h*100+'%';eyes[i].classList.remove('pending')});
+    renderIris();
+    document.getElementById('photo-hint').textContent='已自动识别眼眶并填入眼白。可拖动眼珠微调；若识别有误，请点“手动定位”。照片仅在本机处理。';
+  }
+  document.getElementById('upload').addEventListener('click',e=>{e.target.value=''});
+  document.getElementById('upload').onchange=e=>{const file=e.target.files[0];if(!file)return;if(!file.type.startsWith('image/'))return alert('请选择图片文件');if(file.size>15*1024*1024)return alert('请选择小于 15 MB 的图片');const url=URL.createObjectURL(file),img=new Image();img.onload=()=>{const stage=document.querySelector('.stage'),scale=Math.min(stage.clientWidth*.82/img.naturalWidth,stage.clientHeight*.75/img.naturalHeight);head.style.setProperty('--photo-width',Math.round(img.naturalWidth*scale)+'px');head.style.setProperty('--photo-height',Math.round(img.naturalHeight*scale)+'px');head.style.setProperty('--iris-diameter',Math.round(Math.max(18,Math.min(68,img.naturalWidth*scale*.075)))+'px');setPhoto(url);uploadedImage=img;beginCalibration()};img.onerror=()=>{URL.revokeObjectURL(url);alert('这张图片无法读取，请换一张试试')};img.src=url};
+  document.getElementById('mode-resin').onclick=()=>{setPhoto('');eyes.forEach((eye,i)=>{eye.style.left=i?'70%':'30%';eye.style.top='50%'})};document.getElementById('clear-photo').onclick=()=>document.getElementById('mode-resin').click();document.getElementById('replace-eyes').onclick=beginPlacement;document.getElementById('auto-eyes').onclick=()=>{app.classList.remove('calibrating','calibrated');calibrationLayer.replaceChildren();autoFit()};document.getElementById('calibrate-eyes').onclick=beginCalibration;
+  document.getElementById('toggle-sclera').onclick=e=>{const hidden=app.classList.toggle('sclera-off');e.currentTarget.textContent=hidden?'显示眼白':'隐藏眼白';e.currentTarget.setAttribute('aria-pressed',String(!hidden))};
+  head.addEventListener('click',e=>{if(calibrationStep>=0){const eyeIndex=Math.floor(calibrationStep/4);landmarks[eyeIndex].push(normalizedPoint(e));calibrationStep++;drawCalibrationGuides();if(calibrationStep===8)applyCalibration();else updateCalibrationNote();return}if(placementStep<0||!app.classList.contains('photo-mode')||e.target.closest('.eye'))return;const box=head.getBoundingClientRect(),eye=eyes[placementStep];eye.style.left=((e.clientX-box.left)/box.width*100)+'%';eye.style.top=((e.clientY-box.top)/box.height*100)+'%';eye.classList.remove('pending');placementStep++;if(placementStep===2){placementStep=-1;placementNote.hidden=true}else placementNote.textContent='再点击照片中右侧的眼眶中心'});
+  let draggingLandmark=null;
+  calibrationLayer.addEventListener('pointerdown',e=>{if(e.target.tagName.toLowerCase()!=='circle')return;e.stopPropagation();draggingLandmark={eye:Number(e.target.dataset.eye),point:Number(e.target.dataset.point)};calibrationLayer.setPointerCapture(e.pointerId)});
+  calibrationLayer.addEventListener('pointermove',e=>{if(!draggingLandmark)return;landmarks[draggingLandmark.eye][draggingLandmark.point]=normalizedPoint(e);drawCalibrationGuides();applyCalibration()});
+  calibrationLayer.addEventListener('pointerup',()=>draggingLandmark=null);
+  calibrationLayer.addEventListener('pointercancel',()=>draggingLandmark=null);
+  const size=document.getElementById('size'),angle=document.getElementById('angle');size.oninput=()=>{head.style.setProperty('--eye-size',size.value/100);document.getElementById('size-value').textContent=size.value+'%';renderIris()};angle.oninput=()=>{head.style.setProperty('--eye-angle',angle.value+'deg');document.getElementById('angle-value').textContent=angle.value+'°';renderIris()};
+  document.querySelectorAll('[data-view]').forEach(button=>button.onclick=()=>{if(app.classList.contains('photo-mode'))return;head.style.setProperty('--view',button.dataset.view+'deg');document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b===button))});
+  eyes.forEach(eye=>{let start=null;eye.addEventListener('pointerdown',e=>{eye.setPointerCapture(e.pointerId);const box=head.getBoundingClientRect(),style=getComputedStyle(eye);start={x:e.clientX,y:e.clientY,left:parseFloat(style.left)/box.width*100,top:parseFloat(style.top)/box.height*100,width:box.width,height:box.height};eye.style.transition='none'});eye.addEventListener('pointermove',e=>{if(!start)return;eye.style.left=Math.max(6,Math.min(94,start.left+(e.clientX-start.x)/start.width*100))+'%';eye.style.top=Math.max(8,Math.min(92,start.top+(e.clientY-start.y)/start.height*100))+'%';renderIris()});eye.addEventListener('pointerup',()=>start=null);eye.addEventListener('pointercancel',()=>start=null)});
+</script>
+</body>
+</html>

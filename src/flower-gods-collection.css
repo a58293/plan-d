@@ -221,7 +221,7 @@
 .flower-collection-brand small { font-size: 12px; color: #b9cec5; }
 .flower-collection-back { font-size: 14px; letter-spacing: .1em; }
 .flower-collection-heading { left: 15%; top: 19%; }
-.flower-collection-heading::before { content: "01 — THE COLLECTION"; display: block; margin-bottom: 16px; color: #9a7542; font-size: 12px; letter-spacing: .18em; }
+.flower-collection-heading::before { content: "01 — 花神卷"; display: block; margin-bottom: 16px; color: #9a7542; font-size: 12px; letter-spacing: .18em; }
 .flower-collection-heading h1 { font-size: clamp(36px, 3.5vw, 58px); letter-spacing: .12em; }
 .flower-collection-kicker { margin-top: 10px; color: var(--hall-muted); font-size: 12px; letter-spacing: .16em; }
 .flower-scene { background: #e7f0ed; }

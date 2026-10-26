@@ -55,7 +55,7 @@
   background-image: url('/series-scroll-landscape-first.png');
   clip-path: inset(17% 18% 12% var(--series-edge));
   mask-image:
-    linear-gradient(to right, transparent var(--series-edge), #000 calc(var(--series-edge) + 2%)),
+    linear-gradient(to right, transparent var(--series-edge), #000 calc(var(--series-edge) + .7%)),
     linear-gradient(to bottom, transparent 25%, #000 33%, #000 70%, transparent 78%);
   mask-composite: intersect;
 }
@@ -77,6 +77,12 @@
 .series-scroll-rod {
   z-index: 3;
   background-image: url('/series-scroll-landscape-first.png');
+  /* Match the gradient masks to the cover-scaled artwork, not the viewport.
+     On taller screens the image is cropped horizontally; viewport-based mask
+     percentages otherwise cut the left roller away entirely. */
+  mask-size: max(100%, 177.7svh) max(100%, 56.28vw);
+  mask-position: center;
+  mask-repeat: no-repeat;
   mask-image:
     linear-gradient(to right, transparent 8.9%, #000 9.6%, #000 13.5%, transparent 14.25%),
     linear-gradient(to bottom, transparent 24%, #000 26.5%, #000 77%, transparent 79%);

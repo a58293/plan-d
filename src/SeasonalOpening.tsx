@@ -302,7 +302,9 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
       <button onClick={() => finish()}>跳过序章</button>
     </div>
     {showChoices&&tilt.mobile&&tilt.status&&<p className="opening-tilt-status" role="status">{tilt.status}</p>}
-    {showChoices && <div className="opening-editorial-stage"><section className="opening-editorial" aria-label="泥沼生花，水月照心">
+    {showChoices && <div className="opening-editorial-stage" onClick={event => {
+      if (!exiting && !(event.target as HTMLElement).closest('button, a')) finish();
+    }}><section className="opening-editorial" aria-label="泥沼生花，水月照心">
       <img className="opening-calligraphy" src="/opening/lotus-calligraphy-v1.webp" alt="泥沼生花，水月照心" width="1536" height="1024" />
       <div className="seasonal-opening-choices" aria-label="序章结束后的选择">
       <button disabled={!commerce.featuredProductUrl || exiting} onClick={() => finish(commerce.featuredProductUrl || undefined)}>
@@ -315,6 +317,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
       <small>{downloadProgress === 100 ? '正在准备播放' : '载入影像'}</small>
     </div>}
     {state === 'error' && <div className="opening-recovery"><p role="status">影像暂未载入</p><button onClick={() => setAttempt(n => n + 1)}>重试</button></div>}
-    {state === 'paused' && !showChoices && <button className="opening-resume" onClick={play} aria-label="继续播放">▷<small>轻触，入此水境</small></button>}
+    {state === 'paused' && !showChoices && <button className="opening-resume" onClick={play} aria-label="继续播放"><small>轻触，入此水境</small></button>}
   </div>;
 }
+

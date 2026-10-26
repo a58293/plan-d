@@ -113,6 +113,15 @@ body.home-experience-active {
     filter: none;
     transform: none;
   }
+
+  /* Keep the prologue beneath the scroll only while that scroll is opening.
+     Once a later chapter is selected, remove it immediately so the outgoing
+     scroll cannot reveal the hero illustration during its clip transition. */
+  .home-experience:not([data-home-chapter="series"]) .home-chapter:first-child[data-state="past"] {
+    opacity: 0;
+    visibility: hidden;
+    transition: none;
+  }
 }
 
 .home-experience .home-chapter > section {

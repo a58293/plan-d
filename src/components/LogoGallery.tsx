@@ -78,8 +78,8 @@ export default function LogoGallery() {
       {/* Header with Back Button */}
       <div className="w-full px-4 pt-8 md:px-12 md:pt-12 flex justify-between items-center">
         <Link to="/" className="inline-flex items-center gap-2 text-gray-400 hover:text-black transition-colors group">
-          <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
-          <span className="font-mono text-[10px] uppercase tracking-widest">Back to Index</span>
+          
+          <span className="font-mono text-[10px] uppercase tracking-widest">返回目录</span>
         </Link>
       </div>
 
@@ -101,8 +101,8 @@ export default function LogoGallery() {
       
       {/* Footer info */}
       <footer className="w-full px-4 py-8 md:px-12 border-t border-gray-50 flex justify-between items-center text-[10px] font-mono text-gray-400 uppercase tracking-widest">
-        <span>© {new Date().getFullYear()} Plan.D Studio</span>
-        <span>Total {images.length} Marks</span>
+        <span>© {new Date().getFullYear()} 绘屿造物</span>
+        <span>共 {images.length} 件作品</span>
       </footer>
     </section>
   );

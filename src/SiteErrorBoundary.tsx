@@ -11,7 +11,7 @@ export default class SiteErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error('LUMEN AURALIS page render failed', error, info.componentStack);
+    console.error('绘屿造物 page render failed', error, info.componentStack);
   }
 
   render() {

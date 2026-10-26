@@ -1,6 +1,12 @@
 {
   "shopUrl": null,
   "products": {
-    "jingxin": null
+    "jingxin": "https://item.taobao.com/item.htm?ft=t&id=1091535932342&spm=a21dvs.23580594.0.0.1d292c1bBvLu0W&sku_properties=6795401%3A44899347682%3B165324282%3A11863853"
+  },
+  "accessories": {
+    "clothing": "https://item.taobao.com/item.htm?id=1093750614098&spm=a213gs.v2success.0.0.2485483146d01z",
+    "eyes": "https://item.taobao.com/item.htm?id=1095911468647&spm=a213gs.v2success.0.0.302f4831krNTmQ&sku_properties=6795401%3A44996390532%3B165324282%3A11863853",
+    "wigs": "https://item.taobao.com/item.htm?id=1092839631755&spm=a213gs.v2success.0.0.4e8d4831QFd0th",
+    "jewelry": "https://item.taobao.com/item.htm?id=1094856209562&spm=a213gs.v2success.0.0.37df4831FvHs78"
   }
 }

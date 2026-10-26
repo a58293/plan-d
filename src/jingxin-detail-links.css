@@ -1,0 +1,11 @@
+.detail-related-links { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:24px 0 18px; }
+.detail-related-links > span { flex-basis:100%; color:#6d8277; font-size:11px; letter-spacing:.18em; }
+.detail-related-links a { display:inline-flex; align-items:center; justify-content:space-between; gap:20px; min-height:38px; padding:8px 13px; border:1px solid #62887b80; border-radius:4px; color:#16483d; background:#f4f5eddb; font-size:12px; font-weight:600; text-decoration:none; transition:background .2s,color .2s,transform .2s; }
+.detail-related-links a:hover,.detail-related-links a:focus-visible { background:#16483d; color:#f4f5ed; transform:translateY(-2px); }
+.detail-related-links a:focus-visible { outline:2px solid #16483d; outline-offset:2px; }
+.detail-related-links a span { font-size:15px; }
+.mf-page .detail-related-links { margin:22px 0 32px; }
+.mf-page .detail-related-links a { flex:1 1 auto; }
+.mf-page .mf-shop-primary { display:flex; align-items:center; justify-content:space-between; width:max-content; min-width:190px; margin:18px 0 12px; padding:14px 18px; border-radius:5px; color:#183b33; background:#e6d4aa; box-shadow:0 10px 24px #16483d30; font-size:13px; font-weight:700; text-decoration:none; }
+.mf-page .mf-shop-primary:focus-visible { outline:2px solid #16483d; outline-offset:3px; }
+@media (prefers-reduced-motion:reduce) { .detail-related-links a { transition:none; } }

@@ -219,7 +219,7 @@ export default function MCNGallery() {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 w-full p-6 md:p-12 z-50 mix-blend-difference text-white flex justify-between items-center pointer-events-none">
         <Link to="/" className="group flex items-center gap-2 font-tech uppercase tracking-widest text-sm hover:text-gray-300 transition-colors pointer-events-auto">
-          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+          
           Back
         </Link>
         <div className="font-tech font-black text-xl tracking-widest">绘屿造物</div>
@@ -255,7 +255,7 @@ export default function MCNGallery() {
                 © 2024 绘屿造物 MCN。
             </div>
             <div className="font-mono text-xs tracking-widest text-gray-500">
-                REPRESENTING UNIQUE TALENT
+                记录独特的光芒
             </div>
         </div>
       </footer>
@@ -281,14 +281,14 @@ export default function MCNGallery() {
               onClick={prevImage}
               className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors z-50 p-4"
             >
-              <ChevronLeft className="w-8 h-8 md:w-12 md:h-12" />
+              上一张
             </button>
 
             <button
               onClick={nextImage}
               className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors z-50 p-4"
             >
-              <ChevronRight className="w-8 h-8 md:w-12 md:h-12" />
+              下一张
             </button>
 
             {/* Loading Spinner */}
@@ -347,27 +347,27 @@ export default function MCNGallery() {
                 
                 <div className="grid grid-cols-2 gap-y-6 gap-x-8 font-mono text-sm tracking-widest mb-8">
                   <div>
-                    <div className="text-gray-500 mb-1">HEIGHT / 身高</div>
+                    <div className="text-gray-500 mb-1">身高</div>
                     <div>{lightboxState.profile.height}</div>
                   </div>
                   <div>
-                    <div className="text-gray-500 mb-1">WEIGHT / 体重</div>
+                    <div className="text-gray-500 mb-1">体重</div>
                     <div>{lightboxState.profile.weight}</div>
                   </div>
                   <div>
-                    <div className="text-gray-500 mb-1">CHEST / 胸围</div>
+                    <div className="text-gray-500 mb-1">胸围</div>
                     <div>{lightboxState.profile.chest}</div>
                   </div>
                   <div>
-                    <div className="text-gray-500 mb-1">WAIST / 腰围</div>
+                    <div className="text-gray-500 mb-1">腰围</div>
                     <div>{lightboxState.profile.waist}</div>
                   </div>
                   <div>
-                    <div className="text-gray-500 mb-1">HIPS / 臀围</div>
+                    <div className="text-gray-500 mb-1">臀围</div>
                     <div>{lightboxState.profile.hips}</div>
                   </div>
                   <div>
-                    <div className="text-gray-500 mb-1">SHOE / 鞋码</div>
+                    <div className="text-gray-500 mb-1">鞋码</div>
                     <div>{lightboxState.profile.shoe}</div>
                   </div>
                 </div>

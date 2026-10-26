@@ -17,14 +17,14 @@ const mainArt=[
 for(const art of mainArt){art.element=stage.querySelector(art.selector);art.element.src=art.src}
 const artDefaults=()=>({scale:1,x:0,y:0,travel:1,parallax:1,keyframes:{}});
 const timingDefaults=()=>({base:{start:0,end:1,fadeIn:0,fadeOut:0},close:{start:.16,end:.56,fadeIn:.3,fadeOut:.325},vision:{start:.54,end:.9,fadeIn:13/36,fadeOut:1/3}});
-const configDefaults=()=>({version:1,length:9,parallax:1,globalKeyframes:{},extraScenes:[],timing:timingDefaults(),names:Object.fromEntries(mainArt.slice(0,3).map(a=>[a.id,a.name])),art:Object.fromEntries(mainArt.slice(0,3).map(a=>[a.id,{desktop:artDefaults(),mobile:artDefaults()}]))});
+const configDefaults=()=>({version:1,length:15,parallax:1,globalKeyframes:{},extraScenes:[],timing:timingDefaults(),names:Object.fromEntries(mainArt.slice(0,3).map(a=>[a.id,a.name])),art:Object.fromEntries(mainArt.slice(0,3).map(a=>[a.id,{desktop:artDefaults(),mobile:artDefaults()}]))});
 function validateKeys(input,min,max){if(input===undefined)return [];if(!Array.isArray(input)||input.length>500)throw Error('关键帧格式不正确或数量过多。');const points=new Map();for(const point of input){if(!point||typeof point.at!=='number'||typeof point.value!=='number'||!Number.isFinite(point.at)||!Number.isFinite(point.value))throw Error('关键帧时间或数值不正确。');const at=clamp(point.at);points.set(at,{at,value:clamp(point.value,min,max),ease:['linear','smooth','hold'].includes(point.ease)?point.ease:'linear'})}return [...points.values()].sort((a,b)=>a.at-b.at)}
 function sampleValue(keys,p,fallback){if(!keys?.length)return fallback;if(p<=keys[0].at)return keys[0].value;for(let i=0;i<keys.length-1;i++){const a=keys[i],b=keys[i+1];if(p<=b.at){if(p===b.at)return b.value;let t=clamp((p-a.at)/(b.at-a.at));if(a.ease==='hold')t=0;else if(a.ease==='smooth')t=t*t*(3-2*t);return lerp(a.value,b.value,t)}}return keys.at(-1).value}
 let settings=configDefaults(),solo=null,lastPublished=-1;
 function validateSettings(input){
   if(!input||input.version!==1)throw Error('请选择本预览导出的参数文件。');
   const next=configDefaults(),number=(v,min,max,fallback)=>typeof v==='number'&&Number.isFinite(v)?clamp(v,min,max):fallback;
-  next.length=number(input.length,5,18,9);next.parallax=number(input.parallax,0,2,1);
+  next.length=number(input.length,5,18,15);next.parallax=number(input.parallax,0,2,1);
   next.globalKeyframes.parallax=validateKeys(input.globalKeyframes?.parallax,0,2);
   for(const id of ['base','close','vision']){const t=input.timing?.[id]||{},original=next.timing[id];const start=number(t.start,0,.97,original.start);next.timing[id]={start,end:number(t.end,start+.03,1,Math.max(start+.03,original.end)),fadeIn:number(t.fadeIn,0,.45,original.fadeIn),fadeOut:number(t.fadeOut,0,.45,original.fadeOut),fadeKeys:validateKeys(t.fadeKeys,0,.45)};if(typeof input.names?.[id]==='string')next.names[id]=input.names[id].slice(0,80)}
   if(input.extraScenes!==undefined&&!Array.isArray(input.extraScenes))throw Error('镜头列表格式不正确。');
@@ -51,12 +51,12 @@ function reconcileScenes(){
   if(solo&&!mainArt.some(a=>a.id===solo))solo=null;
   layers=[...stage.querySelectorAll('[data-depth]')];
 }
-function applySettings(input){settings=validateSettings(input);reconcileScenes();scene.style.height=reduced.matches?'auto':`${settings.length*(mobile.matches?820/9:100)}svh`;measure();draw(progress);request();notifyParent()}
+function applySettings(input){settings=validateSettings(input);reconcileScenes();scene.style.height=reduced.matches?'auto':`${settings.length*100}svh`;measure();draw(progress);request();notifyParent()}
 function artValues(id,device,p){const tune=settings.art[id]?.[device];if(!tune)return null;return Object.fromEntries(['scale','x','y','travel','parallax'].map(key=>[key,sampleValue(tune.keyframes[key],p,tune[key])]))}
 function tunedPose(art,x,y,scale,p){const tune=artValues(art.id,mobile.matches?'mobile':'desktop',p);return [x*tune.travel+tune.x,y*tune.travel+tune.y,scale*tune.scale]}
 function fadeValue(clip,p){return sampleValue(clip.fadeKeys,p,clip.fade??(clip.fadeIn+clip.fadeOut)/2)}
 function clipOpacity(clip,p){const duration=clip.end-clip.start,fade=fadeValue(clip,p);const fadeIn=(clip.fadeKeys?.length?fade:clip.fadeIn??clip.fade)*duration,fadeOut=(clip.fadeKeys?.length?fade:clip.fadeOut??clip.fade)*duration;return (fadeIn>0?smooth(clip.start,clip.start+fadeIn,p):Number(p>=clip.start))*(fadeOut>0?1-smooth(clip.end-fadeOut,clip.end,p):Number(p<=clip.end))}
-const reading=[{at:0,value:0},{at:.1,value:.11},{at:.24,value:.28},{at:.34,value:.32},{at:.53,value:.52},{at:.67,value:.68},{at:.88,value:.87},{at:1,value:1}];
+const reading=[{at:0,value:0},{at:1,value:1}];
 const palette=[
   {at:0,top:[241,244,236],bottom:[205,223,214],wash:[155,191,170],hue:0},
   {at:.35,top:[224,237,225],bottom:[157,192,176],wash:[116,171,145],hue:13},
@@ -68,6 +68,22 @@ const set=(name,value,unit='')=>scene.style.setProperty(name,`${value.toFixed(3)
 let origin=0,range=1,centers=[],copyHeight=0,target=0,progress=0,frame=0,lastTime=0;
 let lookX=0,lookY=0,targetX=0,targetY=0;
 function measure(){const r=scene.getBoundingClientRect();origin=r.top+scrollY;range=Math.max(1,r.height-stage.clientHeight);centers=articles.map(a=>a.offsetTop+a.offsetHeight/2);copyHeight=copy.clientHeight;target=clamp((scrollY-origin)/range)}
+function updateTextContrast(){
+  const art=[...stage.querySelectorAll('.portrait.base,.portrait.close,.character-vision')]
+    .filter(image=>Number(getComputedStyle(image).opacity)>=.12)
+    .map(image=>{
+      const rect=image.getBoundingClientRect();
+      return {rect,left:rect.left+rect.width*(mobile.matches?.22:.28)};
+    });
+  copy.querySelectorAll('article p').forEach(paragraph=>{
+    const text=paragraph.getBoundingClientRect();
+    const cuts=art.filter(({rect,left})=>text.right>left&&text.left<rect.right&&text.bottom>rect.top&&text.top<rect.bottom)
+      .map(({left})=>clamp((left-text.left)/Math.max(text.width,1)));
+    const split=cuts.length?Math.min(...cuts):1;
+    paragraph.style.setProperty('--art-split',`${(split*100).toFixed(2)}%`);
+  });
+}
+
 function draw(p){
   const approach=smooth(.06,.31,p),retreat=smooth(.37,.58,p),returning=smooth(.65,.93,p),forward=approach;
   set('--far-x',-2*approach+3*retreat-2*returning,'%');set('--far-y',-1.5*approach+2*retreat-1.5*returning,'%');set('--far-scale',1.09-.17*approach+.08*retreat-.06*returning);
@@ -97,6 +113,7 @@ function draw(p){
   copy.style.setProperty('--text-shift',`${(copyHeight/2-lerp(centers[first],centers[first+1],position-first)).toFixed(2)}px`);
   // 推近后前景视差更强，文字完全稳定。
   for(const layer of layers){const art=mainArt.find(a=>a.element===layer),tune=art?artValues(art.id,mobile.matches?'mobile':'desktop',p).parallax:1;const d=(Number(layer.dataset.depth)||0)*tune,amplitude=(1+forward*.24)*sampleValue(settings.globalKeyframes.parallax,p,settings.parallax);layer.style.setProperty('--look-x',`${(lookX*d*20*amplitude).toFixed(2)}px`);layer.style.setProperty('--look-y',`${(lookY*d*14*amplitude).toFixed(2)}px`)}
+  updateTextContrast();
   if(Math.abs(p-lastPublished)>.002){lastPublished=p;dispatchEvent(new CustomEvent('storypreview:progress',{detail:{progress:p}}))}
 }
 function animate(time){frame=0;const dt=Math.min(48,lastTime?time-lastTime:16.67);lastTime=time;
@@ -107,7 +124,7 @@ function animate(time){frame=0;const dt=Math.min(48,lastTime?time-lastTime:16.67
 }
 function request(){if(!reduced.matches&&!frame)frame=requestAnimationFrame(animate)}
 function onScroll(){target=clamp((scrollY-origin)/range);request()}
-function onResize(){scene.style.height=reduced.matches?'auto':`${settings.length*(mobile.matches?820/9:100)}svh`;measure();request()}
+function onResize(){scene.style.height=reduced.matches?'auto':`${settings.length*100}svh`;measure();request()}
 addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onResize,{passive:true});
 stage.addEventListener('pointermove',event=>{if(!fine.matches||reduced.matches)return;const r=stage.getBoundingClientRect();targetX=clamp((event.clientX-r.left-r.width/2)/(r.width/2),-1,1);targetY=clamp((event.clientY-r.top-r.height/2)/(r.height/2),-1,1);request()},{passive:true});
 stage.addEventListener('pointerleave',()=>{targetX=targetY=0;request()});

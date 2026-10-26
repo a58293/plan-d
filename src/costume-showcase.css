@@ -38,7 +38,7 @@
 }
 
 .flower-experience .detail-focus.is-costume-view.costume-mode-pieces .detail-image-window::after {
-  content: "DETAIL STUDY";
+  content: "细节观察";
   position: absolute;
   left: 28px;
   bottom: 78px;
@@ -204,7 +204,7 @@
 }
 
 .flower-experience .detail-focus.is-costume-view .costume-view-index::after {
-  content: " / MOVABLE LIGHT";
+  content: " / 流动的光";
 }
 
 .flower-experience .detail-focus.is-costume-view .costume-pan-controls {

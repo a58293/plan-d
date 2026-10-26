@@ -106,7 +106,7 @@
     padding: 18px 0 0;
   }
   .flower-experience .chapter-prologue .prologue-copy::after {
-    content: "SCROLL / SWIPE";
+    content: "滚动或滑动";
     display: block;
     margin-top: 20px;
     color: color-mix(in srgb, var(--chapter-ink) 42%, transparent);

@@ -21,7 +21,11 @@ import './mobile-compat.css';
 import './ui-unified.css';
 import './site-editorial-polish.css';
 import './home-prologue-handoff.css';
+import './luminous-actions.css';
+import {installLuminousActions} from './luminous-actions';
 document.documentElement.classList.add('site-ui');
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installLuminousActions, {once:true});
+else installLuminousActions();
 import MobileNavigation from './MobileNavigation';
 import DesktopNavigation from './DesktopNavigation';
 
@@ -33,20 +37,24 @@ const NotFoundPage = lazy(() => import('./NotFoundPage.tsx'));
 const LegalPage = lazy(() => import('./LegalPage.tsx'));
 const ReportPage = lazy(() => import('./ReportPage.tsx'));
 const HelpPage = lazy(() => import('./HelpPage.tsx'));
+const PurchaseNotice = lazy(() => import('./PurchaseNotice.tsx'));
 const ContactPage = lazy(() => import('./ContactPage.tsx'));
 const BodyCategoryPage = lazy(() => import('./BodyCategoryPage.tsx'));
 const BodyIndexPage = lazy(() => import('./BodyIndexPage.tsx'));
 const CategoryPage = lazy(() => import('./CategoryPage.tsx'));
+const AccessoryShowcase = lazy(() => import('./AccessoryShowcase.tsx'));
 const CollectorGallery = lazy(() => import('./CollectorGallery.tsx'));
 const PhotoDetail = lazy(() => import('./PhotoDetail'));
 const OpeningArchive = lazy(() => import('./OpeningArchive.tsx'));
 const legalPage = pathname.match(/^\/legal\/(terms|authenticity)$/)?.[1] as 'terms' | 'authenticity' | undefined;
+const accessoryKind = pathname.match(/^\/accessories\/(eyes|wigs|clothing|jewelry)$/)?.[1] as 'eyes' | 'wigs' | 'clothing' | 'jewelry' | undefined;
 const pageCode = pathname === '/' ? import('./BjdApp')
   : pathname === '/series/flower-gods/jingxin' ? import('./FlowerGodsExperience')
   : pathname === '/series/flower-gods' ? import('./FlowerGodsCollection')
   : pathname === '/verify' ? import('./VerifyPage')
-  : pathname === '/stories/openings' ? import('./OpeningArchive') : /^\/stories\/(collectors|official)\/[^/]+$/.test(pathname) ? import('./PhotoDetail') : ['/stories/collectors','/stories/official'].includes(pathname) ? import('./CollectorGallery') : categoryPages[pathname] ? import('./CategoryPage')
+  : pathname === '/stories/openings' ? import('./OpeningArchive') : /^\/stories\/(collectors|official)\/[^/]+$/.test(pathname) ? import('./PhotoDetail') : ['/stories/collectors','/stories/official'].includes(pathname) ? import('./CollectorGallery') : accessoryKind ? import('./AccessoryShowcase') : categoryPages[pathname] ? import('./CategoryPage')
   : pathname === '/help' ? import('./HelpPage')
+  : pathname === '/purchase-notice' ? import('./PurchaseNotice')
   : pathname === '/contact' ? import('./ContactPage')
   : pathname === '/report' ? import('./ReportPage')
   : legalPage ? import('./LegalPage') : import('./NotFoundPage');
@@ -94,7 +102,7 @@ function SiteRoot() {
       <div inert={showLoader || showOpening}>
       <PageRevealContext.Provider value={!showLoader && !showOpening}>
         <SiteErrorBoundary><Suspense fallback={null}>
-          {pathname === '/stories/openings' ? <OpeningArchive/> : /^\/stories\/(collectors|official)\/[^/]+$/.test(pathname) ? <PhotoDetail/> : ['/stories/collectors','/stories/official'].includes(pathname) ? <CollectorGallery/> : categoryPages[pathname] ? <CategoryPage path={pathname}/> : pathname === '/bodies' || pathname === '/bodies/female' ? <BodyIndexPage female={pathname==='/bodies/female'}/> : pathname === '/bodies/female-70' ? <BodyCategoryPage /> : pathname === '/contact' ? <ContactPage /> : pathname === '/help' ? <HelpPage /> : pathname === '/report' ? <ReportPage /> : pathname === '/verify' ? <VerifyPage /> : legalPage ? <LegalPage page={legalPage} />
+          {pathname === '/stories/openings' ? <OpeningArchive/> : /^\/stories\/(collectors|official)\/[^/]+$/.test(pathname) ? <PhotoDetail/> : ['/stories/collectors','/stories/official'].includes(pathname) ? <CollectorGallery/> : accessoryKind ? <AccessoryShowcase kind={accessoryKind}/> : categoryPages[pathname] ? <CategoryPage path={pathname}/> : pathname === '/bodies' || pathname === '/bodies/female' ? <BodyIndexPage female={pathname==='/bodies/female'}/> : pathname === '/bodies/female-70' ? <BodyCategoryPage /> : pathname === '/contact' ? <ContactPage /> : pathname === '/help' ? <HelpPage /> : pathname === '/purchase-notice' ? <PurchaseNotice /> : pathname === '/report' ? <ReportPage /> : pathname === '/verify' ? <VerifyPage /> : legalPage ? <LegalPage page={legalPage} />
             : resolveSiteRoute(pathname).view !== 'not-found' ? <UnifiedBjdSite /> : <NotFoundPage />}
         </Suspense></SiteErrorBoundary>
       </PageRevealContext.Provider>
@@ -114,3 +122,4 @@ createRoot(document.getElementById('root')!).render(
     <SiteRoot />
   </StrictMode>,
 );
+

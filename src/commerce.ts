@@ -21,3 +21,7 @@ export function productPurchaseUrl(slug: string, isFeatured: boolean) {
   const productLinks: Record<string, string | null> = links.products;
   return trustedStoreUrl(productLinks[slug]) || (isFeatured ? commerce.featuredProductUrl : null) || commerce.shopUrl;
 }
+
+export function accessoryPurchaseUrl(kind: 'eyes' | 'wigs' | 'clothing' | 'jewelry') {
+  return trustedStoreUrl(links.accessories[kind]);
+}

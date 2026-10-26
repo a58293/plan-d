@@ -248,6 +248,11 @@
   color: #edf5f1;
   font-size: clamp(45px, 5.8vw, 82px);
 }
+.site-shell .verify-copy .verify-title {
+  font-size: clamp(32px, 4.8vw, 72px);
+  line-height: 1.2;
+}
+.verify-title > span { display: block; white-space: nowrap; }
 .site-shell .verify-copy > p:not(.eyebrow) {
   grid-column: 1;
   max-width: 560px;

@@ -81,9 +81,9 @@ export default function FlowerGodsCollection({ onNavigate }: Props) {
     if (!direction) settleDrag();
   };
   if (window.matchMedia('(max-width: 700px)').matches) return <main className="mf-page mf-collection">
-    <header className="mf-header"><a href="/" onClick={followLink(onNavigate, '/')}>← 首页</a><MobileActions/></header>
+    <header className="mf-header"><a href="/" onClick={followLink(onNavigate, '/')}> 首页</a><MobileActions/></header>
     <Breadcrumbs path="/series/flower-gods"/>
-    <section><p className="mf-kicker">THE FLORAL DEITIES</p><h1>花神卷</h1><p>循花而行，遇见每一位花神。</p>
+    <section><p className="mf-kicker">花神卷</p><h1>花神卷</h1><p>循花而行，遇见每一位花神。</p>
       {flowerSeats.filter(seat=>seat.deity).map(seat=>{const deity=seat.deity!;return <article key={seat.id} className="mf-collection-card"><a href={flowerGodPath(deity)} onClick={followLink(onNavigate,flowerGodPath(deity))}><img src={deity.image} alt={deity.name+'完整造型'} /><div><h2>{deity.name}</h2><p>{deity.flower}</p><span>查看角色</span></div></a></article>;})}
       <aside className="mf-pending"><span>下一位花神</span><p>花期未至 · 敬请期待</p></aside>
     </section>
@@ -96,14 +96,14 @@ export default function FlowerGodsCollection({ onNavigate }: Props) {
     <header className="flower-collection-header">
       <a className="flower-collection-brand" href="/" onClick={followLink(onNavigate, '/')} aria-label="返回品牌首页">
         <img src={requiredImage('brandLogo')} alt="" width="34" height="40" />
-        <span>LUMEN AURALIS<small>绘屿造物</small></span>
+        <span>绘屿造物</span>
       </a>
-      <div className="flower-collection-actions"><SiteSearch tone="dark" /><a className="flower-collection-back" href="/#series" onClick={followLink(onNavigate, '/#series')}>← 返回系列</a></div>
+      <div className="flower-collection-actions"><SiteSearch tone="dark" /><a className="flower-collection-back" href="/#series" onClick={followLink(onNavigate, '/#series')}> 返回系列</a></div>
     </header>
     <Breadcrumbs path="/series/flower-gods"/>
     <main className="flower-collection-main">
       <div className="flower-collection-heading">
-        <div><h1>花神卷</h1><p className="flower-collection-kicker">THE FLORAL DEITIES</p></div>
+        <div><h1>花神卷</h1><p className="flower-collection-kicker">花神卷</p></div>
       </div>
       <section className="flower-carousel" data-moving={moving} data-direction={moveDirection} aria-roledescription="轮播" aria-label="花神选择" tabIndex={0}
         onKeyDown={event => {
@@ -177,9 +177,9 @@ export default function FlowerGodsCollection({ onNavigate }: Props) {
             animate={{ opacity: 1, x: 0, y: 0 }}
             exit={{ opacity: 0, x: moveDirection * -12, y: -5 }}
             transition={{ duration: reducedMotion ? 0 : .5, delay: reducedMotion ? 0 : .12, ease: [.22, 1, .36, 1] }}>
-            {!active.deity && <span className="flower-pending-index">02 · NEXT DEITY</span>}
+            {!active.deity && <span className="flower-pending-index">02 · 下一位花神</span>}
             <h2>{active.deity?.name || '下一位花神'}</h2>
-            <p>{active.deity?.flower || '花期未至'}<small>{active.deity?.englishName || 'TO BE REVEALED'}</small></p>
+            <p>{active.deity?.flower || '花期未至'}</p>
             {active.deity && <a className="flower-character-enter" href={flowerGodPath(active.deity)}
               onClick={event => {
                 if (busy.current || pointer.current) { event.preventDefault(); return; }
@@ -187,8 +187,8 @@ export default function FlowerGodsCollection({ onNavigate }: Props) {
               }}>进入角色 </a>}
           </motion.div>
         </AnimatePresence>
-        {navigationEnabled && <button type="button" className="flower-carousel-arrow flower-carousel-prev" aria-label="上一位花神" aria-disabled={moving} onClick={() => move(-1)}><span aria-hidden="true">←</span><small>上一位</small></button>}
-        {navigationEnabled && <button type="button" className="flower-carousel-arrow flower-carousel-next" aria-label="下一位花神" aria-disabled={moving} onClick={() => move(1)}><small>下一位</small><span aria-hidden="true">→</span></button>}
+        {navigationEnabled && <button type="button" className="flower-carousel-arrow flower-carousel-prev" aria-label="上一位花神" aria-disabled={moving} onClick={() => move(-1)}><small>上一位</small></button>}
+        {navigationEnabled && <button type="button" className="flower-carousel-arrow flower-carousel-next" aria-label="下一位花神" aria-disabled={moving} onClick={() => move(1)}><small>下一位</small></button>}
       </section>
       <div className="flower-selection-announcement" aria-live="polite" aria-atomic="true">
         {active.deity ? `${active.deity.name}，${active.deity.flower}，点击人物进入` : '花期未至，尚未开启'}

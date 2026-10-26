@@ -20,7 +20,7 @@ export type FlowerGod = {
 export const flowerGods: readonly FlowerGod[] = [
   {
     slug: 'jingxin', number: '01', name: '镜昕', flower: '荷花女神',
-    englishName: 'LOTUS DEITY',
+    englishName: '荷花女神',
     description: '花瓣、薄纱与水光，凝成新生与守护的形貌。',
     image: requiredImage('jingxinChoice'),
     avatar: jingxinAvatar,
@@ -50,9 +50,9 @@ export function transitionCopy(route: SiteRoute) {
     title: route.deity.name, english: route.deity.englishName,
   };
   if (route.view === 'collection') return {
-    kicker: '原典系列 · 选择花神', title: '花神卷', english: 'THE FLORAL DEITIES',
+    kicker: '原典系列 · 选择花神', title: '花神卷', english: '花神卷',
   };
-  return { kicker: '返回品牌主页', title: '绘屿造物', english: 'LUMEN AURALIS' };
+  return { kicker: '返回品牌主页', title: '绘屿造物', english: '绘屿造物' };
 }
 
 export function isPlainNavigation(event: {
@@ -62,3 +62,4 @@ export function isPlainNavigation(event: {
   return event.button === 0 && !event.defaultPrevented &&
     !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
 }
+

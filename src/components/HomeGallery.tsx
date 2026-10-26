@@ -77,7 +77,7 @@ function BrandMark({ logo }: { logo: HomeCategory }) {
         </span>
         <span className="hidden h-5 w-px bg-[#E2DDD5] sm:inline-block" />
         <span className="hidden font-en text-[12px] tracking-[0.08em] text-[#334155] whitespace-nowrap sm:inline-block md:text-[13px]">
-          <SplitColorText text="LUMEN AURALIS" defaultColor="#334155" fontClass="font-en" />
+          <SplitColorText text="绘屿造物" defaultColor="#334155" fontClass="font-en" />
         </span>
       </div>
     </div>
@@ -207,7 +207,7 @@ export default function HomeGallery() {
             transition={{ duration: 0.72, ease: "easeOut" }}
           >
             <p className="font-en text-[12px] uppercase tracking-[0.16em] text-[#475569] md:text-[14px]">
-              <SplitColorText text="LUMEN AURALIS STUDIO" defaultColor="#475569" fontClass="font-en" />
+              <SplitColorText text="绘屿造物" defaultColor="#475569" fontClass="font-en" />
             </p>
 
             <h1 className="mt-10 max-w-[860px] font-site text-[clamp(48px,6.1vw,104px)] leading-[0.98] tracking-[0.028em] text-[#0F172A]">

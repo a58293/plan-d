@@ -97,7 +97,7 @@ function PreviewMedia({ src, alt }: { src?: string; alt: string }) {
 function PageBack() {
   return (
     <Link to="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-black transition-colors group">
-      <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+      
       <span className="font-en text-[11px] uppercase tracking-[0.28em]">
         <SplitColorText text="Back" defaultColor="#6B7280" fontClass="font-en" />
       </span>
@@ -231,7 +231,7 @@ function Lightbox({
         <button
           onClick={onClose}
           className="absolute top-5 right-5 md:top-8 md:right-8 text-white/90 hover:text-white transition-colors"
-          aria-label="Close"
+          aria-label="关闭"
         >
           <X className="w-6 h-6" />
         </button>
@@ -241,16 +241,16 @@ function Lightbox({
             <button
               onClick={onPrev}
               className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 text-white/90 hover:text-white transition-colors p-2"
-              aria-label="Previous image"
+              aria-label="上一张图片"
             >
-              <ChevronLeft className="w-8 h-8" />
+              上一张
             </button>
             <button
               onClick={onNext}
               className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 text-white/90 hover:text-white transition-colors p-2"
-              aria-label="Next image"
+              aria-label="下一张图片"
             >
-              <ChevronRight className="w-8 h-8" />
+              下一张
             </button>
           </>
         )}
@@ -365,7 +365,7 @@ function IllustrationCategoryGallery() {
       <header className="sticky top-0 z-40 bg-white/92 backdrop-blur-md border-b border-gray-100">
         <div className="w-full px-5 py-5 md:px-10 md:py-6 lg:px-16 flex items-center justify-between gap-6">
           <Link to="/illustration" className="inline-flex items-center gap-2 text-gray-500 hover:text-black transition-colors group">
-            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+            
             <span className="font-en text-[11px] uppercase tracking-[0.28em]">
               <SplitColorText text="Back" defaultColor="#6B7280" fontClass="font-en" />
             </span>

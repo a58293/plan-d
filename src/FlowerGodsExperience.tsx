@@ -12,6 +12,8 @@ import MobileFlower from './MobileFlower';
 import Breadcrumbs from './Breadcrumbs';
 import PurchaseMenu from './PurchaseMenu';
 import {jingxinProductInfo} from './jingxin-product-info';
+import {officialInfo, verificationIsLive} from './official-info';
+import {detailAccessoryHref,jingxinDetailLinks} from './jingxin-detail-links';
 import "./flower-gods-experience.css";
 import "./flower-gods-refined.css";
 import "./cinematic-particle.css";
@@ -30,6 +32,7 @@ import "./detail-proportion-rebalance.css";
 import "./flower-gods-content-restructure.css";
 import './soft-ui.css';
 import './mobile-ux-redesign.css';
+import './jingxin-detail-links.css';
 const goddessImage = requiredImage('jingxinPortrait');
 const originalArtwork = requiredImage('jingxinConcept');
 const officialLogo = requiredImage('brandLogo');
@@ -38,25 +41,25 @@ const detailMedia: Record<string, MediaId> = {face:'detailFace', headdress:'deta
 const pieceMedia: Record<string, MediaId> = {veil:'pieceVeil', cape:'pieceCape', waist:'pieceWaist', skirt:'pieceSkirt', train:'pieceTrain'};
 
 const chapters = [
-  { id: "prologue", label: "登场", en: "INTRO", background: "#f7f6f1", ink: "#0f4841", muted: "#52766e", glow: "#c7ddd6" },
-  { id: "details", label: "细节", en: "DETAILS", background: "#f5f3ed", ink: "#183f3b", muted: "#5d706a", glow: "#c8ddd6" },
-  { id: "becoming", label: "官图", en: "GALLERY", background: "#f0f2ee", ink: "#173f3a", muted: "#527169", glow: "#cbded7" },
-  { id: "verification", label: "核验", en: "AUTHENTICITY", background: "#deebe5", ink: "#0f443e", muted: "#4b7067", glow: "#f8f7f1" },
+  { id: "prologue", label: "登场", en: "登场", background: "#f7f6f1", ink: "#0f4841", muted: "#52766e", glow: "#c7ddd6" },
+  { id: "details", label: "细节", en: "细节", background: "#f5f3ed", ink: "#183f3b", muted: "#5d706a", glow: "#c8ddd6" },
+  { id: "becoming", label: "官图", en: "图集", background: "#f0f2ee", ink: "#173f3a", muted: "#527169", glow: "#cbded7" },
+  { id: "verification", label: "核验", en: "防伪核验", background: "#deebe5", ink: "#0f443e", muted: "#4b7067", glow: "#f8f7f1" },
 ];
 
 const detailItems = [
-  { key: "face", number: "01", title: "妆面", en: "FACEUP", position: "50% 13%", scale: 2.7, description: "面部妆效与眉眼层次展示。" },
-  { key: "headdress", number: "02", title: "头饰", en: "HEADDRESS", position: "50% 5%", scale: 2.45, description: "花冠、头纱与固定结构展示。" },
-  { key: "ornament", number: "03", title: "饰件", en: "ORNAMENT", position: "50% 38%", scale: 2.05, description: "颈饰、胸饰与垂坠组件展示。" },
-  { key: "dress", number: "04", title: "衣装", en: "COSTUME", position: "50% 83%", scale: 1.45, description: "外层薄纱、刺绣与裙摆结构展示。" },
+  { key: "face", number: "01", title: "妆面", en: "妆面", position: "50% 13%", scale: 2.7, description: "面部妆效与眉眼层次展示。" },
+  { key: "headdress", number: "02", title: "头饰", en: "头饰", position: "50% 5%", scale: 2.45, description: "花冠、头纱与固定结构展示。" },
+  { key: "ornament", number: "03", title: "饰件", en: "饰件", position: "50% 38%", scale: 2.05, description: "颈饰、胸饰与垂坠组件展示。" },
+  { key: "dress", number: "04", title: "衣装", en: "衣装", position: "50% 83%", scale: 1.45, description: "外层薄纱、刺绣与裙摆结构展示。" },
 ];
 
 const garmentPieces = [
-  { key: "veil", number: "01", title: "头纱", en: "VEIL", position: "50% 7%", scale: 2.55, description: "花饰、薄纱与发间层次。" },
-  { key: "cape", number: "02", title: "荷叶披肩", en: "LOTUS CAPE", position: "50% 25%", scale: 2.05, description: "荷叶形制与透明叠层结构。" },
-  { key: "waist", number: "03", title: "腰间饰件", en: "WAIST ORNAMENT", position: "50% 44%", scale: 2.35, description: "珠饰、系带与垂坠关系。" },
-  { key: "skirt", number: "04", title: "绣纹外裙", en: "EMBROIDERED SKIRT", position: "50% 70%", scale: 1.72, description: "刺绣纹样、薄纱与裙身层次。" },
-  { key: "train", number: "05", title: "拖尾薄纱", en: "TRAILING VEIL", position: "50% 91%", scale: 1.52, description: "拖尾轮廓与轻薄垂坠感。" },
+  { key: "veil", number: "01", title: "头纱", en: "头纱", position: "50% 7%", scale: 2.55, description: "花饰、薄纱与发间层次。" },
+  { key: "cape", number: "02", title: "荷叶披肩", en: "荷叶披肩", position: "50% 25%", scale: 2.05, description: "荷叶形制与透明叠层结构。" },
+  { key: "waist", number: "03", title: "腰间饰件", en: "腰间饰件", position: "50% 44%", scale: 2.35, description: "珠饰、系带与垂坠关系。" },
+  { key: "skirt", number: "04", title: "绣纹外裙", en: "绣纹外裙", position: "50% 70%", scale: 1.72, description: "刺绣纹样、薄纱与裙身层次。" },
+  { key: "train", number: "05", title: "拖尾薄纱", en: "拖尾薄纱", position: "50% 91%", scale: 1.52, description: "拖尾轮廓与轻薄垂坠感。" },
 ];
 
 type ExperienceStyle = CSSProperties & Record<`--${string}`, string | number>;
@@ -66,10 +69,10 @@ type FlowerGodsExperienceProps = {
 };
 
 export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExperienceProps) {
-  const initialChapter = window.location.hash === '#gallery' ? 2 : 0;
+  const initialChapter = window.location.hash === '#gallery' ? 2 : window.location.hash === '#details' ? 1 : 0;
   const [activeChapter, setActiveChapter] = useState(initialChapter);
   const [portraitMode, setPortraitMode] = useState<"original" | "physical">("physical");
-  const [activeDetail, setActiveDetail] = useState(0);
+  const [activeDetail, setActiveDetail] = useState(() => Math.max(0,detailItems.findIndex(item => item.key === new URLSearchParams(window.location.search).get('detail'))));
   const [lensMagnification, setLensMagnification] = useState(2.1);
   const [costumeView, setCostumeView] = useState<"complete" | "pieces">("complete");
   const [activeGarmentPiece, setActiveGarmentPiece] = useState(0);
@@ -344,7 +347,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
           aria-label="返回绘屿造物首页"
         >
           <span className="experience-brand-mark"><img className="brand-logo-image" src={officialLogo} alt="" /></span>
-          <span><strong><SplitColorText text="LUMEN AURALIS" /></strong><small>绘屿造物</small></span>
+          <span><strong><SplitColorText text="绘屿造物" /></strong></span>
         </a>
         <div className="experience-chapter-title" aria-live="polite"><span>0{activeChapter + 1}</span>{theme.label} · {theme.en}</div>
         <div className="experience-header-actions"><SiteSearch tone="dark" /><a className="experience-verify-link" href="/verify">防伪核验 </a></div>
@@ -356,13 +359,13 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
       }}>
         <section className="product-info-dialog" role="dialog" aria-modal="true" aria-labelledby="product-info-title">
           <button className="product-info-close" type="button" autoFocus aria-label="关闭产品信息" onClick={() => setProductInfoOpen(false)}>×</button>
-          <p className="product-info-kicker">LOTUS DEITY · PRODUCT 01</p>
+          <p className="product-info-kicker">荷花女神 · 作品 01</p>
           <h2 id="product-info-title">镜昕产品信息</h2>
-          <p className="product-info-intro">配置、制作周期与服务说明将在这里集中更新，不影响造型细节的纯粹观看。</p>
+          <p className="product-info-intro">配置、商品制作周期与服务说明将在这里集中更新。实际购买内容以付款前商品页面及订单中确认的信息为准；预定商品的《云笺》会再次列明订单内容。</p>
           <dl className="product-info-grid">
             {jingxinProductInfo.map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
           </dl>
-          <div className="product-info-contact"><span>客服 19988424290</span><span>工作日 10:00—17:00</span></div>
+          <div className="product-info-contact"><span>客服 {officialInfo.servicePhone}</span><span>{officialInfo.serviceHours}</span></div>
           {commerce.featuredProductUrl || commerce.shopUrl
             ? <a className="product-info-shop" href={commerce.featuredProductUrl || commerce.shopUrl!} target="_blank" rel="noopener noreferrer">前往淘宝购买 </a>
             : <span className="product-info-shop is-pending" aria-disabled="true">淘宝链接整理中</span>}
@@ -396,17 +399,19 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
           data-state={chapterState(0)}
         >
           <div className="prologue-title-backdrop">
-            <div className="prologue-title-index"><span>01</span><i /><span>LOTUS DEITY</span></div>
+            <div className="prologue-title-index"><span>01</span><i /><span>荷花女神</span></div>
             <p className="prologue-title-kicker">原典序列 01</p>
             <h1><SplitColorText text="镜昕" /></h1>
-            {commerce.featuredProductUrl || commerce.shopUrl
-              ? <a className="desktop-taobao-entry" href={commerce.featuredProductUrl || commerce.shopUrl!} target="_blank" rel="noopener noreferrer">淘宝购买</a>
-              : <PurchaseMenu currentSlug="jingxin" label="淘宝购买" className="desktop-taobao-entry"/>}
-            <div className="character-product-entry"><button className="product-info-trigger" type="button" onClick={() => setProductInfoOpen(true)}>产品信息 <span>＋</span></button></div>
+            <div className="prologue-purchase-actions">
+              <div className="character-product-entry"><button className="product-info-trigger" type="button" onClick={() => setProductInfoOpen(true)}>产品信息 <span>＋</span></button></div>
+              {commerce.featuredProductUrl || commerce.shopUrl
+                ? <a className="desktop-taobao-entry" href={commerce.featuredProductUrl || commerce.shopUrl!} target="_blank" rel="noopener noreferrer">前往淘宝购买 </a>
+                : <PurchaseMenu currentSlug="jingxin" label="淘宝购买" className="desktop-taobao-entry"/>}
+            </div>
           </div>
 
           <div className="prologue-copy chapter-reveal">
-            <p className="prologue-lead">LOTUS DEITY · CHARACTER 01</p>
+            <p className="prologue-lead">荷花女神 · 角色 01</p>
             <div className="portrait-mode-switch" role="tablist" aria-label="角色形态">
               <button
                 type="button"
@@ -414,14 +419,14 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
                 aria-selected={portraitMode === "original"}
                 className={portraitMode === "original" ? "is-active" : ""}
                 onClick={() => setPortraitMode("original")}
-              ><span>01</span><b>原画</b><small>CONCEPT</small></button>
+              ><span>01</span><b>原画</b><small>原画</small></button>
               <button
                 type="button"
                 role="tab"
                 aria-selected={portraitMode === "physical"}
                 className={portraitMode === "physical" ? "is-active" : ""}
                 onClick={() => setPortraitMode("physical")}
-              ><span>02</span><b>实体</b><small>PHYSICAL</small></button>
+              ><span>02</span><b>实体</b><small>实体</small></button>
             </div>
             <button className="chapter-next" type="button" onClick={() => goToChapter(1)}>查看造型细节 </button>
             <a className="prologue-verify" href="/verify">防伪核验 </a>
@@ -440,7 +445,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
           </div>
 
           <div className="prologue-side-note chapter-reveal" aria-hidden="true">
-            <span>{portraitMode === "physical" ? "PHYSICAL PREVIEW" : "CONCEPT ART"}</span><i /><span>JINGXIN · 01</span>
+            <span>{portraitMode === "physical" ? "实物预览" : "原画设定"}</span><i /><span>镜昕 · 01</span>
           </div>
         </section>
 
@@ -453,7 +458,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
           data-state={chapterState(1)}
         >
           <div className="detail-intro chapter-reveal">
-            <p className="experience-eyebrow">FORM & DETAIL</p>
+            <p className="experience-eyebrow">造型细节</p>
             <h2><SplitColorText text="造型细节" /></h2>
             <span>{isCostumeDetail ? "查看全套上身，或拆解至单件细节。" : "选择区域查看局部。"}</span>
           </div>
@@ -481,7 +486,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
                   className={costumeView === "complete" ? "is-active" : ""}
                   onClick={() => setCostumeView("complete")}
                 >
-                  <span>01</span><b>全套上身</b><small>FULL LOOK</small>
+                  <span>01</span><b>全套上身</b><small>全套造型</small>
                 </button>
                 <button
                   type="button"
@@ -490,7 +495,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
                   className={costumeView === "pieces" ? "is-active" : ""}
                   onClick={() => setCostumeView("pieces")}
                 >
-                  <span>02</span><b>单件拆解</b><small>SEPARATE PIECES</small>
+                  <span>02</span><b>单件拆解</b><small>单件拆解</small>
                 </button>
               </div>
             )}
@@ -522,7 +527,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
             {isCostumeDetail && (
               <>
                 <span className="costume-view-index">
-                  04 / COSTUME · {costumeView === "complete" ? "FULL LOOK" : selectedGarmentPiece.en}
+                  04 / 衣装 · {costumeView === "complete" ? "全套造型" : selectedGarmentPiece.en}
                 </span>
                 {costumeView === "pieces" && (
                   <div className="costume-piece-rail" role="tablist" aria-label="衣装单件" onPointerDown={(event) => event.stopPropagation()}>
@@ -553,6 +558,10 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
                 ? "完整呈现服装比例、层次与上身轮廓；后续可直接替换为实体娃上身拍摄。"
                 : selectedGarmentPiece.description)
               : selectedDetail.description}</p>
+            <div className="detail-related-links" aria-label="查看镜昕的相关造物">
+              <span>继续看她的造物</span>
+              {jingxinDetailLinks[selectedDetail.key]?.map(link => <a key={link.kind} href={detailAccessoryHref(link.kind,selectedDetail.key)}>{link.label}</a>)}
+            </div>
             <label className="detail-magnification-control">
               <span><b>放大倍率</b><output>{lensMagnification.toFixed(1)}×</output></span>
               <input
@@ -568,7 +577,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
             </label>
             {isCostumeDetail && (
               <span className="costume-reading-meta">
-                {costumeView === "complete" ? "COMPLETE STYLING" : `${selectedGarmentPiece.number} / 05 · INDIVIDUAL PIECE`}
+                {costumeView === "complete" ? "完整造型" : `${selectedGarmentPiece.number} / 05 · 单件细节`}
               </span>
             )}
           </div>
@@ -610,11 +619,11 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
         >
           <img className="lotus-relief lotus-relief-verification" src={lotusReliefArtwork} alt="" aria-hidden="true" />
           <div className="verification-copy chapter-reveal">
-            <p className="experience-eyebrow">OFFICIAL IDENTITY · PRIVATE LOOKUP</p>
+            <p className="experience-eyebrow">官方身份 · 私密查询</p>
             <h2><span>官方身份</span><span><SplitColorText text="防伪核验" /></span></h2>
-            <p>输入娃证编号与淘宝订单号，连接绘屿造物官方档案，查看作品身份与首次核验记录。</p>
+            <p>{verificationIsLive ? '输入娃证编号与淘宝订单号，连接绘屿造物官方档案，查看作品身份与首次核验记录。' : '正式防伪核验尚未开放。可先查看虚构样例与未来的核验方式。'}</p>
             <div className="verification-formula"><span>娃证编号</span><i>＋</i><span>淘宝订单号</span></div>
-            <a href="/verify">进入防伪验证 </a>
+            <a href="/verify">{verificationIsLive ? '进入防伪验证' : '查看防伪预览'}</a>
           </div>
         </section>
       </div>

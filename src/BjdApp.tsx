@@ -11,6 +11,7 @@ import HomeSupport from './HomeSupport';
 import ReplayOpeningButton from './ReplayOpeningButton';
 import { commerce } from './commerce';
 import { useSmoothPosterPointer } from './useSmoothPosterPointer';
+import {officialInfo, verificationIsLive} from './official-info';
 import "./bjd.css";
 import "./brand-home-redesign.css";
 import "./home-chapter-experience.css";
@@ -22,11 +23,11 @@ import './mobile-ux-redesign.css';
 const officialLogo = requiredImage('brandLogo');
 
 const homeChapters = [
-  { id: "top", label: "序章", en: "HOME" },
-  { id: "series", label: "系列", en: "COLLECTIONS" },
-  { id: "collectors", label: "藏家", en: "MOMENTS" },
-  { id: "verify", label: "核验", en: "AUTHENTICITY" },
-  { id: "support", label: "帮助", en: "SUPPORT" },
+  { id: "top", label: "序章", en: "首页" },
+  { id: "series", label: "系列", en: "系列" },
+  { id: "collectors", label: "藏家", en: "藏家影像" },
+  { id: "verify", label: "核验", en: "防伪核验" },
+  { id: "support", label: "帮助", en: "帮助" },
 ];
 
 type HomeNavigationProps = {
@@ -50,7 +51,7 @@ function Header({ activeChapter, onNavigate, onOpenFeatured }: HomeNavigationPro
     <header className="site-header">
       <a {...chapterLink(0)} className={`brand${activeChapter === 0 ? " is-active" : ""}`} aria-label="返回首页序章">
         <span className="brand-mark"><img className="brand-logo-image" src={officialLogo} alt="" /></span>
-        <span><strong><SplitColorText text="LUMEN AURALIS" /></strong><small>绘屿造物</small></span>
+        <span><strong><SplitColorText text="绘屿造物" /></strong></span>
       </a>
       <nav aria-label="主导航">
         <a {...chapterLink(1)}><SplitColorText text="系列" /></a>
@@ -80,7 +81,7 @@ function Hero({ onExplore }: { onExplore: () => void }) {
       <img className="home-prologue-physical" src={requiredImage(featured.physicalMedia)} alt="镜昕 · 荷花女神实体造型" loading="lazy" decoding="async" />
       <div className="home-prologue-shade" aria-hidden="true" />
       <div className="hero-copy home-prologue-content reveal">
-        <p className="eyebrow home-current-up">序章 / 01 · {featured.name}<span>THE FLORAL DEITIES</span></p>
+        <p className="eyebrow home-current-up">序章 / 01 · {featured.name}<span>花神卷</span></p>
         <h1 id="home-prologue-title"><img src="/opening/lotus-calligraphy-v1.webp" alt="泥沼生花，水月照心" /></h1>
         <p className="hero-intro">镜昕 · 荷花女神<br />从泥沼生花，向水月照心。</p>
         <div className="hero-actions home-prologue-actions">
@@ -98,7 +99,7 @@ function Hero({ onExplore }: { onExplore: () => void }) {
         </div>
       </div>
       <div className="home-prologue-mode" role="group" aria-label="首页展示方式"><button type="button" aria-pressed={artMode==='poster'} onClick={()=>setArtMode('poster')}>画报</button><button type="button" aria-pressed={artMode==='physical'} onClick={()=>setArtMode('physical')}>实物</button></div>
-      <p className="home-prologue-index" aria-hidden="true">LUMEN AURALIS <span>01 / 05</span></p>
+      <p className="home-prologue-index" aria-hidden="true">绘屿造物 <span>01 / 05</span></p>
     </section>
   );
 }
@@ -117,21 +118,21 @@ function VerifyPreview() {
     <section className="verify-section" id="verify">
       <div className="verify-lotus" aria-hidden="true"><span className="petal petal-one" /><span className="petal petal-two" /><span className="petal petal-three" /><span className="petal petal-four" /><span className="petal petal-five" /></div>
       <div className="verify-copy reveal">
-        <p className="eyebrow">CERTIFICATE OF AUTHENTICITY</p><h2><SplitColorText text="让每一份相遇，都有迹可循" /></h2>
-        <p>输入娃证编号与淘宝订单号，连接绘屿造物官方档案，查看作品身份与首次核验记录。</p>
+        <p className="eyebrow">官方防伪核验</p><h2 className="verify-title"><span><SplitColorText text="让每一份相遇" /></span><span><SplitColorText text="都有迹可循" /></span></h2>
+        <p>{verificationIsLive ? '输入娃证编号与淘宝订单号，连接绘屿造物官方档案，查看作品身份与首次核验记录。' : '正式防伪核验尚未开放。现在可以预览未来的核验流程，不需要提供真实订单。'}</p>
         <a className="light-button home-verify-primary" href="/verify" aria-label="进入绘屿造物官方防伪核验">
           <div className="lookup-card-heading">
             <img src={officialLogo} alt="" width="42" height="49" />
-            <span>核验前，请准备<small>BEFORE YOUR LOOKUP</small></span>
+            <span>{verificationIsLive ? '核验前，请准备' : '正式核验将需要'}<small>核验须知</small></span>
           </div>
           <div className="lookup-card-credentials">
             <div><span>01</span><p>娃证编号<small>查看随娃附赠的实体娃证</small></p></div>
             <div><span>02</span><p>淘宝订单号<small>查看购买时的订单详情</small></p></div>
           </div>
           <div className="lookup-card-action">
-            <span>进入防伪核验<small>OFFICIAL LOOKUP</small></span>
+            <span>{verificationIsLive ? '进入防伪核验' : '查看防伪预览'}<small>官方核验</small></span>
           </div>
-          <span className="lookup-card-note">加密比对 · 浏览器不保存订单信息</span>
+          <span className="lookup-card-note">{verificationIsLive ? '加密比对 · 浏览器不保存订单信息' : '虚构样例 · 不接收真实订单信息'}</span>
         </a>
       </div>
     </section>
@@ -141,8 +142,8 @@ function VerifyPreview() {
 function Footer() {
   return (
     <footer className="home-footer">
-      <p className="home-footer-summary">绘屿造物 · 客服 19988424290 · 工作日 10:00—17:00</p>
-      <p className="home-footer-copyright">© 2026 LUMEN AURALIS · <a href="/legal/terms">网站条款</a> · <a href="/legal/authenticity">防伪说明</a> · <a href="/report">侵权举报</a></p>
+      <p className="home-footer-summary">{officialInfo.brandName} · 客服 {officialInfo.servicePhone} · {officialInfo.serviceHours}</p>
+      <p className="home-footer-copyright">© 2026 绘屿造物 · <a href="/legal/terms">网站条款</a> · <a href="/legal/authenticity">防伪说明</a> · <a href="/report">侵权举报</a></p>
     </footer>
   );
 }

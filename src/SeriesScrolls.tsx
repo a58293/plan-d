@@ -70,7 +70,9 @@ export default function SeriesScrolls({ onOpenFlowerGods, active = false }: Prop
   const gust = Math.sin(breeze * Math.PI * 2.3) * (1 - breeze) * 1.15;
   const style: SceneStyle = {
     '--series-roll': roll.toFixed(4),
-    '--series-edge': `${(9 + 66 * (1 - roll)).toFixed(3)}%`,
+    // The artwork uses a 16:9 cover crop. Keep its opening edge attached to
+    // the source image's left roller across narrow and tall viewports.
+    '--series-edge': `calc(50vw - max(36vw, 63.972svh) + ${(66 * (1 - roll)).toFixed(3)}%)`,
     '--series-floral': floral.toFixed(3),
     '--series-crane': crane.toFixed(3),
     '--series-rod': Math.min(1, roll * 16).toFixed(3),
@@ -89,7 +91,7 @@ export default function SeriesScrolls({ onOpenFlowerGods, active = false }: Prop
       <div className="series-scroll-crane" aria-hidden="true" />
       <div className="series-scroll-breeze" aria-hidden="true" />
       <div className="series-scroll-petals" aria-hidden="true">{Array.from({ length: 12 }, (_, index) => <i key={index} />)}</div>
-      <div className="series-scroll-label" aria-hidden="true"><span>01 / THE FLORAL DEITIES</span><strong>花神卷</strong><small>{progress >= 1 ? '轻触画卷，进入花神卷' : '画卷展开中'}</small></div>
+      <div className="series-scroll-label" aria-hidden="true"><span>01 / 花神卷</span><strong>花神卷</strong><small>{progress >= 1 ? '轻触画卷，进入花神卷' : '画卷展开中'}</small></div>
       <button className="series-scroll-open" type="button" onClick={open} aria-label={progress >= 1 ? '进入花神卷' : '花神卷画卷展开中'} />
     </div>
   </section>;

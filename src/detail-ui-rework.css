@@ -154,7 +154,7 @@
   opacity: 1;
   filter: brightness(.98) saturate(.94) contrast(1.035) drop-shadow(0 20px 28px rgba(0,24,23,.2));
 }
-.costume-view-index::after { content: " / DETAIL LENS"; }
+.costume-view-index::after { content: " / 细节视角"; }
 .costume-focus-marker {
   position: absolute;
   z-index: 7;

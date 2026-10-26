@@ -1688,7 +1688,7 @@
 }
 
 .flower-experience .detail-focus.is-costume-view .costume-view-index::after {
-  content: " / ANGLED LIGHT";
+  content: " / 侧光";
   color: rgba(224, 239, 232, 0.42);
 }
 

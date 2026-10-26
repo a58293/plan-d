@@ -85,9 +85,9 @@ export default function BrandLoadingScreen({ onComplete, tracker, onTimeout }: B
       </div>
 
       <div className="brand-loader-meta" aria-hidden="true">
-        <span>LUMEN AURALIS</span>
+        <span>绘屿造物</span>
         <i />
-        <small>ARCHIVE AWAKENING</small><b>{Math.round(progress * 100)}%</b>
+        <small>档案开启中</small><b>{Math.round(progress * 100)}%</b>
       </div>
       <div className="brand-loader-progress" aria-hidden="true"><i style={{ transform: `scaleX(${progress})` }} /></div>
     </div>

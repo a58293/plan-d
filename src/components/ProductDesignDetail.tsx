@@ -120,8 +120,8 @@ export default function ProductDesignDetail() {
         to="/installation"
         className="fixed top-8 left-8 z-40 flex items-center gap-2 text-gray-400 hover:text-black transition-colors group"
       >
-        <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Back</span>
+        
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em]">返回</span>
       </Link>
 
       <div className="w-full h-screen relative flex items-center justify-center overflow-hidden">
@@ -185,16 +185,16 @@ export default function ProductDesignDetail() {
             <button
               onClick={prevImage}
               className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 text-gray-300 hover:text-black z-30 p-4 transition-colors hidden md:block"
-              aria-label="Previous image"
+              aria-label="上一张图片"
             >
-              <ChevronLeft size={32} strokeWidth={1} />
+              上一张
             </button>
             <button
               onClick={nextImage}
               className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 text-gray-300 hover:text-black z-30 p-4 transition-colors hidden md:block"
-              aria-label="Next image"
+              aria-label="下一张图片"
             >
-              <ChevronRight size={32} strokeWidth={1} />
+              下一张
             </button>
 
             <div className="absolute bottom-8 left-0 w-full flex flex-col items-center gap-4">
@@ -233,7 +233,7 @@ export default function ProductDesignDetail() {
             <button
               className="absolute top-8 right-8 text-white/50 hover:text-white z-50 p-2 transition-colors"
               onClick={() => setIsFullscreen(false)}
-              aria-label="Close fullscreen image"
+              aria-label="关闭全屏图片"
             >
               <X size={24} strokeWidth={1} />
             </button>
