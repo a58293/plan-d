@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import {requiredImage, detailImage, type MediaId} from './media-library';
-import EmbeddedStory from './EmbeddedStory';
+import MobileStoryReader from './MobileStoryReader';
 import {VerificationConsole} from './VerifyPage';
 import {MobileActions} from './PurchaseMenu';
 import {jingxinProductInfo} from './jingxin-product-info';
@@ -92,10 +92,11 @@ export default function MobileFlower({details, pieces, onBack}:Props) {
       <h3>{item.title}</h3><p>{item.description}</p>
       <div className="detail-related-links" aria-label="查看镜昕的相关造物"><span>继续看她的造物</span>{jingxinDetailLinks[details[detail].key]?.map(link=><a key={link.kind} href={detailAccessoryHref(link.kind,details[detail].key)}>{link.label}</a>)}</div>
     </section>
-    <section id="gallery"><p className="mf-kicker">镜昕 · 官方影像</p><h2>镜昕的故事</h2><EmbeddedStory mode="document" /></section>
+    <section id="gallery"><p className="mf-kicker">镜昕 · 官方影像</p><h2>镜昕的故事</h2><MobileStoryReader /></section>
     <section id="info"><p className="mf-kicker">产品信息</p><h2>产品信息</h2><dl>{jingxinProductInfo.map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl><p>客服 {officialInfo.servicePhone}<br/>{officialInfo.serviceHours}</p></section>
     <section id="auth" className="mf-auth"><p className="mf-kicker">官方核验</p><h2>防伪核验</h2><p>{verificationIsLive ? '请准备娃证编号与购买时的淘宝订单号。' : '正式核验暂未开放；以下只展示虚构样例，请勿提交真实订单信息。'}</p><VerificationConsole /></section>
     <footer className="mf-footer">绘屿造物</footer>
     {viewer&&<ImageViewer src={media.src} onClose={()=>setViewer(false)} />}
   </main>;
 }
+

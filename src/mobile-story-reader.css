@@ -1,0 +1,14 @@
+/* On phones, keep the complete story in a calm reading column after its portrait. */
+.mf-page #gallery .mobile-story-reader { margin:26px -20px -38px; background:#edf3ec; color:#193e36; }
+.mobile-story-portrait { margin:0; padding:30px 20px 16px; background:radial-gradient(ellipse at 50% 55%,#dcece3 0%,#d5e6dc 48%,#e9f0e9 100%); }
+.mobile-story-portrait img { display:block; width:100%; height:min(64svh,650px); object-fit:contain; object-position:center bottom; }
+.mobile-story-portrait figcaption { margin-top:15px; color:#517568; font-size:11px; letter-spacing:.14em; text-align:center; }
+.mobile-story-pages { padding:50px clamp(24px,6vw,38px) 88px; }
+.mobile-story-eyebrow { color:#648678; font-size:11px; letter-spacing:.24em; }
+.mobile-story-pages h3 { margin:12px 0 44px; font-family:'Noto Serif SC','Songti SC',serif!important; font-size:clamp(26px,7vw,35px); font-weight:500; line-height:1.45; letter-spacing:.07em; }
+.mobile-story-chapter { padding:44px 0 34px; border-top:1px solid rgba(34,78,66,.22); }
+.mobile-story-number { color:#8b9f91; font-size:11px; letter-spacing:.18em; }
+.mobile-story-chapter h4 { margin:15px 0 30px; font-family:'Noto Serif SC','Songti SC',serif!important; font-size:clamp(23px,6vw,30px); font-weight:500; line-height:1.5; }
+.mf-page .mobile-story-chapter p { margin:0 0 1.5em; color:#25473e; font-family:'Noto Serif SC','Songti SC',serif!important; font-size:clamp(16px,4.15vw,19px); line-height:2.05; letter-spacing:.025em; overflow-wrap:anywhere; }
+.mobile-story-chapter p:last-child { margin-bottom:0; }
+@media(max-width:380px){.mobile-story-pages{padding-left:22px;padding-right:22px}.mf-page .mobile-story-chapter p{font-size:16px;line-height:1.95}}

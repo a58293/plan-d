@@ -23,6 +23,8 @@ import './site-editorial-polish.css';
 import './home-prologue-handoff.css';
 import './luminous-actions.css';
 import {installLuminousActions} from './luminous-actions';
+import {installMobilePurchaseNavigation} from './commerce';
+installMobilePurchaseNavigation();
 document.documentElement.classList.add('site-ui');
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installLuminousActions, {once:true});
 else installLuminousActions();
@@ -122,4 +124,5 @@ createRoot(document.getElementById('root')!).render(
     <SiteRoot />
   </StrictMode>,
 );
+
 
