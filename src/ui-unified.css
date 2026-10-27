@@ -73,11 +73,12 @@ html.site-ui .mf-gallery-grid img { width:100%; height:100%; object-fit:contain;
  html.site-ui .site-breadcrumbs { top:64px; left:20px; right:16px; font-size:11px; }
  html.site-ui .mf-page { padding-top:102px; }
  html.site-ui .mh-page { padding-top:64px; }
- html.site-ui .mf-nav { top:102px; z-index:120; border:0 !important; background:#0b302bee; backdrop-filter:blur(12px); }
- html.site-ui .mf-page section[id] { scroll-margin-top:155px; }
+ html.site-ui .mf-nav { top:0; z-index:960; border:0 !important; background:#0b302bee; backdrop-filter:blur(12px); }
+ html.site-ui .mf-page section[id] { scroll-margin-top:54px; }
  html.site-ui .legal-world>main { padding-top:132px !important; }
  html.site-ui .verify-world { padding-top:100px; }
  html.site-ui .legal-header>div { gap:8px; }
  html.site-ui .legal-header>div>a { display:none; }
  html.site-ui .legal-brand { font-size:11px; }
 }
+

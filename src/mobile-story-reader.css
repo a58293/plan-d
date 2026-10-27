@@ -1,14 +1,21 @@
-/* On phones, keep the complete story in a calm reading column after its portrait. */
-.mf-page #gallery .mobile-story-reader { margin:26px -20px -38px; background:#edf3ec; color:#193e36; }
-.mobile-story-portrait { margin:0; padding:30px 20px 16px; background:radial-gradient(ellipse at 50% 55%,#dcece3 0%,#d5e6dc 48%,#e9f0e9 100%); }
-.mobile-story-portrait img { display:block; width:100%; height:min(64svh,650px); object-fit:contain; object-position:center bottom; }
-.mobile-story-portrait figcaption { margin-top:15px; color:#517568; font-size:11px; letter-spacing:.14em; text-align:center; }
-.mobile-story-pages { padding:50px clamp(24px,6vw,38px) 88px; }
-.mobile-story-eyebrow { color:#648678; font-size:11px; letter-spacing:.24em; }
-.mobile-story-pages h3 { margin:12px 0 44px; font-family:'Noto Serif SC','Songti SC',serif!important; font-size:clamp(26px,7vw,35px); font-weight:500; line-height:1.45; letter-spacing:.07em; }
-.mobile-story-chapter { padding:44px 0 34px; border-top:1px solid rgba(34,78,66,.22); }
-.mobile-story-number { color:#8b9f91; font-size:11px; letter-spacing:.18em; }
-.mobile-story-chapter h4 { margin:15px 0 30px; font-family:'Noto Serif SC','Songti SC',serif!important; font-size:clamp(23px,6vw,30px); font-weight:500; line-height:1.5; }
-.mf-page .mobile-story-chapter p { margin:0 0 1.5em; color:#25473e; font-family:'Noto Serif SC','Songti SC',serif!important; font-size:clamp(16px,4.15vw,19px); line-height:2.05; letter-spacing:.025em; overflow-wrap:anywhere; }
-.mobile-story-chapter p:last-child { margin-bottom:0; }
-@media(max-width:380px){.mobile-story-pages{padding-left:22px;padding-right:22px}.mf-page .mobile-story-chapter p{font-size:16px;line-height:1.95}}
+.mf-page #gallery .mobile-story-reader{margin:24px -20px -38px;background:#edf3ec;color:#193e36}
+.mobile-story-book{height:min(72svh,680px);min-height:420px;background:#dce9e3;display:grid;place-items:center;overflow:hidden;touch-action:pan-y}
+.mobile-story-book img{display:block;width:100%;height:100%;object-fit:contain;animation:mobile-story-page-in .35s ease both}
+@keyframes mobile-story-page-in{from{opacity:.35;transform:translateX(12px)}to{opacity:1;transform:none}}
+.mobile-story-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px 0}
+.mobile-story-controls button{appearance:none;border:0;background:transparent;color:#193e36;padding:10px 4px;min-width:68px;min-height:44px;font-size:14px;cursor:pointer}
+.mobile-story-controls button:disabled{opacity:.32;cursor:default}
+.mobile-story-controls span{font-size:12px;letter-spacing:.14em;color:#527366}
+.mf-page .mobile-story-hint{text-align:center;font-size:12px;color:#527366;margin:2px 0 22px}
+.mobile-story-fulltext{border-top:1px solid #b9cfc2}
+.mobile-story-fulltext summary{cursor:pointer;list-style:none;padding:20px 24px;color:#193e36;font-size:15px;min-height:60px}
+.mobile-story-fulltext summary::-webkit-details-marker{display:none}
+.mobile-story-fulltext summary::after{content:'＋';float:right;font-size:18px;line-height:1}
+.mobile-story-fulltext[open] summary::after{content:'－'}
+.mobile-story-pages{padding:20px clamp(24px,6vw,38px) 70px}
+.mobile-story-pages h3{font-size:clamp(25px,7vw,34px);font-weight:500;line-height:1.45;margin:0 0 36px}
+.mobile-story-chapter{padding:32px 0 20px;border-top:1px solid #bed1c4}
+.mobile-story-chapter h4{font-size:clamp(22px,6vw,28px);font-weight:500;line-height:1.5;margin:0 0 24px}
+.mf-page .mobile-story-chapter p{margin:0 0 1.5em;color:#25473e;font-size:clamp(16px,4.15vw,19px);line-height:2;letter-spacing:.025em;overflow-wrap:anywhere}
+@media(max-width:380px){.mobile-story-book{min-height:350px}.mf-page .mobile-story-chapter p{font-size:16px;line-height:1.9}}
+@media(prefers-reduced-motion:reduce){.mobile-story-book img{animation:none}}

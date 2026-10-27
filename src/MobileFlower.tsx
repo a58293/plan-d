@@ -77,7 +77,7 @@ export default function MobileFlower({details, pieces, onBack}:Props) {
   return <main className="mf-page" ref={root}>
     <header className="mf-header"><a href="/series/flower-gods" onClick={e=>{if(onBack){e.preventDefault();onBack();}}}> 花神卷</a><MobileActions currentSlug="jingxin"/></header>
     <Breadcrumbs path="/series/flower-gods/jingxin" section={({'intro':'登场','detail':'细节','gallery':'官图','info':'产品信息','auth':'核验'} as Record<string,string>)[section]}/>
-    <nav className="mf-nav" aria-label="角色内容">{[['intro','角色介绍'],['detail','造型细节'],['gallery','官方摄影'],['auth','防伪核验']].map(([id,label])=><a key={id} href={'#'+id} aria-current={section===id?'location':undefined}>{label}</a>)}</nav>
+    <nav className="mf-nav" aria-label="角色内容">{[['intro','角色介绍'],['detail','造型细节'],['gallery','故事图册'],['auth','防伪核验']].map(([id,label])=><a key={id} href={'#'+id} aria-current={section===id?'location':undefined}>{label}</a>)}</nav>
     <section id="intro" className="mf-intro"><p className="mf-kicker">花神卷 · 原典 01</p><h1>镜昕 <small>荷花女神</small></h1><p>循着花与光的轨迹，走近镜昕。</p>
       <div className="character-product-entry"><a href="#info">产品信息 ＋</a></div>
       {commerce.featuredProductUrl && <a className="mf-shop-primary" href={commerce.featuredProductUrl} target="_blank" rel="noopener noreferrer">前往淘宝购买 </a>}
@@ -92,11 +92,12 @@ export default function MobileFlower({details, pieces, onBack}:Props) {
       <h3>{item.title}</h3><p>{item.description}</p>
       <div className="detail-related-links" aria-label="查看镜昕的相关造物"><span>继续看她的造物</span>{jingxinDetailLinks[details[detail].key]?.map(link=><a key={link.kind} href={detailAccessoryHref(link.kind,details[detail].key)}>{link.label}</a>)}</div>
     </section>
-    <section id="gallery"><p className="mf-kicker">镜昕 · 官方影像</p><h2>镜昕的故事</h2><MobileStoryReader /></section>
+    <section id="gallery"><p className="mf-kicker">镜昕 · 故事图册</p><h2>镜昕的故事</h2><MobileStoryReader /></section>
     <section id="info"><p className="mf-kicker">产品信息</p><h2>产品信息</h2><dl>{jingxinProductInfo.map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl><p>客服 {officialInfo.servicePhone}<br/>{officialInfo.serviceHours}</p></section>
     <section id="auth" className="mf-auth"><p className="mf-kicker">官方核验</p><h2>防伪核验</h2><p>{verificationIsLive ? '请准备娃证编号与购买时的淘宝订单号。' : '正式核验暂未开放；以下只展示虚构样例，请勿提交真实订单信息。'}</p><VerificationConsole /></section>
     <footer className="mf-footer">绘屿造物</footer>
     {viewer&&<ImageViewer src={media.src} onClose={()=>setViewer(false)} />}
   </main>;
 }
+
 
