@@ -248,3 +248,19 @@ html.site-ui body :is(.purchase-chapters,.detail-related-links) > a[href]::after
  html.site-ui body .purchase-dialog .purchase-sheet a.purchase-outbound.lumen-action{display:flex!important;align-items:center;justify-content:center;width:100%!important;min-width:0!important;min-height:48px;box-sizing:border-box;padding:12px 18px!important;border:0!important;border-radius:8px!important;background:#17483e!important;color:#fffdf5!important;font-size:16px!important;font-weight:700!important;letter-spacing:.08em;text-align:center;text-decoration:none!important;text-shadow:none!important;box-shadow:none!important}
  html.site-ui body .purchase-dialog .purchase-sheet a.purchase-outbound:is(:hover,:focus-visible,:active){background:#216353!important;color:#fffdf5!important;text-shadow:0 0 8px #ffffffa6!important}
 }
+
+/* Dark exhibition scenes need the same readable navigation as the opening. */
+@media (min-width:701px){
+ html.site-ui body:has(.flower-experience[data-chapter='details']) .desktop-navigation,
+ html.site-ui body:has(.flower-experience[data-chapter='prologue']) .desktop-navigation,
+ html.site-ui body:has(.home-experience[data-home-chapter='top']) .desktop-navigation,
+ html.site-ui body:has(.home-experience[data-home-chapter='verify']) .desktop-navigation{
+  background:rgba(8,43,39,.58)!important;
+  backdrop-filter:blur(20px) saturate(1.1)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(1.1)!important;
+  color:#f5f7f1!important;
+ }
+ html.site-ui body:has(.flower-experience[data-chapter='details']) :is(.desktop-nav-brand,.desktop-nav-row nav button,.desktop-navigation .site-search-trigger){color:#f5f7f1!important;text-shadow:0 1px 8px rgba(0,20,17,.35)!important;opacity:1!important}
+ html.site-ui body:has(.flower-experience[data-chapter='details']) .desktop-nav-brand img{filter:brightness(0) invert(1)!important}
+ html.site-ui body:has(.flower-experience[data-chapter='details']) .desktop-navigation .archive-directory{color:#173d35!important}
+}
