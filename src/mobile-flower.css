@@ -50,3 +50,6 @@ html body .mf-page, html body .mf-page :is(p,a,button,span,small,label,input,em,
 .mf-collection-card a>div>span { display:block; border-top:1px solid #163f3325; padding-top:14px; }
 .mf-pending { padding:24px 0; margin-top:20px; border-top:1px solid #163f3325; }
 .mf-pending p { margin:8px 0; font-size:13px; }
+
+.mf-page #gallery{position:relative;z-index:1;isolation:isolate;background:#0b302b;padding-top:clamp(80px,14svh,132px)}
+.mf-page #gallery h2{position:relative;z-index:2;margin-bottom:26px}

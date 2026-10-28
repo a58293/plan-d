@@ -42,3 +42,7 @@ html body .mh-page,html body .mh-page :is(p,span,a,button,small,strong,b,i) { fo
 .mh-footer small { display:block; margin-top:4px; }
 .mh-footer div { display:flex; gap:22px; margin-top:24px; }
 @media(max-width:360px) { .mh-header{padding-inline:16px}.mh-heading h1{font-size:38px}.mh-art{height:300px} }
+
+.mh-auth>a{display:block}.mh-auth>a::after{content:"轻触进入";display:block;margin-top:6px;font-size:11px;letter-spacing:.12em;color:#607b6c}
+
+.mh-prologue-actions .mh-cta{display:inline-flex;flex-direction:column;align-items:flex-start}.mh-prologue-actions .story-desktop-hint{display:block;margin-top:5px;font-size:11px;opacity:.72;font-weight:400}

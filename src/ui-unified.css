@@ -82,3 +82,7 @@ html.site-ui .mf-gallery-grid img { width:100%; height:100%; object-fit:contain;
  html.site-ui .legal-brand { font-size:11px; }
 }
 
+
+/* Hide the browser text caret on static copy; keep form fields editable. */
+html.site-ui body{caret-color:transparent}
+html.site-ui body :is(input,textarea,[contenteditable="true"]){caret-color:auto}

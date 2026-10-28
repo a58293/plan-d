@@ -9,6 +9,7 @@ import {usePosterTilt} from './usePosterTilt';
 export const openingIssue = 'lotus-2026-09-still-v2';
 export const openingKey = `lumen-opening:${openingIssue}`;
 const source = '/opening/lotus-2026-09-music-v4.mp4';
+const soundtrackSource = '/opening/jingxin-prologue-bgm-20261027.mp3';
 const posterSource = '/opening/lotus-2026-09-still-v2.webp';
 const videoEnd = 10.8;
 export function shouldShowOpening(path: string) {
@@ -18,6 +19,7 @@ export function shouldShowOpening(path: string) {
 
 export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () => void; onReveal: () => void}) {
   const video = useRef<HTMLVideoElement>(null);
+  const soundtrack = useRef<HTMLAudioElement>(null);
   const dialog = useRef<HTMLDivElement>(null);
   const poster = useRef<HTMLImageElement>(null);
   const capturing = useRef(false);
@@ -34,8 +36,6 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
   const exitFrame = useRef(0);
   const exitTimer = useRef(0);
   const revealTimer = useRef(0);
-  const audioContext = useRef<AudioContext | null>(null);
-  const audioGain = useRef<GainNode | null>(null);
   const levelRequest = useRef(0);
   const [muted, setMuted] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState<number | null>(0);
@@ -44,36 +44,19 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
   const closed = useRef(false);
   const fontsRequested = useRef(false);
   const setMusicLevel = (target: number, seconds: number) => {
-    const element = video.current;
+    const element = soundtrack.current;
     if (!element) return;
     const request = ++levelRequest.current;
     cancelAnimationFrame(exitFrame.current);
     const start = performance.now();
     const initial = element.volume;
-    const fallback = () => {
+    const fade = () => {
       if (request !== levelRequest.current) return;
       const fraction = Math.min(1, (performance.now() - start) / (seconds * 1000));
       element.volume = initial + (target - initial) * fraction;
-      if (fraction < 1) exitFrame.current = requestAnimationFrame(fallback);
+      if (fraction < 1) exitFrame.current = requestAnimationFrame(fade);
     };
-    try {
-      const context = audioContext.current ?? new AudioContext();
-      audioContext.current = context;
-      void context.resume().then(() => {
-        if (request !== levelRequest.current || video.current !== element) return;
-        if (context.state !== 'running') { fallback(); return; }
-        let gain = audioGain.current;
-        if (!gain) {
-          gain = context.createGain();
-          gain.gain.value = element.volume;
-          context.createMediaElementSource(element).connect(gain);
-          gain.connect(context.destination); audioGain.current = gain;
-          element.volume = 1;
-        }
-        gain.gain.cancelAndHoldAtTime(context.currentTime);
-        gain.gain.linearRampToValueAtTime(target, context.currentTime + seconds);
-      }).catch(fallback);
-    } catch { fallback(); }
+    fade();
   };
   useEffect(() => {
     // Load the site's real UI font after the opening media is ready, not only
@@ -92,14 +75,14 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
     setMusicLevel(0, 1.6);
     revealTimer.current = window.setTimeout(onReveal, 320);
     exitTimer.current = window.setTimeout(() => {
-      element?.pause();
+      element?.pause(); soundtrack.current?.pause();
       onComplete();
     }, 1680);
   };
   useEffect(() => () => {
     levelRequest.current++;
     cancelAnimationFrame(exitFrame.current); clearTimeout(exitTimer.current); clearTimeout(revealTimer.current);
-    void audioContext.current?.close().catch(() => {});
+    soundtrack.current?.pause();
   }, []);
   useEffect(() => {
     if (exiting) return;
@@ -229,6 +212,10 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
   }, []);
   const play = () => {
     if (!ready || !video.current) return;
+    if (!muted && soundtrack.current) {
+      soundtrack.current.currentTime = video.current.currentTime;
+      void soundtrack.current.play().catch(() => setMuted(true));
+    }
     // Called synchronously from a click so mobile sound playback has a user gesture.
     void video.current.play().then(() => {
       if (document.hidden) video.current?.pause();
@@ -266,15 +253,17 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
       }
     }}>
-    <video ref={video} src={src || undefined} preload="auto" playsInline muted={muted}
+    <audio ref={soundtrack} src={soundtrackSource} preload="auto" aria-label="镜昕序章配乐" />
+    <video ref={video} src={src || undefined} preload="auto" playsInline muted
       aria-label="水下气泡、暗手与莲花照亮海报，配有音乐，无对白"
-      onPlaying={() => setState('playing')} onPause={() => setState(s => s === 'playing' ? 'paused' : s)}
+      onPlaying={() => { setState('playing'); if (!muted && soundtrack.current && soundtrack.current.paused) { soundtrack.current.currentTime = video.current?.currentTime || 0; void soundtrack.current.play().catch(() => setMuted(true)); } }} onPause={() => { soundtrack.current?.pause(); setState(s => s === 'playing' ? 'paused' : s); }}
       onWaiting={() => {
         // Initial decoding also emits waiting. Pausing here before playing
         // aborts the pending autoplay promise and prevents its muted retry.
         if (state === 'playing') { video.current?.pause(); setState('paused'); }
       }}
       onTimeUpdate={() => {
+        if (soundtrack.current && video.current && !soundtrack.current.paused && Math.abs(soundtrack.current.currentTime - video.current.currentTime) > .4) soundtrack.current.currentTime = video.current.currentTime;
         if ((video.current?.currentTime ?? 0) >= videoEnd) freezeFrame();
         if ((video.current?.currentTime ?? 0) >= 10 && !showChoices) {
           setShowChoices(true);
@@ -287,17 +276,23 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
         if (src.startsWith('blob:') && !nativeFallback.current) {
           nativeFallback.current = true; setSrc(source); setReady(true); setState('paused');
         } else if (src) setState('error');
-      }} onEnded={() => { setShowChoices(true); setState('ended'); }} />
+      }} onEnded={() => { soundtrack.current?.pause(); setShowChoices(true); setState('ended'); }} />
     <img ref={poster} className={`seasonal-opening-still${showPoster ? ' is-visible' : ''}`} alt="莲花照亮水下的镜昕" aria-hidden={!showPoster} />
     <div className="seasonal-opening-tools">
       {showChoices&&tilt.mobile&&<button aria-pressed={tilt.enabled} onClick={()=>void tilt.toggle()}>{tilt.enabled?'关闭倾斜感应':'开启倾斜感应'}</button>}
       <button onClick={() => {
         // Apply in the gesture itself, before Safari's user activation expires.
-        if (video.current) video.current.muted = !muted;
-        setMuted(!muted); if (state === 'paused') play();
+        const next = !muted;
+        if (soundtrack.current) { soundtrack.current.muted = next; if (!next) { soundtrack.current.currentTime = video.current?.currentTime || 0; void soundtrack.current.play().catch(() => setMuted(true)); } }
+        setMuted(next); if (state === 'paused') void video.current?.play();
       }} aria-pressed={muted}>{muted ? '开启声音' : '静音'}</button>
       {state === 'playing' && <button onClick={() => video.current?.pause()}>暂停</button>}
       {showChoices && state === 'paused' && <button onClick={play}>继续播放</button>}
+      <button onClick={() => {
+        const media = video.current as (HTMLVideoElement & {webkitEnterFullscreen?: () => void}) | null;
+        if (media?.webkitEnterFullscreen) media.webkitEnterFullscreen();
+        else void dialog.current?.requestFullscreen?.().catch(() => {});
+      }}>全屏观看</button>
       <button onClick={() => finish()}>跳过序章</button>
     </div>
     {showChoices&&tilt.mobile&&tilt.status&&<p className="opening-tilt-status" role="status">{tilt.status}</p>}
@@ -310,7 +305,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
         ? <a href={commerce.featuredProductUrl} target="_blank" rel="noopener noreferrer" onClick={() => finish()}>立即购买</a>
         : <button disabled>立即购买<small>即将开放</small></button>}
       <button disabled={exiting} onClick={() => finish()}>进入主页</button>
-    </div><a className="flower-story-trigger" href="/series/flower-gods/jingxin#gallery">她的故事</a></section></div>}
+    </div><a className="flower-story-trigger" href="/series/flower-gods/jingxin#gallery">她的故事<small className="story-desktop-hint">电脑端体验更完整</small></a></section></div>}
     {(state === 'loading' || state === 'ready') && <div className="opening-download" role="status">
       <strong>{downloadProgress === null ? '正在下载' : `${downloadProgress}%`}</strong>
       <small>{downloadProgress === 100 ? '正在准备播放' : '载入影像'}</small>
