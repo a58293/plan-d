@@ -49,6 +49,7 @@ export default function PurchaseNotice() {
   const motionTimers = useRef<number[]>([]);
 
   useEffect(() => () => motionTimers.current.forEach(window.clearTimeout), []);
+  useEffect(() => { const id = decodeURIComponent(window.location.hash.slice(1)); if (!id.startsWith('notice-')) return; const frame = requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({block: 'start', behavior: 'instant'})); return () => cancelAnimationFrame(frame); }, []);
 
   function openChapter(event: MouseEvent<HTMLAnchorElement>, id: string) {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -96,10 +97,10 @@ export default function PurchaseNotice() {
             {chapter.sections.map(key => {
               const section = notice.sections.find(item => item.key === key);
               if (!section) return null;
-              return <div className="purchase-section" key={section.key}>
+              return <div className="purchase-section" id={section.key === '五' ? 'notice-after-sales' : section.key === '七' ? 'notice-care' : section.key === '九' ? 'notice-transfer' : undefined} key={section.key}>
                 <h3>{section.heading}</h3>
                 {section.blocks.map((block, index) => {
-                  if (block.type === 'subheading') return <h4 key={index}>{block.text}</h4>;
+                  if (block.type === 'subheading') return <h4 id={section.key === '二' && block.text === '确认制作' ? 'notice-confirmation' : section.key === '二' && block.text === '制作与发货时间' ? 'notice-leadtime' : undefined} key={index}>{block.text}</h4>;
                   if (block.type === 'faq') {
                     const [question, ...answer] = block.text.split('\n');
                     return <div className="purchase-question" key={index}><h4>{question}</h4><p>{answer.join('\n')}</p></div>;

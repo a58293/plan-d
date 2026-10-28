@@ -27,7 +27,7 @@ const portrait = requiredImage('jingxinPortrait');
 
 const pages: Record<Kind, Showcase> = {
   eyes: {
-    name: '眼球', english: '眼球', line: '目光，倒映万象。',
+    name: '目光', english: '眼球', line: '目光，倒映万象。',
     introduction: '从虹膜的纹理到明暗的层次，一双眼睛让角色有了自己的目光。先看见细节，再决定是否与她相遇。',
     image: eyeImage, imageAlt: '绘屿造物花纹眼球深浅两色展示图', imageNote: '眼球实物展示 · 深色在左，浅色在右', status: '镜昕·荷花女神 / 实物展示', accent: '01',
     lotusTitle: '镜昕的目光', featureTitle: '花纹与色调', lotusDescription: '这组花纹眼球现以实物图呈现深、浅两种色调，尺寸 14/5，适配 16/5。可切换观察色彩差别；入眼效果和实际销售配置以正式商品资料为准。', lotusParts: ['深色调', '浅色调'],
@@ -49,7 +49,7 @@ const pages: Record<Kind, Showcase> = {
     ],
   },
   clothing: {
-    name: '衣服', english: '衣装', line: '层叠衣袂，写下她的故事。',
+    name: '衣袂', english: '衣装', line: '层叠衣袂，写下她的故事。',
     introduction: '衣装的层次、轻重与细节，构成角色走入现实的方式。这里会把套装内容与穿戴关系讲清楚。',
     image: portrait, imageAlt: '镜昕荷花女神角色衣装设定图', imageNote: '镜昕角色设定图 · 衣装为造型示意', status: '镜昕·荷花女神 / 造型设定', accent: '03',
     lotusTitle: '镜昕的衣袂', featureTitle: '衣装的层次', lotusDescription: '从战国袍到轻盈的披帛，镜昕的衣装以层叠的线条勾勒荷花意象。披帛不包含在大全套内；其余套装包含关系请以正式商品页面和《云笺》为准。', lotusParts: ['战国袍', '披帛', '荷叶披肩', '拖尾薄纱'],
@@ -60,7 +60,7 @@ const pages: Record<Kind, Showcase> = {
     ],
   },
   jewelry: {
-    name: '首饰', english: '首饰', line: '细微之处，自有光。',
+    name: '流光', english: '首饰', line: '细微之处，自有光。',
     introduction: '一件饰物或许很小，却能点亮角色的神情。这里将呈现首饰的形态、佩戴位置与使用边界。',
     image: portrait, imageAlt: '镜昕角色设定图中的头饰与颈间饰件', imageNote: '镜昕角色设定图 · 饰件为造型示意', status: '镜昕·荷花女神 / 造型设定', accent: '04',
     lotusTitle: '镜昕的流光', featureTitle: '花冠与挂饰', lotusDescription: '花冠与挂饰是镜昕造型中的点睛细节。这里展示其在角色设定中的位置与气质；单独购买的具体内容请以对应淘宝商品页面为准。', lotusParts: ['花冠与头饰', '挂饰', '细部层次'],

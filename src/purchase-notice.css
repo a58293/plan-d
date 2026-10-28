@@ -57,3 +57,10 @@
 @media (prefers-reduced-motion: reduce) {
   .purchase-article--leaving, .purchase-article--entering { animation: none; transition: none; transform: none; opacity: 1; }
 }
+
+/* Direct Help links land on and mark the exact passage. */
+.purchase-section[id]{scroll-margin-top:112px}
+.purchase-section h4[id]{scroll-margin-top:112px}
+.purchase-section:target>h3,.purchase-section h4:target{width:fit-content;max-width:100%;padding:8px 14px 8px 12px;border-left:3px solid #b19361;border-radius:0 7px 7px 0;background:#e5ece2;color:#173f36;box-shadow:0 8px 20px #173f3614;animation:notice-target-arrive .55s ease-out both}
+@keyframes notice-target-arrive{from{opacity:.4;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.purchase-section:target>h3,.purchase-section h4:target{animation:none}}
