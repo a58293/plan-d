@@ -53,3 +53,5 @@ html body .mf-page, html body .mf-page :is(p,a,button,span,small,label,input,em,
 
 .mf-page #gallery{position:relative;z-index:1;isolation:isolate;background:#0b302b;padding-top:clamp(80px,14svh,132px)}
 .mf-page #gallery h2{position:relative;z-index:2;margin-bottom:26px}
+
+.mf-page #gallery .mf-story-desktop-note{margin:-8px 0 22px;color:#cbd9cc;font-size:12px;line-height:1.7;letter-spacing:.02em}

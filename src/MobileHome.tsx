@@ -26,7 +26,7 @@ export default function MobileHome({onOpenFeatured}:{onOpenFlowerGods?:()=>void;
         <div className="mh-prologue-shade" aria-hidden="true" />
         <div className="mh-heading mh-prologue-heading"><p>序章 / 01 · 镜昕</p><h1 id="mh-title"><img src="/opening/lotus-calligraphy-v1.webp" alt="泥沼生花，水月照心" /></h1><span>荷花女神 · 花神卷</span></div>
         <div className="mh-prologue-mode" role="group" aria-label="首页展示方式"><button aria-pressed={artMode==='poster'} onClick={()=>setArtMode('poster')}>画报</button><button aria-pressed={artMode==='physical'} onClick={()=>setArtMode('physical')}>实物</button></div>
-        <div className="mh-prologue-actions"><a className="mh-cta" href="/series/flower-gods/jingxin#gallery">她的故事<small className="story-desktop-hint">电脑端体验更完整</small></a><ReplayOpeningButton /></div>
+        <div className="mh-prologue-actions"><a className="mh-cta" href="/series/flower-gods/jingxin#gallery">她的故事</a><ReplayOpeningButton /></div>
       </section>
       <section className="mh-volume" id="series"><div className="mh-section-heading"><span>01 / 花神卷</span><h2>一卷花事，<br/>各有其神。</h2><p>以花为引，将想象塑成可珍藏的形体。</p></div>
         <nav className="deity-roster" aria-label="选择花神">{flowerGods.map(deity=><a key={deity.slug} href={flowerGodPath(deity)} onClick={flowerGodPath(deity)===currentFeaturedProduct.href?follow(onOpenFeatured):undefined} aria-label={'进入'+deity.flower+deity.name+'详情'}><span className="deity-avatar"><img src={deity.avatar} alt="" width="58" height="58"/></span><span>{deity.name}</span></a>)}{[1,2,3].map(index=><button key={index} disabled aria-label={'未公开花神 '+index}><span className="deity-avatar deity-placeholder">?</span><span>待揭晓</span></button>)}</nav>

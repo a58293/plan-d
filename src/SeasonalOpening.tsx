@@ -305,7 +305,7 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
         ? <a href={commerce.featuredProductUrl} target="_blank" rel="noopener noreferrer" onClick={() => finish()}>立即购买</a>
         : <button disabled>立即购买<small>即将开放</small></button>}
       <button disabled={exiting} onClick={() => finish()}>进入主页</button>
-    </div><a className="flower-story-trigger" href="/series/flower-gods/jingxin#gallery">她的故事<small className="story-desktop-hint">电脑端体验更完整</small></a></section></div>}
+    </div><a className="flower-story-trigger" href="/series/flower-gods/jingxin#gallery">她的故事</a></section></div>}
     {(state === 'loading' || state === 'ready') && <div className="opening-download" role="status">
       <strong>{downloadProgress === null ? '正在下载' : `${downloadProgress}%`}</strong>
       <small>{downloadProgress === 100 ? '正在准备播放' : '载入影像'}</small>
