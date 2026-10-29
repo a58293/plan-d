@@ -21,7 +21,7 @@ export const productLeadTimeNote = `${officialInfo.productLeadTime}。${official
 export const officialServiceCopy = {
   purchase: `请使用角色页面的官方购买入口，付款前核对商品配置、总价与交付安排。${officialInfo.productionConfirmation}订单修改、取消与退款的具体规则请阅读购买须知，并以付款前确认的销售说明及订单信息为准。`,
   afterSales: '收到作品后，请对照订单、《云笺》及随附清单核对；发现漏件、运输损伤或明显异常，建议在签收作品后一周内通过原淘宝订单联系客服。质量问题与必要运费依适用法律、订单约定和淘宝平台规则处理；具体办理说明见购买须知。',
-  transfer: '转单与二手交易的支持范围尚未公布；请先通过官方客服咨询，不要仅凭非官方转述办理。',
+  transfer: '尚未交付的订单如需转让，请由原下单人通过原淘宝订单联系客服，确认能否转单及办理流程。收货后的二手交易请核对作品状态、娃证与购买凭证。具体规则见购买与使用说明。',
   verification: verificationIsLive
     ? '正式核验已接入：请从本网站进入防伪页，使用娃证编号和对应购买订单号查询。核验结果不替代交易平台订单与售后凭证。'
     : '正式防伪核验暂未开放；当前防伪页只展示虚构样例，请勿填写真实娃证或订单信息。',

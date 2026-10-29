@@ -49,7 +49,7 @@ export default function PurchaseNotice() {
   const motionTimers = useRef<number[]>([]);
 
   useEffect(() => () => motionTimers.current.forEach(window.clearTimeout), []);
-  useEffect(() => { const id = decodeURIComponent(window.location.hash.slice(1)); if (!id.startsWith('notice-')) return; const frame = requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({block: 'start', behavior: 'instant'})); return () => cancelAnimationFrame(frame); }, []);
+  useEffect(() => { let id=''; try{id=decodeURIComponent(window.location.hash.slice(1));}catch{return;} if (!id.startsWith('notice-')) return; const frame = requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({block: 'start', behavior: 'instant'})); return () => cancelAnimationFrame(frame); }, []);
 
   function openChapter(event: MouseEvent<HTMLAnchorElement>, id: string) {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;

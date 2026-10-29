@@ -6,12 +6,12 @@ export const siteNavigation:NavigationItem[]=[
  {title:'体型与部件',children:[{title:'女体',children:[{title:'女体 60',pending:true},{title:'女体 65',pending:true},{title:'女体 70',href:'/bodies/female-70'}]},{title:'男体',children:['70','75','80'].map(n=>({title:`男体 ${n}`,pending:true}))},{title:'独立部件',pending:true}]},
  {title:'服饰与配件',children:['眼球','假发','衣服','首饰','展示与收纳'].map(title=>({title,pending:true}))},
  {title:'影像与故事',children:[{title:'藏家自拍',href:'/stories/collectors'},{title:'官方拍摄',href:'/stories/official'},{title:'往期序章',href:'/stories/openings'},{title:'投稿与联系',href:'/contact'}]},
- {title:'帮助与服务',children:[{title:'帮助说明',href:'/help'},{title:'穿戴说明',href:'/support/dressing'},{title:'防伪核验',href:'/verify'},{title:'防伪说明',href:'/legal/authenticity'},{title:'投稿与联系',href:'/contact'},{title:'举报说明',href:'/report'},{title:'网站条款',href:'/legal/terms'}]},
+ {title:'帮助与服务',children:[{title:'帮助说明',href:'/help'},{title:'穿戴说明（整理中）',href:'/support/dressing'},{title:'防伪核验',href:'/verify'},{title:'防伪说明',href:'/legal/authenticity'},{title:'投稿与联系',href:'/contact'},{title:'举报说明',href:'/report'},{title:'网站条款',href:'/legal/terms'}]},
 ];
 // Landing pages remain available through breadcrumbs, not duplicate menu entries.
 const bodyGroups=siteNavigation[2].children!;
 const parts=bodyGroups.find(item=>item.title==='独立部件')!;parts.pending=false;parts.href='/bodies/parts';
-const accessoryPaths:Record<string,string>={'眼球':'eyes','假发':'wigs','衣服':'clothing','首饰':'jewelry','展示与收纳':'storage'};
+const accessoryPaths:Record<string,string>={'眼球':'eyes','假发':'wigs','衣服':'clothing','首饰':'jewelry'};
 siteNavigation[3].children?.forEach(item=>{if(accessoryPaths[item.title]){item.pending=false;item.href='/accessories/'+accessoryPaths[item.title];}});
 
 // A menu entry is shown only when it leads to a published page or a

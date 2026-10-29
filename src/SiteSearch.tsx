@@ -5,7 +5,8 @@ import {verificationIsLive} from './official-info';
 import './site-search.css';
 
 const fixedEntries = [
-  {title:'穿戴说明',subtitle:'衣装与配件的穿戴资料',href:'/support/dressing',keywords:'穿戴 衣服 头纱 披肩 裙装'},
+  {title:'穿戴说明',subtitle:'镜昕穿戴步骤整理中',href:'/support/dressing',keywords:'穿戴 衣服 头纱 披肩 裙装'},
+  ...([['目光','eyes','眼球 眼珠'],['假发','wigs','游丝 头发'],['衣袂','clothing','娃衣 衣服'],['流光','jewelry','首饰 饰品']] as const).map(([title,slug,keywords])=>({title,subtitle:'镜昕造型档案',href:`/accessories/${slug}`,keywords})),
   {title:'往期序章',subtitle:'主推海报与序章回看',href:'/stories/openings',keywords:'序章 互动海报 回看 历史 荷花'},
   {title:'体型与部件',subtitle:'体型分类与部件档案',href:'/bodies',keywords:'体型 部件 女体 男体'},
   {title:'女体分类',subtitle:'女体型号与已公开角色',href:'/bodies/female',keywords:'女体 60 65 70'},

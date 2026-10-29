@@ -112,12 +112,12 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
     const check = () => {
       if (disposed || settled || !posterReady || !element) return;
       if (fallbackDownloaded) {
-        settled = true; clearTimeout(timer); setReady(true); setState('ready'); return;
+        settled = true; clearTimeout(timer); setReady(true); setState('paused'); return;
       }
       if (element.readyState < 3) return;
       for (let i = 0; i < element.buffered.length; i++) {
         if (element.buffered.start(i) <= 0.05 && element.buffered.end(i) >= videoEnd + 1.2) {
-          settled = true; clearTimeout(timer); setReady(true); setState('ready'); break;
+          settled = true; clearTimeout(timer); setReady(true); setState('paused'); break;
         }
       }
     };
@@ -178,31 +178,6 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
       if (fallbackUrl) URL.revokeObjectURL(fallbackUrl);
     };
   }, [attempt]);
-  useEffect(() => {
-    if (state !== 'ready' || !ready) return;
-    if (document.hidden) { setState('paused'); return; }
-    const element = video.current;
-    if (!element) return;
-    let cancelled = false;
-    const timer = window.setTimeout(() => {
-      cancelled = true; element.pause(); setState('paused');
-    }, 12000);
-    void (async () => {
-      try { await element.play(); }
-      catch (error) {
-        if (cancelled) return;
-        // Only autoplay permission failures warrant a muted retry. Decode and
-        // network errors must not be disguised as a sound preference change.
-        if (error instanceof DOMException && error.name === 'NotAllowedError' && !document.hidden) {
-          element.muted = true;
-          setMuted(true);
-          try { await element.play(); }
-          catch { if (!cancelled) setState('paused'); }
-        } else { setState('paused'); }
-      } finally { clearTimeout(timer); }
-    })();
-    return () => { cancelled = true; clearTimeout(timer); };
-  }, [ready, state]);
   useEffect(() => {
     const pause = () => {
       if (document.hidden && video.current && !video.current.paused) video.current.pause();
