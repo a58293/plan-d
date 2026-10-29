@@ -242,6 +242,11 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
   return <div className={`seasonal-opening${exiting ? ' is-exiting' : ''}`} ref={dialog} data-explore={showChoices} data-tools={toolsVisible} inert={exiting} aria-hidden={exiting} role="dialog" aria-modal={!exiting} aria-label="本期海报序章" tabIndex={-1}
     onPointerMove={event=>{if(!showChoices||exiting||tilt.enabled)return;if(event.pointerType==='touch'&&!event.buttons)return;const rect=event.currentTarget.getBoundingClientRect();move(((event.clientX-rect.left)/rect.width-.5)*24,((event.clientY-rect.top)/rect.height-.5)*18);}}
     onPointerLeave={()=>move(0,0)} onPointerUp={e=>{if(e.pointerType==='touch')move(0,0);}}
+    onClick={event=>{
+      if(exiting || (event.target as HTMLElement).closest('button,a,.seasonal-opening-tools,.opening-download,.opening-recovery,.opening-editorial-stage')) return;
+      if(showChoices) finish();
+      else if(ready && (state==='ready'||state==='paused')) play();
+    }}
     onKeyDown={event => {
       if(showChoices&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home'].includes(event.key)){event.preventDefault();move(event.key==='ArrowLeft'?-12:event.key==='ArrowRight'?12:0,event.key==='ArrowUp'?-9:event.key==='ArrowDown'?9:0);}
 
