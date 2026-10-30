@@ -237,13 +237,9 @@ export default function SeasonalOpening({onComplete, onReveal}: {onComplete: () 
     <video ref={video} src={src || undefined} preload="auto" playsInline muted
       aria-label="水下气泡、暗手与莲花照亮海报，配有音乐，无对白"
       onPlaying={() => { setState('playing'); if (!muted && soundtrack.current && soundtrack.current.paused) { soundtrack.current.currentTime = video.current?.currentTime || 0; void soundtrack.current.play().catch(() => setMuted(true)); } }} onPause={() => { soundtrack.current?.pause(); setState(s => s === 'playing' ? 'paused' : s); }}
-      onWaiting={() => {
-        // Initial decoding also emits waiting. Pausing here before playing
-        // aborts the pending autoplay promise and prevents its muted retry.
-        if (state === 'playing') { video.current?.pause(); setState('paused'); }
-      }}
+      onWaiting={() => { soundtrack.current?.pause(); }}
       onTimeUpdate={() => {
-        if (soundtrack.current && video.current && !soundtrack.current.paused && Math.abs(soundtrack.current.currentTime - video.current.currentTime) > .4) soundtrack.current.currentTime = video.current.currentTime;
+        if (soundtrack.current && video.current && !soundtrack.current.paused && Math.abs(soundtrack.current.currentTime - video.current.currentTime) > 1.5) soundtrack.current.currentTime = video.current.currentTime;
         if ((video.current?.currentTime ?? 0) >= videoEnd) freezeFrame();
         if ((video.current?.currentTime ?? 0) >= 10 && !showChoices) {
           setShowChoices(true);
