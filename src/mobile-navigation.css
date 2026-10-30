@@ -6,3 +6,4 @@ html.site-ui body .mobile-navigation button.nav-orb{position:absolute;inset:0;di
 /* Body-level portal: independent of page transforms, transitions and containers. */
 html.site-ui body>.mobile-navigation[data-global-orb]{position:fixed!important;transform:none!important;filter:none!important;contain:layout style;isolation:isolate;margin:0!important;padding:0!important;width:56px!important;height:56px!important;overflow:visible!important}
 html.site-ui body>.mobile-navigation[hidden]{display:none!important}
+@media(max-width:700px){.orb-parent{display:flex!important;width:100%;align-items:center;justify-content:space-between;margin:4px 0 2px!important;padding:10px 8px!important;min-height:44px!important;background:#e9eee9!important;border-radius:8px!important}.orb-parent span{font-size:12px;font-weight:600}.orb-parent small{font-size:10px;color:#50645b}.orb-current{margin:8px 8px 4px;font-size:11px;color:#668078;letter-spacing:.08em}}

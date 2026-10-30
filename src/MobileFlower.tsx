@@ -58,6 +58,7 @@ export default function MobileFlower({details, pieces, onBack}:Props) {
   const [detail,setDetail]=useState(() => Math.max(0,details.findIndex(item => item.key === new URLSearchParams(window.location.search).get('detail'))));
   const [piece,setPiece]=useState(-1);
   const [viewer,setViewer]=useState(false);
+  const [productInfoOpen,setProductInfoOpen]=useState(false);
   const [section,setSection]=useState('intro');
   const root=useRef<HTMLElement>(null);
   const item=detail===3&&piece>=0?pieces[piece]:details[detail];
@@ -78,10 +79,9 @@ export default function MobileFlower({details, pieces, onBack}:Props) {
     <header className="mf-header"><a href="/series/flower-gods" onClick={e=>{if(onBack){e.preventDefault();onBack();}}}> 花神卷</a><MobileActions currentSlug="jingxin"/></header>
     <Breadcrumbs path="/series/flower-gods/jingxin" section={({'intro':'登场','detail':'细节','gallery':'官图','info':'产品信息','auth':'核验'} as Record<string,string>)[section]}/>
     <nav className="mf-nav" aria-label="角色内容">{[['intro','角色介绍'],['detail','造型细节'],['gallery','故事图册'],['auth','防伪核验']].map(([id,label])=><a key={id} href={'#'+id} aria-current={section===id?'location':undefined}>{label}</a>)}</nav>
-    <section id="intro" className="mf-intro"><p className="mf-kicker">花神卷 · 原典 01</p><h1>镜昕 <small>荷花女神</small></h1><p>循着花与光的轨迹，走近镜昕。</p>
-      <div className="character-product-entry"><a href="#info">产品信息 ＋</a></div>
+    <section id="intro" className="mf-intro"><p className="mf-kicker">花神卷 · 原典 01</p><div className="mf-name-row"><h1>镜昕 <small>荷花女神</small></h1><div className="mf-options mf-portrait-options" aria-label="展示方式">{(['original','physical'] as const).map(value=><button key={value} aria-pressed={mode===value} onClick={()=>setMode(value)}>{value==='original'?'原画':'实体'}</button>)}</div></div><p className="mf-intro-lead">循着花与光的轨迹，<br/>走近镜昕。</p>
+      <div className="character-product-entry"><button type="button" onClick={()=>setProductInfoOpen(true)}>产品信息 <span>＋</span></button></div>
       {commerce.featuredProductUrl && <a className="mf-shop-primary" href={commerce.featuredProductUrl} target="_blank" rel="noopener noreferrer">前往淘宝购买 </a>}
-      <div className="mf-options" aria-label="展示方式">{(['original','physical'] as const).map(value=><button key={value} aria-pressed={mode===value} onClick={()=>setMode(value)}>{value==='original'?'原画':'实体'}</button>)}</div>
       <img className="mf-portrait" src={requiredImage(mode==='physical'?'jingxinPortrait':'jingxinConcept')} alt={'镜昕'+(mode==='physical'?'实体全身':'原画')} fetchPriority="high" decoding="async" />
       <a className="mf-primary" href="#detail">查看造型细节 </a>
     </section>
@@ -93,10 +93,11 @@ export default function MobileFlower({details, pieces, onBack}:Props) {
       <div className="detail-related-links" aria-label="查看镜昕的相关造物"><span>继续看她的造物</span>{jingxinDetailLinks[details[detail].key]?.map(link=><a key={link.kind} href={detailAccessoryHref(link.kind,details[detail].key)}>{link.label}</a>)}</div>
     </section>
     <section id="gallery"><p className="mf-kicker">镜昕 · 故事图册</p><h2>镜昕的故事</h2><p className="mf-story-desktop-note">使用电脑浏览，可获得更完整的故事体验。</p><MobileStoryReader /></section>
-    <section id="info"><p className="mf-kicker">产品信息</p><h2>产品信息</h2><dl>{jingxinProductInfo.map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl><p>客服 {officialInfo.servicePhone}<br/>{officialInfo.serviceHours}</p></section>
+    <section id="info"><p className="mf-kicker">产品信息</p><h2>产品信息</h2><p>点击首屏中的“产品信息”，可随时查看镜昕的配置、制作周期与服务说明。</p></section>
     <section id="auth" className="mf-auth"><p className="mf-kicker">官方核验</p><h2>防伪核验</h2><p>{verificationIsLive ? '请准备娃证编号与购买时的淘宝订单号。' : '正式核验暂未开放；以下只展示虚构样例，请勿提交真实订单信息。'}</p><VerificationConsole /></section>
     <footer className="mf-footer">绘屿造物</footer>
     {viewer&&<ImageViewer src={media.src} onClose={()=>setViewer(false)} />}
+    {productInfoOpen&&createPortal(<div className="mf-product-overlay" role="presentation" onMouseDown={event=>{if(event.target===event.currentTarget)setProductInfoOpen(false);}}><section className="mf-product-sheet" role="dialog" aria-modal="true" aria-labelledby="mf-product-title"><button className="mf-product-close" type="button" aria-label="关闭产品信息" onClick={()=>setProductInfoOpen(false)}>×</button><p className="mf-kicker">荷花女神 · 作品 01</p><h2 id="mf-product-title">镜昕产品信息</h2><p>实际购买内容以付款前商品页面及订单确认的信息为准；预定商品的《云笺》会再次列明订单内容。</p><dl>{jingxinProductInfo.map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl><p className="mf-product-contact">客服 {officialInfo.servicePhone}<br/>{officialInfo.serviceHours}</p>{commerce.featuredProductUrl&&<a className="mf-product-buy" href={commerce.featuredProductUrl} target="_blank" rel="noopener noreferrer">前往淘宝购买</a>}</section></div>,document.body)}
   </main>;
 }
 

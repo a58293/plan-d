@@ -20,8 +20,8 @@ export default function MobileNavigation({visible=true}:{visible?:boolean}){
  const enter=(item:NavigationItem)=>{if(item.children){setTrail(t=>[...t,item]);}else if(item.href){close();window.location.assign(item.href);}};
  return createPortal(<div ref={root} className="mobile-navigation" data-open={open} data-global-orb="true" hidden={!visible} style={position?{left:position.x,top:position.y,right:'auto',bottom:'auto'}:undefined}>
  {open&&<nav id="orb-menu" className="orb-menu" aria-label="分层目录" style={position?{right:'auto',bottom:'auto',left:Math.max(8,Math.min(innerWidth-228,position.x<innerWidth/2?position.x+64:position.x-228))-position.x,top:Math.max(8,Math.min(innerHeight-360,position.y-284))-position.y}:undefined} onKeyDown={e=>{e.stopPropagation();if(e.key==='Escape'){close();orb.current?.focus();}}}>
- <div className="orb-context"><span>{trail.length?trail.map(t=>t.title).join(' / '):'探索绘屿'}</span><button aria-label="收起全部目录" onClick={close}>×</button></div>
- {trail.length>0&&<button className="orb-parent" onClick={back}> {trail.at(-1)?.title}</button>}
+ <div className="orb-context"><span>{trail.length?trail[0].title:'探索绘屿'}</span><button aria-label="收起全部目录" onClick={close}>×</button></div>
+ {trail.length>0&&<><button className="orb-parent" onClick={back}><span>返回上一级</span><small>{trail.length===1?'目录':'返回 '+trail.at(-2)?.title}</small></button><p className="orb-current">{trail.at(-1)?.title}</p></>}
  <div key={trail.map(t=>t.title).join('/')} className="orb-list">
  {items.map(item=><button key={item.title} className="orb-leaf" disabled={item.pending} onClick={()=>enter(item)}><strong>{item.title}</strong><small>{item.pending?'资料待公开':item.children?'展开':'查看'}</small></button>)}
  </div><p className="orb-scroll-hint">上下滑动浏览栏目</p>

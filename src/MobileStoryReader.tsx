@@ -1,4 +1,5 @@
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
+import {createPortal} from 'react-dom';
 import storyText from './stories/jingxin.txt?raw';
 import {requiredImage} from './media-library';
 import './mobile-story-reader.css';
@@ -18,8 +19,17 @@ const images = [
 
 export default function MobileStoryReader() {
   const [page,setPage] = useState(0);
+  const [imageState,setImageState] = useState<'loading'|'ready'|'error'>('loading');
+  const [viewerOpen,setViewerOpen] = useState(false);
   const touchStart = useRef<number | null>(null);
   const move = (step:number) => setPage(current => Math.max(0,Math.min(images.length-1,current+step)));
+  useEffect(()=>{setImageState('loading');},[page]);
+  useEffect(()=>{
+    if(!viewerOpen)return;
+    const previous=document.body.style.overflow;
+    document.body.style.overflow='hidden';
+    return()=>{document.body.style.overflow=previous;};
+  },[viewerOpen]);
   return <div className="mobile-story-reader" aria-label="镜昕故事图册">
     <div className="mobile-story-book" onTouchStart={event=>{touchStart.current=event.changedTouches[0]?.clientX ?? null;}} onTouchEnd={event=>{
       if (touchStart.current===null) return;
@@ -27,7 +37,8 @@ export default function MobileStoryReader() {
       if (Math.abs(distance)>45) move(distance<0?1:-1);
       touchStart.current=null;
     }}>
-      <img key={images[page].src} src={images[page].src} alt={images[page].alt} loading="lazy" decoding="async" draggable={false}/>
+      {imageState==='loading'&&<div className="mobile-story-loading" role="status"><i/><span>正在展开这一页</span></div>}
+      {imageState==='error'?<div className="mobile-story-error"><p>这一页暂时未能载入</p><button type="button" onClick={()=>setImageState('loading')}>重新载入</button></div>:<button type="button" className="mobile-story-image-button" aria-label={'点按放大查看：'+images[page].alt} onClick={()=>setViewerOpen(true)}><img key={images[page].src} src={images[page].src} alt={images[page].alt} loading="eager" decoding="async" draggable={false} onLoad={()=>setImageState('ready')} onError={()=>setImageState('error')}/><span>点按放大查看</span></button>}
     </div>
     <div className="mobile-story-controls" aria-label="图册翻页">
       <button type="button" onClick={()=>move(-1)} disabled={page===0}>上一页</button>
@@ -45,5 +56,6 @@ export default function MobileStoryReader() {
         </section>)}
       </div>
     </details>
+    {viewerOpen&&createPortal(<div className="mobile-story-viewer" role="dialog" aria-modal="true" aria-label={images[page].alt} onClick={()=>setViewerOpen(false)}><button type="button" onClick={()=>setViewerOpen(false)}>关闭</button><img src={images[page].src} alt={images[page].alt}/></div>,document.body)}
   </div>;
 }
