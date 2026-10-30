@@ -9,7 +9,6 @@ export const jingxinProductInfo = [
   ['服装配件', '战国袍、披帛、荷叶披肩、拖尾薄纱'],
   ['商品细节', officialInfo.productDetailsSource],
   ['商品制作周期', productLeadTimeNote],
-  ['配送方式', `${officialInfo.courier}（占位，承运方待确定）`],
   ['日常养护', officialInfo.dailyCare],
   ['售后与退换', officialServiceCopy.afterSales],
   ['防伪验证', officialServiceCopy.verification],
