@@ -36,10 +36,10 @@ test('SQL contains only hashed identifiers and atomic logging', () => {
     ipHash: 'c'.repeat(64),
     userAgentHash: 'd'.repeat(64),
     requestId: '2a344bb2-d825-4c96-8d0d-1f812671bcde',
+    operationId: '2a344bb2-d825-4c96-8d0d-1f812671bcdf',
   };
   const sql = verificationSql(values);
-  assert.match(sql, /FOR UPDATE OF ac/);
-  assert.match(sql, /INSERT INTO anti_counterfeit\.verification_events/);
+  assert.match(sql, /anti_counterfeit.verify_once/);
   assert.match(sql, new RegExp(values.codeHash));
   assert.match(sql, new RegExp(values.orderHash));
 });

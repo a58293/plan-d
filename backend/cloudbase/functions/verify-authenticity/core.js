@@ -31,110 +31,22 @@ function rowsToObjects(raw) {
   });
 }
 
-function verificationSql({ codeHash, orderHash, ipHash, userAgentHash, requestId }) {
-  return `
-WITH recent AS (
-  SELECT COUNT(*)::integer AS attempts
-  FROM anti_counterfeit.verification_events
-  WHERE ip_hash = '${ipHash}'
-    AND occurred_at >= NOW() - INTERVAL '${RATE_LIMIT_WINDOW_MINUTES} minutes'
-),
-matched AS (
-  SELECT
-    ac.id,
-    ac.serial_number,
-    ac.status,
-    b.batch_code,
-    p.name AS product_name,
-    p.series_name,
-    p.public_details
-  FROM anti_counterfeit.authenticity_codes AS ac
-  JOIN anti_counterfeit.batches AS b ON b.id = ac.batch_id
-  JOIN anti_counterfeit.products AS p ON p.id = b.product_id
-  CROSS JOIN recent
-  WHERE ac.code_hash = '${codeHash}'
-    AND ac.order_hash = '${orderHash}'
-    AND recent.attempts < ${RATE_LIMIT_ATTEMPTS}
-  FOR UPDATE OF ac
-),
-updated AS (
-  UPDATE anti_counterfeit.authenticity_codes AS ac
-  SET
-    verification_count = ac.verification_count + 1,
-    first_verified_at = CASE
-      WHEN ac.status = 'active' THEN COALESCE(ac.first_verified_at, NOW())
-      ELSE ac.first_verified_at
-    END,
-    last_verified_at = NOW()
-  FROM matched
-  WHERE ac.id = matched.id
-  RETURNING
-    ac.id,
-    ac.serial_number,
-    ac.status,
-    ac.verification_count,
-    ac.first_verified_at,
-    ac.last_verified_at
-),
-decision AS (
-  SELECT
-    CASE
-      WHEN recent.attempts >= ${RATE_LIMIT_ATTEMPTS} THEN 'rate_limited'
-      WHEN updated.id IS NULL THEN 'not_found'
-      WHEN updated.status = 'blocked' THEN 'blocked'
-      WHEN updated.status = 'void' THEN 'void'
-      WHEN updated.verification_count = 1 THEN 'valid_first'
-      ELSE 'valid_repeat'
-    END AS result,
-    updated.id AS authenticity_code_id,
-    updated.serial_number,
-    updated.verification_count,
-    updated.first_verified_at,
-    updated.last_verified_at,
-    matched.batch_code,
-    matched.product_name,
-    matched.series_name,
-    matched.public_details
-  FROM recent
-  LEFT JOIN updated ON TRUE
-  LEFT JOIN matched ON matched.id = updated.id
-),
-logged AS (
-  INSERT INTO anti_counterfeit.verification_events (
-    request_id,
-    authenticity_code_id,
-    submitted_hash,
-    result,
-    ip_hash,
-    user_agent_hash
-  )
-  SELECT
-    '${requestId}',
-    authenticity_code_id,
-    '${codeHash}',
-    result,
-    '${ipHash}',
-    '${userAgentHash}'
-  FROM decision
-  RETURNING id
-)
-SELECT
-  decision.result,
-  decision.serial_number,
-  decision.verification_count,
-  decision.first_verified_at,
-  decision.last_verified_at,
-  decision.batch_code,
-  decision.product_name,
-  decision.series_name,
-  decision.public_details
-FROM decision
-CROSS JOIN logged;
-`;
+function verificationSql({ codeHash, orderHash, ipHash, userAgentHash, requestId, operationId }) {
+  for (const value of [codeHash, orderHash, ipHash, userAgentHash]) {
+    if (!/^[0-9a-f]{64}$/.test(value)) throw new Error('INVALID_HASH');
+  }
+  if (!validateOperationId(operationId) || !validateOperationId(requestId)) throw new Error('INVALID_OPERATION');
+  return `SELECT anti_counterfeit.verify_once('${operationId}'::uuid, '${codeHash}', '${orderHash}', '${ipHash}', '${userAgentHash}', '${requestId}'::uuid) AS payload`;
 }
 
 function publicResult(row, requestId) {
+  if (row?.payload) row = typeof row.payload === 'string' ? JSON.parse(row.payload) : row.payload;
+  requestId = row?.request_id || requestId;
   const result = row?.result || 'error';
+  if (result === 'idempotency_conflict') return { statusCode:409, body:{ok:false,result,requestId,message:'请求标识已用于其他凭证，请重新提交。'} };
+  if (!['valid_first','valid_repeat','not_found','blocked','void','rate_limited'].includes(result)) {
+    return { statusCode: 500, body: { ok: false, result: 'service_unavailable', requestId, message: '核验服务暂时不可用，请稍后重试。' } };
+  }
   if (result === 'rate_limited') {
     return { statusCode: 429, body: { ok: false, result, requestId, message: '查询过于频繁，请稍后再试。' } };
   }
@@ -174,6 +86,10 @@ function publicResult(row, requestId) {
   };
 }
 
+function validateOperationId(value) {
+  return typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
+}
+
 module.exports = {
   RATE_LIMIT_ATTEMPTS,
   normalizeCertificate,
@@ -182,4 +98,5 @@ module.exports = {
   rowsToObjects,
   verificationSql,
   publicResult,
+  validateOperationId,
 };

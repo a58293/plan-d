@@ -23,6 +23,7 @@ function parseCsv(text) {
     } else cell += char;
   }
   if (cell || row.length) { row.push(cell); rows.push(row); }
+  if (quoted) throw new Error('CSV 引号未闭合。');
   return rows;
 }
 
@@ -49,6 +50,29 @@ const values = parsed.map((cells, rowIndex) => {
 });
 if (!values.length) throw new Error('CSV 中没有可导入的数据。');
 
-const sql = `BEGIN;\n\nWITH incoming(serial_number, code_hash, order_hash, batch_code) AS (\n  VALUES\n    ${values.join(',\n    ')}\n)\nINSERT INTO anti_counterfeit.authenticity_codes (batch_id, serial_number, code_hash, order_hash)\nSELECT b.id, i.serial_number, i.code_hash, i.order_hash\nFROM incoming AS i\nJOIN anti_counterfeit.batches AS b ON b.batch_code = i.batch_code\nON CONFLICT (serial_number) DO NOTHING;\n\nCOMMIT;\n`;
+const sql = `BEGIN;
+LOCK TABLE anti_counterfeit.authenticity_codes IN SHARE ROW EXCLUSIVE MODE;
+CREATE TEMP TABLE incoming(serial_number TEXT, code_hash TEXT, order_hash TEXT, batch_code TEXT) ON COMMIT DROP;
+INSERT INTO incoming VALUES ${values.join(',\n')};
+DO $$
+BEGIN
+  IF EXISTS(SELECT 1 FROM incoming i LEFT JOIN anti_counterfeit.batches b ON b.batch_code=i.batch_code WHERE b.id IS NULL) THEN
+    RAISE EXCEPTION 'Unknown batch: import cancelled';
+  END IF;
+  IF EXISTS(SELECT 1 FROM incoming i JOIN anti_counterfeit.authenticity_codes ac ON ac.serial_number=i.serial_number OR ac.code_hash=i.code_hash
+    JOIN anti_counterfeit.batches b ON b.batch_code=i.batch_code
+    WHERE ac.serial_number<>i.serial_number OR ac.code_hash<>i.code_hash OR ac.order_hash IS DISTINCT FROM i.order_hash OR ac.batch_id<>b.id) THEN
+    RAISE EXCEPTION 'Conflicting serial, code, order or batch: import cancelled';
+  END IF;
+END $$;
+WITH inserted AS (
+  INSERT INTO anti_counterfeit.authenticity_codes(batch_id,serial_number,code_hash,order_hash)
+  SELECT b.id,i.serial_number,i.code_hash,i.order_hash FROM incoming i JOIN anti_counterfeit.batches b ON b.batch_code=i.batch_code
+  ON CONFLICT(serial_number) DO NOTHING RETURNING id
+)
+SELECT ${values.length} AS expected, COUNT(*) AS inserted, ${values.length}-COUNT(*) AS identical_skipped, 0 AS conflicts FROM inserted;
+COMMIT;
+`;
+
 await writeFile(resolve(outputName), sql, { encoding: 'utf8', flag: 'wx' });
-console.log(`已生成 ${values.length} 条加密导入记录：${resolve(outputName)}`);
+console.log(`已生成 ${values.length} 条待导入记录（执行后核对 inserted/identical_skipped）：${resolve(outputName)}`);

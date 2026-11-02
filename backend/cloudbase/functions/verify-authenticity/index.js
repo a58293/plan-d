@@ -8,6 +8,7 @@ const {
   rowsToObjects,
   verificationSql,
   publicResult,
+  validateOperationId,
 } = require('./core');
 
 const ENV_ID = process.env.TCB_ENV || 'huiyufanwei-d1gxo7j1r82311dae';
@@ -73,17 +74,25 @@ function parseBody(event) {
   let body = event?.body || '';
   if (event?.isBase64Encoded && body) body = Buffer.from(body, 'base64').toString('utf8');
   if (Buffer.byteLength(body, 'utf8') > MAX_BODY_BYTES) throw new Error('BODY_TOO_LARGE');
-  return body ? JSON.parse(body) : {};
+  try { return body ? JSON.parse(body) : {}; } catch { throw new Error('BAD_JSON'); }
 }
 
-async function main(event = {}) {
+function createHandler(databaseProvider = getDatabase) {
+return async function main(event = {}) {
   const origin = requestOrigin(event);
   const method = String(event.httpMethod || 'POST').toUpperCase();
   if (origin && !allowedOrigins().has(origin)) {
     return response(403, { ok: false, result: 'forbidden', message: '请求来源未获授权。' });
   }
   if (method === 'OPTIONS') return { statusCode: 204, headers: corsHeaders(origin), body: '' };
-  if (method === 'GET') return response(200, { ok: true, service: 'verify-authenticity', status: 'ready' }, origin);
+  if (method === 'GET') {
+    if ((process.env.VERIFICATION_HASH_PEPPER || '').length < 32) return response(503, { ok: false, service: 'verify-authenticity', status: 'not_ready' }, origin);
+    try {
+      const health = await databaseProvider().executePGSql({ Sql: "SELECT to_regprocedure('anti_counterfeit.verify_once(uuid,text,text,text,text,uuid)') IS NOT NULL AS ready FROM (SELECT COUNT(*) FROM anti_counterfeit.verification_operations) AS checked", EnvId: ENV_ID });
+      if (!rowsToObjects(health).some(row => row.ready === true || row.ready === 'true')) throw new Error('NOT_READY');
+      return response(200, { ok: true, service: 'verify-authenticity', status: 'ready' }, origin);
+    } catch { return response(503, { ok: false, service: 'verify-authenticity', status: 'not_ready' }, origin); }
+  }
   if (method !== 'POST') return response(405, { ok: false, result: 'method_not_allowed' }, origin);
 
   const requestId = crypto.randomUUID();
@@ -91,6 +100,7 @@ async function main(event = {}) {
     const pepper = process.env.VERIFICATION_HASH_PEPPER || '';
     if (pepper.length < 32) throw new Error('SERVER_NOT_CONFIGURED');
     const input = parseBody(event);
+    if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('INVALID_INPUT');
     const certificate = normalizeCertificate(input.certificate);
     const order = normalizeOrder(input.order);
     if (!/^[A-Z0-9]{12,32}$/.test(certificate) || !/^\d{10,32}$/.test(order)) {
@@ -101,27 +111,28 @@ async function main(event = {}) {
         message: '请输入有效的娃证编号与订单号。',
       }, origin);
     }
+    if (!validateOperationId(input.operationId)) return response(400, { ok:false, result:'invalid_input', requestId, message:'请求标识无效，请重新提交。' }, origin);
 
     const codeHash = hmac('code', certificate, pepper);
     const orderHash = hmac('order', order, pepper);
     const ipHash = hmac('ip', clientAddress(event), pepper);
     const userAgentHash = hmac('ua', header(event, 'user-agent').slice(0, 512), pepper);
-    const sql = verificationSql({ codeHash, orderHash, ipHash, userAgentHash, requestId });
-    const raw = await getDatabase().executePGSql({ Sql: sql, EnvId: ENV_ID });
+    const sql = verificationSql({ codeHash, orderHash, ipHash, userAgentHash, requestId, operationId: input.operationId });
+    const raw = await databaseProvider().executePGSql({ Sql: sql, EnvId: ENV_ID });
     const result = publicResult(rowsToObjects(raw)[0], requestId);
     return response(result.statusCode, result.body, origin);
   } catch (error) {
-    const statusCode = error?.message === 'BODY_TOO_LARGE'
-      ? 413
+    const statusCode = error?.message === 'BODY_TOO_LARGE' ? 413 : ['INVALID_INPUT','BAD_JSON'].includes(error?.message) ? 400
       : error?.message === 'SERVER_NOT_CONFIGURED' ? 503 : 500;
     console.error('verification request failed', { requestId, name: error?.name, message: error?.message });
     return response(statusCode, {
       ok: false,
-      result: statusCode === 413 ? 'invalid_input' : 'service_unavailable',
+      result: [400,413].includes(statusCode) ? 'invalid_input' : 'service_unavailable',
       requestId,
-      message: statusCode === 413 ? '提交内容过长。' : '核验服务暂时不可用，请稍后重试。',
+      message: statusCode === 400 ? '请求内容格式不正确。' : statusCode === 413 ? '提交内容过长。' : '核验服务暂时不可用，请稍后重试。',
     }, origin);
   }
+};
 }
 
-module.exports = { main };
+module.exports = { main: createHandler(), createHandler };

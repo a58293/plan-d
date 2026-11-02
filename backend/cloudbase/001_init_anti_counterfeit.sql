@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS anti_counterfeit.authenticity_codes (
 CREATE TABLE IF NOT EXISTS anti_counterfeit.verification_events (
   id BIGSERIAL PRIMARY KEY,
   request_id VARCHAR(80) NOT NULL UNIQUE,
+  operation_id UUID NOT NULL UNIQUE,
   authenticity_code_id BIGINT
     REFERENCES anti_counterfeit.authenticity_codes(id) ON DELETE SET NULL,
   submitted_hash CHAR(64) NOT NULL
@@ -98,7 +99,7 @@ VALUES (
   'flower-gods-jingxin',
   '镜昕',
   '花神卷',
-  '{"size":"70 3分","material":"环保三抗树脂","skinTones":["Mia白","Mia粉","普肌"],"productionCycle":"约90个工作日"}'::jsonb
+  '{"size":"70 3分","material":"环保三抗树脂","skinTones":["Mia白","Mia粉","普肌"],"productionCycle":"预定裸娃120–150个工作日；预定全套150–180个工作日"}'::jsonb
 )
 ON CONFLICT (product_key) DO UPDATE SET
   name = EXCLUDED.name,

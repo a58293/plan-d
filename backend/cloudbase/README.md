@@ -4,7 +4,7 @@
 
 ## 回来后按顺序完成
 
-1. 在 PostgreSQL 的 SQL 编辑器执行 `002_add_order_hash.sql`。结果应显示 `order_hash / character / 64`。
+1. 旧数据库依次执行 `002_add_order_hash.sql`、`003_idempotent_verifications.sql`、`004_atomic_verification.sql`；新数据库先执行 `001_init_anti_counterfeit.sql`，再执行以上迁移。先迁移、后更新云函数。
 2. 在本机运行 `node tools/generate-secret.mjs`，生成一次专用密钥。不要截图、不要发群、不要提交 Git；把它保存到密码管理器。
 3. 新建普通云函数 `verify-authenticity`，使用 Node.js 18 或平台当前 LTS。上传 `output/verify-authenticity-cloud-function.zip`，开启自动安装依赖。
 4. 给函数设置环境变量：
@@ -32,3 +32,6 @@ Remove-Item Env:VERIFICATION_HASH_PEPPER
 - 防伪码正确但订单错误，与完全不存在的编号使用相同模糊提示。
 - 连续高频查询会限速；客服可用查询编号排查，前台不会显示数据库内部备注。
 - `VERIFICATION_HASH_PEPPER` 一旦用于生成导入 SQL，不要随意更换，否则已有记录将无法匹配。
+
+## 本次修复验证
+运行 `npm run check:release` 会执行构建、基础检查、后端单元测试及隔离 PostgreSQL 事务测试。隔离测试不连接真实客户数据库。云函数更新后还需在测试凭证上联测首次、重复、超时重试和禁用恢复。GET 会核对密钥、迁移函数和操作表读取权限；不替代实际核验写入联测。
