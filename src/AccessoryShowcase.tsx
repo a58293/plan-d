@@ -122,7 +122,6 @@ export default function AccessoryShowcase({kind}: {kind: Kind}) {
             </div>
             <span className="accessory-eye-hero-bottom">镜昕的目光 <i /> 实物色调展示</span>
           </div> : <div className="accessory-image-field"><span className="accessory-image-eyebrow">镜昕 <i /> {item.english}展示</span><img src={item.image} alt={item.imageAlt} fetchPriority="high" /><span className="accessory-image-label">{kind === 'wigs' ? '发间造型' : kind === 'clothing' ? '衣装层次' : '饰物细节'}<small>角色设定 / 造型示意</small></span></div>}
-          <figcaption><span>{item.imageNote}</span><span>图录 {item.accent}</span></figcaption>
         </figure>
       </section>
       <section className="accessory-archive" id="accessory-archive" aria-labelledby="archive-title">

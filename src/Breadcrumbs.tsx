@@ -11,7 +11,7 @@ export default function Breadcrumbs({path, section}: {path: string; section?: st
   } else if(path==='/bodies'||path==='/bodies/female'||path==='/bodies/female-70') {
     items.push({label:'体型与部件',href:path==='/bodies'?undefined:'/bodies'});
     if(path!=='/bodies')items.push({label:'女体',href:path==='/bodies/female'?undefined:'/bodies/female'});
-    if(path==='/bodies/female-70')items.push({label:'女体 70'});
+    if(path==='/bodies/female-70')items.push({label:'女体 68'});
   } else if(path.startsWith('/series/flower-gods')) {
     items.push({label:'花神卷',href:deity?'/series/flower-gods':undefined});
     if(deity) items.push({label:deity.name,href:section?path:undefined});

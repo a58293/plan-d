@@ -10,7 +10,7 @@ const fixedEntries = [
   {title:'往期序章',subtitle:'主推海报与序章回看',href:'/stories/openings',keywords:'序章 互动海报 回看 历史 荷花'},
   {title:'体型与部件',subtitle:'体型分类与部件档案',href:'/bodies',keywords:'体型 部件 女体 男体'},
   {title:'女体分类',subtitle:'女体型号与已公开角色',href:'/bodies/female',keywords:'女体 60 65 70'},
-  {title:'女体 70',subtitle:'所属角色 · 镜昕荷花女神',href:'/bodies/female-70',keywords:'体型 女体 70 荷花 镜昕'},
+  {title:'女体 68',subtitle:'所属角色 · 镜昕荷花女神',href:'/bodies/female-70',keywords:'体型 女体 68 荷花 镜昕'},
   { title: '投稿与联系', subtitle: '藏家影像投稿与官方私信', href: '/contact', keywords: '投稿 联系 客服 小红书' },
   { title: '品牌首页', subtitle: '当期主推、系列与藏家返图', href: '/', keywords: '首页 当期 up 主推 实体 2d' },
   { title: '花神卷', subtitle: '选择并探索花神', href: '/series/flower-gods', keywords: '系列 花神 选择 云海' },

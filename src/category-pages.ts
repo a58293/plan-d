@@ -2,10 +2,10 @@ type Entry={title:string;href?:string;note?:string};
 type Category={title:string;parent?:string;description:string;items:Entry[]};
 export const categoryPages:Record<string,Category>={
  '/bodies':{title:'体型与部件',description:'按体型或部件分类浏览。',items:[{title:'女体',href:'/bodies/female'},{title:'男体',href:'/bodies/male'},{title:'独立部件',href:'/bodies/parts'}]},
- '/bodies/female':{title:'女体',parent:'/bodies',description:'选择型号，查看已公开角色。',items:[{title:'女体 60',note:'资料待公开'},{title:'女体 65',note:'资料待公开'},{title:'女体 70',href:'/bodies/female-70'}]},
+ '/bodies/female':{title:'女体',parent:'/bodies',description:'选择型号，查看已公开角色。',items:[{title:'女体 60',note:'资料待公开'},{title:'女体 65',note:'资料待公开'},{title:'女体 68',href:'/bodies/female-70'}]},
  '/bodies/male':{title:'男体',parent:'/bodies',description:'以下为规划型号，资料将在正式发布后开放。',items:['70','75','80'].map(n=>({title:'男体 '+n,note:'资料待公开'}))},
  '/bodies/parts':{title:'独立部件',parent:'/bodies',description:'部件与适配资料尚未公开，请以后续正式发布为准。',items:[]},
- '/bodies/female-70':{title:'女体 70',parent:'/bodies/female',description:'此分类收录镜昕。具体尺寸、配置与适配信息以作品正式资料为准。',items:[{title:'镜昕 · 荷花女神',href:'/series/flower-gods/jingxin',note:'花神卷 · 查看角色与产品信息'}]},
+ '/bodies/female-70':{title:'女体 68',parent:'/bodies/female',description:'此分类收录镜昕。具体尺寸、配置与适配信息以作品正式资料为准。',items:[{title:'镜昕 · 荷花女神',href:'/series/flower-gods/jingxin',note:'花神卷 · 查看角色与产品信息'}]},
  '/releases':{title:'新品与发售',description:'浏览当期作品与购买须知。',items:[{title:'当期主推 · 镜昕',href:'/series/flower-gods/jingxin'},{title:'购买须知',href:'/purchase-notice'}]},
  '/collections':{title:'角色与系列',description:'按系列浏览角色及专属造物。',items:[{title:'花神卷',href:'/series/flower-gods'},{title:'天使卷',note:'资料待公开'},{title:'专属造物',href:'/creations'}]},
  '/creations':{title:'专属造物',parent:'/collections',description:'与角色共同设计的独立作品。',items:[{title:'镜昕 · 莲台',note:'模型调整中，资料待公开'}]},

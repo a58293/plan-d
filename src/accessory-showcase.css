@@ -93,3 +93,8 @@
  .accessory-clothing .accessory-lotus-art:after{content:'移动鼠标查看衣装局部'}
 }
 .accessory-showcase .accessory-handmade-note{margin:22px 0 0;padding:16px 0;color:#50685d;font-size:13px;line-height:1.9;max-width:850px}
+.accessory-showcase .accessory-eye-hero-overline,.accessory-showcase .accessory-eye-hero-bottom,.accessory-showcase .accessory-image-eyebrow{font-size:clamp(13px,1vw,16px);letter-spacing:.12em;color:#566a5b;line-height:1.7}
+.accessory-showcase .accessory-eye-hero-sample>span{font-size:clamp(15px,1.2vw,19px);letter-spacing:.1em;line-height:1.7}
+.accessory-showcase .accessory-eye-hero-sample>span b{font-size:13px}
+.accessory-showcase .accessory-image-label{font-size:clamp(14px,1.1vw,18px);line-height:1.7}
+.accessory-showcase .accessory-image-label small{font-size:13px}
