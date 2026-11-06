@@ -86,3 +86,9 @@
  .accessory-wigs .accessory-lotus-art:after{display:none}
 }
 @media(prefers-reduced-motion:reduce){.accessory-eye-object,.accessory-eye-hero-object,.accessory-lotus-art>img,.accessory-image-field>img{transition:none!important}}
+@media(hover:hover) and (pointer:fine){
+ .accessory-clothing :is(.accessory-lotus-art,.accessory-image-field){overflow:hidden}
+ .accessory-clothing :is(.accessory-lotus-art,.accessory-image-field)>img{transform-origin:var(--detail-x,50%) var(--detail-y,50%);transition:scale .35s ease}
+ .accessory-showcase.accessory-clothing :is(.accessory-lotus-art,.accessory-image-field):hover>img{scale:2.5}
+ .accessory-clothing .accessory-lotus-art:after{content:'移动鼠标查看衣装局部'}
+}

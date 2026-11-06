@@ -85,7 +85,15 @@ export default function AccessoryShowcase({kind}: {kind: Kind}) {
   const [tone, setTone] = useState<'deep' | 'light'>('deep');
   const [preview,setPreview]=useState<string|null>(null);
   const openPreview=(src:string)=>{if(kind!=='wigs'&&!window.matchMedia('(hover: hover) and (pointer: fine)').matches)setPreview(src);};
-  return <div className={`accessory-showcase accessory-${kind}`} data-color-owner="jingxin" style={characterThemeStyle('jingxin')}>
+  return <div className={`accessory-showcase accessory-${kind}`} data-color-owner="jingxin" style={characterThemeStyle('jingxin')}
+    onPointerMove={event=>{
+      if(kind!=='clothing'||event.pointerType==='touch'||!window.matchMedia('(hover: hover) and (pointer: fine)').matches)return;
+      const field=(event.target as Element).closest<HTMLElement>('.accessory-lotus-art,.accessory-image-field');
+      if(!field)return;
+      const rect=field.getBoundingClientRect();
+      field.style.setProperty('--detail-x',`${Math.max(0,Math.min(100,(event.clientX-rect.left)/rect.width*100))}%`);
+      field.style.setProperty('--detail-y',`${Math.max(0,Math.min(100,(event.clientY-rect.top)/rect.height*100))}%`);
+    }}>
     <main>
       <nav className="accessory-tabs" aria-label="造物分类">
         <a className="accessory-tabs-home" href="/accessories">服饰与配件 </a>
