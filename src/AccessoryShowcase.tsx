@@ -39,7 +39,7 @@ const pages: Record<Kind, Showcase> = {
     ],
   },
   wigs: {
-    name: '镜昕的游丝', english: '假发', line: '发丝，延续她的神情。',
+    name: '游丝', english: '假发', line: '发丝，延续她的神情。',
     introduction: '发型改变角色的轮廓，也改变每一次回望的气质。这里将收录绘屿造物公开的假发作品与佩戴资料。',
     image: portrait, imageAlt: '镜昕角色设定图，展示发型与整体造型', imageNote: '镜昕角色设定图 · 发型为造型示意，非独立商品实拍', status: '镜昕·荷花女神 / 造型设定', accent: '02',
     lotusTitle: '镜昕的游丝', featureTitle: '发丝与头纱', lotusDescription: '发型与头纱共同构成镜昕的面部轮廓。这里展示角色设定中的佩戴关系；假发的实物、材质与规格请以对应淘宝商品页面为准。', lotusParts: ['发型轮廓', '头纱层次', '佩戴关系'],
