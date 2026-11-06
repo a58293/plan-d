@@ -110,7 +110,6 @@ export default function AccessoryShowcase({kind}: {kind: Kind}) {
             <div className="accessory-actions-primary"><a className="accessory-buy-link" href={purchaseUrl || '#accessory-archive'} target={purchaseUrl ? '_blank' : undefined} rel={purchaseUrl ? 'noopener noreferrer' : undefined}>前往淘宝选购 </a><a href="#accessory-archive">浏览本页 </a></div>
             <div className="accessory-actions-secondary">{returnHref && <a className="accessory-return-detail" href={returnHref}>返回造型细节 </a>}<a href="/purchase-notice">购买与使用说明 </a></div>
           </div>
-          <p className="accessory-index">{item.accent} <span>/ 04</span></p>
         </div>
         <figure className={`accessory-hero-media ${kind === 'eyes' ? 'accessory-eyes-hero-media' : ''}`}>
           {kind!=='wigs'&&<button className="accessory-enlarge" type="button" onClick={()=>openPreview(kind==='eyes'?eyeImage:item.image)}>点击放大查看</button>}
@@ -124,6 +123,7 @@ export default function AccessoryShowcase({kind}: {kind: Kind}) {
           </div> : <div className="accessory-image-field"><span className="accessory-image-eyebrow">镜昕 <i /> {item.english}展示</span><img src={item.image} alt={item.imageAlt} fetchPriority="high" /><span className="accessory-image-label">{kind === 'wigs' ? '发间造型' : kind === 'clothing' ? '衣装层次' : '饰物细节'}<small>角色设定 / 造型示意</small></span></div>}
         </figure>
       </section>
+      <p className="accessory-handmade-note accessory-handmade-intro">作品包含手工制作环节，不同个体在尺寸、纹理、色泽与细节上可能存在细微差异。受拍摄光线与显示设备影响，图片呈现也可能与实物略有不同。具体配置以商品页面及订单确认内容为准。</p>
       <section className="accessory-archive" id="accessory-archive" aria-labelledby="archive-title">
         <div className="accessory-section-head"><div><p>造物档案 · 镜昕</p><h2 id="archive-title">{item.lotusTitle}</h2></div><span>{item.status}</span></div>
         {kind === 'eyes' ? <div className="accessory-eye-study">
@@ -138,7 +138,6 @@ export default function AccessoryShowcase({kind}: {kind: Kind}) {
           <div className="accessory-lotus-art">{kind!=='wigs'&&<button className="accessory-enlarge" type="button" onClick={()=>openPreview(portrait)}>点击放大查看</button>}<img src={portrait} alt={`镜昕·荷花女神${item.name}造型设定`} loading="lazy" onClick={()=>openPreview(portrait)} /><span>镜昕 · 荷花女神 / 角色设定</span></div>
           <div className="accessory-lotus-copy"><p>01 / 花神卷</p><h3>{item.featureTitle}</h3><p>{item.lotusDescription}</p><div className="accessory-lotus-parts">{item.lotusParts.map((part, index) => <span key={part}><b>0{index + 1}</b>{part}</span>)}</div><a className="accessory-archive-buy" href={purchaseUrl || '#accessory-archive'} target={purchaseUrl ? '_blank' : undefined} rel={purchaseUrl ? 'noopener noreferrer' : undefined}>在淘宝查看{kind === 'wigs' ? '假发' : kind === 'clothing' ? '娃衣' : '首饰'}商品 </a><a href="/series/flower-gods/jingxin">走近镜昕 </a><small>角色设定图仅供了解造型；单独商品包含内容以淘宝商品页面为准。</small></div>
         </div>}
-        <p className="accessory-handmade-note">作品包含手工制作环节，不同个体在尺寸、纹理、色泽与细节上可能存在细微差异。受拍摄光线与显示设备影响，图片呈现也可能与实物略有不同。具体配置以商品页面及订单确认内容为准。</p>
       </section>
       <section className="accessory-notes" aria-label="品类说明">{item.details.map((detail, index) => <article key={detail.heading}><span>0{index + 1}</span><h3>{detail.heading}</h3><p>{detail.body}</p></article>)}</section>
       <footer className="accessory-footer"><p>绘屿造物</p><div><a href="/accessories">返回全部分类</a><a href="/contact">联系绘屿造物</a></div></footer>
