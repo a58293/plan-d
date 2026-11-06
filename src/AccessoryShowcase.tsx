@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import {ImageViewer} from './MobileFlower';
 import {requiredImage} from './media-library';
 import {characterThemeStyle} from './current-product-theme';
 import {accessoryPurchaseUrl} from './commerce';
@@ -82,6 +83,7 @@ export default function AccessoryShowcase({kind}: {kind: Kind}) {
   const returnHref = returnDetail && ['face','headdress','ornament','dress'].includes(returnDetail)
     ? `/series/flower-gods/jingxin?detail=${encodeURIComponent(returnDetail)}#details` : null;
   const [tone, setTone] = useState<'deep' | 'light'>('deep');
+  const [preview,setPreview]=useState<string|null>(null);
   return <div className={`accessory-showcase accessory-${kind}`} data-color-owner="jingxin" style={characterThemeStyle('jingxin')}>
     <main>
       <nav className="accessory-tabs" aria-label="造物分类">
@@ -102,6 +104,7 @@ export default function AccessoryShowcase({kind}: {kind: Kind}) {
           <p className="accessory-index">{item.accent} <span>/ 04</span></p>
         </div>
         <figure className={`accessory-hero-media ${kind === 'eyes' ? 'accessory-eyes-hero-media' : ''}`}>
+          <button className="accessory-enlarge" type="button" onClick={()=>setPreview(kind==='eyes'?eyeImage:item.image)}>点击放大查看</button>
           {kind === 'eyes' ? <div className="accessory-eye-hero-field" aria-label="镜昕眼球深浅两色实物展示">
             <span className="accessory-eye-hero-overline">镜昕 · 两种色调</span>
             <div className="accessory-eye-hero-pair">
@@ -117,18 +120,20 @@ export default function AccessoryShowcase({kind}: {kind: Kind}) {
         <div className="accessory-section-head"><div><p>造物档案 · 镜昕</p><h2 id="archive-title">{item.lotusTitle}</h2></div><span>{item.status}</span></div>
         {kind === 'eyes' ? <div className="accessory-eye-study">
           <div className={`accessory-eye-crop is-${tone}`}>
+            <button className="accessory-enlarge" type="button" onClick={()=>setPreview(eyeImage)}>点击放大查看</button>
             <span className="accessory-eye-stage-label">镜昕 · 眼球色调</span>
             <div className="accessory-eye-object"><img src={eyeImage} alt={`${tone === 'deep' ? '深色' : '浅色'}眼球花纹展示`} /></div>
             <span className="accessory-eye-stage-caption">实物色调展示 <b>·</b> {tone === 'deep' ? '深色' : '浅色'}</span>
           </div>
           <div className="accessory-eye-controls"><p>色调对照 <span>{tone === 'deep' ? '01' : '02'} / 02</span></p><h3>{tone === 'deep' ? '深色调' : '浅色调'}</h3><p className="accessory-eye-spec">尺寸 14/5 <span>·</span> 适配 16/5</p><p>同一花纹，呈现不同的明暗与气息。此处用于观察色调差别，不代表套装配置。</p><div role="group" aria-label="选择眼球色调"><button type="button" aria-pressed={tone === 'deep'} onClick={() => setTone('deep')}>深色调</button><button type="button" aria-pressed={tone === 'light'} onClick={() => setTone('light')}>浅色调</button></div><a className="accessory-archive-buy" href={purchaseUrl || '#accessory-archive'} target={purchaseUrl ? '_blank' : undefined} rel={purchaseUrl ? 'noopener noreferrer' : undefined}>在淘宝查看眼球商品 </a><small>颜色、价格与销售配置以淘宝商品页面为准</small></div>
         </div> : <div className={`accessory-lotus-feature accessory-lotus-${kind}`}>
-          <div className="accessory-lotus-art"><img src={portrait} alt={`镜昕·荷花女神${item.name}造型设定`} loading="lazy" /><span>镜昕 · 荷花女神 / 角色设定</span></div>
+          <div className="accessory-lotus-art"><button className="accessory-enlarge" type="button" onClick={()=>setPreview(portrait)}>点击放大查看</button><img src={portrait} alt={`镜昕·荷花女神${item.name}造型设定`} loading="lazy" onClick={()=>setPreview(portrait)} /><span>镜昕 · 荷花女神 / 角色设定</span></div>
           <div className="accessory-lotus-copy"><p>01 / 花神卷</p><h3>{item.featureTitle}</h3><p>{item.lotusDescription}</p><div className="accessory-lotus-parts">{item.lotusParts.map((part, index) => <span key={part}><b>0{index + 1}</b>{part}</span>)}</div><a className="accessory-archive-buy" href={purchaseUrl || '#accessory-archive'} target={purchaseUrl ? '_blank' : undefined} rel={purchaseUrl ? 'noopener noreferrer' : undefined}>在淘宝查看{kind === 'wigs' ? '假发' : kind === 'clothing' ? '娃衣' : '首饰'}商品 </a><a href="/series/flower-gods/jingxin">走近镜昕 </a><small>角色设定图仅供了解造型；单独商品包含内容以淘宝商品页面为准。</small></div>
         </div>}
       </section>
       <section className="accessory-notes" aria-label="品类说明">{item.details.map((detail, index) => <article key={detail.heading}><span>0{index + 1}</span><h3>{detail.heading}</h3><p>{detail.body}</p></article>)}</section>
       <footer className="accessory-footer"><p>绘屿造物</p><div><a href="/accessories">返回全部分类</a><a href="/contact">联系绘屿造物</a></div></footer>
     </main>
+    {preview&&<ImageViewer src={preview} onClose={()=>setPreview(null)}/>}
   </div>;
 }

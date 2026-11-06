@@ -68,3 +68,7 @@
 .accessory-showcase .accessory-eye-controls .accessory-archive-buy { margin-top:24px; }
 .accessory-showcase .accessory-archive-buy:hover,
 .accessory-showcase .accessory-archive-buy:focus-visible { filter:brightness(1.16); }
+.accessory-hero-media,.accessory-eye-crop,.accessory-lotus-art{position:relative}
+.accessory-showcase .accessory-enlarge{position:absolute;z-index:3;right:18px;bottom:18px;border:0;background:#f5f4eceb;color:#173f37;padding:12px 16px;font:inherit;font-size:13px;cursor:zoom-in;border-radius:4px}
+.accessory-enlarge:focus-visible{outline:2px solid #173f37;outline-offset:4px}
+.accessory-lotus-art>img{cursor:zoom-in}

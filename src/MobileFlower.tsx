@@ -17,7 +17,7 @@ type Props = {details: Item[]; pieces: Item[]; onBack?: () => void};
 const detailIds: Record<string, MediaId> = {face:'detailFace', headdress:'detailHeaddress', ornament:'detailOrnament', dress:'detailDress'};
 const pieceIds: Record<string, MediaId> = {veil:'pieceVeil', cape:'pieceCape', waist:'pieceWaist', skirt:'pieceSkirt', train:'pieceTrain'};
 
-function ImageViewer({src, onClose}: {src: string; onClose: () => void}) {
+export function ImageViewer({src, onClose}: {src: string; onClose: () => void}) {
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({x:0, y:0});
   const points = useRef(new Map<number, {x:number; y:number}>());
