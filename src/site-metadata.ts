@@ -43,14 +43,6 @@ export function metadataForPath(pathname: string): PageMetadata {
   if(pathname.replace(/\/+$/, '') === '/help') return {title:'帮助说明｜绘屿造物',description:'浏览、购买、防伪查询与联系方法。'};
   if(pathname.replace(/\/+$/, '') === '/purchase-notice') return {title:'购买与使用说明｜绘屿造物',description:'阅读商品内容、《云笺》确认、制作与交付、收货售后及日常养护说明。'};
   if(pathname.replace(/\/+$/, '') === '/report') return {title:'侵权举报｜绘屿造物',description:'向绘屿造物提供疑似仿冒、盗图或冒充官方的线索。'};
-  const legal = pathname.match(/^\/legal\/(terms|authenticity)\/?$/)?.[1];
-  if (legal) {
-    const titles = { terms: '网站使用条款', authenticity: '防伪服务说明' };
-    return {
-      title: `${titles[legal as keyof typeof titles]}｜绘屿造物`,
-      description: `查看绘屿造物${titles[legal as keyof typeof titles]}。`,
-    };
-  }
   if ((pathname.replace(/\/+$/, '') || '/') === '/verify') return {
     title: '官方防伪核验｜绘屿造物',
     description: verificationIsLive ? '绘屿造物原创球形关节人偶官方防伪核验入口，凭娃证编号与对应购买订单号核对发行档案。' : '绘屿造物原创球形关节人偶防伪核验界面预览。正式服务暂未开放，当前仅展示虚构样例。',

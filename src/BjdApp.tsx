@@ -143,7 +143,7 @@ function Footer() {
   return (
     <footer className="home-footer">
       <p className="home-footer-summary">{officialInfo.brandName} · 客服 {officialInfo.servicePhone} · {officialInfo.serviceHours}</p>
-      <p className="home-footer-copyright">© 2026 绘屿造物 · <a href="/legal/terms">网站条款</a> · <a href="/legal/authenticity">防伪说明</a> · <a href="/report">侵权举报</a></p>
+      <p className="home-footer-copyright">© 2026 绘屿造物 · <a href="/report">侵权举报</a></p>
     </footer>
   );
 }

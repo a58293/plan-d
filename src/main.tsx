@@ -36,7 +36,6 @@ applySiteMetadata(pathname);
 const UnifiedBjdSite = lazy(() => import('./UnifiedBjdSite.tsx'));
 const VerifyPage = lazy(() => import('./VerifyPage.tsx'));
 const NotFoundPage = lazy(() => import('./NotFoundPage.tsx'));
-const LegalPage = lazy(() => import('./LegalPage.tsx'));
 const ReportPage = lazy(() => import('./ReportPage.tsx'));
 const HelpPage = lazy(() => import('./HelpPage.tsx'));
 const PurchaseNotice = lazy(() => import('./PurchaseNotice.tsx'));
@@ -48,7 +47,6 @@ const AccessoryShowcase = lazy(() => import('./AccessoryShowcase.tsx'));
 const CollectorGallery = lazy(() => import('./CollectorGallery.tsx'));
 const PhotoDetail = lazy(() => import('./PhotoDetail'));
 const OpeningArchive = lazy(() => import('./OpeningArchive.tsx'));
-const legalPage = pathname.match(/^\/legal\/(terms|authenticity)$/)?.[1] as 'terms' | 'authenticity' | undefined;
 const accessoryKind = pathname.match(/^\/accessories\/(eyes|wigs|clothing|jewelry)$/)?.[1] as 'eyes' | 'wigs' | 'clothing' | 'jewelry' | undefined;
 const pageCode = pathname === '/' ? import('./BjdApp')
   : pathname === '/series/flower-gods/jingxin' ? import('./FlowerGodsExperience')
@@ -59,7 +57,7 @@ const pageCode = pathname === '/' ? import('./BjdApp')
   : pathname === '/purchase-notice' ? import('./PurchaseNotice')
   : pathname === '/contact' ? import('./ContactPage')
   : pathname === '/report' ? import('./ReportPage')
-  : legalPage ? import('./LegalPage') : import('./NotFoundPage');
+  : import('./NotFoundPage');
 const initialLoadStarted = performance.now();
 const initialAssets = trackInitialAssets(pathname, pageCode);
 let initialReadyAt:number|undefined;
@@ -104,7 +102,7 @@ function SiteRoot() {
       <div inert={showLoader || showOpening}>
       <PageRevealContext.Provider value={!showLoader && !showOpening}>
         <SiteErrorBoundary><Suspense fallback={null}>
-          {pathname === '/stories/openings' ? <OpeningArchive/> : /^\/stories\/(collectors|official)\/[^/]+$/.test(pathname) ? <PhotoDetail/> : ['/stories/collectors','/stories/official'].includes(pathname) ? <CollectorGallery/> : accessoryKind ? <AccessoryShowcase kind={accessoryKind}/> : categoryPages[pathname] ? <CategoryPage path={pathname}/> : pathname === '/bodies' || pathname === '/bodies/female' ? <BodyIndexPage female={pathname==='/bodies/female'}/> : pathname === '/bodies/female-70' ? <BodyCategoryPage /> : pathname === '/contact' ? <ContactPage /> : pathname === '/help' ? <HelpPage /> : pathname === '/purchase-notice' ? <PurchaseNotice /> : pathname === '/report' ? <ReportPage /> : pathname === '/verify' ? <VerifyPage /> : legalPage ? <LegalPage page={legalPage} />
+          {pathname === '/stories/openings' ? <OpeningArchive/> : /^\/stories\/(collectors|official)\/[^/]+$/.test(pathname) ? <PhotoDetail/> : ['/stories/collectors','/stories/official'].includes(pathname) ? <CollectorGallery/> : accessoryKind ? <AccessoryShowcase kind={accessoryKind}/> : categoryPages[pathname] ? <CategoryPage path={pathname}/> : pathname === '/bodies' || pathname === '/bodies/female' ? <BodyIndexPage female={pathname==='/bodies/female'}/> : pathname === '/bodies/female-70' ? <BodyCategoryPage /> : pathname === '/contact' ? <ContactPage /> : pathname === '/help' ? <HelpPage /> : pathname === '/purchase-notice' ? <PurchaseNotice /> : pathname === '/report' ? <ReportPage /> : pathname === '/verify' ? <VerifyPage />
             : resolveSiteRoute(pathname).view !== 'not-found' ? <UnifiedBjdSite /> : <NotFoundPage />}
         </Suspense></SiteErrorBoundary>
       </PageRevealContext.Provider>

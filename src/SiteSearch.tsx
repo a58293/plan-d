@@ -15,7 +15,6 @@ const fixedEntries = [
   { title: '品牌首页', subtitle: '当期主推、系列与藏家返图', href: '/', keywords: '首页 当期 up 主推 实体 2d' },
   { title: '花神卷', subtitle: '选择并探索花神', href: '/series/flower-gods', keywords: '系列 花神 选择 云海' },
   { title: '防伪核验', subtitle: verificationIsLive ? '娃证与订单双重核对' : '正式服务未开放 · 查看界面预览', href: '/verify', keywords: '验证 真伪 娃证 淘宝 订单' },
-  { title: '防伪服务说明', subtitle: '查询范围与结果说明', href: '/legal/authenticity', keywords: '验证 防伪 说明' },
   { title: '举报说明', subtitle: '仿冒、盗图与冒充官方线索', href: '/report', keywords: '举报 投诉 侵权 盗版 仿冒' },
   { title: '帮助说明', subtitle: '浏览、购买、核验与联系方法', href: '/help', keywords: '帮助 客服 购买 声音 加载' },
   { title: '购买须知', subtitle: '付款、云笺、制作确认与收货售后', href: '/purchase-notice', keywords: '购买 付款 云笺 退款 售后 制作周期 快递' },

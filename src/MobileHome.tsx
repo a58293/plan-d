@@ -35,7 +35,7 @@ export default function MobileHome({onOpenFeatured}:{onOpenFlowerGods?:()=>void;
       <section className="mh-auth" id="verify"><span className="mh-eyebrow">03 / 防伪核验</span><h2>珍藏有据，<br/>相遇有迹。</h2><p>{verificationIsLive ? <>凭娃证编号与淘宝订单号，<br/>查询作品的官方出品记录。</> : <>正式核验暂未开放。<br/>可先查看虚构样例与核验说明。</>}</p><a href="/verify">{verificationIsLive ? '进入防伪核验' : '查看防伪预览'}</a></section>
       <HomeSupport />
     </main>
-    <footer className="mh-footer"><strong>绘屿造物</strong><p>{officialInfo.brandName} · 原创球形关节人偶</p><a href={`tel:${officialInfo.servicePhone}`}>客服 {officialInfo.servicePhone}</a><small>{officialInfo.serviceHours}</small><div><a href="/legal/terms">网站条款</a><a href="/legal/authenticity">防伪说明</a><a href="/report">侵权举报</a></div></footer>
+    <footer className="mh-footer"><strong>绘屿造物</strong><p>{officialInfo.brandName} · 原创球形关节人偶</p><a href={`tel:${officialInfo.servicePhone}`}>客服 {officialInfo.servicePhone}</a><small>{officialInfo.serviceHours}</small><div><a href="/report">侵权举报</a></div></footer>
   </div>;
 }
 import ReplayOpeningButton from './ReplayOpeningButton';
