@@ -92,3 +92,4 @@
  .accessory-showcase.accessory-clothing :is(.accessory-lotus-art,.accessory-image-field):hover>img{scale:2.5}
  .accessory-clothing .accessory-lotus-art:after{content:'移动鼠标查看衣装局部'}
 }
+.accessory-showcase .accessory-handmade-note{margin:22px 0 0;padding:16px 0;color:#50685d;font-size:13px;line-height:1.9;max-width:850px}
