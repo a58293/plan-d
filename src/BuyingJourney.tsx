@@ -13,7 +13,7 @@ export default function BuyingJourney({steps,stock}:Props){
   setLeaving(true);timer.current=setTimeout(()=>{setStep(next);setLeaving(false);},180);
  };
  const scene=stock?[0,1,4,5][step]:step;
- const frames=[[20,120,500,365],[505,120,500,365],[995,120,500,365],[15,535,500,370],[500,535,500,370],[985,535,500,370]];
+ const frames=[[20,126,500,355],[505,126,500,355],[995,126,500,355],[15,535,500,370],[500,535,500,370],[985,535,500,370]];
  const frame=frames[scene];
  const openDetails=()=>{const detail=document.getElementById('purchase-full-details');if(detail instanceof HTMLDetailsElement){detail.open=true;detail.scrollIntoView({behavior:'smooth',block:'start'});}};
  return <div className="buying-journey" tabIndex={0} aria-label="逐步了解购买流程" onKeyDown={event=>{if(event.target!==event.currentTarget)return;if(event.key==='ArrowRight'){event.preventDefault();change(step+1);}if(event.key==='ArrowLeft'){event.preventDefault();change(step-1);}}}
