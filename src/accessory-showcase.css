@@ -99,3 +99,17 @@
 .accessory-showcase .accessory-image-label{font-size:clamp(14px,1.1vw,18px);line-height:1.7}
 .accessory-showcase .accessory-image-label small{font-size:13px}
 .accessory-showcase .accessory-handmade-note.accessory-handmade-intro{max-width:none;margin:0;padding:22px clamp(24px,5.5vw,100px);font-size:13px;line-height:1.9;color:#50685d;text-align:left}
+.eye-collection-overview{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:28px;width:100%;margin:auto}
+.eye-collection-card{color:#173f37;text-decoration:none;text-align:center;min-width:0}
+.eye-collection-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:2px}
+.eye-collection-card span{display:block;font-size:16px;margin-top:12px}
+.eye-collection-detail{display:grid;grid-template-columns:1.15fr 1fr;gap:40px;margin-bottom:24px;align-items:center}
+.eye-collection-photo{position:relative;overflow:hidden;background:#101010}
+.eye-collection-photo>img{display:block;width:100%;height:520px;object-fit:contain;transition:scale .4s ease}
+.eye-collection-controls h3{font-size:32px;margin:0 0 20px}.eye-collection-controls p{font-size:14px;line-height:1.9}
+.eye-collection-select{display:flex;flex-wrap:wrap;gap:14px;margin:24px 0}
+.eye-collection-select button{font:inherit;border:0;background:transparent;color:#173f37;padding:10px;cursor:pointer}
+.eye-collection-select button[aria-pressed=true]{font-weight:700;text-decoration:underline;text-underline-offset:7px}
+.eye-collection-angles{display:flex;gap:10px}.eye-collection-angles button{width:90px;padding:3px;border:2px solid transparent;background:transparent;cursor:pointer}.eye-collection-angles button[aria-pressed=true]{border-color:#456a58}.eye-collection-angles img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+@media(hover:hover) and (pointer:fine){.eye-collection-photo:hover>img{scale:1.65;cursor:zoom-in}}
+@media(max-width:700px){.eye-collection-detail{grid-template-columns:1fr;gap:24px}.eye-collection-photo>img{height:360px}.eye-collection-overview{padding:18px;gap:18px 12px}.eye-collection-card span{font-size:14px}}
