@@ -78,3 +78,41 @@
 .purchase-section-content h4{margin:32px 0 14px;font-size:17px;line-height:1.7}
 .purchase-disclosure>summary:focus-visible{outline:2px solid #446f58;outline-offset:4px}
 @media(max-width:700px){.purchase-disclosure>summary{padding:20px 0;gap:12px}.purchase-disclosure>summary h3{font-size:19px}.purchase-section-content p{font-size:15px;line-height:1.95}.purchase-section-guide{max-width:240px}}
+.purchase-notice-world .purchase-heading{margin-bottom:36px}
+.buying-flow{max-width:1100px;margin:0 auto 36px}
+.buying-flow>h2{font-size:25px;font-weight:500;margin:0 0 20px}
+.buying-flow-tabs{display:flex;gap:24px;margin-bottom:30px}
+.buying-flow-tabs button{font:inherit;padding:10px 0;border:0;background:transparent;color:#61766a;cursor:pointer}
+.buying-flow-tabs button[aria-pressed=true]{color:#173f36;font-weight:700;text-decoration:underline;text-underline-offset:9px}
+.buying-flow-steps{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.buying-flow-steps li{display:flex;gap:18px;padding:25px 22px;background:#e9eee6;border-radius:3px;min-width:0}
+.buying-flow-number{font-size:30px;line-height:1.2;color:#8b9c8b;flex-shrink:0}
+.buying-flow-steps h3{font-size:19px;margin:0 0 12px;line-height:1.5}
+.buying-flow-steps p{font-size:14px;line-height:1.85;margin:0;color:#486256}
+.buying-flow-footnote{font-size:13px;color:#627669;line-height:1.9;max-width:850px;margin:24px 0}
+.buying-flow-links{display:flex;flex-wrap:wrap;gap:12px 28px;font-size:14px}
+.buying-flow-links a{color:#244e40;padding:6px 0}
+.purchase-full-details{border-top:1px solid #173f3626;padding-top:22px;max-width:1100px;margin:auto}
+.purchase-full-details>summary{cursor:pointer;list-style:none;padding:12px 0 22px;font-size:20px;color:#173f36}
+.purchase-full-details>summary small{display:block;font-size:13px;color:#627669;margin-top:9px}
+.purchase-full-details>summary::-webkit-details-marker{display:none}
+.purchase-full-details[open]>.purchase-layout{margin-top:35px}
+@media(max-width:700px){.buying-flow-steps{grid-template-columns:1fr;gap:12px}.buying-flow-steps li{padding:20px;gap:20px}.buying-flow-steps h3{font-size:18px}.buying-flow-number{font-size:27px}.purchase-full-details>summary{font-size:18px}}
+.buying-journey{max-width:1000px;margin:0 auto 20px;outline-offset:6px}
+.journey-scene{display:grid;grid-template-columns:1.2fr 1fr;align-items:center;gap:clamp(24px,5vw,70px);min-height:350px;animation:journey-arrive .45s ease both;transition:opacity .18s ease,transform .18s ease}
+.journey-scene.is-leaving{opacity:0;transform:translateX(-12px)}
+.journey-art{position:relative;aspect-ratio:440/350;overflow:hidden;mix-blend-mode:multiply;pointer-events:none}
+.journey-art img{display:block;position:absolute;max-width:none!important;height:auto!important;user-select:none}
+.journey-copy .journey-position{font-size:12px;letter-spacing:.2em;color:#819281;margin-bottom:18px}
+.journey-copy h3{font-size:clamp(27px,3vw,39px);font-weight:500;line-height:1.5;margin:0 0 22px}
+.journey-copy>p:last-child{font-size:15px;line-height:2;max-width:340px;color:#456253}
+.journey-controls{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:24px 0 12px}
+.journey-controls>button{border:0;background:transparent;color:#224e3f;font:inherit;padding:12px 0;cursor:pointer;min-width:64px}
+.journey-controls>button:disabled{opacity:.28;cursor:default}
+.journey-dots{display:flex;gap:14px;align-items:center}
+.journey-dots button{width:22px;height:28px;padding:0;border:0;background:transparent;position:relative;cursor:pointer}
+.journey-dots button:after{content:'';position:absolute;width:5px;height:5px;border-radius:50%;background:#aab8aa;left:8px;top:11px;transition:scale .25s,background .25s}
+.journey-dots button[aria-current]:after{background:#315f48;scale:1.6}
+@keyframes journey-arrive{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
+@media(max-width:700px){.journey-scene{grid-template-columns:1fr;gap:6px;min-height:460px}.journey-art{width:100%;max-width:420px;margin:auto}.journey-copy{padding:0 8px;min-height:140px}.journey-copy .journey-position{margin:0 0 8px}.journey-copy h3{font-size:26px;margin:0 0 12px}.journey-copy>p:last-child{font-size:14px;line-height:1.85;max-width:none}.journey-controls{padding-top:12px}.journey-dots{gap:5px}}
+@media(prefers-reduced-motion:reduce){.journey-scene{animation:none;transition:none}}

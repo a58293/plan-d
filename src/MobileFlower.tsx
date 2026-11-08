@@ -17,7 +17,10 @@ type Props = {details: Item[]; pieces: Item[]; onBack?: () => void};
 const detailIds: Record<string, MediaId> = {face:'detailFace', headdress:'detailHeaddress', ornament:'detailOrnament', dress:'detailDress'};
 const pieceIds: Record<string, MediaId> = {veil:'pieceVeil', cape:'pieceCape', waist:'pieceWaist', skirt:'pieceSkirt', train:'pieceTrain'};
 
-export function ImageViewer({src, onClose}: {src: string; onClose: () => void}) {
+export function ImageViewer({src, images, onClose}: {src: string; images?: readonly string[]; onClose: () => void}) {
+  const [imageIndex,setImageIndex]=useState(()=>Math.max(0,images?.indexOf(src)??0));
+  const shownSrc=images?.[imageIndex]||src;
+  const swipe=useRef<{x:number;y:number;pinched:boolean}|null>(null);
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({x:0, y:0});
   const points = useRef(new Map<number, {x:number; y:number}>());
@@ -45,10 +48,10 @@ export function ImageViewer({src, onClose}: {src: string; onClose: () => void}) 
   };
   return createPortal(<div className="mf-viewer" role="dialog" aria-modal="true" aria-label="全屏查看造型">
     <div className="mf-viewer-tools"><button ref={closeRef} onClick={onClose}>关闭 ×</button><button onClick={()=>{setScale(1);setOffset({x:0,y:0});}}>重置</button><button onClick={()=>setScale(s=>Math.min(5,s+.5))}>放大 ＋</button></div>
-    <div className="mf-viewer-image" onClick={e=>{if(e.target===e.currentTarget)onClose();}} onPointerDown={e=>{points.current.set(e.pointerId,{x:e.clientX,y:e.clientY});previous.current=measure();}}
+    <div className="mf-viewer-image" onClick={e=>{if(e.target===e.currentTarget)onClose();}} onPointerDown={e=>{points.current.set(e.pointerId,{x:e.clientX,y:e.clientY});if(points.current.size===1)swipe.current={x:e.clientX,y:e.clientY,pinched:false};else if(swipe.current)swipe.current.pinched=true;previous.current=measure();}}
       onPointerMove={e=>{if(!points.current.has(e.pointerId))return;points.current.set(e.pointerId,{x:e.clientX,y:e.clientY});const next=measure();const old=previous.current;if(next.distance&&old.distance)setScale(s=>Math.max(1,Math.min(5,s*next.distance/old.distance)));if(scale>1)setOffset(p=>({x:Math.max(-innerWidth*2,Math.min(innerWidth*2,p.x+next.x-old.x)),y:Math.max(-innerHeight*2,Math.min(innerHeight*2,p.y+next.y-old.y))}));previous.current=next;}}
-      onPointerUp={e=>{points.current.delete(e.pointerId);previous.current=measure();}} onPointerCancel={()=>points.current.clear()}>
-      <img src={src} alt="镜昕造型高清细节" draggable={false} style={{transform:`translate(${offset.x}px, ${offset.y}px) scale(${scale})`}} />
+      onPointerUp={e=>{const start=swipe.current;if(start&&!start.pinched&&scale<=1.05&&images&&images.length>1){const dx=e.clientX-start.x,dy=e.clientY-start.y;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.3){setImageIndex(index=>Math.max(0,Math.min(images.length-1,index+(dx<0?1:-1))));setScale(1);setOffset({x:0,y:0});}}points.current.delete(e.pointerId);if(!points.current.size)swipe.current=null;previous.current=measure();}} onPointerCancel={()=>{points.current.clear();swipe.current=null;}}>
+      <img src={shownSrc} alt="镜昕造型高清细节" draggable={false} style={{transform:`translate(${offset.x}px, ${offset.y}px) scale(${scale})`}} />
     </div><p>双指缩放 · 放大后单指拖动</p>
   </div>, document.body);
 }

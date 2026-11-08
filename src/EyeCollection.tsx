@@ -9,6 +9,7 @@ const eyePhotos=import.meta.glob<string>('../public/eye-collection/*.webp',{eage
 const url=(file:string,size=720)=>eyePhotos[`../public/eye-collection/${file}-${size}.webp`];
 const originals=import.meta.glob<string>('../public/eye-collection/*.png',{eager:true,query:'?url',import:'default'});
 const allSlides=styles.flatMap((item,style)=>item.files.map((file,angle)=>({file,style,angle,name:item.name})));
+export const eyeViewerImages=allSlides.map(slide=>url(slide.file,1440));
 function recoverPhoto(event:SyntheticEvent<HTMLImageElement>){const image=event.currentTarget;const file=image.dataset.file;if(file&&image.dataset.recovered!=='true'){image.dataset.recovered='true';image.src=originals[`../public/eye-collection/${file}.png`];}}
 export default function EyeCollection({overview=false,onPreview}:{overview?:boolean;onPreview:(src:string)=>void}){
  const [selected,setSelected]=useState(0),[angle,setAngle]=useState(0);

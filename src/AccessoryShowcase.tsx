@@ -1,4 +1,4 @@
-import EyeCollection from './EyeCollection';
+import EyeCollection,{eyeViewerImages} from './EyeCollection';
 import {useState} from 'react';
 import {ImageViewer} from './MobileFlower';
 import {requiredImage} from './media-library';
@@ -125,9 +125,9 @@ export default function AccessoryShowcase({kind}: {kind: Kind}) {
           <div className="accessory-lotus-copy"><p>01 / 花神卷</p><h3>{item.featureTitle}</h3><p>{item.lotusDescription}</p><div className="accessory-lotus-parts">{item.lotusParts.map((part, index) => <span key={part}><b>0{index + 1}</b>{part}</span>)}</div><a className="accessory-archive-buy" href={purchaseUrl || '#accessory-archive'} target={purchaseUrl ? '_blank' : undefined} rel={purchaseUrl ? 'noopener noreferrer' : undefined}>在淘宝查看{kind === 'wigs' ? '假发' : kind === 'clothing' ? '娃衣' : '首饰'}商品 </a><a href="/series/flower-gods/jingxin">走近镜昕 </a><small>角色设定图仅供了解造型；单独商品包含内容以淘宝商品页面为准。</small></div>
         </div>}
       </section>
-      <section className="accessory-notes" aria-label="品类说明">{item.details.map((detail, index) => <article key={detail.heading}><span>0{index + 1}</span><h3>{detail.heading}</h3><p>{detail.body}</p></article>)}</section>
+      {kind!=='eyes'&&<section className="accessory-notes" aria-label="品类说明">{item.details.map((detail, index) => <article key={detail.heading}><span>0{index + 1}</span><h3>{detail.heading}</h3><p>{detail.body}</p></article>)}</section>}
       <footer className="accessory-footer"><p>绘屿造物</p><div><a href="/accessories">返回全部分类</a><a href="/contact">联系绘屿造物</a></div></footer>
     </main>
-    {preview&&<ImageViewer src={preview} onClose={()=>setPreview(null)}/>}
+    {preview&&<ImageViewer src={preview} images={kind==='eyes'?eyeViewerImages:undefined} onClose={()=>setPreview(null)}/>}
   </div>;
 }
