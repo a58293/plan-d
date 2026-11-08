@@ -5,7 +5,8 @@ const styles=[
  {name:'绿色花纹款',files:['green-1','green-2']},
  {name:'晶石款',files:['crystal-1','crystal-2','crystal-3']},
 ];
-const url=(file:string)=>`/eye-collection/${file}.png`;
+const eyePhotos=import.meta.glob<string>('../public/eye-collection/*.png',{eager:true,query:'?url',import:'default'});
+const url=(file:string)=>eyePhotos[`../public/eye-collection/${file}.png`];
 export default function EyeCollection({overview=false,onPreview}:{overview?:boolean;onPreview:(src:string)=>void}){
  const [selected,setSelected]=useState(0),[angle,setAngle]=useState(0);
  const item=styles[selected];
