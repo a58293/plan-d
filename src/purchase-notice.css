@@ -64,3 +64,17 @@
 .purchase-section:target>h3,.purchase-section h4:target{width:fit-content;max-width:100%;padding:8px 14px 8px 12px;border-left:3px solid #b19361;border-radius:0 7px 7px 0;background:#e5ece2;color:#173f36;box-shadow:0 8px 20px #173f3614;animation:notice-target-arrive .55s ease-out both}
 @keyframes notice-target-arrive{from{opacity:.4;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.purchase-section:target>h3,.purchase-section h4:target{animation:none}}
+.purchase-reading-guide{font-size:14px;line-height:1.9;color:#526b5e;margin-top:24px}
+.purchase-disclosure{border-bottom:1px solid #173f3626;padding:0!important;margin:0 0 20px!important}
+.purchase-disclosure>summary{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:24px 0;cursor:pointer;list-style:none}
+.purchase-disclosure>summary::-webkit-details-marker{display:none}
+.purchase-disclosure>summary h3{margin:0 0 8px!important;font-size:21px;line-height:1.5}
+.purchase-section-guide{display:block;font-size:13px;line-height:1.8;color:#617469}
+.purchase-disclosure-label{flex-shrink:0;font-size:12px;color:#526b5e}
+.purchase-disclosure[open]>summary .purchase-disclosure-label{font-size:0}
+.purchase-disclosure[open]>summary .purchase-disclosure-label:after{content:'收起';font-size:12px}
+.purchase-section-content{max-width:660px;padding:8px 0 28px}
+.purchase-section-content p{font-size:15px;line-height:2.05;margin:0 0 22px;white-space:pre-line}
+.purchase-section-content h4{margin:32px 0 14px;font-size:17px;line-height:1.7}
+.purchase-disclosure>summary:focus-visible{outline:2px solid #446f58;outline-offset:4px}
+@media(max-width:700px){.purchase-disclosure>summary{padding:20px 0;gap:12px}.purchase-disclosure>summary h3{font-size:19px}.purchase-section-content p{font-size:15px;line-height:1.95}.purchase-section-guide{max-width:240px}}

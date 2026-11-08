@@ -43,13 +43,33 @@ function parseNotice(text: string) {
 }
 
 const notice = parseNotice(noticeText);
+const sectionGuides:Record<string,string>={
+ '一':'商品内容、手工差异与付款方式',
+ '二':'《云笺》核对、确认制作与交付安排',
+ '三':'修改、取消订单及退款处理',
+ '四':'配送安排与收件信息',
+ '五':'开箱核对、质量问题与售后办理',
+ '六':'保养服务与部件补配',
+ '七':'穿戴、关节操作与防染',
+ '八':'清洁、收纳与安全注意事项',
+ '九':'转单及二手交易的办理方式',
+ '十':'防伪查询与官方渠道',
+ '十一':'按问题查找答案',
+ '十二':'客服与官方联系方式',
+};
+function revealNoticeTarget(id:string){
+ const target=document.getElementById(id);
+ let parent:HTMLElement|null=target;
+ while(parent){if(parent instanceof HTMLDetailsElement)parent.open=true;parent=parent.parentElement;}
+ return target;
+}
 
 export default function PurchaseNotice() {
   const [chapterMotion, setChapterMotion] = useState<'idle' | 'leaving' | 'entering'>('idle');
   const motionTimers = useRef<number[]>([]);
 
   useEffect(() => () => motionTimers.current.forEach(window.clearTimeout), []);
-  useEffect(() => { let id=''; try{id=decodeURIComponent(window.location.hash.slice(1));}catch{return;} if (!id.startsWith('notice-')) return; const frame = requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({block: 'start', behavior: 'instant'})); return () => cancelAnimationFrame(frame); }, []);
+  useEffect(() => {const show=()=>{let id='';try{id=decodeURIComponent(window.location.hash.slice(1));}catch{return;}if(id.startsWith('notice-'))revealNoticeTarget(id)?.scrollIntoView({block:'start',behavior:'instant'});};const frame=requestAnimationFrame(show);window.addEventListener('hashchange',show);return()=>{cancelAnimationFrame(frame);window.removeEventListener('hashchange',show);};}, []);
 
   function openChapter(event: MouseEvent<HTMLAnchorElement>, id: string) {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -83,6 +103,7 @@ export default function PurchaseNotice() {
       <div className="purchase-heading">
         <p className="legal-kicker">绘屿造物 · 购买须知</p>
         <h1>购买与使用说明</h1>
+        <p className="purchase-reading-guide">先选择与你有关的章节，再展开查看细则。</p>
         {notice.introduction.map((paragraph, index) => <p className="purchase-intro" key={index}>{paragraph}</p>)}
       </div>
 
@@ -97,8 +118,9 @@ export default function PurchaseNotice() {
             {chapter.sections.map(key => {
               const section = notice.sections.find(item => item.key === key);
               if (!section) return null;
-              return <div className="purchase-section" id={section.key === '五' ? 'notice-after-sales' : section.key === '七' ? 'notice-care' : section.key === '九' ? 'notice-transfer' : undefined} key={section.key}>
-                <h3>{section.heading}</h3>
+              return <details className="purchase-section purchase-disclosure" id={section.key === '五' ? 'notice-after-sales' : section.key === '七' ? 'notice-care' : section.key === '九' ? 'notice-transfer' : undefined} key={section.key}>
+                <summary><span><h3>{section.heading}</h3><span className="purchase-section-guide">{sectionGuides[section.key]}</span></span><span className="purchase-disclosure-label">查看细则</span></summary>
+                <div className="purchase-section-content">
                 {section.blocks.map((block, index) => {
                   if (block.type === 'subheading') return <h4 id={section.key === '二' && block.text === '确认制作' ? 'notice-confirmation' : section.key === '二' && block.text === '制作与发货时间' ? 'notice-leadtime' : undefined} key={index}>{block.text}</h4>;
                   if (block.type === 'faq') {
@@ -107,7 +129,8 @@ export default function PurchaseNotice() {
                   }
                   return <p key={index}>{block.text}</p>;
                 })}
-              </div>;
+                </div>
+              </details>;
             })}
           </section>)}
           <a className="purchase-back-top" href="#page-top">回到页首</a>

@@ -21,3 +21,4 @@
 .help-contact-entry a:hover{text-shadow:0 0 12px #508c6d66}
 .help-contact-entry a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 #xiaohongshu{scroll-margin-top:110px}
+@media(min-width:701px){.home-support .support-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,4vw,64px)}.home-support .support-card p{max-width:300px;font-size:14px;line-height:1.9}}
