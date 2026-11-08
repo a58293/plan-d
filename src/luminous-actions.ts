@@ -12,6 +12,7 @@ function enhance(root: ParentNode) {
   const elements = [root instanceof HTMLElement && root.matches(candidate) ? root : null, ...root.querySelectorAll<HTMLElement>(candidate)];
   elements.forEach((element) => {
     if (!element) return;
+    if(element.querySelector('img,picture,video'))return;
     if (element.closest('.desktop-navigation,.story-edge,.mobile-navigation') || element.matches('.home-verify-primary')) return;
     if (element.matches('a[href]') && (element.querySelector('img,picture,video,figure,article') || !element.textContent?.trim())) return;
     element.classList.add('lumen-action');
