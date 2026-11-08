@@ -84,8 +84,9 @@ export default function AccessoryShowcase({kind}: {kind: Kind}) {
   const returnHref = returnDetail && ['face','headdress','ornament','dress'].includes(returnDetail)
     ? `/series/flower-gods/jingxin?detail=${encodeURIComponent(returnDetail)}#details` : null;
   const [preview,setPreview]=useState<string|null>(null);
-  const openPreview=(src:string)=>{if(kind!=='wigs'&&!window.matchMedia('(hover: hover) and (pointer: fine)').matches)setPreview(src);};
+  const openPreview=(src:string)=>{if(!window.matchMedia('(hover: hover) and (pointer: fine)').matches)setPreview(src);};
   return <div className={`accessory-showcase accessory-${kind}`} data-color-owner="jingxin" style={characterThemeStyle('jingxin')}
+    onClick={event=>{if(event.target instanceof HTMLImageElement)openPreview(event.target.currentSrc||event.target.src);}}
     onPointerMove={event=>{
       if(kind!=='clothing'||event.pointerType==='touch'||!window.matchMedia('(hover: hover) and (pointer: fine)').matches)return;
       const field=(event.target as Element).closest<HTMLElement>('.accessory-lotus-art,.accessory-image-field');

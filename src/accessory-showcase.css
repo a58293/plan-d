@@ -113,3 +113,27 @@
 .eye-collection-angles{display:flex;gap:10px}.eye-collection-angles button{width:90px;padding:3px;border:2px solid transparent;background:transparent;cursor:pointer}.eye-collection-angles button[aria-pressed=true]{border-color:#456a58}.eye-collection-angles img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
 @media(hover:hover) and (pointer:fine){.eye-collection-photo:hover>img{scale:1.65;cursor:zoom-in}}
 @media(max-width:700px){.eye-collection-detail{grid-template-columns:1fr;gap:24px}.eye-collection-photo>img{height:360px}.eye-collection-overview{padding:18px;gap:18px 12px}.eye-collection-card span{font-size:14px}}
+.accessory-showcase .accessory-enlarge{display:none!important}
+.eye-classic-hero{min-height:500px;width:100%}
+.accessory-eyes .eye-collection-overview{display:none}
+.eye-mobile-track{display:none}
+.eye-collection-photo>img{aspect-ratio:4/3;height:auto!important;width:100%;object-fit:contain}
+@media(max-width:700px){
+ .accessory-eyes .eye-classic-hero{display:none}
+ .accessory-eyes .eye-collection-overview{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding:0;gap:0;overscroll-behavior-x:contain}
+ .eye-collection-overview .eye-collection-card{flex:0 0 100%;scroll-snap-align:center;padding:0 12px}
+ .eye-desktop-photo{display:none}
+ .eye-mobile-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;width:100%;min-width:0;overscroll-behavior-x:contain}
+ .eye-mobile-slide{flex:0 0 100%;min-width:0;border:0;padding:0;background:#0d0d0d;scroll-snap-align:center;touch-action:pan-x pan-y}
+ .eye-mobile-slide img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain}
+ .eye-collection-detail,.eye-collection-controls{min-width:0}
+ .eye-collection-select{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+ .accessory-showcase.accessory-wigs .accessory-image-field img{transform:none!important;object-fit:contain;object-position:center}
+ .accessory-wigs .accessory-lotus-art img{transform:none!important;object-fit:contain}
+ .accessory-showcase:not(.accessory-eyes) .accessory-hero-copy{padding-top:35px;padding-bottom:26px}
+ .accessory-showcase:not(.accessory-eyes) .accessory-overline{margin-bottom:26px}
+ .accessory-showcase:not(.accessory-eyes) .accessory-hero-media{height:min(100vw,460px)}
+}
+.eye-collection-photo[data-photo="green-2"]>img,.eye-mobile-slide[data-photo="green-2"]>img{transform:scale(1.22) translateY(-9%)}
+.eye-mobile-slide{overflow:hidden}
+.orb-context>a{color:inherit;text-decoration:none;font-weight:600}

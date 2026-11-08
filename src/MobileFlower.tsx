@@ -40,12 +40,12 @@ export function ImageViewer({src, onClose}: {src: string; onClose: () => void}) 
   }, [onClose]);
   const measure = () => {
     const list = [...points.current.values()];
-    return {x:list.reduce((s,p)=>s+p.x,0)/list.length, y:list.reduce((s,p)=>s+p.y,0)/list.length,
+    return {x:list.reduce((s,p)=>s+p.x,0)/Math.max(1,list.length), y:list.reduce((s,p)=>s+p.y,0)/Math.max(1,list.length),
       distance:list.length===2 ? Math.hypot(list[0].x-list[1].x,list[0].y-list[1].y) : 0};
   };
   return createPortal(<div className="mf-viewer" role="dialog" aria-modal="true" aria-label="全屏查看造型">
     <div className="mf-viewer-tools"><button ref={closeRef} onClick={onClose}>关闭 ×</button><button onClick={()=>{setScale(1);setOffset({x:0,y:0});}}>重置</button><button onClick={()=>setScale(s=>Math.min(5,s+.5))}>放大 ＋</button></div>
-    <div className="mf-viewer-image" onPointerDown={e=>{e.currentTarget.setPointerCapture(e.pointerId);points.current.set(e.pointerId,{x:e.clientX,y:e.clientY});previous.current=measure();}}
+    <div className="mf-viewer-image" onClick={e=>{if(e.target===e.currentTarget)onClose();}} onPointerDown={e=>{points.current.set(e.pointerId,{x:e.clientX,y:e.clientY});previous.current=measure();}}
       onPointerMove={e=>{if(!points.current.has(e.pointerId))return;points.current.set(e.pointerId,{x:e.clientX,y:e.clientY});const next=measure();const old=previous.current;if(next.distance&&old.distance)setScale(s=>Math.max(1,Math.min(5,s*next.distance/old.distance)));if(scale>1)setOffset(p=>({x:Math.max(-innerWidth*2,Math.min(innerWidth*2,p.x+next.x-old.x)),y:Math.max(-innerHeight*2,Math.min(innerHeight*2,p.y+next.y-old.y))}));previous.current=next;}}
       onPointerUp={e=>{points.current.delete(e.pointerId);previous.current=measure();}} onPointerCancel={()=>points.current.clear()}>
       <img src={src} alt="镜昕造型高清细节" draggable={false} style={{transform:`translate(${offset.x}px, ${offset.y}px) scale(${scale})`}} />

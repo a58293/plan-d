@@ -62,3 +62,5 @@ html body .mf-page, html body .mf-page :is(p,a,button,span,small,label,input,em,
 html.site-ui body .mf-page .site-breadcrumbs{position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;height:auto!important;min-height:42px;padding:8px 20px;color:#dbe8df!important;background:#0b302b;z-index:2}
 html.site-ui body .mf-page .site-breadcrumbs ol{overflow-x:auto;max-width:100%;white-space:nowrap}
 @media(max-width:360px){.mf-name-row{min-height:210px}.mf-name-row .mf-portrait{height:220px;width:39%;flex-basis:39%;margin-right:-12px}.mf-name-copy{flex-basis:61%}.mf-page h1{font-size:40px}}
+.mf-viewer .mf-viewer-image{background:#050706;padding:16px}
+.mf-viewer .mf-viewer-image img{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain}
