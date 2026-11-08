@@ -5,7 +5,7 @@ import {currentProductTheme, currentProductThemeStyle} from './current-product-t
 import './category-page.css';
 type Item={title:string;href?:string;note?:string};
 function CategoryItems({items,ancestors=[]}:{items:Item[];ancestors?:string[]}){return <div className="category-list">{items.map(item=>{
- const child=item.href&&item.href!=='/bodies/female-70'&&!ancestors.includes(item.href)?categoryPages[item.href]:undefined;
+ const child=item.href&&item.href!=='/bodies/female-70'&&!/^\/accessories\/(eyes|wigs|clothing|jewelry)$/.test(item.href)&&!ancestors.includes(item.href)?categoryPages[item.href]:undefined;
  if(child)return <details className="category-fold" key={item.title}><summary>{item.title}<span className="category-fold-indicator" aria-hidden="true">＋</span></summary><div className="category-fold-content">{child.items.length?<CategoryItems items={child.items} ancestors={[...ancestors,item.href!]}/>:<p>{child.description}</p>}</div></details>;
  return item.href?<a key={item.title} href={item.href}><span>{item.title}{item.note&&<small>{item.note}</small>}</span></a>:<div key={item.title} className="category-unavailable"><span>{item.title}</span><small>{item.note||'资料待公开'}</small></div>;
  })}</div>;}
