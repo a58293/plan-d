@@ -1,5 +1,5 @@
 import {useEffect,useRef,useState} from 'react';
-import journeyArt from '../public/purchase-journey-anatomy-v2.webp?url';
+const sceneAssets=import.meta.glob('../public/journey-clean-*.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
 type Props={steps:readonly (readonly [string,string])[];stock:boolean};
 export default function BuyingJourney({steps,stock}:Props){
  const [step,setStep]=useState(0),[leaving,setLeaving]=useState(false);
@@ -13,16 +13,17 @@ export default function BuyingJourney({steps,stock}:Props){
   setLeaving(true);timer.current=setTimeout(()=>{setStep(next);setLeaving(false);},180);
  };
  const scene=stock?[0,1,4,5][step]:step;
- const frames=[[20,126,500,355],[505,126,500,355],[995,126,500,355],[15,535,500,370],[500,535,500,370],[985,535,500,370]];
- const frame=frames[scene];
+
  const openDetails=()=>{const detail=document.getElementById('purchase-full-details');if(detail instanceof HTMLDetailsElement){detail.open=true;detail.scrollIntoView({behavior:'smooth',block:'start'});}};
  return <div className="buying-journey" tabIndex={0} aria-label="逐步了解购买流程" onKeyDown={event=>{if(event.target!==event.currentTarget)return;if(event.key==='ArrowRight'){event.preventDefault();change(step+1);}if(event.key==='ArrowLeft'){event.preventDefault();change(step-1);}}}
    onTouchStart={event=>{const t=event.touches[0];touch.current={x:t.clientX,y:t.clientY};}}
    onTouchEnd={event=>{const t=event.changedTouches[0],start=touch.current;touch.current=null;if(!start)return;const dx=t.clientX-start.x,dy=t.clientY-start.y;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.4)change(step+(dx<0?1:-1));}}>
    <div key={step} className={`journey-scene ${leaving?'is-leaving':''}`}>
-    <div className="journey-art" role="img" aria-label={steps[step][0]}><svg viewBox="0 0 540 410" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><svg x="20" y="20" width="500" height="370" viewBox={frame.join(' ')} preserveAspectRatio="xMidYMid meet" overflow="hidden"><image href={journeyArt} x="0" y="0" width="1536" height="1024"/></svg></svg></div>
+    <div className="journey-art" role="img" aria-label={steps[step][0]}><img src={sceneAssets[`../public/journey-clean-${scene}.webp`]} alt="" style={{display:'block',width:'100%',height:'100%',objectFit:'contain'}}/></div>
     <div className="journey-copy" aria-live="polite" aria-atomic="true"><p className="journey-position">{String(step+1).padStart(2,'0')} / {String(steps.length).padStart(2,'0')}</p><h3>{steps[step][0]}</h3><p>{steps[step][1]}</p></div>
    </div>
    <div className="journey-controls"><button type="button" disabled={step===0||leaving} onClick={()=>change(step-1)}>上一步</button><div className="journey-dots" aria-label="选择流程步骤">{steps.map(([title],i)=><button type="button" key={title} aria-label={title} aria-current={step===i?'step':undefined} onClick={()=>change(i)}/>)}</div>{step<steps.length-1?<button type="button" disabled={leaving} onClick={()=>change(step+1)}>下一步</button>:<button type="button" onClick={openDetails}>查看细则</button>}</div>
  </div>;
 }
+
+
