@@ -1,6 +1,7 @@
 import {useEffect,useRef,useState} from 'react';
 const frameAssets=import.meta.glob('../public/journey-frame-*-5.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>;
 function JourneyArt({scene}:{scene:number}){
+ if(scene===5)return null;
  return <picture><img src={frameAssets[`../public/journey-frame-${scene}-5.webp`]} alt=""/></picture>;
 }
 type Props={steps:readonly (readonly [string,string])[];stock:boolean};
