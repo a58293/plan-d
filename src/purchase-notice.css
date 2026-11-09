@@ -103,7 +103,8 @@
 .journey-scene.is-leaving{opacity:0;transform:translateY(-6px)}
 .journey-art{position:relative;aspect-ratio:540/410;mix-blend-mode:multiply;pointer-events:none;width:100%;margin-inline:auto}
 .journey-art>svg{display:block;width:100%;height:100%}
-.journey-art img{display:block;position:absolute;max-width:none!important;height:auto!important;user-select:none}
+.journey-art{overflow:hidden;isolation:isolate}
+.journey-art img{display:block;position:absolute;inset:0;max-width:100%!important;width:100%!important;height:100%!important;object-fit:contain;user-select:none;transform-origin:50% 62%;mix-blend-mode:multiply}
 .journey-copy .journey-position{font-size:12px;letter-spacing:.2em;color:#819281;margin-bottom:18px}
 .journey-copy h3{font-size:clamp(27px,3vw,39px);font-weight:500;line-height:1.5;margin:0 0 22px}
 .journey-copy>p:last-child{font-size:15px;line-height:2;max-width:340px;color:#456253}
@@ -117,3 +118,9 @@
 @keyframes journey-arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:700px){.journey-scene{grid-template-columns:1fr;gap:6px;min-height:460px}.journey-art{width:100%;max-width:420px;margin:auto}.journey-copy{padding:0 8px;min-height:140px}.journey-copy .journey-position{margin:0 0 8px}.journey-copy h3{font-size:26px;margin:0 0 12px}.journey-copy>p:last-child{font-size:14px;line-height:1.85;max-width:none}.journey-controls{padding-top:12px}.journey-dots{gap:5px}}
 @media(prefers-reduced-motion:reduce){.journey-scene{animation:none;transition:none}}
+.journey-art picture{display:block;position:absolute;inset:0}.journey-art picture img{animation:none!important;transform:none!important}
+
+/* Persist the flow choice independently of the global text-button hover treatment. */
+.purchase-notice-world .buying-flow-tabs button{position:relative;display:inline-flex;align-items:center;gap:9px;color:#69796d!important;padding:10px 0 13px!important}
+.purchase-notice-world .buying-flow-tabs button[aria-pressed="true"]{color:#173f36!important;font-weight:700!important;text-decoration:underline!important;text-decoration-thickness:2px!important;text-underline-offset:9px!important;text-shadow:none!important}
+.purchase-notice-world .buying-flow-tabs button[aria-pressed="true"]::after{content:'已选中'!important;position:static!important;display:inline!important;width:auto!important;height:auto!important;background:none!important;box-shadow:none!important;transform:none!important;opacity:1!important;font-size:11px;font-weight:400;color:#526b5e}
