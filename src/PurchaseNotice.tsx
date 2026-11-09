@@ -123,14 +123,15 @@ export default function PurchaseNotice() {
         <h1>相见的路上</h1>
         <p className="purchase-reading-guide">从选择作品，到相见的那一天。</p>
       </div>
-      <section className="buying-flow" aria-labelledby="buying-flow-title">
+      {/* Temporarily hide the illustrated journey; retain its implementation for restoration. */}
+      {false && <section className="buying-flow" aria-labelledby="buying-flow-title">
         <h2 id="buying-flow-title">迎接作品的流程</h2>
         <div className="buying-flow-tabs" role="group" aria-label="商品类型"><button aria-pressed={flow==='preorder'} onClick={()=>setFlow('preorder')}>预定作品</button><button aria-pressed={flow==='stock'} onClick={()=>setFlow('stock')}>现货作品</button></div>
         <BuyingJourney key={flow} steps={buyingFlows[flow]} stock={flow==='stock'}/>
         <p className="buying-flow-footnote">{flow==='preorder'?'制作周期从完成制作确认及同一笔订单“确认收货”的日期起算；此时确认的是订单内容与制作安排，作品尚未交付。':'现货无需提前确认制作。'}工作日不包含法定节假日，运输时间另计。</p>
         <div className="buying-flow-links"><a href="#notice-cancellation">修改、取消与退款规则</a><a href="#notice-after-sales">收货与售后说明</a></div>
-      </section>
-      <details className="purchase-full-details" id="purchase-full-details"><summary><span>查看完整购买与使用说明</span><small>配置、付款、退款、售后与日常养护</small></summary>
+      </section>}
+      <details open className="purchase-full-details" id="purchase-full-details"><summary><span>查看完整购买与使用说明</span><small>配置、付款、退款、售后与日常养护</small></summary>
       {notice.introduction.map((paragraph,index)=><p className="purchase-intro" key={index}>{paragraph}</p>)}
       <div className="purchase-layout">
         <nav className="purchase-chapters" aria-label="购买与使用说明章节">
