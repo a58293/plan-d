@@ -7,7 +7,7 @@ export const siteMedia: Record<MediaId, {src: string | null; own: boolean; alt: 
     "alt": "绘屿造物正式标识"
   },
   "loaderArt": {
-    "src": "/media/loaderArt-2e126fe7dded5f5e.png",
+    "src": "/media/loaderArt-6096a1698bf5261b.webp",
     "own": true,
     "alt": "绘屿造物品牌开场线稿"
   },

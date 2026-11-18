@@ -14,9 +14,9 @@
     "note": "真实透明底，保持原比例；所有标识一起更新。"
   },
   "loaderArt": {
-    "file": "02_开场动画/开场线稿透明版",
+    "file": "02_开场动画/开场线稿透明压缩版",
     "formats": [
-      "png"
+      "webp", "png"
     ],
     "required": true,
     "size": [
