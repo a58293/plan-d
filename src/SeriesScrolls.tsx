@@ -1,12 +1,14 @@
 import {useEffect,useRef,useState,type CSSProperties} from 'react';
-import {requiredImage} from './media-library';
 import {flowerGods,flowerGodPath,isPlainNavigation} from './flower-gods-catalog';
 import './series-banner.css';
+import portraitDefault from './assets/flora-jingxin-default.webp';
+import portraitHover from './assets/flora-jingxin-hover.webp';
 type Props={onOpenFlowerGods?:()=>void;onOpenFeatured?:()=>void;active?:boolean};
 export default function SeriesScrolls({onOpenFeatured,active=true}:Props){
  const [choosing,setChoosing]=useState(false);
  const [pointer,setPointer]=useState({x:0,y:0});
  const enter=useRef<HTMLButtonElement>(null),back=useRef<HTMLButtonElement>(null);
+ useEffect(()=>{if(!active)return;for(const src of [portraitDefault,portraitHover]){const image=new Image();image.decoding="async";image.src=src}},[active]);
  const close=()=>{setChoosing(false);enter.current?.focus()};
  useEffect(()=>{if(!active)setChoosing(false)},[active]);
  useEffect(()=>{if(!choosing)return;back.current?.focus();const escape=(e:KeyboardEvent)=>{if(e.key==='Escape'){e.stopPropagation();close()}};window.addEventListener('keydown',escape);return()=>window.removeEventListener('keydown',escape)},[choosing]);
@@ -23,7 +25,7 @@ export default function SeriesScrolls({onOpenFeatured,active=true}:Props){
   {choosing&&<div className="flora-selection" data-no-chapter-swipe aria-label="选择花神作品" onClick={e=>{if(e.target===e.currentTarget)close()}}>
    <button ref={back} type="button" className="flora-back" onClick={close}>返回系列 ×</button>
    <nav className="flora-roster" aria-label="花神作品">{flowerGods.map((god,index)=><a className="flora-god" key={god.slug} href={flowerGodPath(god)} aria-label={`查看${god.name}主页`} onClick={e=>{if(index===0&&onOpenFeatured&&isPlainNavigation(e)){e.preventDefault();onOpenFeatured()}}}>
-    <span className="flora-shard"><img className="flora-primary" src={index===0?requiredImage('jingxinConcept'):god.image} alt=""/><img className="flora-alternate" src={index===0?requiredImage('jingxinPortrait'):god.avatar} alt=""/></span>
+    <span className="flora-shard"><img className="flora-primary" decoding="async" fetchPriority="high" src={index===0?portraitDefault:god.image} alt=""/><img className="flora-alternate" src={index===0?portraitHover:god.avatar} alt=""/></span>
     <span className="flora-name">{god.name}</span>
    </a>)}</nav>
   </div>}
