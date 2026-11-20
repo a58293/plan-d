@@ -200,3 +200,14 @@
 @media (prefers-reduced-motion: reduce) {
   .verify-atmosphere span:nth-child(2), .verify-seal i { animation: none; }
 }
+
+/* Readable verification form hierarchy on desktop and mobile. */
+html.site-ui body .verify-console .verify-console-head :is(span,b){font-size:14px!important;line-height:1.6!important}
+html.site-ui body .verify-console label>span>b{font-size:20px!important;line-height:1.6!important}
+html.site-ui body .verify-console label small{font-size:13px!important;line-height:1.6!important}
+html.site-ui body .verify-console input{font-size:18px!important;line-height:1.6!important;min-height:56px!important}
+html.site-ui body .verify-console input::placeholder{font-size:18px!important}
+html.site-ui body .verify-console label em,html.site-ui body .verify-console .verify-form-meta{font-size:14px!important;line-height:1.8!important;font-style:normal}
+html.site-ui body .verify-console .verify-submit{font-size:22px!important;min-height:56px!important}
+html.site-ui body .verify-console>footer{font-size:15px!important;line-height:1.7!important}
+@media(max-width:700px){html.site-ui body .verify-console input,html.site-ui body .verify-console input::placeholder{font-size:16px!important}}
