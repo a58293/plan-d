@@ -168,3 +168,6 @@ html.site-ui body .character-hero-art.character-hero-layer{transition:opacity .8
 html.site-ui body .character-hero-art.character-hero-layer[data-visible='false']{opacity:0!important}
 html.site-ui body .character-hero-art.character-hero-layer[data-visible='true']{opacity:1!important}
 @media(prefers-reduced-motion:reduce){html.site-ui body .character-hero-art.character-hero-layer{transition:none!important}}
+html.site-ui body .character-intro .character-accessories :is(.character-accessories-label,a){font-family:inherit!important;font-weight:500!important;color:#cad9d2!important}
+html.site-ui body .character-intro .character-accessories-label{transition:color .25s ease,text-shadow .3s ease}
+html.site-ui body .character-intro .character-accessories-label:hover{color:#fff!important;text-shadow:0 0 7px currentColor,0 0 17px rgba(221,241,232,.55)}

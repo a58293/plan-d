@@ -32,7 +32,7 @@ export default function SeriesScrolls({onOpenFeatured,active=true}:Props){
    <p><span>千百年来，</span>人类习惯将<span>无法言明的深情，</span><span>折叠进一花一木的枯荣里。</span><br/><span>花，由此成为世间最纯粹</span><br/><span>也最含蓄的情感容器。</span></p>
    <p><span>当语言失去力量时，</span>我们将<span>这世间最含蓄的情感，</span><span>尽数刻入于造物的眉眼之间</span></p>
    <p className="flora-closing"><span>以此为契，</span><br/><span>绘屿展开这幅仍在生长的长卷——</span><br/><span className="flora-volume-title">《花神卷》</span></p>
-   <button ref={enter} type="button" onClick={()=>setChoosing(true)} className="flora-enter">探索花神卷 <span aria-hidden="true">→</span></button>
+   <div className="flora-enter-wrap"><button ref={enter} type="button" onClick={()=>setChoosing(true)} className="flora-enter">探索花神卷 <span aria-hidden="true">→</span></button></div>
   </div>
   {choosing&&<div className="flora-selection" data-no-chapter-swipe aria-label="选择花神作品" onClick={e=>{if(e.target===e.currentTarget)close()}}>
    <button ref={back} type="button" className="flora-back" onClick={close}>返回系列 ×</button>

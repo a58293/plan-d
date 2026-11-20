@@ -221,7 +221,7 @@ export default function BjdApp({ onOpenFlowerGods, onOpenFeatured }: BjdAppProps
       window.clearTimeout(wheelResetRef.current);
       wheelResetRef.current = window.setTimeout(() => { wheelDeltaRef.current = 0; }, 140);
       const now = performance.now();
-      if (Math.abs(wheelDeltaRef.current) < 38 || now - lastWheelAtRef.current < 260) return;
+      if (Math.abs(wheelDeltaRef.current) < 38 || now - lastWheelAtRef.current < 1000) return;
       const direction = wheelDeltaRef.current > 0 ? 1 : -1;
       wheelDeltaRef.current = 0;
       lastWheelAtRef.current = now;
@@ -285,7 +285,7 @@ export default function BjdApp({ onOpenFlowerGods, onOpenFeatured }: BjdAppProps
         <Header activeChapter={activeChapter} onNavigate={goToChapter} onOpenFeatured={onOpenFeatured} />
         <main className="home-stage">
           <div className="home-chapter" data-home-scroll data-state={chapterState(0)} aria-hidden={chapterState(0) !== 'active'}><Hero onExplore={() => goToChapter(1)} /></div>
-          <div className="home-chapter" data-home-scroll data-state={chapterState(1)} aria-hidden={chapterState(1) !== 'active'}><SeriesScrolls onOpenFeatured={onOpenFeatured} active={activeChapter === 1} /></div>
+          <div className="home-chapter home-chapter-series" data-home-scroll data-state={chapterState(1)} aria-hidden={chapterState(1) !== 'active'}><SeriesScrolls onOpenFeatured={onOpenFeatured} active={activeChapter === 1} /></div>
           <div className="home-chapter" data-home-scroll data-state={chapterState(2)} aria-hidden={chapterState(2) !== 'active'}><CollectorPreview /></div>
           <div className="home-chapter" data-home-scroll data-state={chapterState(3)} aria-hidden={chapterState(3) !== 'active'}><VerifyPreview /></div>
           <div className="home-chapter home-chapter-final" data-home-scroll data-state={chapterState(4)} aria-hidden={chapterState(4) !== 'active'}><HomeSupport /><Footer /></div>

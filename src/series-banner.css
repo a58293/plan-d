@@ -99,3 +99,7 @@ html.site-ui body .flora-banner .flora-primary{width:130%!important;height:118%!
 }
 @media(min-width:701px) and (max-width:1050px){html.site-ui body .flora-banner .flora-copy{left:5%;width:400px}}
 @media(max-width:700px){.flora-stage,.flora-fitbox,.flora-scene{display:contents}}
+/* Animate the wrapper only: button hover must never restart the blur entrance. */
+.flora-copy[data-active=true]>.flora-enter-wrap{animation-delay:.95s}
+html.site-ui body .flora-banner .flora-enter{animation:none!important;filter:none!important;transition:color .25s ease,text-shadow .3s ease!important}
+html.site-ui body .flora-banner .flora-enter:is(:hover,:focus-visible,:active){filter:none!important;color:#fff!important;text-shadow:0 0 7px currentColor,0 0 17px rgba(221,241,232,.55)!important;background:transparent!important;box-shadow:none!important}
