@@ -630,3 +630,6 @@ body.home-experience-active {
 }
 
 @media(prefers-reduced-motion:reduce){.home-experience .home-chapter.home-chapter-series{transition:none!important}}
+
+/* Keep the outgoing series above the hero until its fade completes in reverse. */
+@media(min-width:701px){.home-experience .home-chapter.home-chapter-series{z-index:4}}
