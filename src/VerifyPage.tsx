@@ -146,7 +146,7 @@ function LiveConsole() {
   const successful = first || repeat;
 
   return <section className="verify-console" aria-label="绘屿造物防伪核验">
-    <div className="verify-console-head"><i aria-hidden="true" /><b>官方核验通道</b></div>
+    
     {!result ? <form onSubmit={submit}>
       <label><span><b>娃证编号</b><small>娃证编号</small></span><input value={certificate} onChange={event => setCertificate(event.target.value)} autoComplete="off" inputMode="text" maxLength={40} placeholder="请输入娃证上的唯一编号" required /><em>可忽略编号中的空格与短横线</em></label>
       <div className="verify-plus" aria-hidden="true"><span />＋<span /></div>
