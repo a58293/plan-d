@@ -93,3 +93,73 @@ html.site-ui body .character-intro .character-auth{font-size:18px!important}
 html.site-ui body .character-intro .character-accessories{display:flex;flex-wrap:wrap;align-items:center;gap:8px 26px;margin-top:28px}
 html.site-ui body .character-intro .character-accessories a{font-size:18px!important;letter-spacing:2px!important;color:#cad9d2!important;min-height:44px!important}
 @media(max-width:700px){html.site-ui body .mf-intro .character-intro .character-accessories{gap:6px 22px;margin-top:22px}html.site-ui body .mf-intro .character-intro .character-accessories a{font-size:17px!important}}
+/* Keep secondary navigation together rather than spreading it into tall rows. */
+html.site-ui body .character-intro{width:460px;top:46%}
+html.site-ui body .character-intro h1{margin-bottom:28px!important}
+html.site-ui body .character-intro .character-explore{padding:10px 0!important;margin-bottom:10px!important}
+html.site-ui body .character-intro .character-actions{gap:8px 26px}
+html.site-ui body .character-intro .character-secondary{display:flex;align-items:center;flex-wrap:wrap;gap:8px 32px;margin-top:22px}
+html.site-ui body .character-intro .character-secondary .character-mode{margin:0!important;gap:18px}
+html.site-ui body .character-intro .character-secondary .character-accessories{margin:0!important;gap:8px 20px}
+html.site-ui body .character-intro .character-secondary :is(a,button){padding:8px 0!important}
+@media(max-width:1050px) and (min-width:701px){html.site-ui body .character-intro{width:420px}}
+@media(max-width:700px){
+ html.site-ui body .mf-intro .character-intro{top:auto;width:100%}
+ html.site-ui body .mf-intro .character-intro h1{margin-bottom:24px!important}
+ html.site-ui body .mf-intro .character-intro .character-secondary{gap:6px 26px;margin-top:18px}
+ html.site-ui body .mf-intro .character-intro .character-secondary .character-accessories{gap:6px 20px}
+ .mf-intro .character-fitbox{min-height:0;padding-bottom:36px}
+ html.site-ui body .mf-page .mf-intro{min-height:0}
+}
+/* Restore separate rows; tighten vertical spacing rather than horizontal layout. */
+html.site-ui body .character-intro{width:420px;top:46%}
+html.site-ui body .character-intro h1{margin-bottom:12px!important}
+html.site-ui body .character-intro .character-explore{padding:6px 0!important;margin-bottom:2px!important;min-height:44px!important}
+html.site-ui body .character-intro .character-actions{gap:8px 30px}
+html.site-ui body .character-intro .character-actions :is(a,button){padding:6px 0!important;min-height:44px!important}
+html.site-ui body .character-intro .character-secondary{display:block;margin-top:6px}
+html.site-ui body .character-intro .character-secondary .character-mode{margin:0!important;gap:22px}
+html.site-ui body .character-intro .character-secondary .character-accessories{margin-top:6px!important;gap:8px 26px}
+html.site-ui body .character-intro .character-secondary :is(a,button){padding:6px 0!important;min-height:44px!important}
+@media(max-width:700px){html.site-ui body .mf-intro .character-intro{top:auto;width:100%}html.site-ui body .mf-intro .character-intro h1{margin-bottom:12px!important}html.site-ui body .mf-intro .character-intro .character-secondary{margin-top:6px}}
+/* Anchor related creations lower in the scene to balance the empty lower-left area. */
+@media(min-width:701px){
+ html.site-ui body .character-intro{top:20px!important;height:535px;transform:none!important;display:flex;flex-direction:column;align-items:flex-start}
+ html.site-ui body .character-intro .character-secondary{display:contents}
+ html.site-ui body .character-intro .character-secondary .character-mode{margin-top:8px!important}
+ html.site-ui body .character-intro .character-secondary .character-accessories{margin-top:auto!important;padding-top:24px;padding-bottom:8px;gap:8px 26px}
+}
+@media(max-width:700px){
+ html.site-ui body .mf-intro .character-intro .character-secondary .character-accessories{margin-top:70px!important}
+}
+/* Separate product actions vertically and keep related links closer below. */
+@media(min-width:701px){
+ html.site-ui body .character-intro{top:60px!important;height:470px}
+ html.site-ui body .character-intro .character-actions{flex-direction:column;align-items:flex-start;gap:2px}
+ html.site-ui body .character-intro .character-secondary .character-accessories{margin-top:38px!important;padding-top:0;padding-bottom:0}
+}
+@media(max-width:700px){
+ html.site-ui body .mf-intro .character-intro .character-actions{flex-direction:column;align-items:flex-start;gap:2px}
+ html.site-ui body .mf-intro .character-intro .character-secondary .character-accessories{margin-top:32px!important}
+}
+/* Spread the controls through the reference's vertical area below the name. */
+@media(min-width:701px){
+ html.site-ui body .character-intro{top:60px!important;height:auto;display:block}
+ html.site-ui body .character-intro h1{margin-bottom:20px!important}
+ html.site-ui body .character-intro .character-links{display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;height:415px}
+ html.site-ui body .character-intro .character-links .character-explore{margin:0!important}
+ html.site-ui body .character-intro .character-links .character-actions{gap:8px}
+ html.site-ui body .character-intro .character-links .character-mode{margin:0!important}
+ html.site-ui body .character-intro .character-links .character-accessories{margin:0!important;padding:0}
+}
+@media(max-width:700px){.character-links{width:100%}}
+/* Offset the calligraphic glyph bearing so the visible name aligns with the links. */
+html.site-ui body .character-intro h1{position:relative;left:-.07em}
+html.site-ui body .character-intro .character-actions a{font-size:22px!important}
+@media(max-width:700px){html.site-ui body .mf-intro .character-intro .character-actions a{font-size:20px!important}}
+html.site-ui body .character-intro .character-accessories-label{font-size:18px;line-height:1.6;letter-spacing:2px;color:#cad9d2;white-space:nowrap}@media(max-width:700px){html.site-ui body .mf-intro .character-accessories-label{font-size:17px}}
+
+/* The ownership label sits above the four related creations. */
+html.site-ui body .character-intro .character-secondary .character-accessories{display:grid!important;grid-template-columns:repeat(4,max-content);column-gap:26px;row-gap:4px}
+html.site-ui body .character-intro .character-accessories-label{grid-column:1 / -1;display:block}
+@media(max-width:700px){html.site-ui body .mf-intro .character-intro .character-secondary .character-accessories{column-gap:22px}}

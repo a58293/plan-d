@@ -17,22 +17,27 @@ export default function CharacterEntrance({scale=1,onProductInfo,onExplore,mobil
   <div className="character-fitbox" style={{'--character-scale':scale} as CSSProperties}><div className="character-scene">
    <div className="character-intro">
     <h1>镜昕</h1>
+    <div className="character-links">
     <a className="character-explore" href={mobile?'#detail':'#details'} onClick={e=>{if(onExplore){e.preventDefault();onExplore()}}}>查看造型细节</a>
     <div className="character-actions">
      <button type="button" onClick={onProductInfo}>产品信息</button>
      {commerce.featuredProductUrl||commerce.shopUrl?<a href={commerce.featuredProductUrl||commerce.shopUrl!} target="_blank" rel="noopener noreferrer">前往淘宝购买</a>:<PurchaseMenu currentSlug="jingxin" label="淘宝购买"/>}
     </div>
+    <div className="character-secondary">
     <div className="character-mode" role="group" aria-label="主页展示方式">
      <button type="button" aria-pressed={mode==='poster'} onClick={()=>setMode('poster')}>海报</button>
      <button type="button" aria-pressed={mode==='physical'} onPointerEnter={preloadPhysical} onFocus={preloadPhysical} onClick={()=>setMode('physical')}>实物</button>
     </div>
 
     <nav className="character-accessories" aria-label="镜昕的配件">
+     <span className="character-accessories-label">祂的</span>
      <a href={detailAccessoryHref('eyes','face')}>目光</a>
-     <a href={detailAccessoryHref('clothing','dress')}>衣装</a>
-     <a href={detailAccessoryHref('wigs','headdress')}>假发</a>
-     <a href={detailAccessoryHref('jewelry','ornament')}>首饰</a>
+     <a href={detailAccessoryHref('clothing','dress')}>衣袂</a>
+     <a href={detailAccessoryHref('wigs','headdress')}>游丝</a>
+     <a href={detailAccessoryHref('jewelry','ornament')}>流光</a>
     </nav>
+    </div>
+    </div>
    </div>
   </div></div>
  </>;
