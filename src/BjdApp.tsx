@@ -87,7 +87,7 @@ function Hero({ onExplore }: { onExplore: () => void }) {
         <p className="hero-intro">镜昕 · 荷花女神<br />从泥沼生花，向水月照心。</p>
         <div className="hero-actions home-prologue-actions">
           <div className="home-prologue-primary">
-            <a className="primary-button home-featured-entry" href="/series/flower-gods/jingxin#gallery"><span>她的故事</span></a>
+            <a className="primary-button home-featured-entry" href="/series/flower-gods/jingxin#gallery"><span>祂的故事</span></a>
             <ReplayOpeningButton />
           </div>
           <div className="home-prologue-links">

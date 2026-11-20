@@ -369,3 +369,15 @@
     animation-duration: 1ms;
   }
 }
+
+/* Product information is reading content, not fine print. */
+html.site-ui body .product-info-dialog{width:min(1040px,calc(100vw - 48px))!important}
+html.site-ui body :is(.product-info-intro,.mf-product-sheet>p){font-size:16px!important;line-height:1.9!important}
+html.site-ui body :is(.product-info-grid dt,.mf-product-sheet dt){font-size:16px!important;line-height:1.8!important;letter-spacing:.04em!important}
+html.site-ui body :is(.product-info-grid dd,.mf-product-sheet dd){font-size:16px!important;line-height:1.9!important}
+html.site-ui body .product-info-grid>div{grid-template-columns:104px minmax(0,1fr)!important;gap:14px!important;padding-top:18px!important;padding-bottom:18px!important}
+html.site-ui body :is(.product-info-contact,.mf-product-contact){font-size:14px!important;line-height:1.8!important}
+html.site-ui body .product-info-kicker{font-size:13px!important;line-height:1.7!important}
+html.site-ui body :is(.product-info-shop,.mf-product-buy){font-size:20px!important;line-height:1.7!important}
+@media(max-width:850px){html.site-ui body .product-info-grid{grid-template-columns:1fr!important}html.site-ui body .product-info-grid>div{padding-left:0!important;padding-right:0!important;border-right:0!important}}
+@media(max-width:700px){html.site-ui body .product-info-dialog{width:100%!important}html.site-ui body .mf-product-sheet dl>div{grid-template-columns:92px minmax(0,1fr)!important;gap:12px!important}}

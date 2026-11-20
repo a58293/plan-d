@@ -18,3 +18,12 @@ html.site-ui .desktop-navigation{background:rgba(248,247,242,.97);color:#183f36;
 @media(prefers-reduced-motion:reduce){.archive-contents{animation:none}}
 
 html.site-ui body .desktop-navigation .desktop-nav-row nav .desktop-verify-entry{display:inline-flex!important;align-items:center;position:relative!important;inset:auto!important;transform:none!important;padding:0 4px!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;font:inherit;font-size:14px!important;white-space:nowrap;color:inherit!important;text-decoration:none;opacity:1!important}.desktop-verify-entry[aria-current=page]{text-decoration:underline!important;text-underline-offset:9px}
+
+/* Equal side tracks center the menu on the viewport, independent of logo width. */
+@media(min-width:701px){
+ html.site-ui body .desktop-navigation .desktop-nav-row{display:grid!important;grid-template-columns:minmax(100px,1fr) auto minmax(100px,1fr);gap:16px}
+ html.site-ui body .desktop-navigation .desktop-nav-brand{justify-self:start}
+ html.site-ui body .desktop-navigation .desktop-nav-row>nav{justify-self:center;justify-content:center;min-width:0;gap:clamp(6px,1.2vw,22px)}
+ html.site-ui body .desktop-navigation .desktop-nav-row>.site-search-trigger{justify-self:end}
+}
+@media(min-width:701px) and (max-width:1100px){html.site-ui body .desktop-navigation .desktop-nav-row{grid-template-columns:minmax(65px,1fr) auto minmax(65px,1fr);gap:8px;padding-inline:2vw}html.site-ui body .desktop-navigation .desktop-nav-brand span{display:none}html.site-ui body .desktop-navigation .desktop-nav-row>nav{gap:6px}}
