@@ -10,7 +10,7 @@
     "dev": "npm run build && vite preview --port=3000 --host=127.0.0.1 --configLoader runner",
     "dev:hot": "vite --port=3000 --host=127.0.0.1 --configLoader runner",
     "build": "npm run lint && vite build --configLoader runner",
-    "check:release": "npm run build && node scripts/check-release-basics.mjs && node scripts/check-current-ui.mjs && npm run check:backend",
+    "check:release": "npm run build && node scripts/check-release-basics.mjs && node scripts/check-current-ui.mjs && node scripts/check-site-search.mjs && npm run check:backend",
     "preview": "vite preview --host=127.0.0.1 --configLoader runner",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",

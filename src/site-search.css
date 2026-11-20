@@ -40,3 +40,10 @@
   .experience-header-actions { gap: 4px; }
   .flower-experience .experience-header-actions > button:not(.site-search-trigger) { min-width: 88px; padding-inline: 8px; font-size: 9px; }
 }
+
+.site-search-suggestions{padding:0 22px 28px}.site-search-suggestions p,.site-search-count{font-size:14px;color:#55736c;margin:0 0 14px}.site-search-suggestions>div{display:flex;flex-wrap:wrap;gap:10px}
+html.site-ui body .site-search-suggestions button{position:relative!important;inset:auto!important;transform:none!important;padding:10px 16px!important;min-height:44px;border:1px solid #b6cbc2!important;border-radius:20px!important;background:transparent!important;color:#214d40!important;font-size:16px!important;cursor:pointer}
+.site-search-count{padding:0 22px}.site-search-results a small{font-size:14px!important;line-height:1.7}.site-search-empty{font-size:16px;line-height:1.8}
+/* Let the result area shrink inside short windows instead of clipping the list. */
+.site-search-panel{display:flex;flex-direction:column;min-height:0}.site-search-panel>header,.site-search-field,.site-search-count,.site-search-suggestions{flex-shrink:0}
+.site-search-results{min-height:0;flex:1 1 auto;overflow-y:auto;max-height:none}.site-search-results ul{margin:0;padding:0;list-style:none}.site-search-results li{margin:0;padding:0}.site-search-results li.site-search-empty{padding:24px 4px}
