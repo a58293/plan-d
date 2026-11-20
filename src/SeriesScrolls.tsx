@@ -6,6 +6,16 @@ import portraitHover from './assets/flora-jingxin-hover.webp';
 type Props={onOpenFlowerGods?:()=>void;onOpenFeatured?:()=>void;active?:boolean};
 export default function SeriesScrolls({onOpenFeatured,active=true}:Props){
  const [choosing,setChoosing]=useState(false);
+ const stage=useRef<HTMLDivElement>(null);
+ const [sceneScale,setSceneScale]=useState(1);
+ useEffect(()=>{
+  const surface=stage.current;if(!surface)return;
+  const fit=()=>setSceneScale(Math.max(.875,Math.min(1,surface.clientHeight/560)));
+  fit();
+  const observer=typeof ResizeObserver==='undefined'?null:new ResizeObserver(fit);
+  observer?.observe(surface);window.addEventListener('resize',fit);
+  return()=>{observer?.disconnect();window.removeEventListener('resize',fit)};
+ },[]);
  const [pointer,setPointer]=useState({x:0,y:0});
  const enter=useRef<HTMLButtonElement>(null),back=useRef<HTMLButtonElement>(null);
  useEffect(()=>{if(!active)return;for(const src of [portraitDefault,portraitHover]){const image=new Image();image.decoding="async";image.src=src}},[active]);
@@ -15,6 +25,8 @@ export default function SeriesScrolls({onOpenFeatured,active=true}:Props){
  return <section id="series" onPointerMove={e=>{if(e.pointerType!=='mouse'||!choosing||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;const r=e.currentTarget.getBoundingClientRect();setPointer({x:Math.max(-1,Math.min(1,(e.clientX-r.left)/r.width*2-1)),y:Math.max(-1,Math.min(1,(e.clientY-r.top)/r.height*2-1))})}} onPointerLeave={()=>setPointer({x:0,y:0})} style={{'--flora-x':pointer.x,'--flora-y':pointer.y} as CSSProperties} className={`flora-banner ${choosing?'is-choosing':''}`} aria-label="花神卷" data-home-scroll onKeyDown={e=>{if(choosing)e.stopPropagation()}}>
   <img className="flora-background" src="/opening/lotus-2026-09-still-v2.webp" alt="" loading="lazy"/>
   <div className="flora-shade" aria-hidden="true"/>
+  <div ref={stage} onClick={e=>{if(choosing&&(e.target===e.currentTarget||(e.target instanceof Element&&e.target.classList.contains('flora-fitbox'))))close()}} className="flora-stage" data-home-scroll style={{'--flora-scene-scale':sceneScale} as CSSProperties}>
+  <div className="flora-fitbox"><div className="flora-scene">
   <div className="flora-copy" inert={choosing} aria-hidden={choosing} data-active={active}>
    <span className="flora-eyebrow">THE FLORA SCROLL</span><h2>花神卷</h2>
    <p><span>千百年来，</span>人类习惯将<span>无法言明的深情，</span><span>折叠进一花一木的枯荣里。</span><br/><span>花，由此成为世间最纯粹</span><br/><span>也最含蓄的情感容器。</span></p>
@@ -29,5 +41,6 @@ export default function SeriesScrolls({onOpenFeatured,active=true}:Props){
     <span className="flora-name">{god.name}</span>
    </a>)}</nav>
   </div>}
+  </div></div></div>
  </section>
 }

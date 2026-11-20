@@ -1,3 +1,4 @@
+import CharacterEntrance from './CharacterEntrance';
 import {useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import {requiredImage, detailImage, type MediaId} from './media-library';
@@ -57,7 +58,7 @@ export function ImageViewer({src, images, onClose}: {src: string; images?: reado
 }
 
 export default function MobileFlower({details, pieces, onBack}:Props) {
-  const [mode,setMode]=useState<'physical'|'original'>('physical');
+
   const [detail,setDetail]=useState(() => Math.max(0,details.findIndex(item => item.key === new URLSearchParams(window.location.search).get('detail'))));
   const [piece,setPiece]=useState(-1);
   const [viewer,setViewer]=useState(false);
@@ -82,11 +83,7 @@ export default function MobileFlower({details, pieces, onBack}:Props) {
     <header className="mf-header"><a href="/series/flower-gods" onClick={e=>{if(onBack){e.preventDefault();onBack();}}}> 花神卷</a><MobileActions currentSlug="jingxin"/></header>
     <Breadcrumbs path="/series/flower-gods/jingxin" section={({'intro':'登场','detail':'细节','gallery':'官图','info':'产品信息','auth':'核验'} as Record<string,string>)[section]}/>
     <nav className="mf-nav" aria-label="角色内容">{[['intro','角色介绍'],['detail','造型细节'],['gallery','故事图册'],['auth','防伪核验']].map(([id,label])=><a key={id} href={'#'+id} aria-current={section===id?'location':undefined}>{label}</a>)}</nav>
-    <section id="intro" className="mf-intro"><p className="mf-kicker">花神卷 · 原典 01</p><div className="mf-name-row"><div className="mf-name-copy"><h1>镜昕 <small>荷花女神</small></h1><div className="mf-options mf-portrait-options" aria-label="展示方式">{(['original','physical'] as const).map(value=><button key={value} aria-pressed={mode===value} onClick={()=>setMode(value)}>{value==='original'?'原画':'实体'}</button>)}</div></div><img className="mf-portrait" src={requiredImage(mode==='physical'?'jingxinPortrait':'jingxinConcept')} alt={'镜昕'+(mode==='physical'?'实体全身':'原画')} fetchPriority="high" decoding="async" /></div><p className="mf-intro-lead">循着花与光的轨迹，<br/>走近镜昕。</p>
-      <div className="character-product-entry"><button type="button" onClick={()=>setProductInfoOpen(true)}>产品信息 <span>＋</span></button></div>
-      {commerce.featuredProductUrl && <a className="mf-shop-primary" href={commerce.featuredProductUrl} target="_blank" rel="noopener noreferrer">前往淘宝购买 </a>}
-      <a className="mf-primary" href="#detail">查看造型细节 </a>
-    </section>
+    <section id="intro" className="mf-intro"><CharacterEntrance mobile onProductInfo={()=>setProductInfoOpen(true)}/></section>
     <section id="detail"><p className="mf-kicker">造型细节</p><h2>造型细节</h2><p>选择部位，点开图片可放大查看。</p>
       <div className="mf-options" aria-label="造型部位">{details.map((value,index)=><button key={value.key} aria-pressed={detail===index} onClick={()=>{setDetail(index);setPiece(-1);}}>{value.title}</button>)}</div>
       {detail===3&&<div className="mf-options mf-pieces" aria-label="衣装部件"><button aria-pressed={piece===-1} onClick={()=>setPiece(-1)}>全套上身</button>{pieces.map((value,index)=><button key={value.key} aria-pressed={piece===index} onClick={()=>setPiece(index)}>{value.title}</button>)}</div>}

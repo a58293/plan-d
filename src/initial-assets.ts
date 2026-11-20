@@ -1,3 +1,4 @@
+import {jingxinHeroImage} from './character-hero-media';
 import {requiredImage} from './media-library';
 
 export type InitialAssetTracker = {
@@ -20,7 +21,7 @@ function firstScreenImages(pathname: string) {
     }
     // The unpublished seat isn't visible initially; do not block the opening on it.
   }
-  if (pathname === "/series/flower-gods/jingxin") paths.push(requiredImage('jingxinPortrait'));
+  if (pathname === "/series/flower-gods/jingxin") paths.push(jingxinHeroImage);
 
   return [...new Set(paths)];
 }

@@ -81,3 +81,21 @@ html.site-ui body .flora-banner .flora-shard{visibility:visible!important;opacit
 /* Dedicated portrait exports already contain the crop; do not enlarge the full poster. */
 html.site-ui body .flora-banner .flora-primary{width:130%!important;height:118%!important;left:-15%!important;top:-9%!important;object-fit:cover!important;object-position:center 20%!important}
 @media(max-width:700px){html.site-ui body .flora-banner .flora-primary{width:100%!important;height:100%!important;left:0!important;top:0!important}}
+
+/* A bounded desktop composition: fit the scene, never scroll just the prose. */
+@media(min-width:701px){
+ html.site-ui body .flora-banner{min-height:0!important;height:100%!important}
+ .flora-stage{position:absolute;inset:100px 0 56px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
+ .flora-fitbox{position:relative;width:100%;height:calc(560px * var(--flora-scene-scale,1));min-height:100%}
+ .flora-scene{position:absolute;left:0;top:50%;width:calc(100% / var(--flora-scene-scale,1));height:560px;transform:translateY(-50%) scale(var(--flora-scene-scale,1));transform-origin:left center}
+ html.site-ui body .flora-banner .flora-copy{left:7.5%;top:50%;width:420px;max-width:none;max-height:none;overflow:visible;padding:0;transform:translateY(-50%)}
+ html.site-ui body .flora-banner .flora-copy h2{font-size:58px;line-height:1.2;margin:16px 0 22px;letter-spacing:15px}
+ html.site-ui body .flora-banner .flora-copy h2:after{margin-top:16px}
+ html.site-ui body .flora-banner .flora-copy p{font-size:16px;line-height:1.9;letter-spacing:.45px;margin:0 0 18px}
+ html.site-ui body .flora-banner .flora-enter{font-size:16px!important;margin-top:12px!important}
+ html.site-ui body .flora-banner .flora-back{top:0!important;right:5%!important}
+ html.site-ui body .flora-banner .flora-shard{height:468px!important}
+ html.site-ui body .flora-banner.is-choosing .flora-copy{transform:translate(-16px,-50%)}
+}
+@media(min-width:701px) and (max-width:1050px){html.site-ui body .flora-banner .flora-copy{left:5%;width:400px}}
+@media(max-width:700px){.flora-stage,.flora-fitbox,.flora-scene{display:contents}}

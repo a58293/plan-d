@@ -1,3 +1,4 @@
+import {useMobileViewport} from './useMobileViewport';
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SplitColorText } from "./components/HoverColorText";
 import { isPlainNavigation } from "./flower-gods-catalog";
@@ -149,6 +150,7 @@ function Footer() {
 }
 
 export default function BjdApp({ onOpenFlowerGods, onOpenFeatured }: BjdAppProps) {
+  const isMobile=useMobileViewport();
   const initialChapter = Math.max(0, homeChapters.findIndex((chapter) => `#${chapter.id}` === window.location.hash));
   const [activeChapter, setActiveChapter] = useState(initialChapter);
   const activeChapterRef = useRef(initialChapter);
@@ -271,11 +273,11 @@ export default function BjdApp({ onOpenFlowerGods, onOpenFeatured }: BjdAppProps
       window.removeEventListener("keydown", handleKeyDown);
       window.clearTimeout(wheelResetRef.current);
     };
-  }, [goToChapter]);
+  }, [goToChapter,isMobile]);
 
   const chapterState = (index: number) => window.matchMedia('(max-width: 700px)').matches ? 'active' : index === activeChapter ? "active" : index < activeChapter ? "past" : "future";
 
-  if (window.matchMedia('(max-width: 700px)').matches) return <MobileHome onOpenFlowerGods={onOpenFlowerGods} onOpenFeatured={onOpenFeatured} />;
+  if (isMobile) return <MobileHome onOpenFlowerGods={onOpenFlowerGods} onOpenFeatured={onOpenFeatured} />;
 
   return (
     <div className="home-experience" ref={homeRef} data-home-chapter={homeChapters[activeChapter].id} data-product-theme={currentProductTheme.product} style={currentProductThemeStyle}>

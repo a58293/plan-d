@@ -1,7 +1,8 @@
+import {useMobileViewport} from './useMobileViewport';
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { SplitColorText } from "./components/HoverColorText";
-import { CinematicParticlePortrait } from "./CinematicParticlePortrait";
+import CharacterEntrance from './CharacterEntrance';
 import SiteSearch from './SiteSearch';
 import { TransparentGoddess } from "./TransparentGoddess";
 import { FLOWER_GODS_PATH, isPlainNavigation } from "./flower-gods-catalog";
@@ -10,7 +11,7 @@ import EmbeddedStory from './EmbeddedStory';
 import { commerce } from './commerce';
 import MobileFlower from './MobileFlower';
 import Breadcrumbs from './Breadcrumbs';
-import PurchaseMenu from './PurchaseMenu';
+
 import {jingxinProductInfo} from './jingxin-product-info';
 import {officialInfo, verificationIsLive} from './official-info';
 import {detailAccessoryHref,jingxinDetailLinks} from './jingxin-detail-links';
@@ -33,8 +34,9 @@ import "./flower-gods-content-restructure.css";
 import './soft-ui.css';
 import './mobile-ux-redesign.css';
 import './jingxin-detail-links.css';
-const goddessImage = requiredImage('jingxinPortrait');
-const originalArtwork = requiredImage('jingxinConcept');
+import './character-scene-fit.css';
+
+
 const officialLogo = requiredImage('brandLogo');
 const lotusReliefArtwork = requiredImage('lotusRelief');
 const detailMedia: Record<string, MediaId> = {face:'detailFace', headdress:'detailHeaddress', ornament:'detailOrnament', dress:'detailDress'};
@@ -69,9 +71,11 @@ type FlowerGodsExperienceProps = {
 };
 
 export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExperienceProps) {
+  const [characterScale,setCharacterScale] = useState(1);
+  const isMobile=useMobileViewport();
   const initialChapter = window.location.hash === '#gallery' ? 2 : window.location.hash === '#details' ? 1 : 0;
   const [activeChapter, setActiveChapter] = useState(initialChapter);
-  const [portraitMode, setPortraitMode] = useState<"original" | "physical">("physical");
+
   const [activeDetail, setActiveDetail] = useState(() => Math.max(0,detailItems.findIndex(item => item.key === new URLSearchParams(window.location.search).get('detail'))));
   const [lensMagnification, setLensMagnification] = useState(2.1);
   const [costumeView, setCostumeView] = useState<"complete" | "pieces">("complete");
@@ -96,7 +100,6 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
   const touchBlockedRef = useRef(false);
   const touchBoundaryRef = useRef({up: false, down: false});
   const theme = chapters[activeChapter];
-  const lightweightArtwork = window.matchMedia('(max-width: 700px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches;
 
   const goToChapter = useCallback((index: number) => {
     const targetIndex = Math.max(0, Math.min(chapters.length - 1, index));
@@ -209,7 +212,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
 
 
   useEffect(() => {
-    if (window.matchMedia('(max-width: 700px)').matches) return;
+    if (isMobile) return;
     document.body.classList.add("flower-experience-active");
     return () => {
       document.body.classList.remove("flower-experience-active");
@@ -217,7 +220,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
       transitionTimersRef.current = [];
       transitionInProgressRef.current = false;
     };
-  }, []);
+  }, [isMobile]);
 
 
   useEffect(() => {
@@ -277,11 +280,11 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
       root.removeEventListener("touchend", handleTouchEnd);
       window.clearTimeout(wheelResetTimer);
     };
-  }, [goToChapter]);
+  }, [goToChapter,isMobile]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (window.matchMedia('(max-width: 700px)').matches) return;
+      if (isMobile) return;
       if (productInfoOpen) {
         if (event.key === "Escape") setProductInfoOpen(false);
         return;
@@ -306,7 +309,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [goToChapter, productInfoOpen]);
+  }, [goToChapter, productInfoOpen,isMobile]);
 
   const experienceStyle: ExperienceStyle = {
     "--chapter-background": theme.background,
@@ -315,6 +318,14 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
     "--chapter-glow": theme.glow,
   };
 
+  useEffect(() => {
+    const chapter=chapterRefs.current[0];if(isMobile||!chapter)return;
+    const fit=()=>setCharacterScale(Math.max(.875,Math.min(1,(chapter.clientHeight-146)/575)));
+    fit();
+    const observer=typeof ResizeObserver==='undefined'?null:new ResizeObserver(fit);
+    observer?.observe(chapter);window.addEventListener('resize',fit);
+    return()=>{observer?.disconnect();window.removeEventListener('resize',fit)};
+  },[isMobile]);
   const chapterState = (index: number) => index === activeChapter ? "active" : index < activeChapter ? "past" : "future";
   const selectedDetail = detailItems[activeDetail];
   const selectedGarmentPiece = garmentPieces[activeGarmentPiece];
@@ -331,7 +342,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
   const detailScale = selectedImage.scale;
   const DetailImage = selectedImage.own ? 'img' : TransparentGoddess;
 
-  if (window.matchMedia('(max-width: 700px)').matches) {
+  if (isMobile) {
     return <MobileFlower details={detailItems} pieces={garmentPieces} onBack={onBackCollection} />;
   }
 
@@ -398,55 +409,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
           data-chapter-index="0"
           data-state={chapterState(0)}
         >
-          <div className="prologue-title-backdrop">
-            <div className="prologue-title-index"><span>01</span><i /><span>荷花女神</span></div>
-            <p className="prologue-title-kicker">原典序列 01</p>
-            <h1><SplitColorText text="镜昕" /></h1>
-            <div className="prologue-purchase-actions">
-              <div className="character-product-entry"><button className="product-info-trigger" type="button" onClick={() => setProductInfoOpen(true)}>产品信息 <span>＋</span></button></div>
-              {commerce.featuredProductUrl || commerce.shopUrl
-                ? <a className="desktop-taobao-entry" href={commerce.featuredProductUrl || commerce.shopUrl!} target="_blank" rel="noopener noreferrer">前往淘宝购买 </a>
-                : <PurchaseMenu currentSlug="jingxin" label="淘宝购买" className="desktop-taobao-entry"/>}
-            </div>
-          </div>
-
-          <div className="prologue-copy chapter-reveal">
-            <p className="prologue-lead">荷花女神 · 角色 01</p>
-            <div className="portrait-mode-switch" role="tablist" aria-label="角色形态">
-              <button
-                type="button"
-                role="tab"
-                aria-selected={portraitMode === "original"}
-                className={portraitMode === "original" ? "is-active" : ""}
-                onClick={() => setPortraitMode("original")}
-              ><span>01</span><b>原画</b><small>原画</small></button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={portraitMode === "physical"}
-                className={portraitMode === "physical" ? "is-active" : ""}
-                onClick={() => setPortraitMode("physical")}
-              ><span>02</span><b>实体</b><small>实体</small></button>
-            </div>
-            <button className="chapter-next" type="button" onClick={() => goToChapter(1)}>查看造型细节 </button>
-            <a className="prologue-verify" href="/verify">防伪核验 </a>
-          </div>
-
-          <div className="prologue-particle chapter-reveal" data-portrait-mode={portraitMode}>
-            <span className="portrait-environment" aria-hidden="true" />
-            {portraitMode === "physical" ? (lightweightArtwork ? (
-              <img className="prologue-mobile-portrait" src={goddessImage} alt="荷花女神镜昕实体预览" decoding="async" />
-            ) : (
-              <CinematicParticlePortrait active={activeChapter === 0} src={goddessImage} alt="由微光星图缓慢凝聚而成的荷花女神镜昕实体预览" />
-            )) : (
-              <img className="prologue-original-art" src={originalArtwork} alt="荷花女神镜昕角色原画" />
-            )}
-            <span className="portrait-foreground-haze" aria-hidden="true" />
-          </div>
-
-          <div className="prologue-side-note chapter-reveal" aria-hidden="true">
-            <span>{portraitMode === "physical" ? "实物预览" : "原画设定"}</span><i /><span>镜昕 · 01</span>
-          </div>
+          <CharacterEntrance scale={characterScale} onProductInfo={()=>setProductInfoOpen(true)} onExplore={()=>goToChapter(1)} />
         </section>
 
         <section
