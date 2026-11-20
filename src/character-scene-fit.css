@@ -163,3 +163,8 @@ html.site-ui body .character-intro .character-accessories-label{font-size:18px;l
 html.site-ui body .character-intro .character-secondary .character-accessories{display:grid!important;grid-template-columns:repeat(4,max-content);column-gap:26px;row-gap:4px}
 html.site-ui body .character-intro .character-accessories-label{grid-column:1 / -1;display:block}
 @media(max-width:700px){html.site-ui body .mf-intro .character-intro .character-secondary .character-accessories{column-gap:22px}}
+/* Keep both image planes stable; blend only after the physical photo decodes. */
+html.site-ui body .character-hero-art.character-hero-layer{transition:opacity .85s cubic-bezier(.22,.61,.36,1)!important;pointer-events:none}
+html.site-ui body .character-hero-art.character-hero-layer[data-visible='false']{opacity:0!important}
+html.site-ui body .character-hero-art.character-hero-layer[data-visible='true']{opacity:1!important}
+@media(prefers-reduced-motion:reduce){html.site-ui body .character-hero-art.character-hero-layer{transition:none!important}}

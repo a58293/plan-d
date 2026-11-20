@@ -9,10 +9,13 @@ import './character-scene-fit.css';
 type Props={scale?:number;onProductInfo:()=>void;onExplore?:()=>void;mobile?:boolean};
 export default function CharacterEntrance({scale=1,onProductInfo,onExplore,mobile=false}:Props){
  const [mode,setMode]=useState<'poster'|'physical'>('poster');
+ const [physicalReady,setPhysicalReady]=useState(false);
+ const physicalVisible=mode==='physical'&&physicalReady;
  const physicalImage=requiredImage('jingxinPortrait');
  const preloadPhysical=()=>{const image=new Image();image.src=physicalImage};
  return <>
-  <img className="character-hero-art" src={mode==='poster'?jingxinHeroImage:physicalImage} data-mode={mode} alt={mode==='poster'?'镜昕与莲花的水下海报':'镜昕实体造型'} fetchPriority="high" decoding="async"/>
+  <img className="character-hero-art character-hero-layer" src={jingxinHeroImage} data-mode="poster" data-visible={!physicalVisible} aria-hidden={physicalVisible} alt="镜昕与莲花的水下海报" fetchPriority="high" decoding="async"/>
+  {(mode==='physical'||physicalReady)&&<img className="character-hero-art character-hero-layer" src={physicalImage} data-mode="physical" data-visible={physicalVisible} aria-hidden={!physicalVisible} alt="镜昕实体造型" decoding="async" onLoad={async event=>{const image=event.currentTarget;try{await image.decode()}catch{}setPhysicalReady(true)}} onError={()=>{setPhysicalReady(false);setMode('poster')}}/>}
   <div className="character-hero-shade" aria-hidden="true"/>
   <div className="character-fitbox" style={{'--character-scale':scale} as CSSProperties}><div className="character-scene">
    <div className="character-intro">
