@@ -89,3 +89,7 @@ html.site-ui body .character-intro .character-auth{font-size:15px!important}
 }
 html.site-ui body .character-intro .character-mode button{font-size:19px!important}
 html.site-ui body .character-intro .character-auth{font-size:18px!important}
+
+html.site-ui body .character-intro .character-accessories{display:flex;flex-wrap:wrap;align-items:center;gap:8px 26px;margin-top:28px}
+html.site-ui body .character-intro .character-accessories a{font-size:18px!important;letter-spacing:2px!important;color:#cad9d2!important;min-height:44px!important}
+@media(max-width:700px){html.site-ui body .mf-intro .character-intro .character-accessories{gap:6px 22px;margin-top:22px}html.site-ui body .mf-intro .character-intro .character-accessories a{font-size:17px!important}}

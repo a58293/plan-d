@@ -1,3 +1,4 @@
+import {detailAccessoryHref} from './jingxin-detail-links';
 import {useState,type CSSProperties} from 'react';
 import {commerce} from './commerce';
 import {requiredImage} from './media-library';
@@ -26,6 +27,12 @@ export default function CharacterEntrance({scale=1,onProductInfo,onExplore,mobil
      <button type="button" aria-pressed={mode==='physical'} onPointerEnter={preloadPhysical} onFocus={preloadPhysical} onClick={()=>setMode('physical')}>实物</button>
     </div>
 
+    <nav className="character-accessories" aria-label="镜昕的配件">
+     <a href={detailAccessoryHref('eyes','face')}>目光</a>
+     <a href={detailAccessoryHref('clothing','dress')}>衣装</a>
+     <a href={detailAccessoryHref('wigs','headdress')}>假发</a>
+     <a href={detailAccessoryHref('jewelry','ornament')}>首饰</a>
+    </nav>
    </div>
   </div></div>
  </>;
