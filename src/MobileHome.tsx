@@ -26,7 +26,7 @@ export default function MobileHome({onOpenFeatured}:{onOpenFlowerGods?:()=>void;
         <div className="mh-prologue-shade" aria-hidden="true" />
         <div className="mh-heading mh-prologue-heading"><p>序章 / 01 · 镜昕</p><h1 id="mh-title"><img src="/opening/lotus-calligraphy-v1.webp" alt="泥沼生花，水月照心" /></h1><span>荷花女神 · 花神卷</span></div>
         <div className="mh-prologue-mode" role="group" aria-label="首页展示方式"><button aria-pressed={artMode==='poster'} onClick={()=>setArtMode('poster')}>画报</button><button aria-pressed={artMode==='physical'} onClick={()=>setArtMode('physical')}>实物</button></div>
-        <div className="mh-prologue-actions"><a className="mh-cta" href="/series/flower-gods/jingxin#gallery">祂的故事</a><ReplayOpeningButton /></div>
+        <div className="mh-prologue-actions"><a className="mh-cta" href="/series/flower-gods/jingxin#gallery">祂的故事</a><a className="home-product-entry" href={currentFeaturedProduct.href} aria-label={`查看${currentFeaturedProduct.name}作品主页`}>查看作品</a><ReplayOpeningButton /></div>
       </section>
       <SeriesScrolls onOpenFeatured={onOpenFeatured} active />
       <section className="mh-collectors" id="collectors"><HomeCollectorPreview/></section>

@@ -1,0 +1,14 @@
+/* Fixed-size image planes slide behind a permanent foreground. */
+.series-poster-background{--poster-strip:clamp(16px,1.1vw,24px);--poster-width:calc(100% - (var(--poster-count) - 1)*var(--poster-strip));position:absolute;inset:0;display:flex;transition:filter .85s;container-type:inline-size}
+.series-poster-panel{position:relative;flex:0 0 var(--poster-strip);height:100%;min-width:0;transition:flex-basis .95s cubic-bezier(.22,.75,.2,1)}
+.series-poster-panel[data-selected=true]{flex-basis:var(--poster-width)}
+.series-poster-crop{position:absolute;inset:0;overflow:hidden}
+html.site-ui body .series-poster-crop>img{position:absolute;inset:0 auto 0 0;display:block;width:calc(100vw - (var(--poster-count) - 1)*var(--poster-strip));min-width:calc(100vw - (var(--poster-count) - 1)*var(--poster-strip));max-width:none;height:100%;object-fit:cover;object-position:58% center;transform:none;animation:none;transition:none}
+html.site-ui body .series-poster-background .series-poster-select{position:absolute!important;inset:86px 0 0!important;z-index:4;width:100%;height:calc(100% - 86px);padding:0!important;margin:0!important;border:0!important;border-radius:0!important;background:rgba(3,17,27,.2)!important;color:#e5eee6!important;box-shadow:inset 1px 0 #a5c7c346!important;transform:none!important;cursor:pointer;overflow:hidden}
+.series-poster-select>span{position:absolute;top:26px;left:50%;writing-mode:vertical-rl;transform:translateX(-50%);font-size:11px;letter-spacing:3px;white-space:nowrap}
+html.site-ui body .series-poster-background .series-poster-select[aria-pressed=true]{pointer-events:none;opacity:0!important}
+.series-poster-background[data-choosing=true]{filter:blur(12px) brightness(.72);pointer-events:none}
+@media(max-width:700px){.series-poster-background{--poster-strip:18px}html.site-ui body .series-poster-background .series-poster-select{inset:0!important;height:100%}}
+@media(prefers-reduced-motion:reduce){.series-poster-background,.series-poster-panel{transition:none}}
+.series-poster-select>span{opacity:0;transition:opacity .25s}
+.series-poster-select:is(:hover,:focus-visible)>span{opacity:1}

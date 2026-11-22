@@ -89,6 +89,7 @@ function Hero({ onExplore }: { onExplore: () => void }) {
         <div className="hero-actions home-prologue-actions">
           <div className="home-prologue-primary">
             <a className="primary-button home-featured-entry" href="/series/flower-gods/jingxin#gallery"><span>祂的故事</span></a>
+            <a className="home-product-entry" href={featured.href} aria-label={`查看${featured.name}作品主页`}>查看作品</a>
             <ReplayOpeningButton />
           </div>
           <div className="home-prologue-links">

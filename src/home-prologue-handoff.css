@@ -238,3 +238,16 @@ html.site-ui .home-experience .home-prologue-actions .home-prologue-links :is(.h
   .home-prologue-hero .home-prologue-mode button+button::before,
   .home-prologue-hero .home-prologue-mode button+button[aria-pressed=true]::before{content:none;margin:0}
 }
+
+/* Direct access to the current work alongside its story. */
+.home-prologue-primary .home-product-entry,
+.mh-prologue-actions .home-product-entry {
+  display:inline-flex;align-items:center;flex:0 0 auto;min-height:44px;
+  padding:4px 0;color:#eef5f3;font-size:16px;letter-spacing:.06em;
+  white-space:nowrap;text-decoration:none;
+}
+html.site-ui .home-experience .home-prologue-actions .home-prologue-primary { flex-wrap:wrap;column-gap:24px;row-gap:4px; }
+@media(max-width:700px){
+  .mh-prologue-actions{display:grid;grid-template-columns:max-content max-content;justify-content:start;align-items:center;gap:0 24px}
+  .mh-prologue-actions .opening-replay{grid-column:1 / -1;min-height:32px;text-align:left}
+}
