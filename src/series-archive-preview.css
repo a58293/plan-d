@@ -1,0 +1,47 @@
+/* The active poster owns almost the entire viewport; history is only an edge. */
+.series-edge-preview{--past-strip:clamp(16px,1.1vw,24px);display:flex;width:100%;height:100svh;min-height:0;background:#081925;overflow:hidden;color:#e2eae6}
+.series-edge-main{position:relative;flex:1;min-width:0;height:100%;isolation:isolate}
+.series-edge-main .flora-banner{height:100%;min-height:0}
+.series-edge-main .flora-background{animation:series-edge-image-in .65s ease-out both}
+html.site-ui body .series-edge-history{position:relative;display:flex;align-items:stretch;width:calc(var(--past-strip)*2);flex:none;padding-top:86px;z-index:8}
+html.site-ui body .series-edge-history .series-edge-strip{position:relative!important;inset:auto!important;transform:none!important;width:var(--past-strip)!important;min-width:0!important;height:100%!important;margin:0!important;padding:0!important;display:block!important;border:0!important;border-left:1px solid #a5c7c346!important;border-radius:0!important;box-shadow:-7px 0 18px #03111b55!important;background:#0d2e3e!important;color:#eef6ef!important;overflow:visible!important;cursor:pointer;isolation:isolate}
+.series-edge-strip>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:58% center;filter:brightness(.62) saturate(.65);transition:filter .35s;z-index:-1}
+.series-edge-strip>span{position:absolute;right:calc(100% + 14px);top:32px;padding:8px 14px;background:#0a2336e6;color:#dcece5;white-space:nowrap;font-size:13px;letter-spacing:2px;opacity:0;pointer-events:none;transition:opacity .2s}
+.series-edge-strip:is(:hover,:focus-visible)>img{filter:brightness(.95) saturate(.9)}
+.series-edge-strip:is(:hover,:focus-visible)>span{opacity:1}
+html.site-ui body .series-edge-strip[aria-pressed=true]{border-left-color:#c9e2d8!important}
+html.site-ui body .series-edge-preview .series-edge-caption{position:absolute;bottom:21px;left:7.5%;z-index:3;margin:0;color:#afc7c0;font-size:11px;letter-spacing:2px;pointer-events:none}
+html.site-ui body .series-edge-preview .series-edge-latest{position:absolute!important;inset:auto 32px 16px auto!important;padding:10px 0!important;margin:0!important;min-height:44px!important;background:transparent!important;border:0!important;border-radius:0!important;color:#e4eee8!important;font-size:14px!important;letter-spacing:2px;z-index:6;cursor:pointer}
+html.site-ui body:has(.series-edge-preview) .desktop-navigation{background:rgba(8,27,38,.82)!important;color:#eff6ef!important}
+html.site-ui body:has(.series-edge-preview) :is(.desktop-nav-brand,.desktop-nav-row nav button,.desktop-navigation .site-search-trigger){color:#eff6ef!important}
+html.site-ui body:has(.series-edge-preview) .desktop-nav-brand img{filter:brightness(0) invert(1)!important}
+@keyframes series-edge-image-in{from{opacity:.35}to{opacity:1}}
+@media(max-width:700px){.series-edge-preview{height:auto;min-height:100svh;--past-strip:18px}.series-edge-main .flora-banner{min-height:100svh}.series-edge-history{position:sticky!important;top:0;height:100svh;padding-top:64px!important}.series-edge-preview .flora-banner{padding-inline:7%}.series-edge-preview .flora-copy p span{white-space:normal}.series-edge-preview .series-edge-caption{bottom:14px!important;font-size:9px!important}.series-edge-preview .series-edge-latest{inset:auto 14px 36px auto!important}}
+@media(prefers-reduced-motion:reduce){.series-edge-preview *{animation:none!important;transition:none!important}}
+/* A sliding poster accordion: crossed posters remain as edges on the left. */
+.series-swipe-preview{--poster-width:calc(100vw - (var(--poster-count) - 1)*var(--past-strip));isolation:isolate}
+.series-swipe-panel{position:relative;flex:0 0 var(--past-strip);height:100%;min-width:0;overflow:hidden;transition:flex-basis .95s cubic-bezier(.22,.75,.2,1);border-left:1px solid #a5c7c346;box-sizing:border-box}
+.series-swipe-panel:first-child{border-left:0}
+.series-swipe-panel[data-active=true]{flex-basis:var(--poster-width)}
+.series-swipe-content{position:absolute;inset:0 auto 0 0;width:var(--poster-width);height:100%;overflow:hidden}
+.series-swipe-content .flora-banner{width:100%;height:100%;min-height:0}
+.series-swipe-preview .flora-background{animation:none!important}
+html.site-ui body .series-swipe-preview .series-swipe-hit{position:absolute!important;inset:86px 0 0!important;transform:none!important;display:block!important;width:100%!important;height:calc(100% - 86px)!important;min-width:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:rgba(3,17,27,.25)!important;box-shadow:none!important;color:#e5eee6!important;overflow:hidden!important;cursor:pointer;z-index:7}
+html.site-ui body .series-swipe-preview .series-swipe-panel[data-active=true] .series-swipe-hit{inset:94px 12px auto auto!important;width:24px!important;height:24px!important;opacity:0!important;pointer-events:none}
+.series-swipe-hit>span{writing-mode:vertical-rl;position:absolute;top:26px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:3px;white-space:nowrap;opacity:0;transition:opacity .25s}
+.series-swipe-panel:not([data-active=true]):hover .series-swipe-hit>span{opacity:1}
+html.site-ui body .series-swipe-preview .series-swipe-hit:focus-visible{outline:1px solid #d8e6de!important;outline-offset:-2px!important}
+@media(max-width:700px){.series-swipe-preview{height:100svh}.series-swipe-content{overflow-y:auto}.series-swipe-content .flora-banner{height:auto;min-height:100svh}html.site-ui body .series-swipe-preview .series-swipe-hit{inset:64px 0 0!important;height:calc(100% - 64px)!important}.series-swipe-content .series-edge-caption{position:relative!important;left:auto!important;bottom:auto!important;padding:12px 7%;background:#081925}}
+@media(prefers-reduced-motion:reduce){.series-swipe-panel{transition:none!important}}
+/* One permanent foreground; only the poster planes take part in the slide. */
+.series-swipe-art{display:block;width:100%;height:100%;object-fit:cover;object-position:58% center}
+.series-swipe-overlay{position:absolute;inset:0 auto 0 0;width:var(--poster-width);height:100%;z-index:5;pointer-events:none}
+html.site-ui body .series-swipe-overlay .flora-banner{background:transparent!important;pointer-events:none}
+.series-swipe-overlay .flora-background{display:none!important}
+.series-swipe-overlay .flora-stage{pointer-events:none}
+.series-swipe-overlay :is(.flora-enter,.flora-back,.flora-god){pointer-events:auto}
+.series-swipe-overlay .flora-selection{pointer-events:auto}
+@media(max-width:700px){.series-swipe-overlay{overflow-y:auto}.series-swipe-overlay .flora-banner{min-height:100svh;height:auto!important}.series-swipe-content{overflow:hidden}.series-swipe-overlay .series-edge-caption{position:relative!important;left:auto!important;bottom:auto!important;padding:12px 7%;background:#081925}}
+/* Clip fixed-size artwork; expanding panels must never squash their images. */
+.series-swipe-content{min-width:var(--poster-width);max-width:var(--poster-width)}
+html.site-ui body .series-swipe-preview .series-swipe-art{position:absolute!important;inset:0 auto 0 0!important;width:var(--poster-width)!important;min-width:var(--poster-width)!important;max-width:none!important;height:100%!important;object-fit:cover!important;object-position:58% center!important;transform:none!important;transition:none!important;flex-shrink:0}

@@ -31,6 +31,7 @@ export function metadataForRoute(route: SiteRoute): PageMetadata {
 }
 
 export function metadataForPath(pathname: string): PageMetadata {
+  if(pathname==='/preview/series')return {title:'花神卷 · 系列叠图预览｜绘屿造物',description:'系列新旧图片交互预览。',robots:'noindex, nofollow'};
   if(/^\/stories\/(collectors|official)\/[^/]+$/.test(pathname))return {title:'影像详情｜绘屿造物',description:'摄影作品、创作者信息与相关系列影像。'};
   if(pathname==='/stories/official')return {title:'官方拍摄｜绘屿造物',description:'每位角色独立的摄影篇章与个人故事。'};
   if(pathname.replace(/\/+$/, '')==='/stories/openings')return {title:'往期序章｜绘屿造物',description:'收藏已制作的序章，通过互动海报重回故事开始的地方。'};

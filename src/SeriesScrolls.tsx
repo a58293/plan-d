@@ -3,8 +3,8 @@ import {flowerGods,flowerGodPath,isPlainNavigation} from './flower-gods-catalog'
 import './series-banner.css';
 import portraitDefault from './assets/flora-jingxin-default.webp';
 import portraitHover from './assets/flora-jingxin-hover.webp';
-type Props={onOpenFlowerGods?:()=>void;onOpenFeatured?:()=>void;active?:boolean};
-export default function SeriesScrolls({onOpenFeatured,active=true}:Props){
+type Props={onOpenFlowerGods?:()=>void;onOpenFeatured?:()=>void;active?:boolean;backgroundSrc?:string;sectionId?:string};
+export default function SeriesScrolls({onOpenFeatured,active=true,backgroundSrc="/opening/lotus-2026-09-still-v2.webp",sectionId="series"}:Props){
  const [choosing,setChoosing]=useState(false);
  const stage=useRef<HTMLDivElement>(null);
  const [sceneScale,setSceneScale]=useState(1);
@@ -22,8 +22,8 @@ export default function SeriesScrolls({onOpenFeatured,active=true}:Props){
  const close=()=>{setChoosing(false);enter.current?.focus()};
  useEffect(()=>{if(!active)setChoosing(false)},[active]);
  useEffect(()=>{if(!choosing)return;back.current?.focus();const escape=(e:KeyboardEvent)=>{if(e.key==='Escape'){e.stopPropagation();close()}};window.addEventListener('keydown',escape);return()=>window.removeEventListener('keydown',escape)},[choosing]);
- return <section id="series" onPointerMove={e=>{if(e.pointerType!=='mouse'||!choosing||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;const r=e.currentTarget.getBoundingClientRect();setPointer({x:Math.max(-1,Math.min(1,(e.clientX-r.left)/r.width*2-1)),y:Math.max(-1,Math.min(1,(e.clientY-r.top)/r.height*2-1))})}} onPointerLeave={()=>setPointer({x:0,y:0})} style={{'--flora-x':pointer.x,'--flora-y':pointer.y} as CSSProperties} className={`flora-banner ${choosing?'is-choosing':''}`} aria-label="花神卷" data-home-scroll onKeyDown={e=>{if(choosing)e.stopPropagation()}}>
-  <img className="flora-background" src="/opening/lotus-2026-09-still-v2.webp" alt="" loading="lazy"/>
+ return <section id={sectionId} onPointerMove={e=>{if(e.pointerType!=='mouse'||!choosing||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;const r=e.currentTarget.getBoundingClientRect();setPointer({x:Math.max(-1,Math.min(1,(e.clientX-r.left)/r.width*2-1)),y:Math.max(-1,Math.min(1,(e.clientY-r.top)/r.height*2-1))})}} onPointerLeave={()=>setPointer({x:0,y:0})} style={{'--flora-x':pointer.x,'--flora-y':pointer.y} as CSSProperties} className={`flora-banner ${choosing?'is-choosing':''}`} aria-label="花神卷" data-home-scroll onKeyDown={e=>{if(choosing)e.stopPropagation()}}>
+  <img className="flora-background" src={backgroundSrc} key={backgroundSrc} alt="" loading="lazy"/>
   <div className="flora-shade" aria-hidden="true"/>
   <div ref={stage} onClick={e=>{if(choosing&&(e.target===e.currentTarget||(e.target instanceof Element&&e.target.classList.contains('flora-fitbox'))))close()}} className="flora-stage" data-home-scroll style={{'--flora-scene-scale':sceneScale} as CSSProperties}>
   <div className="flora-fitbox"><div className="flora-scene">
