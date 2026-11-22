@@ -6,7 +6,6 @@ export const verificationIsLive = Boolean(verificationApiUrl);
 export const officialInfo = {
   brandName: '绘屿造物',
   brandLatinName: 'Lumen Auralis',
-  servicePhone: '19988424290',
   serviceHours: '工作日 10:00—17:00',
   courier: 'XX快递',
   productLeadTime: '现货预计 10 个工作日内寄出；预定裸娃预计 120—150 个工作日内寄出；预定全套预计 150—180 个工作日内寄出',

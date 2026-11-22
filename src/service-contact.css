@@ -1,0 +1,4 @@
+.service-contact-links{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:6px 8px;line-height:1.8}
+html.site-ui body .service-contact-links>a{position:relative!important;inset:auto!important;transform:none!important;display:inline!important;padding:4px 0!important;margin:0!important;background:transparent!important;border:0!important;border-radius:0!important;color:inherit!important;font:inherit!important;text-decoration:underline!important;text-underline-offset:4px}
+.service-contact-links>span{opacity:.5}
+#xiaohongshu,#taobao{scroll-margin-top:120px}

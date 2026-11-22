@@ -1,3 +1,4 @@
+import ServiceContact from './ServiceContact';
 import CharacterEntrance from './CharacterEntrance';
 import {useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
@@ -95,7 +96,7 @@ export default function MobileFlower({details, pieces, onBack}:Props) {
     <section id="auth" className="mf-auth"><p className="mf-kicker">官方核验</p><h2>防伪核验</h2><p>{verificationIsLive ? '请准备娃证编号与购买时的淘宝订单号。' : '正式核验暂未开放；以下只展示虚构样例，请勿提交真实订单信息。'}</p><VerificationConsole /></section>
     <footer className="mf-footer">绘屿造物</footer>
     {viewer&&<ImageViewer src={media.src} onClose={()=>setViewer(false)} />}
-    {productInfoOpen&&createPortal(<div className="mf-product-overlay" role="presentation" onMouseDown={event=>{if(event.target===event.currentTarget)setProductInfoOpen(false);}}><section className="mf-product-sheet" role="dialog" aria-modal="true" aria-labelledby="mf-product-title"><button className="mf-product-close" type="button" aria-label="关闭产品信息" onClick={()=>setProductInfoOpen(false)}>×</button><p className="mf-kicker">荷花女神 · 作品 01</p><h2 id="mf-product-title">镜昕产品信息</h2><p>实际购买内容以付款前商品页面及订单确认的信息为准；预定商品的《云笺》会再次列明订单内容。</p><dl>{jingxinProductInfo.map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl><p className="mf-product-contact">客服 {officialInfo.servicePhone}<br/>{officialInfo.serviceHours}</p>{commerce.featuredProductUrl&&<a className="mf-product-buy" href={commerce.featuredProductUrl} target="_blank" rel="noopener noreferrer">前往淘宝购买</a>}</section></div>,document.body)}
+    {productInfoOpen&&createPortal(<div className="mf-product-overlay" role="presentation" onMouseDown={event=>{if(event.target===event.currentTarget)setProductInfoOpen(false);}}><section className="mf-product-sheet" role="dialog" aria-modal="true" aria-labelledby="mf-product-title"><button className="mf-product-close" type="button" aria-label="关闭产品信息" onClick={()=>setProductInfoOpen(false)}>×</button><p className="mf-kicker">荷花女神 · 作品 01</p><h2 id="mf-product-title">镜昕产品信息</h2><p>实际购买内容以付款前商品页面及订单确认的信息为准；预定商品的《云笺》会再次列明订单内容。</p><dl>{jingxinProductInfo.map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl><p className="mf-product-contact"><ServiceContact/><br/>{officialInfo.serviceHours}</p>{commerce.featuredProductUrl&&<a className="mf-product-buy" href={commerce.featuredProductUrl} target="_blank" rel="noopener noreferrer">前往淘宝购买</a>}</section></div>,document.body)}
   </main>;
 }
 

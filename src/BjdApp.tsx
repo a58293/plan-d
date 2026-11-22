@@ -1,3 +1,4 @@
+import ServiceContact from './ServiceContact';
 import {useMobileViewport} from './useMobileViewport';
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SplitColorText } from "./components/HoverColorText";
@@ -143,7 +144,7 @@ function VerifyPreview() {
 function Footer() {
   return (
     <footer className="home-footer">
-      <p className="home-footer-summary">{officialInfo.brandName} · 客服 {officialInfo.servicePhone} · {officialInfo.serviceHours}</p>
+      <p className="home-footer-summary">{officialInfo.brandName} · <ServiceContact/> · {officialInfo.serviceHours}</p>
       <p className="home-footer-copyright">© 2026 绘屿造物 · <a href="/report">侵权举报</a></p>
     </footer>
   );

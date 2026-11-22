@@ -23,7 +23,7 @@ const curated:SearchEntry[]=[
  {title:'购买须知',category:'帮助',subtitle:'付款、云笺、制作周期、收货及售后说明',href:'/purchase-notice',aliases:['购买说明','怎么买','购买流程','售后','退款'],keywords:'购买 下单 淘宝 付款 价格 云笺 预定 现货 发货 周期 工期 等待 快递 运输 收货 退换 退货 退款 养护 防染 转单 转让 二手 确认收货 云笺 制作确认 取消 订单修改 开箱 保养 黄化'},
  {title:'穿戴说明',category:'帮助',subtitle:'镜昕穿戴步骤整理中',href:'/support/dressing',keywords:'穿戴 穿衣 安装 头纱 披肩 衣服 裙装 教程'},
  {title:'帮助说明',category:'帮助',subtitle:'浏览、购买、核验及常见使用问题',href:'/help',aliases:['常见问题','FAQ'],keywords:'帮助 声音 音乐 静音 加载 缓慢 打不开 浏览器 客服 联系 购买'},
- {title:'投稿与联系',category:'服务',subtitle:'官方联系方式与藏家影像投稿',href:'/contact',aliases:['联系我们','客服','联系官方','联系客服'],keywords:'投稿 联系 客服 小红书 私信 官方 账号 工作时间 联系方式'},
+ {title:'投稿与联系',category:'服务',subtitle:'官方联系方式与藏家影像投稿',href:'/contact',aliases:['联系我们','客服','联系官方','联系客服','淘宝客服','小红书客服'],keywords:'投稿 联系 客服 小红书 私信 淘宝 淘宝客服 官方 账号 工作时间 联系方式'},
  {title:'举报说明',category:'服务',subtitle:'仿冒、盗图与冒充官方的线索说明',href:'/report',keywords:'举报 投诉 侵权 盗版 盗图 仿冒 假货 冒充'},
  {title:'官方拍摄',category:'影像',subtitle:'镜昕官方影像与拍摄档案',href:'/stories/official',aliases:['官图','官方照片'],keywords:'镜昕 荷花 实物 摄影 写真 照片 图集 故事 故事图册'},
  {title:'藏家自拍',category:'影像',subtitle:'藏家记录的相遇与日常',href:'/stories/collectors',aliases:['返图','藏家返图'],keywords:'藏家 买家秀 自拍 投稿 返图 照片 图集'},

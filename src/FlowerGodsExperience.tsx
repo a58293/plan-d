@@ -1,3 +1,4 @@
+import ServiceContact from './ServiceContact';
 import {useMobileViewport} from './useMobileViewport';
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
@@ -376,7 +377,7 @@ export default function FlowerGodsExperience({ onBackCollection }: FlowerGodsExp
           <dl className="product-info-grid">
             {jingxinProductInfo.map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
           </dl>
-          <div className="product-info-contact"><span>客服 {officialInfo.servicePhone}</span><span>{officialInfo.serviceHours}</span></div>
+          <div className="product-info-contact"><span><ServiceContact/></span><span>{officialInfo.serviceHours}</span></div>
           {commerce.featuredProductUrl || commerce.shopUrl
             ? <a className="product-info-shop" href={commerce.featuredProductUrl || commerce.shopUrl!} target="_blank" rel="noopener noreferrer">前往淘宝购买 </a>
             : <span className="product-info-shop is-pending" aria-disabled="true">淘宝链接整理中</span>}
