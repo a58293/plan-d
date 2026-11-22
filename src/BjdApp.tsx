@@ -308,10 +308,6 @@ export default function BjdApp({ onOpenFlowerGods, onOpenFeatured }: BjdAppProps
             </button>
           ))}
         </nav>
-
-        <div className="home-scene-caption" aria-live="polite">
-          <span>0{activeChapter + 1}</span><i /><p>{homeChapters[activeChapter].label}</p><small>{homeChapters[activeChapter].en}</small>
-        </div>
       </div>
     </div>
   );
